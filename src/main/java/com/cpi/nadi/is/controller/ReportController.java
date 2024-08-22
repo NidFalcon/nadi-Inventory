@@ -7,16 +7,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/UserController")
-public class UserController extends HttpServlet {
+/**
+ * Servlet implementation class ReportController
+ */
+@WebServlet("/ReportController")
+public class ReportController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public UserController() {
+    private static String page ="";
+    private static String action = "";
+	
+    public ReportController() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		action = request.getParameter("action");
+		
+		if ("showReport".equals(action)) {
+			page = "pages/report.jsp";
+		}
+		
+		request.getRequestDispatcher(page).forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

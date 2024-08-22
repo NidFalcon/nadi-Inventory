@@ -7,16 +7,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/UserController")
-public class UserController extends HttpServlet {
+/**
+ * Servlet implementation class DashboardController
+ */
+@WebServlet("/DashboardController")
+public class DashboardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public UserController() {
+    private static String page = "";
+    private static String action = "";
+    public DashboardController() {
         super();
     }
-
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		action = request.getParameter("action");
+		
+		if ("showDashboard".equals(action)) {
+			page = "pages/dashboard.jsp";
+		}
+		
+		request.getRequestDispatcher(page).forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
