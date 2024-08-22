@@ -10,13 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/UserController")
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String action = "";
+	private String page = "";
        
     public UserController() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		action = request.getParameter("action");
+		
+		if ("login".equals(action)) {
+			System.out.println("Hello");
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
