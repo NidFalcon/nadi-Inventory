@@ -7,18 +7,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/UserController")
-public class UserController extends HttpServlet {
+@WebServlet("/InventoryController")
+public class InventoryController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static String page = "";
+	private static String action = "";
        
-    public UserController() {
+    public InventoryController() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+		action = request.getParameter("action");
+		
+		if ("showInventory".equals(action)) {
+			page = "pages/inventory.jsp";
+		}
+		
+		request.getRequestDispatcher(page).forward(request, response);
 
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
