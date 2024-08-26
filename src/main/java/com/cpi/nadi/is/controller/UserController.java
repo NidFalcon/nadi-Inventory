@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.cpi.nadi.is.service.impl.UserServiceImpl;
+import com.cpi.nadi.is.util.AppConfig;
 import com.cpi.nadi.is.entity.User;
 
 @WebServlet("/UserController")
@@ -18,7 +22,11 @@ public class UserController extends HttpServlet {
 	private String action = "";
 	private String page = "";
 	
-	private UserServiceImpl userService = new UserServiceImpl();
+	//ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+	ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+	
+	//private UserServiceImpl userService = new UserServiceImpl();
+	private UserServiceImpl userService = ctx.getBean(UserServiceImpl.class);
        
     public UserController() {
         super();
@@ -26,7 +34,6 @@ public class UserController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("Hello WOrld");
 		action = request.getParameter("action");
 		
 		try {
@@ -52,8 +59,12 @@ public class UserController extends HttpServlet {
 					page = "pages/message.jsp";
 				}
 			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			request.getRequestDispatcher(page).forward(request, response);
 		}
 	}
 
