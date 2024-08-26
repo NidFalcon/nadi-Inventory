@@ -8,10 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -22,13 +23,17 @@ import com.cpi.nadi.is.service.impl.UserServiceImpl;
 @Controller
 public class UserController {
 	
-	private ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-	private UserServiceImpl userService = ctx.getBean(UserServiceImpl.class);
+	@Autowired
+	private UserServiceImpl userService;
+	//private UserServiceImpl userService = new UserServiceImpl();
 	
 	@PostMapping("/login")
 	@ResponseBody
-	public String hello(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView hello(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		
+		System.out.println("HELLO FROM JS");
 		User user = userService.authenticate(request);
+		ModelAndView mav = new ModelAndView();
 		
 		if (user != null) {
 			// set user cookie
@@ -40,14 +45,15 @@ public class UserController {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
 			
-			request.setAttribute("username", user.getUsername());
 			System.out.println(user.getUsername());
-			System.out.println(user.getBranchId());
-			return "menu";
+			mav.setViewName("menu");
+			mav.addObject("username", user.getUsername());
 		} else {
-			request.setAttribute("message", "Invalid Username or Password");
-			return "report";
+	        mav.setViewName("report");
+	        mav.addObject("message", "Invalid Username or Password");
 		}
+		
+		return mav;
 		
 		/*
 		model.addAttribute("username", "Tingyun");
