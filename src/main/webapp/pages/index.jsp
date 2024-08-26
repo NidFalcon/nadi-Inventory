@@ -15,7 +15,7 @@
 	<h1>Hello World</h1>
 	<p>Tests</p>
 	<div id='content'>
-		<jsp:include page="./pages/login.jsp"/>
+		<jsp:include page="login.jsp"/>
 	</div>
 </body>
 </html>
