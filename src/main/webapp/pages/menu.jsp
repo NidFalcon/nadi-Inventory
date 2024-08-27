@@ -5,5 +5,8 @@
 <button type="button" id="btnMaintenance">Maintenance</button>
 <button type="button" id="btnLogout">Logout</button>
 
+<div>
+	Welcome ${username}
+</div>
 
 <script src = "js/menu.js" type="text/javascript"></script>

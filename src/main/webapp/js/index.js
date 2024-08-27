@@ -9,6 +9,6 @@ $('#x').click(function() {
 		username: "Tingyun",
 		password: "Myp@ssw0rd"
 	}, function(response) {
-		alert(response);
+		$('#content').html(response);
 	});
 });
