@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.cpi.nadi.is.service.impl.UserServiceImpl;
-import com.cpi.nadi.is.util.AppConfig;
+import com.cpi.nadi.is.config.AppConfig;
 import com.cpi.nadi.is.entity.User;
 
 @WebServlet("/UserController")
@@ -22,10 +22,7 @@ public class UserController extends HttpServlet {
 	private String action = "";
 	private String page = "";
 	
-	//ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-	
-	//private UserServiceImpl userService = new UserServiceImpl();
 	private UserServiceImpl userService = ctx.getBean(UserServiceImpl.class);
        
     public UserController() {
