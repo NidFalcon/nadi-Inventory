@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="IS_USERS")
+@Table(name="QKC_USER")
 public class UserEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -18,16 +18,22 @@ public class UserEntity implements Serializable {
 	private Integer userId;
 	private String username;
 	private String password;
+	@Column(name="BRANCH_ID")
+	private Integer branchId;
+	@Column(name="IS_ACTIVE")
+	private Boolean isActive;
 	
 	public UserEntity() {
 		super();
 	}
 
-	public UserEntity(Integer userId, String username, String password) {
+	public UserEntity(Integer userId, String username, String password, Integer branchId, Boolean isActive) {
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
+		this.branchId = branchId;
+		this.isActive = isActive;
 	}
 	
 	public Integer getUserId() {
@@ -52,6 +58,22 @@ public class UserEntity implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Integer getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Integer branchId) {
+		this.branchId = branchId;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	@Override
