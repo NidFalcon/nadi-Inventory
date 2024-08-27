@@ -36,11 +36,29 @@ hr {
   color: black;
 }
 
-.input {
+select.input {
   width: 100%;
-  padding: 8px 16px;
-  margin: 4px 0;
-  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+}
+
+select.input:focus {
+  border-color: #66afe9;
+  outline: none;
+  box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+}
+
+.input {
+	width: 100%;
+	padding: 8px;
+	margin: 4px 0;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	font-size: 16px;
+	color: #333;
 }
 
 .left {
@@ -79,6 +97,35 @@ hr {
 }
 
 .inventory th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #04AA6D;
+  color: white;
+}
+
+.dispatch {
+  border-collapse: collapse;
+  width: 80%;
+}
+
+.dispatch th, .inventory td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.dispatch .center-aligned {
+  text-align: center;
+}
+
+.dispatch tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+.dispatch tr:hover {
+  background-color: #ddd;
+}
+
+.dispatch th {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #04AA6D;
