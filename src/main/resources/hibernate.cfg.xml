@@ -12,5 +12,7 @@
     
     <mapping class="com.cpi.is.entity.UserEntity" />
     <mapping class="com.cpi.is.entity.InventoryEntity" />
+    <mapping class="com.cpi.is.entity.DispatchingEntity" />
+    
   </session-factory>
 </hibernate-configuration>
