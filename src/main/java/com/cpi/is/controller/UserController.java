@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.UserServiceImpl;
 
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -96,6 +97,8 @@ public class UserController extends HttpServlet {
 						}
 					}
 				}
+			} else if ("register".equals(action)) {
+				page="pages/menu.jsp";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -9,6 +9,11 @@ import com.cpi.is.entity.UserEntity;
 import com.cpi.is.util.HBUtil;
 
 public class UserDAOImpl implements UserDAO {
+	
+	@Override
+	public String registerUser(UserEntity user) throws Exception {
+		return "YAY!";
+	}
 
 	@Override
 	public UserEntity authenticate(UserEntity user) throws Exception {

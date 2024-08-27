@@ -8,6 +8,7 @@
     </tr>
     <tr>
       <td><button type="button" class="button blue right" id="btnLogin">Login</button></td>
+      <td><button type="button" class="button blue right" id="btnRegisterLink">Register</button></td>
     </tr>
   </table>
 </form>

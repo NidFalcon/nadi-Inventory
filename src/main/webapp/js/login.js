@@ -5,13 +5,26 @@ $('#btnLogin').click(function() {
 		password: $('#txtPassword').val()
 	}, function(response) {
 		if (response.includes('Invalid Username or Password')) {
-			alert(response);
+			$('#divMessage').html(response);
 		} else {
 			$('#divMenu').html(response);
 			$('#btnDashboard').click();
 		}
 	});
 });
+
+/*
+{
+		action: 'register',
+		username: $('#txtRegUsername').val(),
+		password: $('#txtRegPassword').val(),
+		branchId: $('#txtBranchId')
+	}
+*/
+
+$('#btnRegisterLink').click(function(){
+	$('#divContent').load('pages/registration.jsp');
+})
 
 function checkUserSession() {
 	$.get('UserController', {

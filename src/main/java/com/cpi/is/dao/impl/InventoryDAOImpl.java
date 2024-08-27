@@ -16,7 +16,7 @@ public class InventoryDAOImpl implements InventoryDAO {
 		List<InventoryEntity> inventory = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			inventory = (List<InventoryEntity>) 
-					session.createQuery("From InventoryEntity T ORDER BY T.inventoryId ASC", InventoryEntity.class).list();
+					session.createQuery("From InventoryEntity T ORDER BY T.fplId ASC", InventoryEntity.class).list();
 		}
 		return inventory;
 	}
