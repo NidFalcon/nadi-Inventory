@@ -22,3 +22,12 @@ $('#btnInventory').click(function() {
 		$('#divContent').html(response);
 	});
 });
+
+// Maintenance Module
+$('#btnMaintenance').click(function() {
+	$.get('MaintenanceController', {
+		action: 'showMaintenance'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
