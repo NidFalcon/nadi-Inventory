@@ -1,6 +1,7 @@
 package com.cpi.is.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,45 +9,50 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="IS_INVENTORY")
+@Table(name="QKC_FINISHED_PRODUCT_LIST")
 public class InventoryEntity implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="INVENTORY_ID")
-	private Long inventoryId;
-	private String description;
+	@Column(name="FPL_ID")
+	private Long fplId;
+	@Column(name="SKU_CD")
+	private Long skuCode;
 	private Long quantity;
-	@Column(name="ACTIVE_TAG")
-	private String activeTag;
+	@Column(name="BRANCH_ID")
+	private String branchId;
+	private Date dateFinished;
 	
 	public InventoryEntity() {
 		super();
 	}
-
-	public InventoryEntity(Long inventoryId, String description, Long quantity, String activeTag) {
+	
+	public InventoryEntity(Long fplId, Long skuCode, Long quantity, String branchId, Date dateFinished) {
 		super();
-		this.inventoryId = inventoryId;
-		this.description = description;
+		this.fplId = fplId;
+		this.skuCode = skuCode;
 		this.quantity = quantity;
-		this.activeTag = activeTag;
+		this.branchId = branchId;
+		this.dateFinished = dateFinished;
 	}
 
-	public Long getInventoryId() {
-		return inventoryId;
+	
+
+	public Long getFplId() {
+		return fplId;
 	}
 
-	public void setInventoryId(Long inventoryId) {
-		this.inventoryId = inventoryId;
+	public void setFplId(Long fplId) {
+		this.fplId = fplId;
 	}
 
-	public String getDescription() {
-		return description;
+	public Long getSkuCode() {
+		return skuCode;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setSkuCode(Long skuCode) {
+		this.skuCode = skuCode;
 	}
 
 	public Long getQuantity() {
@@ -57,20 +63,31 @@ public class InventoryEntity implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public String getActiveTag() {
-		return activeTag;
+	public String getBranchId() {
+		return branchId;
 	}
 
-	public void setActiveTag(String activeTag) {
-		this.activeTag = activeTag;
+	public void setBranchId(String branchId) {
+		this.branchId = branchId;
+	}
+
+	public Date getDateFinished() {
+		return dateFinished;
+	}
+
+	public void setDateFinished(Date dateFinished) {
+		this.dateFinished = dateFinished;
 	}
 
 	@Override
 	public String toString() {
-		return "{inventoryId=" + inventoryId 
-			 + ", description=" + description 
-			 + ", quantity=" + quantity
-			 + ", activeTag=" + activeTag + "}";
+	    return "InventoryEntity{" +
+	            "fplId=" + fplId +
+	            ", skuCode=" + skuCode +
+	            ", quantity=" + quantity +
+	            ", branchId='" + branchId + '\'' +
+	            ", dateFinished=" + dateFinished +
+	            '}';
 	}
 	
 }

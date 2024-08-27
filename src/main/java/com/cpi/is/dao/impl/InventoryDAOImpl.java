@@ -26,7 +26,7 @@ public class InventoryDAOImpl implements InventoryDAO {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
-			if (0 == item.getInventoryId()) {
+			if (0 == item.getFplId()) {
 				session.persist(item);	// add a new record
 			} else {
 				session.merge(item);	// update an existing record
