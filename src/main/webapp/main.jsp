@@ -29,8 +29,9 @@
       <div class="col-md-12">
         <!-- Main Content Area -->
         <div id="divContent">
-          <!--<jsp:include page="pages/login.jsp"></jsp:include>-->
-          <jsp:include page="pages/dispatching.jsp"></jsp:include>
+          <jsp:include page="pages/login.jsp"></jsp:include>
+	      <%-- <jsp:include page="pages/dispatching.jsp"></jsp:include> --%>
+	          
           <%-- <jsp:include page="pages/inventory.jsp"></jsp:include> --%>
         </div>
       </div>
