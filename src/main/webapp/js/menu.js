@@ -22,3 +22,11 @@ $('#btnInventory').click(function() {
 		$('#divContent').html(response);
 	});
 });
+
+$('#btnDispatching').click(function() {
+	$.get('DispatchingController', {
+		action: 'showDispatching'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
