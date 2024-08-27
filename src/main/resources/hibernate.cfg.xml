@@ -4,9 +4,9 @@
 <hibernate-configuration>
   <session-factory>
   	<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:BASELOC</property>
-    <property name="hibernate.connection.username">CPI</property>
-    <property name="hibernate.connection.password">CPI12345!</property>
+    <property name="hibernate.connection.url">jdbc:oracle:thin:@training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com:1521:ORLC</property>
+    <property name="hibernate.connection.username">NADI</property>
+    <property name="hibernate.connection.password">SAe879fd</property>
     <property name="hibernate.show_sql">false</property>
     <property name="hibernate.hbm2ddl.auto">none</property>
     
