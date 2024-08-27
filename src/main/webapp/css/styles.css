@@ -1,0 +1,86 @@
+@charset "ISO-8859-1";
+
+body {
+  font-family: "Lucida Console";
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+.button {
+  border: none;
+  color: white;
+  display: inline-block;
+  font-size: 16px;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.red {
+  background-color: #f44336;
+}
+
+.green {
+  background-color: #04AA6D;
+}
+
+.blue {
+  background-color: #008CBA;
+}
+
+.white {
+  background-color: white;
+  color: black;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 16px;
+  margin: 4px 0;
+  box-sizing: border-box;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.menu li {
+  list-style-type: none;
+  display: inline;
+}
+
+.inventory {
+  border-collapse: collapse;
+  width: 80%;
+}
+
+.inventory th, .inventory td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.inventory .center-aligned {
+  text-align: center;
+}
+
+.inventory tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+.inventory tr:hover {
+  background-color: #ddd;
+}
+
+.inventory th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #04AA6D;
+  color: white;
+}

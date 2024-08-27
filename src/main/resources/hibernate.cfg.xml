@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+  "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+  	<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:BASELOC</property>
+    <property name="hibernate.connection.username">CPI</property>
+    <property name="hibernate.connection.password">CPI12345!</property>
+    <property name="hibernate.show_sql">false</property>
+    <property name="hibernate.hbm2ddl.auto">none</property>
+    
+    <mapping class="com.cpi.is.entity.UserEntity" />
+    <mapping class="com.cpi.is.entity.InventoryEntity" />
+  </session-factory>
+</hibernate-configuration>
