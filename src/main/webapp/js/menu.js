@@ -22,3 +22,12 @@ $('#btnInventory').click(function() {
 		$('#divContent').html(response);
 	});
 });
+
+// Maintenance Module
+$('#btnMngDispatchTypes').click(function () {
+	$.post('DispatchTypeController', {
+		action: 'showDispatchTypes'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
