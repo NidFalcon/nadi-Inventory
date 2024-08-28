@@ -1,10 +1,12 @@
 package com.cpi.is.dao.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
 
 import com.cpi.is.dao.UserDAO;
+import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.util.HBUtil;
 
@@ -25,6 +27,12 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return authenticated;
 	}
+
+	@Override
+	public String registerUser(UserEntity user) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	public UserEntity getUser(Integer userId) throws Exception {
 		UserEntity foundUser = null;
@@ -42,3 +50,4 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 }
+
