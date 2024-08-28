@@ -11,23 +11,25 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cpi.is.service.DispatchTypeService;
+
 /**
- * Servlet implementation class MaintenanceController
+ * Servlet implementation class DispatchTypeController
  */
-@WebServlet("/MaintenanceController")
-public class MaintenanceController extends HttpServlet {
+@WebServlet("/DispatchTypeController")
+public class DispatchTypeController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static String action = "";
 	private static String page = "";
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-//	private MaintenanceServiceImpl maintenanceService = (MaintenanceServiceImpl) context.getBean("maintenanceService");
+	private DispatchTypeService dispatchTypeService = (DispatchTypeService) context.getBean("dispatchTypeService");
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MaintenanceController() {
+    public DispatchTypeController() {
         super();
     }
 
@@ -38,25 +40,18 @@ public class MaintenanceController extends HttpServlet {
 		try {
 			action = request.getParameter("action");
 			
-			if ("showMaintenance".equals(action)) {
-				page = "pages/maintenance.jsp";
-			} else if ("showMngDispatchTypes".equals(action)) {
+			if ("showDispatchTypes".equals(action)) {
+				request.setAttribute("dispatchTypes", new JSONArray(dispatchTypeService.getDispatchTypes()));
 				page = "pages/maintenance/DispatchTypes.jsp";
-			} else if ("showMngBranches".equals(action)) {
-				page = "pages/maintenance/Branches.jsp";
-			} else if ("showMngSkuCodes".equals(action)) {
-				page = "pages/maintenance/SkuCodes.jsp";
-			} else if ("showMngMaterialCodes".equals(action)) {
-				page = "pages/maintenance/MaterialCodes.jsp";
+			} else if ("saveItem".equals(action)) {
+				String message = dispatchTypeService.saveItem(request);
+				request.setAttribute("message", message);
+				page = "pages/message.jsp";
+			} else if ("deleteItem".equals(action)) {
+				String message = dispatchTypeService.deleteItem(request);
+				request.setAttribute("message", message);
+				page = "pages/message.jsp";
 			} 
-			
-//			else if ("saveItem".equals(action)) {
-//				request.setAttribute("message", maintenanceService.saveItem(request));
-//				page = "pages/message.jsp";
-//			} else if ("deleteItem".equals(action)) {
-//				request.setAttribute("message", maintenanceService.deleteItem(request));
-//				page = "pages/message.jsp";
-//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

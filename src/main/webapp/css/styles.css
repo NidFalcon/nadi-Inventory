@@ -56,12 +56,12 @@ hr {
   display: inline;
 }
 
-.inventory {
+.inventory, .dispatchTypes {
   border-collapse: collapse;
   width: 80%;
 }
 
-.inventory th, .inventory td {
+.inventory th, .inventory td, .dispatchTypes th, .dispatchTypes td {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -70,15 +70,15 @@ hr {
   text-align: center;
 }
 
-.inventory tr:nth-child(even){
+.inventory tr:nth-child(even), .dispatchTypes tr:nth-child(even){
   background-color: #f2f2f2;
 }
 
-.inventory tr:hover {
+.inventory tr:hover, .dispatchTypes tr:hover {
   background-color: #ddd;
 }
 
-.inventory th {
+.inventory th, dispatchTypes th {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #04AA6D;

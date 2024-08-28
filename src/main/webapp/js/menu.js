@@ -24,9 +24,9 @@ $('#btnInventory').click(function() {
 });
 
 // Maintenance Module
-$('#btnMaintenance').click(function() {
-	$.get('MaintenanceController', {
-		action: 'showMaintenance'
+$('#btnMngDispatchTypes').click(function () {
+	$.post('DispatchTypeController', {
+		action: 'showDispatchTypes'
 	}, function(response) {
 		$('#divContent').html(response);
 	});
