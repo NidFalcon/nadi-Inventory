@@ -7,17 +7,9 @@ $('#btnLogout').click(function () {
 	});
 });
 
-$('#btnDashboard').click(function() {
-	$.get('DashboardController', {
-		action: 'showDashboard'
-	}, function(response) {
-		$('#divContent').html(response);
-	});
-});
-
-$('#btnInventory').click(function() {
-	$.get('InventoryController', {
-		action: 'showInventory'
+$('#btnRawMaterials').click(function() {
+	$.get('RawMaterialListController', {
+		action: 'showRawMaterialList'
 	}, function(response) {
 		$('#divContent').html(response);
 	});

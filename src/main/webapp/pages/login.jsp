@@ -5,7 +5,7 @@
                 <label for="txtUsername">Username</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control mb-3 mt=3" id="password" placeholder="Password">
+                <input type="password" class="form-control mb-3 mt=3" id="txtPassword" placeholder="Password">
                 <label for="txtPassword">Password</label>
             </div>
             <div>

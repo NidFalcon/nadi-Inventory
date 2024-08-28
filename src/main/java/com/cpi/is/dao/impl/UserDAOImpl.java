@@ -25,5 +25,20 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return authenticated;
 	}
+	
+	public UserEntity getUser(Integer userId) throws Exception {
+		UserEntity foundUser = null;
+		try (Session session = HBUtil.getSessionFactory().openSession()) {
+			List<UserEntity> results = (List<UserEntity>) session
+					.createQuery("FROM UserEntity U WHERE U.userId = :userId", UserEntity.class)
+					.setParameter("userId", userId)
+					.list();
+			if (results.size() > 0) {
+				foundUser = results.get(0);
+			}
+			
+			return foundUser;
+		}
+	}
 
 }
