@@ -8,7 +8,7 @@ import com.cpi.is.entity.DispatchTypeEntity;
 
 public interface DispatchTypeService {
 	
-	List<DispatchTypeEntity> getDispatchTypes() throws Exception;
+	List<DispatchTypeEntity> getDispatchType() throws Exception;
 	String saveItem(HttpServletRequest request) throws Exception;
 	String deleteItem(HttpServletRequest request) throws Exception;
 	

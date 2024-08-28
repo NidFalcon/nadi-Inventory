@@ -1,6 +1,6 @@
-<div id="divDispatchTypesTable"></div>
+<div id="divDispatchTypeTable"></div>
 <br>
-<div id="divDispatchTypesForm">
+<div id="divDispatchTypeForm">
   <form>
     <input type="hidden" id="txtIsActive" value="" />
     <table>
@@ -25,6 +25,6 @@
 </div>
 <br>
 <script type="text/javascript">
-	var dispatchTypes = JSON.parse('${dispatchTypes}');
+	var dispatchType = JSON.parse('${dispatchType}');
 </script>
-<script src="js/maintenance/dispatchTypes.js"></script>
+<script src="js/maintenance/dispatchType.js"></script>

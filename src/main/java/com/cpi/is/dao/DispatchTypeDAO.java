@@ -6,7 +6,7 @@ import com.cpi.is.entity.DispatchTypeEntity;
 
 public interface DispatchTypeDAO {
 	
-	List<DispatchTypeEntity> getDispatchTypes() throws Exception;
+	List<DispatchTypeEntity> getDispatchType() throws Exception;
 	String saveItem(DispatchTypeEntity dispatchType) throws Exception;
 	String deleteItem(DispatchTypeEntity dispatchType) throws Exception;
 	

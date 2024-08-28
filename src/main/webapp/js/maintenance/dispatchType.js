@@ -6,8 +6,8 @@ function toggleAddButton() {
 	}
 }
 
-function bindRowsClick(dispatchTypes) {
-	$.each(dispatchTypes, function(index, item) {
+function bindRowsClick(dispatchType) {
+	$.each(dispatchType, function(index, item) {
 		$('#item'+index+'row').click(function() {
 			$('#txtIsActive').val(item.isActive);
 			$('#txtDispatchTypeCode').val(item.dispatchTypeCode);
@@ -17,14 +17,14 @@ function bindRowsClick(dispatchTypes) {
 	});
 }
 
-function createDispatchTypesTable(dispatchTypes) {
+function createDispatchTypeTable(dispatchType) {
 	let html = '';
-	html += '<table class="dispatchTypes">';
+	html += '<table class="dispatchType">';
 	html += '  <tr>';
 	html += '    <th>Dispatch Type Code</th>';
 	html += '    <th>Dispatch Type Name</th>';
 	html += '  </tr>';
-	$.each(dispatchTypes, function(index, item) {
+	$.each(dispatchType, function(index, item) {
 		if ('y' === item.isActive) {
 			html += '<tr id="item'+index+'row">';
 			html += '  <td id="item'+index+'code">' + item.dispatchTypeCode + '</td>';
@@ -33,8 +33,8 @@ function createDispatchTypesTable(dispatchTypes) {
 		}
 	});
 	html += '</table>';
-	$('#divDispatchTypesTable').html(html);
-	bindRowsClick(dispatchTypes);
+	$('#divDispatchTypeTable').html(html);
+	bindRowsClick(dispatchType);
 }
 
 function createItem() {
@@ -63,7 +63,7 @@ function addItem() {
 			item: JSON.stringify(item)
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnMngDispatchTypes').click();
+				$('#btnMngDispatchType').click();
 			} else {
 				alert('Unable to save changes');
 			}
@@ -90,7 +90,7 @@ $('#btnDelete').click(function() {
 			item: JSON.stringify(item)
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnMngDispatchTypes').click();
+				$('#btnMngDispatchType').click();
 			} else {
 				alert('Unable to save changes');
 			}
@@ -100,4 +100,4 @@ $('#btnDelete').click(function() {
 	}
 });
 
-createDispatchTypesTable(dispatchTypes);
+createDispatchTypeTable(dispatchType);

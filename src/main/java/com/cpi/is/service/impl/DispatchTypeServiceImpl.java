@@ -31,8 +31,8 @@ public class DispatchTypeServiceImpl implements DispatchTypeService {
 	}
 
 	@Override
-	public List<DispatchTypeEntity> getDispatchTypes() throws Exception {
-		return dispatchTypeDAO.getDispatchTypes();
+	public List<DispatchTypeEntity> getDispatchType() throws Exception {
+		return dispatchTypeDAO.getDispatchType();
 	}
 
 	@Override
