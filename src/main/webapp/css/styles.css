@@ -56,29 +56,29 @@ hr {
   display: inline;
 }
 
-.inventory, .dispatchTypes {
+.inventory, .dispatchType, .branch, .sku, .rawMaterial {
   border-collapse: collapse;
   width: 80%;
 }
 
-.inventory th, .inventory td, .dispatchTypes th, .dispatchTypes td {
+.inventory th, .inventory td, .dispatchType th, .dispatchType td, .branch th, .branch td, .sku th, .sku td, .rawMaterial th, .rawMaterial td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-.inventory .center-aligned {
+.inventory .center-aligned, .dispatchType .center-aligned, .branch .center-aligned, .sku .center-aligned, .rawMaterial .center-aligned {
   text-align: center;
 }
 
-.inventory tr:nth-child(even), .dispatchTypes tr:nth-child(even){
+.inventory tr:nth-child(even), .dispatchType tr:nth-child(even), .branch tr:nth-child(even), .sku tr:nth-child(even), .rawMaterial tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-.inventory tr:hover, .dispatchTypes tr:hover {
+.inventory tr:hover, .dispatchType tr:hover, .branch tr:hover, .sku tr:hover, .rawMaterial tr:hover {
   background-color: #ddd;
 }
 
-.inventory th, dispatchTypes th {
+.inventory th, .dispatchType th, .branch th, .sku th, .rawMaterial th {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #04AA6D;

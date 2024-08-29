@@ -23,10 +23,33 @@ $('#btnInventory').click(function() {
 	});
 });
 
-// Maintenance Module
-$('#btnMngDispatchTypes').click(function () {
+$('#btnMngDispatchType').click(function () {
 	$.post('DispatchTypeController', {
-		action: 'showDispatchTypes'
+		action: 'showDispatchType'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngBranch').click(function () {
+	$.post('BranchController', {
+		action: 'showBranch'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngSku').click(function () {
+	$.post('SkuController', {
+		action: 'showSku'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngRawMaterial').click(function () {
+	$.post('RawMaterialController', {
+		action: 'showRawMaterial'
 	}, function(response) {
 		$('#divContent').html(response);
 	});
