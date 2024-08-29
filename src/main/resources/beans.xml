@@ -28,4 +28,9 @@
   	<property name="skuDAO" ref="skuDAO" />
   </bean>
   
+  <bean id="rawMaterialDAO" class="com.cpi.is.dao.impl.RawMaterialDAOImpl"></bean>
+  <bean id="rawMaterialService" class="com.cpi.is.service.impl.RawMaterialServiceImpl" depends-on="rawMaterialDAO">
+  	<property name="rawMaterialDAO" ref="rawMaterialDAO" />
+  </bean>
+  
 </beans>

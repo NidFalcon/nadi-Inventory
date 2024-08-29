@@ -46,3 +46,11 @@ $('#btnMngSku').click(function () {
 		$('#divContent').html(response);
 	});
 });
+
+$('#btnMngRawMaterial').click(function () {
+	$.post('RawMaterialController', {
+		action: 'showRawMaterial'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
