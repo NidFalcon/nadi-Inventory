@@ -5,27 +5,27 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.cpi.is.dao.BranchDAO;
-import com.cpi.is.entity.BranchEntity;
+import com.cpi.is.dao.SkuDAO;
+import com.cpi.is.entity.SkuEntity;
 import com.cpi.is.util.HBUtil;
 
-public class BranchDAOImpl implements BranchDAO {
+public class SkuDAOImpl implements SkuDAO {
 
     @Override
-    public List<BranchEntity> getBranch() throws Exception {
-        List<BranchEntity> branchList = null;
+    public List<SkuEntity> getSku() throws Exception {
+        List<SkuEntity> skuList = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
-            branchList = session.createQuery("FROM BranchEntity T ORDER BY T.branchId ASC", BranchEntity.class).list();
+            skuList = session.createQuery("FROM SkuEntity S ORDER BY S.skuCode ASC", SkuEntity.class).list();
         }
-        return branchList;
+        return skuList;
     }
 
     @Override
-    public String saveItem(BranchEntity item) throws Exception {
+    public String saveItem(SkuEntity item) throws Exception {
         Transaction transaction = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            if (item.getBranchId() == null) {
+            if (item.getSkuCode() == null || item.getSkuCode().isEmpty()) {
                 session.persist(item);
             } else {
                 session.merge(item);
@@ -41,7 +41,7 @@ public class BranchDAOImpl implements BranchDAO {
     }
 
     @Override
-    public String deleteItem(BranchEntity item) throws Exception {
+    public String deleteItem(SkuEntity item) throws Exception {
         Transaction transaction = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();

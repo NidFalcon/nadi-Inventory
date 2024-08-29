@@ -38,3 +38,11 @@ $('#btnMngBranch').click(function () {
 		$('#divContent').html(response);
 	});
 });
+
+$('#btnMngSku').click(function () {
+	$.post('SkuController', {
+		action: 'showSku'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});

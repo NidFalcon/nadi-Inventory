@@ -7,7 +7,7 @@ import com.cpi.is.entity.BranchEntity;
 public interface BranchDAO {
 	
 	List<BranchEntity> getBranch() throws Exception;
-	String saveItem(BranchEntity dispatchType) throws Exception;
-	String deleteItem(BranchEntity dispatchType) throws Exception;
+	String saveItem(BranchEntity item) throws Exception;
+	String deleteItem(BranchEntity item) throws Exception;
 	
 }

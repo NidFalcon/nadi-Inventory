@@ -14,5 +14,7 @@
     <mapping class="com.cpi.is.entity.InventoryEntity" />
     <mapping class="com.cpi.is.entity.DispatchTypeEntity" />
     <mapping class="com.cpi.is.entity.BranchEntity" />
+    <mapping class="com.cpi.is.entity.SkuEntity" />
+    
   </session-factory>
 </hibernate-configuration>

@@ -23,4 +23,9 @@
   	<property name="branchDAO" ref="branchDAO" />
   </bean>
   
+  <bean id="skuDAO" class="com.cpi.is.dao.impl.SkuDAOImpl"></bean>
+  <bean id="skuService" class="com.cpi.is.service.impl.SkuServiceImpl" depends-on="skuDAO">
+  	<property name="skuDAO" ref="skuDAO" />
+  </bean>
+  
 </beans>

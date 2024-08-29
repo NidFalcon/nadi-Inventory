@@ -21,14 +21,14 @@ public class DispatchTypeDAOImpl implements DispatchTypeDAO {
 	}
 
 	@Override
-	public String saveItem(DispatchTypeEntity dispatchType) throws Exception {
+	public String saveItem(DispatchTypeEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
-			if (dispatchType.getDispatchTypeCode() == null || dispatchType.getDispatchTypeCode().isEmpty()) {
-				session.persist(dispatchType);
+			if (item.getDispatchTypeCode() == null || item.getDispatchTypeCode().isEmpty()) {
+				session.persist(item);
 			} else {
-				session.merge(dispatchType);
+				session.merge(item);
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -41,11 +41,11 @@ public class DispatchTypeDAOImpl implements DispatchTypeDAO {
 	}
 
 	@Override
-	public String deleteItem(DispatchTypeEntity dispatchType) throws Exception {
+	public String deleteItem(DispatchTypeEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
-			session.remove(session.contains(dispatchType) ? dispatchType : session.merge(dispatchType));
+			session.remove(session.contains(item) ? item : session.merge(item));
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {
