@@ -30,3 +30,11 @@ $('#btnMngDispatchType').click(function () {
 		$('#divContent').html(response);
 	});
 });
+
+$('#btnMngBranch').click(function () {
+	$.post('BranchController', {
+		action: 'showBranch'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});

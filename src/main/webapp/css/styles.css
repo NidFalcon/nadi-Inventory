@@ -56,29 +56,29 @@ hr {
   display: inline;
 }
 
-.inventory, .dispatchType {
+.inventory, .dispatchType, .branch {
   border-collapse: collapse;
   width: 80%;
 }
 
-.inventory th, .inventory td, .dispatchType th, .dispatchType td {
+.inventory th, .inventory td, .dispatchType th, .dispatchType td, .branch th, .branch td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-.inventory .center-aligned {
+.inventory .center-aligned, .dispatchType .center-aligned, .branch .center-aligned {
   text-align: center;
 }
 
-.inventory tr:nth-child(even), .dispatchType tr:nth-child(even){
+.inventory tr:nth-child(even), .dispatchType tr:nth-child(even), .branch tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-.inventory tr:hover, .dispatchType tr:hover {
+.inventory tr:hover, .dispatchType tr:hover, .branch tr:hover {
   background-color: #ddd;
 }
 
-.inventory th, dispatchType th {
+.inventory th, .dispatchType th, .branch th {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #04AA6D;

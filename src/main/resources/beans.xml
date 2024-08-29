@@ -18,5 +18,9 @@
   	<property name="dispatchTypeDAO" ref="dispatchTypeDAO" />
   </bean>
   
+  <bean id="branchDAO" class="com.cpi.is.dao.impl.BranchDAOImpl"></bean>
+  <bean id="branchService" class="com.cpi.is.service.impl.BranchServiceImpl" depends-on="branchDAO">
+  	<property name="branchDAO" ref="branchDAO" />
+  </bean>
   
 </beans>
