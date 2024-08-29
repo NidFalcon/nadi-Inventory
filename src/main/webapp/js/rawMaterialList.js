@@ -1,15 +1,21 @@
 var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
-	height: '212px',
-	layout: 'fitDataTable',
+	layout: 'fitColumns',
 	data: rawMaterialList,
 	pagination: 'local',
+	pagination: true,
 	paginationSize: 5,
+	paginationSizeSelector:[5, 10, 15, 20],
+	paginationCounter:"rows",
 	selectableRows:1,
+	movableColumns:true,
+	responsiveLayout:true,
 	columns: [
 		{title:"Material ID", field: 'materialListId'},
+		{title:"Material Code", field: 'material.materialCode'},
 		{title:"Material Name", field: 'material.materialName'},
 		{title:"Quantity", field: 'quantity'},
-		{title:"Date", field: 'dateRecieve'}
+		{title:"Date", field: 'dateRecieve'},
+		{title:"Batch Id", field:'branch.branchId'}
 	],
 });
 
