@@ -11,6 +11,7 @@
   <bean id="inventoryDAO" class="com.cpi.is.dao.impl.InventoryDAOImpl"></bean>
   <bean id="branchDAO" class="com.cpi.is.dao.impl.BranchDAOImpl"></bean>
   <bean id="rawMaterialListDAO" class="com.cpi.is.dao.impl.RawMaterialListDAOImpl"></bean>
+  <bean id="rawMaterialDAO" class="com.cpi.is.dao.impl.RawMaterialDAOImpl"></bean>
   
   <bean id="inventoryService" class="com.cpi.is.service.impl.InventoryServiceImpl" depends-on="inventoryDAO">
   	<property name="inventoryDAO" ref="inventoryDAO" />
@@ -18,7 +19,10 @@
   <bean id="branchService" class="com.cpi.is.service.impl.BranchServiceImpl" depends-on="branchDAO">
   	<property name="branchDAO" ref="branchDAO" />
   </bean>
-  <bean id="rawMaterialListService" class="com.cpi.is.service.impl.RawMaterialListServiceImpl" depends-on="rawMaterialListDAO">
+  <bean id="rawMaterialListService" class="com.cpi.is.service.impl.RawMaterialListServiceImpl" depends-on="rawMaterialListDAO, rawMaterialDAO, branchDAO, userDAO">
   	<property name="rawMaterialListDAO" ref="rawMaterialListDAO" />
+  	<property name="rawMaterialDAO" ref="rawMaterialDAO" />
+  	<property name="branchDAO" ref="branchDAO" />
+  	<property name="userDAO" ref="userDAO" />
   </bean>
 </beans>

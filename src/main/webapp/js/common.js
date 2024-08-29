@@ -5,9 +5,18 @@ function initializeApp() {
 }
 
 $('#btnTest').click(function(){
-	console.log("test");
+	let testJson = {
+        	"materialListId" : 0,
+        	"materialCode" : "MAT003",
+        	"quantity": "69",
+        	"userId": 3,
+        	"dateRecieve" : "29-08-2024",
+        	"branchId": "5"
+	}
+	
 	$.get("UserController", {
-		action: "test"
+		action: "test",
+		item: JSON.stringify(testJson)
 	}, function(response){
 		console.log("test ending");
 		console.log(response);

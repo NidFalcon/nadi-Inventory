@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.cpi.is.dao.RawMaterialDAO;
 import com.cpi.is.dao.impl.BranchDAOImpl;
 import com.cpi.is.dao.impl.RawMaterialDAOImpl;
+import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
 import com.cpi.is.dao.impl.UserDAOImpl;
 import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.entity.RawMaterialListEntity;
@@ -45,8 +46,9 @@ public class UserController extends HttpServlet {
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
 	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
 	private RawMaterialListServiceImpl testService = (RawMaterialListServiceImpl) context.getBean("rawMaterialListService");
+    
 	
-    /**
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public UserController() {
@@ -127,17 +129,8 @@ public class UserController extends HttpServlet {
 				request.setAttribute("rawMaterialList", new JSONArray(testList));
 				page = "pages/util/test.jsp";
 				*/
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("materialListId", 0);
-		        jsonObject.put("materialCode", "MAT002");
-		        jsonObject.put("quantity", 100);
-		        jsonObject.put("userId", 2);
-		        jsonObject.put("dateRecieve", "2024-08-27");
-		        jsonObject.put("branchId", 1);
-				
-		        RawMaterialListServiceImpl test = new RawMaterialListServiceImpl();
 		        
-		        test.saveItem(jsonObject);
+		        testService.saveItem(request);
 			}
 			
 			
