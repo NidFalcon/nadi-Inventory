@@ -1,19 +1,16 @@
 package com.cpi.is.dao.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
 
 import com.cpi.is.dao.UserDAO;
+import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.util.HBUtil;
 
 public class UserDAOImpl implements UserDAO {
-	
-	@Override
-	public String registerUser(UserEntity user) throws Exception {
-		return "YAY!";
-	}
 
 	@Override
 	public UserEntity authenticate(UserEntity user) throws Exception {
@@ -29,6 +26,27 @@ public class UserDAOImpl implements UserDAO {
 			}
 		}
 		return authenticated;
+	}
+
+	@Override
+	public String registerUser(UserEntity user) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public UserEntity getUser(Integer userId) throws Exception {
+		UserEntity foundUser = null;
+		try (Session session = HBUtil.getSessionFactory().openSession()) {
+			List<UserEntity> results = (List<UserEntity>) session
+					.createQuery("FROM UserEntity U WHERE U.userId = :userId", UserEntity.class)
+					.setParameter("userId", userId)
+					.list();
+			if (results.size() > 0) {
+				foundUser = results.get(0);
+			}
+			
+			return foundUser;
+		}
 	}
 
 }

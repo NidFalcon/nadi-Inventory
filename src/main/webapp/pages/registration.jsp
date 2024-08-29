@@ -9,11 +9,9 @@
     </tr>
     <tr>
       <td><select  id="txtBranchId" name="txtBranchId">
-		  <option value="1">Branch A</option>
-		  <option value="2">Branch B</option>
-		  <option value="3">Branch C</option>
-		  <option value="4">Branch D</option>
-		  <option value="5">Branch E</option>
+			<c:forEach var="item" items="${branches}">
+			    <option value="${item.branchId}">${item.branchName}</option>
+			</c:forEach>
       </select></td>
     </tr>
     <tr>
@@ -22,4 +20,7 @@
     </tr>
   </table>
 </form>
+<script type="text/javascript">
+	var branches = JSON.parse('${branches}');
+</script>
 <script src="js/registration.js"></script>

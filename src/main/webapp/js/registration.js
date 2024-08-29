@@ -14,4 +14,6 @@ $('#btnConfirmRegister').click(function() {
 	}, function() {
 		console.log("YAY");
 	})
-});
+})
+
+console.log(branches);

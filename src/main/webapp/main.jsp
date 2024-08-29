@@ -19,6 +19,7 @@
   <div id="divContent">
     <jsp:include page="pages/login.jsp"></jsp:include>
   </div>
+  <button type="button" id="btnTest">TEST TIME</button>
   <hr>
   <jsp:include page="pages/footer.jsp"></jsp:include>
 </body>

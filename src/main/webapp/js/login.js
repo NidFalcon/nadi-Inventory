@@ -23,7 +23,12 @@ $('#btnLogin').click(function() {
 */
 
 $('#btnRegisterLink').click(function(){
-	$('#divContent').load('pages/registration.jsp');
+	//$('#divContent').load('pages/registration.jsp');
+	$.get("UserController", {
+		action: "showRegisterPage"
+	}, function(response) {	
+		$('#divContent').html(response);
+	})
 })
 
 function checkUserSession() {
