@@ -31,13 +31,13 @@ public class RawMaterialListController extends HttpServlet {
 		try {
 			action = request.getParameter("action");
 			if ("showRawMaterialList".equals(action)) {
-				request.setAttribute("inventory", new JSONArray(rawMaterialListService.getRawMaterialList()));
+				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList()));
 				page = "pages/rawMaterialList.jsp";
 			} else if ("saveItem".equals(action)) {
-				request.setAttribute("message", rawMaterialListService.saveItem(request));
+				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request));
 				page = "pages/message.jsp";
 			} else if ("deleteItem".equals(action)) {
-				request.setAttribute("message", rawMaterialListService.deleteItem(request));
+				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
 				page = "pages/message.jsp";
 			}
 		} catch (Exception e) {

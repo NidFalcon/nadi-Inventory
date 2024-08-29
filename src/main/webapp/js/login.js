@@ -9,7 +9,6 @@ $('#btnLogin').click(function() {
 		} else {
 			$('#divMenu').html(response);
 			$('#btnDashboard').click();
-			$('divHeader').html(response);
 		}
 	});
 });

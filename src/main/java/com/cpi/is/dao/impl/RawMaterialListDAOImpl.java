@@ -19,7 +19,7 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 	}
 
 	@Override
-	public String saveItem(RawMaterialListEntity item) throws Exception {
+	public String saveRawMaterial(RawMaterialListEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
@@ -41,7 +41,7 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 	}	
 
 	@Override
-	public String deleteItem(RawMaterialListEntity item) throws Exception {
+	public String deleteRawMaterial(RawMaterialListEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();

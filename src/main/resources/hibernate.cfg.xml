@@ -11,7 +11,6 @@
     <property name="hibernate.hbm2ddl.auto">none</property>
     
     <mapping class="com.cpi.is.entity.UserEntity" />
-    <mapping class="com.cpi.is.entity.InventoryEntity" />
     <mapping class="com.cpi.is.entity.BranchEntity" />
     <mapping class="com.cpi.is.entity.RawMaterialListEntity" />
     <mapping class="com.cpi.is.entity.RawMaterialEntity" />

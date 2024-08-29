@@ -1,33 +1,60 @@
-<div class="row">
-	<nav class="col-md-2 d-none d-md-block bg-light sidebar">
-		<div class="sidebar-sticky">
-			<ul class="nav flex-column">
-				<li class="nav-item" id="btnDashboard"><a class="nav-link active" href="#"> <span>Dashboard</span>
-				</a></li>
-			</ul>
-
-			<h6
-				class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-				<span>Inventory</span>
-			</h6>
-			<ul class="nav flex-column mb-2">
-				<li class="nav-item" id="btnRawMaterials"><a class="nav-link" href="#"> <span>Raw
-							Materials</span>
-				</a></li>
-				<li class="nav-item" id="btnFinishedProducts"><a class="nav-link" href="#"> <span>Finished
-							Products</span>
-				</a></li>
-			</ul>
-			<ul class="nav flex-column">
-				<li class="nav-item" id="btnReports"><a class="nav-link" href="#"> <span>Reports</span>
-				</a></li>
-				<li class="nav-item" id="btnDispatch"><a class="nav-link" href="#"> <span>Dispatch</span>
-				</a></li>
-				<li class="nav-item" id="btnMaintenance"><a class="nav-link" href="#"> <span>Maintenance</span>
-				</a></li>
-			</ul>
-		</div>
-	</nav>
-</div>
-
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg"
+                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <!--navbar items-->
+                <ul class="navbar-nav ms-3 me-auto mb-2 mb-lg-0">
+                    <li class="navbar-brand">
+                        <span>Inventory System</span>
+                    </li>
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="navbarOffcanvasLg" aria-laballededby="navbarOffcanvasLgLabel">
+                    <!--menu header-->
+                    <div class="offcanvas-header">     
+                        <h5 class="offcanvas-title" id="navbarOffcanvasLgLabel"><i class="bi bi-box-fill"></i>Inventory System</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <!--menu body-->
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">Dashboard</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Inventory</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" id="btnRawMaterials">Raw Materials</a></li>
+                                    <li><a class="dropdown-item" href="#" id="btnProducts">Finished Products</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Reports</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Dispatch</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Maintenance</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" id="btnMngDispatchType">Dispatch Types</a></li>
+                                    <li><a class="dropdown-item" href="#" id="btnMngBranch">Branches</a></li>
+                                    <li><a class="dropdown-item" href="#" id="btnMngSku ">SKU</a></li>
+                                    <li><a class="dropdown-item" href="#" id="btnMngMaterial">Materials</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </ul>
+                <ul class="navbar-nav me-3">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hello ${username}</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Help</a></li>
+                        <li><a class="dropdown-item" href="#" id="btnLogout">LogOut</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
 <script src="js/menu.js"></script>

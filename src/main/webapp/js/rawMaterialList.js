@@ -1,42 +1,56 @@
 var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
+	height: '212px',
+	layout: 'fitDataTable',
 	data: rawMaterialList,
-	maxheight:"100px",
-	layout:	"fitDataTable",
-	responsiveLayout:"hide",
-	textDirection:"auto",
-	pagination:"local",
-	movableColumns:true,
-	paginationCounter:"rows",
-	paginazationSize: 5,
-	paginazationSizeSelector:[5,10],
+	pagination: 'local',
+	paginationSize: 5,
 	selectableRows:1,
 	columns: [
-		{title:"Material ID", field: 'materialID'},
-		{title:"Material Name", field: 'materialName'},
+		{title:"Material ID", field: 'materialListId'},
+		{title:"Material Name", field: 'material.materialName'},
 		{title:"Quantity", field: 'quantity'},
-		{title:"Date Received", field: 'dateRecieve'}
+		{title:"Date", field: 'dateRecieve'}
 	],
 });
 
+
+$('#btnUpdateMaterial').hide();
+$('#btnDeleteMaterial').hide();
+
 rawMaterialTable.on('rowClick',function() {
-	populateForm(rawMaterialTable.getSelectData()[0]);
-	$('#btnUpdateMaterial').show();
+	let row = rawMaterialTable.getSelectedData()[0];
+	if (row !== undefined) {
+		populateForm(row);
+		$('#btnUpdateMaterial').show();
+		$('#btnDeleteMaterial').show();
+	} else {
+		resetForm();
+		$('#btnUpdateMaterial').hide();
+		$('#btnDeleteMaterial').hide();
+	}
 })
 
 //fill up the form for updates
 function populateForm(row) {
 	if(row !== undefined) {
-		$('#updateRawMaterialName').val(row.materialID);
+		$('#updateRawMaterialName').val(row.material.materialName);
 		$('#updateRawMaterialQuantity').val(row.quantity);
 		$('#updateRawMaterialListDateSelected').val(row.dateRecieve);
 	}
 }
 
+function resetForm() {
+	rawMaterialTable.deselectRow();	
+	$('#updateRawMaterialName').val(''),
+	$('#updateRawMaterialQuantity').val(''),
+	$('#updateRawMaterialListDateSelected').val('')
+};
+
 function createItem() {
 	let item = {
-		materialName:('#rawMaterialListName').val(),
-		quantity: $('#rawMaterialListQuantity').val(),
-		date:$('#rawMaterialListDateSelected').val()
+		materialName:('#deleteRawMaterialName').val(),
+		quantity: $('#deleteRawMaterialQuantity').val(),
+		date:$('#deleteDate').val()
 	};
 	
 	return item;
@@ -44,7 +58,7 @@ function createItem() {
 
 function validate(item) {
 	let valid = true;
-	if(item.description === '' || item.quantity == '') {
+	if(material.materialName === '' || row.quantity == '') {
 		alert('Please correctly fill-out all required fields');
 		valid = false;
 	} else if (item.quantity < 0) {
@@ -58,11 +72,11 @@ function addItem() {
 	let item = createItem();
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
-			action: 'saveItem',
+			action: 'saveRawMaterial',
 			item: JSON.stringify(item)
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnAddRawMaterials').click();
+				$('#btnRawMaterials').click();
 			} else {
 				alert('Unable to save changes');
 			}
@@ -72,20 +86,4 @@ function addItem() {
 
 $('#btnAddRawMaterial').click(addItem);
 
-$('#btnDelete').click(function() {
-	if ($('#rawMaterialListName').val() !== '') {
-		let item = createItem();
-		$.post('RawMaterialListController', {
-			action: 'deleteItem',
-			item: JSON.stringify(item)
-		}, function(response) {
-			if (response.includes('success')) {
-				$('#"btnRawMaterials"').click();
-			} else {
-				alert('Unable to save changes');
-			}
-		});
-	} else {
-		alert('Please select an item to delete');
-	}
-});
+

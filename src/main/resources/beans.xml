@@ -8,13 +8,9 @@
   	<property name="userDAO" ref="userDAO" />
   </bean>
   
-  <bean id="inventoryDAO" class="com.cpi.is.dao.impl.InventoryDAOImpl"></bean>
   <bean id="branchDAO" class="com.cpi.is.dao.impl.BranchDAOImpl"></bean>
   <bean id="rawMaterialListDAO" class="com.cpi.is.dao.impl.RawMaterialListDAOImpl"></bean>
-  
-  <bean id="inventoryService" class="com.cpi.is.service.impl.InventoryServiceImpl" depends-on="inventoryDAO">
-  	<property name="inventoryDAO" ref="inventoryDAO" />
-  </bean>
+ 
   <bean id="branchService" class="com.cpi.is.service.impl.BranchServiceImpl" depends-on="branchDAO">
   	<property name="branchDAO" ref="branchDAO" />
   </bean>

@@ -21,3 +21,5 @@
             <img src="https://www.sweetprocess.com/wp-content/uploads/2024/03/Picture17.jpg" alt="Inventory Management" class="img-fluid align-self-center">
         </div>
     </div>
+    
+ <script src="js/login.js"></script>

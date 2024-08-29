@@ -36,20 +36,6 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 	
 	private RawMaterialListEntity jsonToEntity(JSONObject json) throws NumberFormatException, JSONException, Exception {
 		
-		/*JSON Format
-		 * 
-		 * JSONObject jsonObject = new JSONObject();
-				jsonObject.put("materialListId", 0);
-		        jsonObject.put("materialCode", "MAT001");
-		        jsonObject.put("quantity", 100);
-		        jsonObject.put("userId", 3);
-		        jsonObject.put("dateRecieve", "2024-08-28");
-		        jsonObject.put("branchId", 5);
-				
-		        RawMaterialListServiceImpl test = new RawMaterialListServiceImpl();
-		        
-		        test.saveItem(jsonObject);
-		 */
 		return new RawMaterialListEntity(
 				json.getInt("materialListId"),
 				rawMaterialDAOImpl.getRawMaterial(json.getString("materialCode")),
@@ -83,23 +69,15 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 
 
 	@Override
-	public String saveItem(HttpServletRequest request) throws Exception {
-		return rawMaterialListDAO.saveItem(
+	public String saveRawMaterial(HttpServletRequest request) throws Exception {
+		return rawMaterialListDAO.saveRawMaterial(
 				jsonToEntity(new JSONObject(request.getParameter("item"))));
 	}
 
 	@Override
-	public String deleteItem(HttpServletRequest request) throws Exception {
-		return rawMaterialListDAO.deleteItem(
+	public String deleteRawMaterial(HttpServletRequest request) throws Exception {
+		return rawMaterialListDAO.deleteRawMaterial(
 				jsonToEntity(new JSONObject(request.getParameter("item"))));
 	}
-
-	/*
-	@Override
-	public String deleteItem(HttpServletRequest request) throws Exception {
-		return rawMaterialListDAO.deleteItem(
-				jsonToEntity(new JSONObject(request.getParameter("item"))));
-	}
-	*/
 	
 }
