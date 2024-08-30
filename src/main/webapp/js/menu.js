@@ -14,3 +14,11 @@ $('#btnRawMaterials').click(function() {
 		$('#divContent').html(response);
 	});
 });
+
+$('#btnDashboard').click(function () {
+	$.post('DashboardController' , {
+		action:'showDashboard'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
