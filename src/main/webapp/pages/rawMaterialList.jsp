@@ -32,11 +32,13 @@
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
-						<label for="rawMaterialListName" class="col-form-label">Name:</label> <input
-							type="text" class="form-control" id="material-name">
+						<label for="rawMaterialListName" class="col-form-label">Material:</label>
+						<select id="rawMaterialListName">
+							<option value="1">Branch A</option>
+						</select> 
 					</div>
 					<div class="mb-3">
-						<label for="material-quantity" class="col-form-label">Quantity:</label>
+						<label for="rawMaterialListQuantity" class="col-form-label">Quantity:</label>
 						<input type="text" class="form-control" id="rawMaterialListQuantity">
 					</div>
 					<div class="mb-3">

@@ -70,6 +70,8 @@ function validate(item) {
 
 function addItem() {
 	let item = createItem();
+	console.log(JSON.stringify(item));
+	/*
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
 			action: 'saveRawMaterial',
@@ -82,8 +84,7 @@ function addItem() {
 			}
 		});
 	}
+	*/
 }
 
 $('#btnAddRawMaterial').click(addItem);
-
-

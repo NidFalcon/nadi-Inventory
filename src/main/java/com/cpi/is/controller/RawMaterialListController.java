@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
@@ -21,7 +22,7 @@ public class RawMaterialListController extends HttpServlet {
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private RawMaterialListServiceImpl rawMaterialListService = (RawMaterialListServiceImpl) context.getBean("rawMaterialListService");
-
+	
     public RawMaterialListController() {
         super();
 
@@ -31,9 +32,12 @@ public class RawMaterialListController extends HttpServlet {
 		try {
 			action = request.getParameter("action");
 			if ("showRawMaterialList".equals(action)) {
+				System.out.println("test");
 				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList()));
 				page = "pages/rawMaterialList.jsp";
 			} else if ("saveItem".equals(action)) {
+				HttpSession session = request.getSession();
+				String userId = (String) session.getAttribute("userId");
 				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request));
 				page = "pages/message.jsp";
 			} else if ("deleteItem".equals(action)) {
