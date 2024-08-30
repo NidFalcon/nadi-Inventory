@@ -1,4 +1,5 @@
 <main role="main">
+	<div class="alert alert-warning d-none mt-1" role="alert" id="divAlert"></div>
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mt-2 pb-2 mb-3 border-bottom">
 		<h1 class="h2">Raw Material List</h1>
 		<div class="btn-toolbar mb-2 mb-md-0">
@@ -106,22 +107,23 @@
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
+						<input type="text" class="form-control d-none" id="deleteRawMaterialId">
+						<input type="text" class="form-control d-none" id="deleteRawMaterialCode">
 						<input type="text" class="form-control d-none" id="deleteRawMaterialName">
 						<input type="text" class="form-control d-none" id="deleteRawMaterialQuantity">
+						<input type="text" class="form-control d-none" id="deleteRawMaterialUserId">
+						<input type="text" class="form-control d-none" id="deleteRawMaterialDate">
+						<input type="text" class="form-control d-none" id="deleteRawMaterialBranchId">
 					</div>
 					<div class="mb-3">
-					</div>
-					<div class="mb-3">
-						<label for="updateDate">Date</label> <input id="material-date"
-							class="form-control" type="date" /> <span id="deleteDate"></span>
+						<span>Are you sure you want to delete this row?</span>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary"
-					id="btnDeleteRawMaterial">delete material</button>
+				<button type="button" class="btn btn-warning" id="btnDeleteRawMaterial">Yes</button>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+				
 			</div>
 		</div>
 	</div>
