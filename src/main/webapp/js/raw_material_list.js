@@ -1,5 +1,5 @@
 var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
-	layout: 'fitColumns',
+	layout:"fitDataTable",
 	data: rawMaterialList,
 	pagination: 'local',
 	pagination: true,
@@ -51,6 +51,7 @@ function createOptions(){
 //fill up the form for updates
 function populateForm(row) {
 	if(row !== undefined) {
+		$('#updateRawMaterialId').val(row.materialListId);
 		$('#updateRawMaterialName').val(row.material.materialName);
 		$('#updateRawMaterialQuantity').val(row.quantity);
 		$('#updateRawMaterialListDateSelected').val(row.dateRecieve);
@@ -81,13 +82,13 @@ function createItem(isInsert) {
 	let item = {
 		materialCode:$('#rawMaterialListName').val(),
 		quantity: parseInt($('#rawMaterialListQuantity').val()),
-		dateRecieve:$('#dateSelected').val()
+		dateRecieve:$('#material-date').val()
 	};
 	
 	if (isInsert){
 		item.materialListId = 0;
 	} else {
-		item.materialListId = row.materialListId;
+		//item.materialListId = row.materialListId;
 	}
 	return item;
 }

@@ -9,6 +9,7 @@
   <script src="js/jquery-3.7.1.min.js"></script>
   <script src="js/common.js"></script>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/table.css">
   <!-- third party CDN's -->
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1">
