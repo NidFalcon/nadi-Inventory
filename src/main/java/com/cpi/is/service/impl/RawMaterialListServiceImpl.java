@@ -40,7 +40,7 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 		
 		return new RawMaterialListEntity(
 				json.getInt("materialListId"),
-				rawMaterialDAOImpl.getRawMaterial(json.getString("materialCode")),
+				json.getString("materialCode"),
 				json.getInt("quantity"),
 				userDao.getUser(json.getInt("userId")),
 				convertStringToSqlDate(json.getString("dateRecieve")),

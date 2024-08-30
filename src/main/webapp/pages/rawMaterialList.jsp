@@ -31,7 +31,7 @@
 				<form>
 					<div class="mb-3">
 						<label for="rawMaterialId" class="col-form-label">Material ID:</label>
-						<input type="text" class="form-control" id="rawMaterialId" placeholder="0" readonly>
+						<input type="text" class="form-control" id="rawMaterialId" value="0" placeholder="0" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="rawMaterialListName" class="col-form-label">Material:</label>

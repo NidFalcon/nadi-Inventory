@@ -19,8 +19,10 @@ public class RawMaterialListEntity {
 	@Column(name="MATERIAL_LIST_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer materialListId;
+	@Column(name="MATERIAL_CD")
+	private String materialCode;
 	@ManyToOne
-    @JoinColumn(name = "MATERIAL_CD")
+	@JoinColumn(name = "MATERIAL_CD", insertable = false, updatable = false)
 	private RawMaterialEntity material;
 	private Integer quantity;
 	@ManyToOne
@@ -36,11 +38,11 @@ public class RawMaterialListEntity {
 		super();
 	}
 
-	public RawMaterialListEntity(Integer materialListId, RawMaterialEntity material, Integer quantity,
+	public RawMaterialListEntity(Integer materialListId, String materialCode, Integer quantity,
 			UserEntity userId, Date dateRecieve, BranchEntity branch) {
 		super();
 		this.materialListId = materialListId;
-		this.material = material;
+		this.materialCode = materialCode;
 		this.quantity = quantity;
 		this.userId = userId;
 		this.dateRecieve = dateRecieve;

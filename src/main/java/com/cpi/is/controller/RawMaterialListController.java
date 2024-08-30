@@ -35,7 +35,6 @@ public class RawMaterialListController extends HttpServlet {
 		try {
 			action = request.getParameter("action");
 			if ("showRawMaterialList".equals(action)) {
-				System.out.println("test");
 				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList()));
 				request.setAttribute("materialOptions", new JSONArray(rawMaterialService.getAllRawMaterials()));
 				page = "pages/rawMaterialList.jsp";
