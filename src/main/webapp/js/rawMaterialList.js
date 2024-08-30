@@ -14,6 +14,7 @@ var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
 		{title:"Material Code", field: 'material.materialCode'},
 		{title:"Material Name", field: 'material.materialName'},
 		{title:"Quantity", field: 'quantity'},
+		{title:"User ID", field: 'userId.userId'},
 		{title:"Date", field: 'dateRecieve'},
 		{title:"Batch Id", field:'branch.branchId'}
 	],
@@ -54,9 +55,9 @@ function resetForm() {
 
 function createItem() {
 	let item = {
-		materialName:('#deleteRawMaterialName').val(),
-		quantity: $('#deleteRawMaterialQuantity').val(),
-		date:$('#deleteDate').val()
+		materialName:('#rawMaterialListName').val(),
+		quantity: $('#rawMaterialListQuantity').val(),
+		date:$('#"rawMaterialListDateSelected"').val()
 	};
 	
 	return item;

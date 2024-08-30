@@ -30,11 +30,11 @@
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
-						<label for="rawMaterialListName" class="col-form-label">Name:</label>
-						<input type="text" class="form-control" id="material-name">
+						<label for="rawMaterialListName" class="col-form-label">Material Name:</label>
+						<input type="text" class="form-control" id="rawMaterialListName">
 					</div>
 					<div class="mb-3">
-						<label for="material-quantity" class="col-form-label">Quantity:</label>
+						<label for="rawMaterialListQuantity" class="col-form-label">Quantity:</label>
 						<input type="text" class="form-control"
 							id="rawMaterialListQuantity">
 					</div>
@@ -106,13 +106,10 @@
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
-						<label for="updateRawMaterialName" class="col-form-label">Name:</label>
-						<input type="text" class="form-control" id="deleteRawMaterialName">
+						<input type="text" class="form-control d-none" id="deleteRawMaterialName">
+						<input type="text" class="form-control d-none" id="deleteRawMaterialQuantity">
 					</div>
 					<div class="mb-3">
-						<label for="updateRawMaterialQuantity" class="col-form-label">Quantity:</label>
-						<input type="text" class="form-control"
-							id="deleteRawMaterialQuantity">
 					</div>
 					<div class="mb-3">
 						<label for="updateDate">Date</label> <input id="material-date"

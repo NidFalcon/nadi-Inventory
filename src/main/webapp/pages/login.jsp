@@ -11,7 +11,7 @@
 					placeholder="username"> <label for="txtUsername">Username</label>
 			</div>
 			<div class="form-floating me-3 mt-2 ms-3">
-				<input type="password" class="form-control mb-3 mt=3" id="password"
+				<input type="password" class="form-control mb-3 mt=3" id="txtPassword"
 					placeholder="Password"> <label for="password">Password</label>
 			</div>
 			<div class="ms-3">
