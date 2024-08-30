@@ -73,12 +73,13 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 	@Override
 	public String saveRawMaterial(HttpServletRequest request, HttpSession session) throws Exception {
 		JSONObject json = new JSONObject(request.getParameter("item"));
-		System.out.println(json);
 		UserEntity user = (UserEntity) session.getAttribute("user");
-		System.out.println(user.getUsername() + "'s branch id is " + user.getBranchId());
-		//return rawMaterialListDAO.saveRawMaterial(
-		//		jsonToEntity(json));
-		return null;		
+		json.put("userId", user.getUserId());
+		json.put("branchId", user.getBranchId());
+		System.out.println(json);
+		return rawMaterialListDAO.saveRawMaterial(
+				jsonToEntity(json));
+		//return null;		
 	}
 
 	@Override

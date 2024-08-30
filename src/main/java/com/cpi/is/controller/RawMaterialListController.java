@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.impl.RawMaterialListServiceImpl;
+import com.cpi.is.service.impl.RawMaterialServiceImpl;
 
 @WebServlet("/RawMaterialListController")
 public class RawMaterialListController extends HttpServlet {
@@ -23,8 +24,9 @@ public class RawMaterialListController extends HttpServlet {
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private RawMaterialListServiceImpl rawMaterialListService = (RawMaterialListServiceImpl) context.getBean("rawMaterialListService");
-	
-    public RawMaterialListController() {
+	private RawMaterialServiceImpl rawMaterialService = (RawMaterialServiceImpl) context.getBean("rawMaterialService");
+    
+	public RawMaterialListController() {
         super();
 
     }
@@ -35,12 +37,13 @@ public class RawMaterialListController extends HttpServlet {
 			if ("showRawMaterialList".equals(action)) {
 				System.out.println("test");
 				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList()));
+				request.setAttribute("materialOptions", new JSONArray(rawMaterialService.getAllRawMaterials()));
 				page = "pages/rawMaterialList.jsp";
-			} else if ("saveItem".equals(action)) {
+			} else if ("saveRawMaterial".equals(action)) {
 				HttpSession session = request.getSession();
+				System.out.println("saving Item");
 				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
-				page = "pages/rawMaterialList.jsp";
-				//page = "pages/message.jsp";
+				page = "pages/message.jsp";
 			} else if ("deleteItem".equals(action)) {
 				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
 				page = "pages/message.jsp";

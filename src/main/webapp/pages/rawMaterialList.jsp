@@ -51,9 +51,9 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnAddRawMaterial">Add
+				<button type="button" class="btn btn-secondary btnCloseAddModal"
+					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
+				<button type="button" class="btn btn-primary">Add
 					Material</button>
 			</div>
 		</div>
@@ -89,7 +89,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
+				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary"
 					id="btnUpdateRawMaterial">update material</button>
@@ -125,7 +125,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-warning" id="btnDeleteRawMaterial">Yes</button>
+				<button type="button" class="btn btn-warning btnCloseAddModal" id="btnDeleteRawMaterial">Yes</button>
 				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
 				
 			</div>
@@ -135,6 +135,7 @@
 
 <script type=text/javascript>
 	var rawMaterialList = JSON.parse('${rawMaterialList}');
+	var materialOptions = JSON.parse('${materialOptions}');
 </script>
 <script src="js/rawMaterialList.js">
 	

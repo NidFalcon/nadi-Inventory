@@ -38,6 +38,16 @@ rawMaterialTable.on('rowClick',function() {
 	}
 })
 
+function createOptions(){
+	let html = '';
+	$.each(materialOptions, function(index, item){
+		if ("y" == item.isActive){
+			html += '<option id="item'+item.materialCode+'" value="'+item.materialCode+'">'+item.materialName+'</option>';
+		}
+	})
+	$("select").html(html);
+}
+
 //fill up the form for updates
 function populateForm(row) {
 	if(row !== undefined) {
@@ -70,21 +80,21 @@ function resetForm() {
 function createItem(isInsert) {
 	let item = {
 		materialCode:$('#rawMaterialListName').val(),
-		quantity: $('#rawMaterialListQuantity').val(),
-		date:$('#material-date').val()
+		quantity: parseInt($('#rawMaterialListQuantity').val()),
+		dateRecieve:$('#material-date').val()
 	};
 	
 	if (isInsert){
 		item.materialListId = 0;
 	} else {
-		
+		//item.materialListId = row.materialListId;
 	}
 	return item;
 }
 
 function validate(item) {
 	let valid = true;
-	if(item.material.materialName === '' || item.quantity === '') {
+	if(item.materialCode === '' || item.quantity === '' || item.date === '') {
 		alert('Please correctly fill-out all required fields');
 		valid = false;
 	} else if (item.quantity < 0) {
@@ -95,7 +105,7 @@ function validate(item) {
 }
 
 function addItem() {
-	let item = createItem();
+	let item = createItem(true);
 	console.log(item);
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
@@ -103,6 +113,7 @@ function addItem() {
 			item: JSON.stringify(item)
 		}, function(response) {
 			if (response.includes('success')) {
+				$('.btnCloseAddModal').click();
 				$('#btnRawMaterials').click();
 			} else {
 				alert('Unable to save changes');
@@ -130,4 +141,5 @@ $('#btnDeleteRawMaterial').click(function() {
 		$('#divAlert').html('Please select an item to delete');
 	}
 });
-$('#btnAddRawMaterial').click(addItem);
+
+createOptions();
