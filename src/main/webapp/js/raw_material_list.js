@@ -129,9 +129,9 @@ $('#btnUpdateRawMaterial').click(function(){
 
 $('#btnDeleteRawMaterial').click(function() {
 	if ($('#deleteRawMaterialId').val() !== '') {
-		$.post('RawMaterialController', {
+		$.post('RawMaterialListController', {
 			action: 'deleteRawMaterial',
-			rawMaterial: JSON.stringify(createObject())
+			rawMaterial: JSON.stringify(createItem())
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnRawMaterials').click();

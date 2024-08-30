@@ -43,7 +43,8 @@ public class RawMaterialListController extends HttpServlet {
 				System.out.println("saving Item");
 				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
 				page = "pages/message.jsp";
-			} else if ("deleteItem".equals(action)) {
+			} else if ("deleteRawMaterial".equals(action)) {
+				System.out.println("HELLO");
 				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
 				page = "pages/message.jsp";
 			}
