@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -37,9 +38,9 @@ public class RawMaterialListController extends HttpServlet {
 				page = "pages/rawMaterialList.jsp";
 			} else if ("saveItem".equals(action)) {
 				HttpSession session = request.getSession();
-				String userId = (String) session.getAttribute("userId");
-				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request));
-				page = "pages/message.jsp";
+				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
+				page = "pages/rawMaterialList.jsp";
+				//page = "pages/message.jsp";
 			} else if ("deleteItem".equals(action)) {
 				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
 				page = "pages/message.jsp";

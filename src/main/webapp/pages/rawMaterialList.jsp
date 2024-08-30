@@ -32,7 +32,7 @@
 					<div class="mb-3">
 						<label for="rawMaterialListName" class="col-form-label">Material:</label>
 						<select id="rawMaterialListName">
-							<option value="1">Branch A</option>
+							<option value="MAT001">FLOUR</option>
 						</select> 
 					</div>
 					<div class="mb-3">
@@ -41,8 +41,10 @@
 							id="rawMaterialListQuantity">
 					</div>
 					<div class="mb-3">
-						<label for="material-date">Date</label> <input id="material-date"
-							class="form-control" type="date" /> <span
+						<label for="material-date">Date</label> 
+						<input id="material-date"
+							class="form-control" type="date" /> 
+						<span
 							id="rawMaterialListDateSelected"></span>
 					</div>
 				</form>

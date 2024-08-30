@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import com.cpi.is.dao.impl.RawMaterialDAOImpl;
 import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
 import com.cpi.is.dao.impl.UserDAOImpl;
 import com.cpi.is.entity.RawMaterialListEntity;
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.RawMaterialListService;
 
 public class RawMaterialListServiceImpl implements RawMaterialListService{
@@ -69,9 +71,14 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 
 
 	@Override
-	public String saveRawMaterial(HttpServletRequest request) throws Exception {
-		return rawMaterialListDAO.saveRawMaterial(
-				jsonToEntity(new JSONObject(request.getParameter("item"))));
+	public String saveRawMaterial(HttpServletRequest request, HttpSession session) throws Exception {
+		JSONObject json = new JSONObject(request.getParameter("item"));
+		System.out.println(json);
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		System.out.println(user.getUsername() + "'s branch id is " + user.getBranchId());
+		//return rawMaterialListDAO.saveRawMaterial(
+		//		jsonToEntity(json));
+		return null;		
 	}
 
 	@Override

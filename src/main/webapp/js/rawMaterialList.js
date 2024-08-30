@@ -53,19 +53,24 @@ function resetForm() {
 	$('#updateRawMaterialListDateSelected').val('')
 };
 
-function createItem() {
+function createItem(isInsert) {
 	let item = {
-		materialName:('#rawMaterialListName').val(),
+		materialCode:$('#rawMaterialListName').val(),
 		quantity: $('#rawMaterialListQuantity').val(),
-		date:$('#"rawMaterialListDateSelected"').val()
+		date:$('#material-date').val()
 	};
 	
+	if (isInsert){
+		item.materialListId = 0;
+	} else {
+		
+	}
 	return item;
 }
 
 function validate(item) {
 	let valid = true;
-	if(material.materialName === '' || row.quantity == '') {
+	if(item.material.materialName === '' || item.quantity === '') {
 		alert('Please correctly fill-out all required fields');
 		valid = false;
 	} else if (item.quantity < 0) {
@@ -77,8 +82,7 @@ function validate(item) {
 
 function addItem() {
 	let item = createItem();
-	console.log(JSON.stringify(item));
-	/*
+	console.log(item);
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
 			action: 'saveRawMaterial',
@@ -91,7 +95,6 @@ function addItem() {
 			}
 		});
 	}
-	*/
 }
 
 $('#btnAddRawMaterial').click(addItem);
