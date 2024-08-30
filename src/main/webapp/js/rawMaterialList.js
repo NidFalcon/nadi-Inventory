@@ -28,6 +28,7 @@ rawMaterialTable.on('rowClick',function() {
 	let row = rawMaterialTable.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
+		populateDeleteForm(row);
 		$('#btnUpdateMaterial').show();
 		$('#btnDeleteMaterial').show();
 	} else {
@@ -43,6 +44,19 @@ function populateForm(row) {
 		$('#updateRawMaterialName').val(row.material.materialName);
 		$('#updateRawMaterialQuantity').val(row.quantity);
 		$('#updateRawMaterialListDateSelected').val(row.dateRecieve);
+	}
+}
+
+//fill up the form to delete
+function populateDeleteForm(row) {
+	if(row !== undefined) {
+		$('#deleteRawMaterialId').val(row.materialListId);
+		$('#deleteRawMaterialCode').val(row.material.materialCode);
+		$('#deleteRawMaterialName').val(row.material.materialName);
+		$('#deleteRawMaterialQuantity').val(row.quantity);
+		$('#deleteRawMaterialUserId').val(row.userId.userId);
+		$('#deleteRawMaterialDate').val(row.dateRecieve);
+		$('#deleteRawMaterialBranchId').val(row.branch.Id);	
 	}
 }
 
@@ -97,4 +111,23 @@ function addItem() {
 	}
 }
 
+$('#btnAddRawMaterial').click(addItem);
+$('#btnDeleteRawMaterial').click(function() {
+	if ($('#deleteRawMaterialId').val() !== '') {
+		$.post('RawMaterialController', {
+			action: 'deleteRawMaterial',
+			rawMaterial: JSON.stringify(createObject())
+		}, function(response) {
+			if (response.includes('success')) {
+				$('#btnRawMaterials').click();
+			} else {
+				$('#divAlert').removeClass('d-none');
+				$('#divAlert').html('Unable to save changes');
+			}
+		});
+	} else {
+		$('#divAlert').removeClass('d-none');
+		$('#divAlert').html('Please select an item to delete');
+	}
+});
 $('#btnAddRawMaterial').click(addItem);
