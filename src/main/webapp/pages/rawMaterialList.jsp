@@ -30,12 +30,14 @@
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
+						<label for="rawMaterialId" class="col-form-label">Material ID:</label>
+						<input type="text" class="form-control" id="rawMaterialId" placeholder="0" readonly>
+					</div>
+					<div class="mb-3">
 						<label for="rawMaterialListName" class="col-form-label">Material:</label>
 						<select id="rawMaterialListName">
 							<option value="MAT001">FLOUR</option>
 						</select> 
-						<label for="rawMaterialId" class="col-form-label">Material ID:</label>
-						<input type="text" class="form-control" id="rawMaterialId" placeholder="0" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="rawMaterialListQuantity" class="col-form-label">Quantity:</label>
@@ -51,7 +53,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
-				<button type="button" class="btn btn-primary">Add
+				<button type="button" class="btn btn-primary" id="btnAddRawMaterial">Add
 					Material</button>
 			</div>
 		</div>
@@ -76,8 +78,10 @@
 						<input type="text" class="form-control" id="updateRawMaterialId" readonly>
 					</div>
 					<div class="mb-3">
-						<label for="updateRawMaterialName" class="col-form-label">Name:</label>
-						<input type="text" class="form-control" id="updateRawMaterialName">
+						<label for="updateRawMaterialName" class="col-form-label">Material:</label>
+						<select id="updateRawMaterialName">
+							<option value="MAT001">FLOUR</option>
+						</select> 
 					</div>
 					<div class="mb-3">
 						<label for="updateRawMaterialQuantity" class="col-form-label">Quantity:</label>

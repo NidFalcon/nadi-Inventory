@@ -1,5 +1,5 @@
 var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
-	layout:"fitDataTable",
+	layout: 'fitColumns',
 	data: rawMaterialList,
 	pagination: 'local',
 	pagination: true,
@@ -42,7 +42,7 @@ function createOptions(){
 	let html = '';
 	$.each(materialOptions, function(index, item){
 		if ("y" == item.isActive){
-			html += '<option id="item'+item.materialCode+'" value="'+item.materialCode+'">'+item.materialName+'</option>';
+						html += '<option id="item'+item.materialCode+'" value="'+"" +item.materialCode+'">'+item.materialCode+ " " +item.materialName+'</option>';
 		}
 	})
 	$("select").html(html);
@@ -52,9 +52,9 @@ function createOptions(){
 function populateForm(row) {
 	if(row !== undefined) {
 		$('#updateRawMaterialId').val(row.materialListId);
-		$('#updateRawMaterialName').val(row.material.materialName);
+		$('#updateRawMaterialName').val(row.material.materialCode);
 		$('#updateRawMaterialQuantity').val(row.quantity);
-		$('#updateRawMaterialListDateSelected').val(row.dateRecieve);
+		$('#updateDate').val(row.dateRecieve);
 	}
 }
 
@@ -78,18 +78,13 @@ function resetForm() {
 	$('#updateRawMaterialListDateSelected').val('')
 };
 
-function createItem(isInsert) {
+function createItem(isAdd) {
 	let item = {
-		materialCode:$('#rawMaterialListName').val(),
-		quantity: parseInt($('#rawMaterialListQuantity').val()),
-		dateRecieve:$('#material-date').val()
+		materialListId: isAdd ? $("#rawMaterialId").val() : $("#updateRawMaterialId").val(),
+		materialCode: isAdd ? $('#rawMaterialListName').val() : $("#updateRawMaterialName").val(),
+		quantity: parseInt( isAdd ? $('#rawMaterialListQuantity').val() : $("#updateRawMaterialQuantity").val()),
+		dateRecieve: isAdd ? $('#dateSelected').val() : $("#updateDate").val()
 	};
-	
-	if (isInsert){
-		item.materialListId = 0;
-	} else {
-		//item.materialListId = row.materialListId;
-	}
 	return item;
 }
 
@@ -105,8 +100,9 @@ function validate(item) {
 	return valid;
 }
 
-function addItem() {
-	let item = createItem(true);
+function addItem(isAdd) {
+	console.log("clicked");
+	let item = createItem(isAdd);
 	console.log(item);
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
@@ -123,7 +119,14 @@ function addItem() {
 	}
 }
 
-$('#btnAddRawMaterial').click(addItem);
+
+$('#btnAddRawMaterial').click(function(){
+	addItem(true);
+});
+$('#btnUpdateRawMaterial').click(function(){
+	addItem(false);
+});
+
 $('#btnDeleteRawMaterial').click(function() {
 	if ($('#deleteRawMaterialId').val() !== '') {
 		$.post('RawMaterialController', {

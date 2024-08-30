@@ -42,7 +42,7 @@ function createOptions(){
 	let html = '';
 	$.each(materialOptions, function(index, item){
 		if ("y" == item.isActive){
-			html += '<option id="item'+item.materialCode+'" value="'+item.materialCode+'">'+item.materialName+'</option>';
+			html += '<option id="item'+item.materialCode+'" value="'+"" +item.materialCode+'">'+item.materialCode+ " " +item.materialName+'</option>';
 		}
 	})
 	$("select").html(html);
@@ -51,7 +51,8 @@ function createOptions(){
 //fill up the form for updates
 function populateForm(row) {
 	if(row !== undefined) {
-		$('#updateRawMaterialName').val(row.material.materialName);
+		$('#updateRawMaterialId').val(row.material.materialListId);
+		$('#updateRawMaterialName').val(row.material.materialCode);
 		$('#updateRawMaterialQuantity').val(row.quantity);
 		$('#updateRawMaterialListDateSelected').val(row.dateRecieve);
 	}
@@ -81,7 +82,7 @@ function createItem(isInsert) {
 	let item = {
 		materialCode:$('#rawMaterialListName').val(),
 		quantity: parseInt($('#rawMaterialListQuantity').val()),
-		dateRecieve:$('#dateSelected').val()
+		dateRecieve:$('#material-date').val()
 	};
 	
 	if (isInsert){
@@ -127,7 +128,7 @@ $('#btnDeleteRawMaterial').click(function() {
 	if ($('#deleteRawMaterialId').val() !== '') {
 		$.post('RawMaterialController', {
 			action: 'deleteRawMaterial',
-			rawMaterial: JSON.stringify(createObject())
+			rawMaterial: JSON.stringify(createItem())
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnRawMaterials').click();
