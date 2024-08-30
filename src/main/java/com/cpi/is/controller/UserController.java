@@ -124,13 +124,15 @@ public class UserController extends HttpServlet {
 			
 			
 			else if ("test".equals(action)) {
-				/*
+				
+				BranchDAOImpl testBranch = new BranchDAOImpl();
 				List<RawMaterialListEntity> testList = testService.getRawMaterialList();
 				request.setAttribute("rawMaterialList", new JSONArray(testList));
+				request.setAttribute("branchList", new JSONArray(testBranch.getAllBranches()));
 				page = "pages/util/test.jsp";
-				*/
+				
 		        
-		        testService.saveItem(request);
+		        //testService.saveItem(request);
 			}
 			
 			
