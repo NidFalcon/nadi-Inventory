@@ -9,9 +9,6 @@
     </tr>
     <tr>
       <td><select  id="txtBranchId" name="txtBranchId">
-			<c:forEach var="item" items="${branches}">
-			    <option value="${item.branchId}">${item.branchName}</option>
-			</c:forEach>
       </select></td>
     </tr>
     <tr>

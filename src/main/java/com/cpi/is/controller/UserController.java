@@ -120,9 +120,10 @@ public class UserController extends HttpServlet {
 				System.out.println(test);
 				request.setAttribute("branches", test );
 				page="pages/registration.jsp";
-			} 
-			
-			
+			} else if ("registerNewUser".equals(action)) {
+				request.setAttribute("message", userService.registerNewUser(request));
+				page = "pages/message.jsp";
+			}
 			else if ("test".equals(action)) {
 				
 				BranchDAOImpl testBranch = new BranchDAOImpl();
@@ -130,8 +131,6 @@ public class UserController extends HttpServlet {
 				request.setAttribute("rawMaterialList", new JSONArray(testList));
 				request.setAttribute("branchList", new JSONArray(testBranch.getAllBranches()));
 				page = "pages/util/test.jsp";
-				
-		        
 		        //testService.saveItem(request);
 			}
 			

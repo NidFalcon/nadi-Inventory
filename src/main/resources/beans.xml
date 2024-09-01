@@ -3,9 +3,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+  <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+  
   <bean id="userDAO" class="com.cpi.is.dao.impl.UserDAOImpl"></bean>
   <bean id="userService" class="com.cpi.is.service.impl.UserServiceImpl" depends-on="userDAO">
   	<property name="userDAO" ref="userDAO" />
+  	<property name="passwordEncoder" ref="passwordEncoder" />
   </bean>
   
   <bean id="inventoryDAO" class="com.cpi.is.dao.impl.InventoryDAOImpl"></bean>

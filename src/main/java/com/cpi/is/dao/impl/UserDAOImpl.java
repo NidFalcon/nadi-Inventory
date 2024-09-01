@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.cpi.is.dao.UserDAO;
 import com.cpi.is.entity.BranchEntity;
@@ -30,8 +31,24 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public String registerUser(UserEntity user) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Transaction transaction = null;
+		try (Session session = HBUtil.getSessionFactory().openSession()) {
+			transaction = session.beginTransaction();
+			if (0 == user.getUserId()) {
+				user.setUserId(null);; 
+				session.persist(user);	// add a new record
+			} else {
+				session.merge(user);	// update an existing record
+			}
+			System.out.println("Nevermind");
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw e;
+		}
+		return "success";
 	}
 	
 	public UserEntity getUser(Integer userId) throws Exception {
