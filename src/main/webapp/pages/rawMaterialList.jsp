@@ -133,7 +133,7 @@
 			<div class="modal-footer">
 
 				<button type="button" class="btn btn-danger" id="btnDeleteRawMaterial">Yes</button>
-				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>				
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnDeleteRawMaterialCancel">No</button>				
 			</div>
 		</div>
 	</div>

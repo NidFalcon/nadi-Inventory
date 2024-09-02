@@ -63,11 +63,10 @@ function populateDeleteForm(row) {
 	if(row !== undefined) {
 		$('#deleteRawMaterialId').val(row.materialListId);
 		$('#deleteRawMaterialCode').val(row.material.materialCode);
-		$('#deleteRawMaterialName').val(row.material.materialName);
 		$('#deleteRawMaterialQuantity').val(row.quantity);
 		$('#deleteRawMaterialUserId').val(row.userId.userId);
 		$('#deleteRawMaterialDate').val(row.dateRecieve);
-		$('#deleteRawMaterialBranchId').val(row.branch.Id);	
+		$('#deleteRawMaterialBranchId').val(row.branch.branchId);	
 	}
 }
 
@@ -86,6 +85,19 @@ function createItem(isAdd) {
 		dateRecieve: isAdd ? $('#dateSelected').val() : $("#updateDate").val()
 	};
 	return item;
+}
+
+function createDeleteItem(){
+	let json = {
+		    materialListId: $('#deleteRawMaterialId').val(),
+		    materialCode: $('#deleteRawMaterialCode').val(),
+		    quantity: $('#deleteRawMaterialQuantity').val(),
+		    userId: $('#deleteRawMaterialUserId').val(),
+		    dateRecieve: $('#deleteRawMaterialDate').val(),
+		    branchId: $('#deleteRawMaterialBranchId').val()
+	}
+	
+	return json;
 }
 
 function validate(item) {
@@ -129,11 +141,13 @@ $('#btnUpdateRawMaterial').click(function(){
 
 $('#btnDeleteRawMaterial').click(function() {
 	if ($('#deleteRawMaterialId').val() !== '') {
+
 		$.post('RawMaterialListController', {
 			action: 'deleteRawMaterial',
-			rawMaterial: JSON.stringify(createItem())
+			item: JSON.stringify(createDeleteItem())
 		}, function(response) {
 			if (response.includes('success')) {
+				$('#btnDeleteRawMaterialCancel').click();
 				$('#btnRawMaterials').click();
 			} else {
 				$('#divAlert').removeClass('d-none');
