@@ -15,7 +15,7 @@ function bindRowsClick(dpp) {
 			$('#txtBranchId').val(item.branch.branchId);
 			$('#txtSkuCode').val(item.sku.skuCode);
 			$('#txtQuantity').val(item.quantity);
-			$('#txtStatus').val(item.status);
+			$('#selectStatus').val(item.status);
 			createOptions(dpp, item.branch.branchId, item.sku.skuCode);
 			toggleAddButton();
 		});
@@ -64,7 +64,7 @@ function createItem() {
 		branchId: $('#txtBranchId').val(),
 		skuCode: $('#txtSkuCode').val(),
 		quantity: $('#txtQuantity').val(),
-		status: $('#txtStatus').val()
+		status: $('#selectStatus').val()
 	};
 	console.log(item)
 	return item;
@@ -108,7 +108,7 @@ function resetDppForm() {
 	$('#txtSkuCode').val('');
 	$('#selectSkuName').val('');
 	$('#txtQuantity').val('');
-	$('#txtStatus').val('');
+	$('#selectStatus').val('');
 	toggleAddButton();
 }
 
@@ -132,53 +132,63 @@ $('#btnDelete').click(function() {
 	}
 });
 
-function createOptions(dpp, selectedBranchId, selectedSkuCode) {
-	let branchNameHtml = '';
-	let skuNameHtml = '';
+function createOptions(dpp, selectedBranchId, selectedSkuCode, selectedStatus) {
+    let branchNameHtml = '';
+    let skuNameHtml = '';
+    let statusHtml = ''; // New variable for status options
 
-	let branchMap = new Map();
-	let skuMap = new Map();
+    let branchMap = new Map();
+    let skuMap = new Map();
+    let statusSet = new Set(); // To store unique statuses
 
-	$.each(dpp, function(index, item) {
-		if (!branchMap.has(item.branch.branchId)) {
-			branchMap.set(item.branch.branchId, item.branch.branchName);
-		}
-		if (!skuMap.has(item.sku.skuCode)) {
-			skuMap.set(item.sku.skuCode, item.sku.skuName);
-		}
-	});
+    $.each(dpp, function(index, item) {
+        if (!branchMap.has(item.branch.branchId)) {
+            branchMap.set(item.branch.branchId, item.branch.branchName);
+        }
+        if (!skuMap.has(item.sku.skuCode)) {
+            skuMap.set(item.sku.skuCode, item.sku.skuName);
+        }
+        statusSet.add(item.status); // Collect unique statuses
+    });
 
-	branchMap.forEach((branchName, branchId) => {
-		branchNameHtml += '<option value="' + branchId + '"' + (branchId === selectedBranchId ? ' selected' : '') + '>' + branchName + '</option>';
-	});
-	$('#selectBranchName').html(branchNameHtml);
+    branchMap.forEach((branchName, branchId) => {
+        branchNameHtml += '<option value="' + branchId + '"' + (branchId === selectedBranchId ? ' selected' : '') + '>' + branchName + '</option>';
+    });
+    $('#selectBranchName').html(branchNameHtml);
 
-	skuMap.forEach((skuName, skuCode) => {
-		skuNameHtml += '<option value="' + skuCode + '"' + (skuCode === selectedSkuCode ? ' selected' : '') + '>' + skuName + '</option>';
-	});
-	$('#selectSkuName').html(skuNameHtml);
+    skuMap.forEach((skuName, skuCode) => {
+        skuNameHtml += '<option value="' + skuCode + '"' + (skuCode === selectedSkuCode ? ' selected' : '') + '>' + skuName + '</option>';
+    });
+    $('#selectSkuName').html(skuNameHtml);
+
+    statusSet.forEach(status => {
+        statusHtml += '<option value="' + status + '"' + (status === selectedStatus ? ' selected' : '') + '>' + status + '</option>';
+    });
+    $('#selectStatus').html(statusHtml);
 }
 
 $(document).ready(function() {
-	createDppTable(dpp);
-	createOptions(dpp, '', '');
+    createDppTable(dpp);
+    createOptions(dpp, '', '', '');
 
-	$('#selectBranchName').change(function() {
-		var selectedBranchId = $(this).val();
-		var selectedBranch = dpp.find(function(item) {
-			return item.branch.branchId == selectedBranchId;
-		});
-		$('#txtBranchId').val(selectedBranch ? selectedBranch.branch.branchId : '');
-	});
+    $('#selectBranchName').change(function() {
+        var selectedBranchId = $(this).val();
+        var selectedBranch = dpp.find(function(item) {
+            return item.branch.branchId == selectedBranchId;
+        });
+        $('#txtBranchId').val(selectedBranch ? selectedBranch.branch.branchId : '');
+    });
 
-	$('#selectSkuName').change(function() {
-		var selectedSkuCode = $(this).val();
-		var selectedSku = dpp.find(function(item) {
-			return item.sku.skuCode == selectedSkuCode;
-		});
-		$('#txtSkuCode').val(selectedSku ? selectedSku.sku.skuCode : '');
-	});
+    $('#selectSkuName').change(function() {
+        var selectedSkuCode = $(this).val();
+        var selectedSku = dpp.find(function(item) {
+            return item.sku.skuCode == selectedSkuCode;
+        });
+        $('#txtSkuCode').val(selectedSku ? selectedSku.sku.skuCode : '');
+    });
+
+    $('#selectStatus').change(function() {
+        var selectedStatus = $(this).val();
+        $('#selectStatus').val(selectedStatus);
+    });
 });
-
-
-

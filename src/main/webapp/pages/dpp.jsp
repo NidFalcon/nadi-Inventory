@@ -37,12 +37,16 @@
             </tr>
             <tr>
                 <td><label for="txtQuantity">Quantity</label></td>
-                <td><input type="number" id="txtQuantity" /></td>
+                <td><input type="number" id="txtQuantity" min="1"/></td>
             </tr>
             <tr>
-                <td><label for="txtStatus">Status</label></td>
-                <td><input type="text" id="txtStatus" /></td>
-            </tr>
+			    <td><label for="selectStatus">Status</label></td>
+			    <td>
+			        <select id="selectStatus">
+			            <!-- Options will be added dynamically -->
+			        </select>
+			    </td>
+			</tr>
             <tr>
                 <td></td>
                 <td>
