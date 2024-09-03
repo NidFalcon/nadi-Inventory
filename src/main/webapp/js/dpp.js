@@ -195,7 +195,7 @@ function createOptions(dpp, selectedBranchId, selectedSkuCode, selectedStatus) {
     });
     $('#selectBranchName').html(branchNameHtml);
 
-    skuMap.forEach((skuName, skuCode) => {
+    skuMap.forEach((skuName, skuCode, isActive) => {
         skuNameHtml += '<option value="' + skuCode + '"' + (skuCode === selectedSkuCode ? ' selected' : '') + '>' + skuName + '</option>';
     });
     $('#selectSkuName').html(skuNameHtml);
