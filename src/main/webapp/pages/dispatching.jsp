@@ -3,82 +3,50 @@
 <div id="divDispatchForm" class="container">
   <form>    
     <div class="row mb-3">
-      <label for="txtDispatchingId" class="col-sm-3 col-form-label">Dispatch Track ID</label>
+      <label for="txtDispatchId" class="col-sm-3 col-form-label">Dispatch Track ID</label>
       <div class="col-sm-9">
-        <input type="text" class="input" id="txtDispatchingId" readonly="readonly" />
+        <input type="text" class="input" id="txtDispatchId"  />
       </div>
     </div>
     
     <div class="row mb-3">
-      <label for="txtdispatchType" class="col-sm-3 col-form-label">Dispatch Type</label>
+      <label for="selDispatchType" class="col-sm-3 col-form-label">Dispatch Type</label>
       <div class="col-sm-9">
-        <select id="txtdispatchType" class="form-select">
+        <select id="selDispatchType" class="form-select">
           <option value="" class="option">Select Dispatch Type</option>
           <!-- Add options here -->
         </select>
       </div>
     </div>
     
-    <div class="row mb-3">
-      <label for="txtFinProdId" class="col-sm-3 col-form-label">Finished Product ID</label>
-      <div class="col-sm-9">
-        <input type="text" class="input" id="txtFinProdId" readonly="readonly" />
-      </div>
-    </div>
-    
-    <div class="row mb-3">
-      <label for="txtFinProdName" class="col-sm-3 col-form-label">Finished Product</label>
-      <div class="col-sm-9">
-        <select id="txtFinProdName" class="form-select">
-          <option value="">Select Finished Product</option>
-          <!-- Add options here -->
-        </select>
-      </div>
-    </div>
+   <div class="row mb-3">
+     <label for="txtFinishedProdId" class="col-sm-3 col-form-label">Finished Product</label>
+     <div class="col-sm-9">
+        <input type="text" id="txtFinishedProdId" class="form-control" placeholder="Select Finished Product ID">
+     </div>  
+   </div>
     
     <div class="row mb-3">
       <label for="txtQuantity" class="col-sm-3 col-form-label">Quantity</label>
       <div class="col-sm-9">
-        <input type="number" class="form-control" id="txtQuantity" maxlength="12" />
+        <input type="number" class="form-control" id="txtQuantity" maxlength="12" placeholder="Enter Quantity"/>
       </div>
     </div>
     
-    <div class="row mb-3">
-      <label for="txtBranchId" class="col-sm-3 col-form-label">Branch ID</label>
-      <div class="col-sm-9">
-        <input type="text" class="input" id="txtBranchId" readonly="readonly" />
-      </div>
-    </div>
-    
-    <div class="row mb-3">
-      <label for="txtBranchName" class="col-sm-3 col-form-label">Branch Name</label>
-      <div class="col-sm-9">
-        <select id="txtBranchName" class="form-select">
-          <option value="">Select Branch Name</option>
-          <!-- Add options here -->
-        </select>
-      </div>
-    </div>
-    
-    <div class="row mb-3">
-	    <label for="txtBatchNumber" class="col-sm-3 col-form-label">Batch Number</label>
-	    <div class="col-sm-9">
-	        <input type="text" class="form-control" id="txtBatchNumber" placeholder="Enter Batch Number" />
-	    </div>
-	</div>
-
+    <!-- Hidden field for branch ID -->
+    <input type="hidden" id="hiddenBranchId" value="${branchId}" />
     
     <div class="row mb-3">
       <label for="txtDestination" class="col-sm-3 col-form-label">Destination</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" id="txtDestination" />
+        <input type="text" class="form-control" id="txtDestination" placeholder="Enter Destination"/>
       </div>
     </div>
     
     <div class="row mb-3">
-      <label for="txtDispatchDate" class="col-sm-3 col-form-label">Dispatch Date</label>
+      <label for="dateDispatchDate" class="col-sm-3 col-form-label">Dispatch Date</label>
       <div class="col-sm-9">
-        <input type="date" class="form-control" id="txtDispatchDate" />
+        <input type="date" class="form-control" id="dateDispatchDate" />
       </div>
     </div>
     
@@ -91,8 +59,11 @@
     </div>
   </form>
 </div>
+
 <br>
 <script type="text/javascript">
     var dispatch = JSON.parse('${dispatch}');
+    var dispatchType = JSON.parse('${dispatchType}');
+    var branchId = '${branchId}'; // Ensure branchId is set here
 </script>
 <script src="js/dispatch.js"></script>

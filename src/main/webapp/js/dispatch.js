@@ -1,50 +1,61 @@
 function toggleAddButton() {
-    if ($('#txtDispatchingId').val() === '') {
-        $('#btnAdd').html('Add');
-    } else {
-        $('#btnAdd').html('Update');
-    }
+	if ('' === $('#txtDispatchId').val()) {
+		$('#btnAdd').html('Add');
+	} else {
+		$('#btnAdd').html('Update');
+	}
 }
 
 function bindRowsClick(dispatch) {
-    $.each(dispatch, function(index, item) {
-        $('#item' + index + 'row').click(function() {
-            $('#txtDispatchingId').val(item.dispatchTrackId);
-            $('#txtdispatchType').val(item.dispatchTypeCd);
-            $('#txtFinProdId').val(item.fplId);
-            $('#txtFinProdName').val(item.fplId);  // Assuming fplId maps to product name
-            $('#txtQuantity').val(item.quantity);
-            $('#txtBranchId').val(item.branchId);
-            $('#txtBranchName').val(item.branchId);  // Assuming branchId maps to branch name
-            $('#txtBatchNumber').val(item.batchNumber);
-            $('#txtDestination').val(item.destination);
-            $('#txtDispatchDate').val(new Date(item.dispatchDate).toISOString().split('T')[0]);  // Formatting date
-            toggleAddButton();
-        });
-    });
+	$.each(dispatch, function(index, item) {
+		$('#item' + index + 'row').click(function() {
+			$('#txtDispatchId').val(item.dispatchTrackId);
+			$('#selDispatchType').val(item.dispatchTypeCd);
+			$('#txtFinishedProdId').val(item.fplId);
+			$('#txtQuantity').val(item.quantity);
+			$('#selBranch').val(item.branchId);
+			$('#txtDestination').val(item.destination);
+			$('#dateDispatchDate').val(item.dispatchDate);
+			toggleAddButton();
+		});
+	});
 }
+
+function getDispatchType() {
+    let html = '<option value="">';
+    $.each(dispatchType, function(index, item) {
+        html += '<option value="' + item.dispatchTypeCode + '">' + item.dispatchTypeName + '</option>'
+    });
+    $('#selDispatchType').html(html);
+}
+
+getDispatchType();
 
 function createDispatchingTable(dispatch) {
     let html = '';
-    html += '<table class="inventory">';
+    html += '<table class="dispatch">';
     html += '  <tr>';
-    html += '    <th>Dispatch Track ID</th>';
-    html += '    <th>Dispatch Type Code</th>';
+    html += '    <th>Dispatch Type ID</th>';
+    html += '    <th>Dispatch Type Name</th>';
     html += '    <th>Finished Product ID</th>';
+    html += '    <th>SKU Name</th>';
     html += '    <th>Quantity</th>';
     html += '    <th>Branch ID</th>';
+    html += '    <th>Branch Name</th>';
     html += '    <th>Destination</th>';
     html += '    <th>Dispatch Date</th>';
     html += '  </tr>';
     $.each(dispatch, function(index, item) {
         html += '<tr id="item' + index + 'row">';
-        html += '  <td id="item' + index + 'dispatchTrackId">' + item.dispatchTrackId + '</td>';
-        html += '  <td id="item' + index + 'dispatchTypeCd">' + item.dispatchTypeCd + '</td>';
-        html += '  <td id="item' + index + 'fplId">' + item.fplId + '</td>';
-        html += '  <td id="item' + index + 'qty" class="center-aligned">' + item.quantity + '</td>';
-        html += '  <td id="item' + index + 'branchId">' + item.branchId + '</td>';
-        html += '  <td id="item' + index + 'destination">' + item.destination + '</td>';
-        html += '  <td id="item' + index + 'dispatchDate">' + new Date(item.dispatchDate).toISOString().split('T')[0] + '</td>';  // Formatting date
+        html += '  <td id="item' + index + 'disType" style="align: center;">' + item.dispatchTypeCd + '</td>';
+        html += '  <td id="item' + index + 'disName">' + item.dispatchType.dispatchTypeName + '</td>';
+        html += '  <td id="item' + index + 'fplId" style="align: center;">' + item.fplId + '</td>';
+        html += '  <td id="item' + index + 'skuName">' + item.fpl.sku.skuName + '</td>';
+        html += '  <td id="item' + index + 'qty" style="align: center;">' + item.quantity + '</td>';
+        html += '  <td id="item' + index + 'brId" style="align: center;">' + item.branchId + '</td>';
+        html += '  <td id="item' + index + 'brName">' + item.branch.branchName + '</td>';
+        html += '  <td id="item' + index + 'desti">' + item.destination + '</td>';
+        html += '  <td id="item' + index + 'disDate">' + item.dispatchDate + '</td>';
         html += '</tr>';
     });
     html += '</table>';
@@ -53,24 +64,36 @@ function createDispatchingTable(dispatch) {
 }
 
 function createItem() {
-    let item = {
-        dispatchTrackId: $('#txtDispatchingId').val() !== '' ? $('#txtDispatchingId').val() : '0',
-        dispatchTypeCd: $('#txtdispatchType').val(),
-        fplId: $('#txtFinProdId').val(),
-        quantity: $('#txtQuantity').val(),
-        branchId: $('#txtBranchId').val(),
-        batchNumber: $('#txtBatchNumber').val(),
-        destination: $('#txtDestination').val(),
-        dispatchDate: $('#txtDispatchDate').val()
-    };
-    
+    let item;
+    if ($('#txtDispatchId').val() == "") {
+        item = {
+            dispatchTrackId: '0',
+            dispatchTypeCd: $('#selDispatchType').val(),
+            fplId: $('#txtFinishedProdId').val(),
+            quantity: $('#txtQuantity').val(),
+            branchId: $('#hiddenBranchId').val(), // Use hidden field value
+            destination: $('#txtDestination').val(),
+            dispatchDate: $('#dateDispatchDate').val()
+        };
+    }
+    else {
+        item = {
+            dispatchTrackId: $('#txtDispatchId').val() !== '' ? $('#txtDispatchId').val() : '0',
+            dispatchTypeCd: $('#selDispatchType').val(),
+            fplId: $('#txtFinishedProdId').val(),
+            quantity: $('#txtQuantity').val(),
+            branchId: $('#hiddenBranchId').val(), // Use hidden field value
+            destination: $('#txtDestination').val(),
+            dispatchDate: $('#dateDispatchDate').val()
+        };
+    }
     return item;
 }
 
 function validate(item) {
     let valid = true;
-    if (item.dispatchTypeCd === '' || item.fplId === '' || item.quantity === '' || item.branchId === '' || item.batchNumber === '' || item.destination === '' || item.dispatchDate === '') {
-        alert('Please correctly fill out all required fields');
+    if (item.description === '' || item.quantity === '') {
+        alert('Please correctly fill-out all required fields');
         valid = false;
     } else if (item.quantity < 0) {
         alert('Quantity must be a non-negative number');
@@ -98,23 +121,19 @@ function addItem() {
 $('#btnAdd').click(addItem);
 
 function resetDispatchingForm() {
-    $('#txtDispatchingId').val('');
-    $('#txtdispatchType').val('');
-    $('#txtFinProdId').val('');
-    $('#txtFinProdName').val('');
+    $('#txtDispatchId').val('');
+    $('#selDispatchType').val('');
+    $('#txtFinishedProdId').val('');
     $('#txtQuantity').val('');
-    $('#txtBranchId').val('');
-    $('#txtBranchName').val('');
-    $('#txtBatchNumber').val('');
     $('#txtDestination').val('');
-    $('#txtDispatchDate').val('');
+    $('#dateDispatchDate').val('');
     toggleAddButton();
 }
 
 $('#btnClear').click(resetDispatchingForm);
 
 $('#btnDelete').click(function() {
-    if ($('#txtDispatchingId').val() !== '') {
+    if ($('#txtDispatchId').val() !== '') {
         let item = createItem();
         $.post('DispatchingController', {
             action: 'deleteItem',
@@ -123,7 +142,7 @@ $('#btnDelete').click(function() {
             if (response.includes('success')) {
                 $('#btnDispatching').click();
             } else {
-                alert('Unable to delete item');
+                alert('Unable to save changes');
             }
         });
     } else {

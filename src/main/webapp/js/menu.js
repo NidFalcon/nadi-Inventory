@@ -23,6 +23,38 @@ $('#btnInventory').click(function() {
 	});
 });
 
+$('#btnMngDispatchType').click(function () {
+	$.post('DispatchTypeController', {
+		action: 'showDispatchType'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngBranch').click(function () {
+	$.post('BranchController', {
+		action: 'showBranch'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngSku').click(function () {
+	$.post('SkuController', {
+		action: 'showSku'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngRawMaterial').click(function () {
+	$.post('RawMaterialController', {
+		action: 'showRawMaterial'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
 $('#btnDispatching').click(function() {
 	$.get('DispatchingController', {
 		action: 'showDispatching'

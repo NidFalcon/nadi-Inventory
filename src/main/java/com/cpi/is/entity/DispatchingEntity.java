@@ -1,45 +1,67 @@
 package com.cpi.is.entity;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
+import jakarta.persistence.ManyToOne;
+
+/**
+ * Entity class representing a dispatch record.
+ */
 @Entity
-@Table(name="qkc_dispatch_tracking")
+@Table(name = "qkc_dispatch_tracking")
 public class DispatchingEntity implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="DISPATCH_TRACK_ID")
+    @Column(name = "DISPATCH_TRACK_ID")
     private Long dispatchTrackId;
 
-    @Column(name="DISPATCH_TYPE_CD")
+    @Column(name = "DISPATCH_TYPE_CD")
     private String dispatchTypeCd;
 
-    @Column(name="FPL_ID")
+    @Column(name = "FPL_ID")
     private Long fplId;
 
-    @Column(name="QUANTITY", nullable = false)
+    @Column(name = "QUANTITY", nullable = false)
     private Integer quantity;
 
-    @Column(name="BRANCH_ID")
+    @Column(name = "BRANCH_ID")
     private Integer branchId;
 
-    @Column(name="DESTINATION")
+    @Column(name = "DESTINATION")
     private String destination;
 
-    @Column(name="DISPATCH_DATE", nullable = false)
+    @Column(name = "DISPATCH_DATE", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dispatchDate;
 
-    public DispatchingEntity() {
+    @ManyToOne
+	@JoinColumn(name="BRANCH_ID", insertable=false, updatable=false)
+	private BranchEntity branch;
+    
+    @ManyToOne
+	@JoinColumn(name="DISPATCH_TYPE_CD", insertable=false, updatable=false)
+	private DispatchTypeEntity dispatchType;
+    
+	@ManyToOne
+	@JoinColumn(name="FPL_ID", insertable=false, updatable=false)
+	private FinishedProductListEntity fpl;
+
+	public DispatchingEntity() {
         super();
     }
 
@@ -111,13 +133,37 @@ public class DispatchingEntity implements Serializable {
     public void setDispatchDate(Date dispatchDate) {
         this.dispatchDate = dispatchDate;
     }
+    
+    public BranchEntity getBranch() {
+		return branch;
+	}
+
+	public void setBranch(BranchEntity branch) {
+		this.branch = branch;
+	}
+	
+	public DispatchTypeEntity getDispatchType() {
+		return dispatchType;
+	}
+
+	public void setDispatchType(DispatchTypeEntity dispatchType) {
+		this.dispatchType = dispatchType;
+	}
+	
+	public FinishedProductListEntity getFpl() {
+		return fpl;
+	}
+
+	public void setFpl(FinishedProductListEntity fpl) {
+		this.fpl = fpl;
+	}
 
     @Override
     public String toString() {
         return "DispatchingEntity{" +
                 "dispatchTrackId=" + dispatchTrackId +
                 ", dispatchTypeCd='" + dispatchTypeCd + '\'' +
-                ", fplId='" + fplId + '\'' +
+                ", fplId=" + fplId +
                 ", quantity=" + quantity +
                 ", branchId=" + branchId +
                 ", destination='" + destination + '\'' +

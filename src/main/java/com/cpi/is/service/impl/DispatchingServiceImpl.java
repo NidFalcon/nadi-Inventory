@@ -9,47 +9,49 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
 
-import com.cpi.is.dao.impl.DispatchingDAOImpl;
+import com.cpi.is.dao.DispatchingDAO;
 import com.cpi.is.entity.DispatchingEntity;
 import com.cpi.is.service.DispatchingService;
 
 public class DispatchingServiceImpl implements DispatchingService {
 
-    private DispatchingDAOImpl dispatchingDAO;
+    private DispatchingDAO dispatchingDAO;
 
-    public DispatchingDAOImpl getDispatchingDAO() {
+    public DispatchingDAO getDispatchingDAO() {
         return dispatchingDAO;
     }
 
-    public void setDispatchingDAO(DispatchingDAOImpl dispatchingDAO) {
+    public void setDispatchingDAO(DispatchingDAO dispatchingDAO) {
         this.dispatchingDAO = dispatchingDAO;
     }
 
     private DispatchingEntity jsonToEntity(JSONObject json) {
         Long dispatchTrackId = json.has("dispatchTrackId") ? Long.parseLong(json.getString("dispatchTrackId")) : null;
-        String dispatchTypeCd = json.getString("dispatchTypeCd");
+        String dispatchTypeCd = json.optString("dispatchTypeCd");
         Long fplId = Long.parseLong(json.getString("fplId"));
         Integer quantity = Integer.parseInt(json.getString("quantity"));
         Integer branchId = json.has("branchId") ? Integer.parseInt(json.getString("branchId")) : null;
-        String destination = json.has("destination") ? json.getString("destination") : null;
+        String destination = json.optString("destination");
 
-        // Assuming dispatchDate is in a specific string format, e.g., "yyyy-MM-dd"
+        // Assuming dispatchDate is in a specific string format, e.g., "MM-dd-yyyy"
         String dispatchDateStr = json.getString("dispatchDate");
         Date dispatchDate = null;
         try {
+            // Change the format to match the one used in your JSON
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dispatchDate = dateFormat.parse(dispatchDateStr);
         } catch (ParseException e) {
             e.printStackTrace();
-            // Handle the exception, possibly with a default value or rethrow
+            // Handle the exception, possibly with default value or rethrow
         }
 
         return new DispatchingEntity(dispatchTrackId, dispatchTypeCd, fplId, quantity, branchId, destination, dispatchDate);
     }
 
+
     @Override
-    public List<DispatchingEntity> getDispatching() throws Exception {
-        return dispatchingDAO.getDispatching();
+    public List<DispatchingEntity> getDispatchingByBranch(Integer branchId) throws Exception {
+        return dispatchingDAO.getDispatchingByBranchId(branchId);
     }
 
     @Override
