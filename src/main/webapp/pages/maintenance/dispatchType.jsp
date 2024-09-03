@@ -30,4 +30,4 @@
 <script type="text/javascript">
     var dispatchType = JSON.parse('${dispatchType}');
 </script>
-<script src="js/maintenance/dispatchType.js"></script>
+<script src="js/maintenance/dispatch_type.js"></script>

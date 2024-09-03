@@ -34,4 +34,4 @@
 <script type="text/javascript">
     var rawMaterial = JSON.parse('${rawMaterial}');
 </script>
-<script src="js/maintenance/rawMaterial.js"></script>
+<script src="js/maintenance/raw_material.js"></script>

@@ -23,6 +23,14 @@ $('#btnInventory').click(function() {
 	});
 });
 
+$('#btnDpp').click(function () {
+	$.post('DppController', {
+		action: 'showDpp'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
 $('#btnMngDispatchType').click(function () {
 	$.post('DispatchTypeController', {
 		action: 'showDispatchType'
