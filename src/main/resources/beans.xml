@@ -13,8 +13,29 @@
   	<property name="inventoryDAO" ref="inventoryDAO" />
   </bean>
   
+  <bean id="dispatchTypeDAO" class="com.cpi.is.dao.impl.DispatchTypeDAOImpl"></bean>
+  <bean id="dispatchTypeService" class="com.cpi.is.service.impl.DispatchTypeServiceImpl" depends-on="dispatchTypeDAO">
+  	<property name="dispatchTypeDAO" ref="dispatchTypeDAO" />
+  </bean>
+  
+  <bean id="branchDAO" class="com.cpi.is.dao.impl.BranchDAOImpl"></bean>
+  <bean id="branchService" class="com.cpi.is.service.impl.BranchServiceImpl" depends-on="branchDAO">
+  	<property name="branchDAO" ref="branchDAO" />
+  </bean>
+  
+  <bean id="skuDAO" class="com.cpi.is.dao.impl.SkuDAOImpl"></bean>
+  <bean id="skuService" class="com.cpi.is.service.impl.SkuServiceImpl" depends-on="skuDAO">
+  	<property name="skuDAO" ref="skuDAO" />
+  </bean>
+  
+  <bean id="rawMaterialDAO" class="com.cpi.is.dao.impl.RawMaterialDAOImpl"></bean>
+  <bean id="rawMaterialService" class="com.cpi.is.service.impl.RawMaterialServiceImpl" depends-on="rawMaterialDAO">
+  	<property name="rawMaterialDAO" ref="rawMaterialDAO" />
+  </bean>
+  
   <bean id="dispatchingDAO" class="com.cpi.is.dao.impl.DispatchingDAOImpl"></bean>
   <bean id="dispatchingService" class="com.cpi.is.service.impl.DispatchingServiceImpl" depends-on="dispatchingDAO">
   	<property name="dispatchingDAO" ref="dispatchingDAO" />
   </bean>
+
 </beans>

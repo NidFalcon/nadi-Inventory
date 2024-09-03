@@ -36,29 +36,11 @@ hr {
   color: black;
 }
 
-select.input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 16px;
-  color: #333;
-}
-
-select.input:focus {
-  border-color: #66afe9;
-  outline: none;
-  box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
-}
-
 .input {
-	width: 100%;
-	padding: 8px;
-	margin: 4px 0;
-	border: 1px solid #ccc;
-	background-color: #fff;
-	font-size: 16px;
-	color: #333;
+  width: 100%;
+  padding: 8px 16px;
+  margin: 4px 0;
+  box-sizing: border-box;
 }
 
 .left {
@@ -74,36 +56,36 @@ select.input:focus {
   display: inline;
 }
 
-.inventory {
+.inventory, .dispatch, .dispatchType, .branch, .sku, .rawMaterial {
   border-collapse: collapse;
   width: 80%;
 }
 
-.inventory th, .inventory td {
+.inventory th, .inventory td, .dispatch th, .dispatch td, .dispatchType th, .dispatchType td, .branch th, .branch td, .sku th, .sku td, .rawMaterial th, .rawMaterial td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-.inventory .center-aligned {
+.inventory .center-aligned, .dispatch .center-aligned, .dispatchType .center-aligned, .branch .center-aligned, .sku .center-aligned, .rawMaterial .center-aligned {
   text-align: center;
 }
 
-.inventory tr:nth-child(even){
+.inventory tr:nth-child(even), .dispatch tr:nth-child(even), .dispatchType tr:nth-child(even), .branch tr:nth-child(even), .sku tr:nth-child(even), .rawMaterial tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-.inventory tr:hover {
+.inventory tr:hover, .dispatch tr:hover, .dispatchType tr:hover, .branch tr:hover, .sku tr:hover, .rawMaterial tr:hover {
   background-color: #ddd;
 }
 
-.inventory th {
+.inventory th, .dispatch th, .dispatchType th, .branch th, .sku th, .rawMaterial th {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #04AA6D;
   color: white;
 }
 
-.dispatch {
+/* .dispatch {
   border-collapse: collapse;
   width: 80%;
 }
@@ -131,3 +113,4 @@ select.input:focus {
   background-color: #04AA6D;
   color: white;
 }
+ */
