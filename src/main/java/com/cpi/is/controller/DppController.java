@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.service.DppService;
+import com.cpi.is.service.SkuService;
 
 /**
  * Servlet implementation class DppController
@@ -23,6 +24,7 @@ public class DppController extends HttpServlet {
 
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private DppService dppService = (DppService) context.getBean("dppService");
+    private SkuService skuService = (SkuService) context.getBean("skuService");
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -40,6 +42,7 @@ public class DppController extends HttpServlet {
 
             if ("showDpp".equals(action)) {
                 request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
+                request.setAttribute("sku", new JSONArray(skuService.getSku()));
                 page = "pages/dpp.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = dppService.saveItem(request);

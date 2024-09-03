@@ -65,3 +65,11 @@ $('#btnMngMaterial').click(function () {
 		$('#divContent').html(response);
 	});
 });
+
+$('#btnDPP').click(function () {
+	$.post('DppController', {
+		action: 'showDpp'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});

@@ -1,3 +1,42 @@
+var dppTable = new Tabulator("#divDppTable" , {
+	layout: 'fitColumns',
+	data: dpp,
+	pagination: 'local',
+	pagination: true,
+	paginationSize: 5,
+	paginationSizeSelector:[5, 10, 15, 20],
+	paginationCounter:"rows",
+	selectableRows:1,
+	movableColumns:true,
+	responsiveLayout:true,
+	columns: [
+		{title:"DPP ID", field: 'dppId'},
+		{title:"Production Date", field: 'productionDate'},
+		{title:"Branch ID", field: 'branch.branchId'},
+		{title:"SKU Code", field: 'sku.skuCode'},
+		{title:"SKU Name", field: 'sku.skuName'},
+		{title:"Quantity", field: 'quantity'},
+		{title:"Status", field: 'status'}
+	],
+});
+
+function createOptions(){
+	//"selectSkuCode"
+	let html = '';
+	$.each(sku, function(index, item){
+		if ("y" == item.isActive){
+			html += '<option id="item'+item.skuCode+'" value="'+"" +item.skuCode+'">'+item.skuCode+ " " +item.skuName+'</option>';
+		}
+	})
+	$(".selectSkuCode").html(html);
+}
+
+$('#btnShowUpdateDpp').hide();
+$('#btnShowDeleteDpp').hide();
+
+createOptions();
+
+/*
 function toggleAddButton() {
 	if ($('#txtDppId').val() === '') {
 		$('#btnAdd').text('Add');
@@ -192,3 +231,4 @@ $(document).ready(function() {
         $('#selectStatus').val(selectedStatus);
     });
 });
+*/
