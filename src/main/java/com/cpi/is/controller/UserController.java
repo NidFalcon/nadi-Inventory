@@ -116,22 +116,13 @@ public class UserController extends HttpServlet {
 					}
 				}
 			} else if ("showRegisterPage".equals(action)) {
-				JSONArray test = new JSONArray(branchService.getAllBranches());
+				JSONArray test = new JSONArray(branchService.getBranch());
 				System.out.println(test);
 				request.setAttribute("branches", test );
 				page="pages/registration.jsp";
 			} else if ("registerNewUser".equals(action)) {
 				request.setAttribute("message", userService.registerNewUser(request));
 				page = "pages/message.jsp";
-			}
-			else if ("test".equals(action)) {
-				
-				BranchDAOImpl testBranch = new BranchDAOImpl();
-				List<RawMaterialListEntity> testList = testService.getRawMaterialList();
-				request.setAttribute("rawMaterialList", new JSONArray(testList));
-				request.setAttribute("branchList", new JSONArray(testBranch.getAllBranches()));
-				page = "pages/util/test.jsp";
-		        //testService.saveItem(request);
 			}
 			
 			

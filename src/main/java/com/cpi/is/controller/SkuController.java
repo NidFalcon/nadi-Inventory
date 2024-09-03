@@ -12,22 +12,25 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.cpi.is.service.BranchService;
+import com.cpi.is.service.SkuService;
+
 /**
- * Servlet implementation class BranchController
+ * Servlet implementation class SkuController
  */
-@WebServlet("/BranchController")
-public class BranchController extends HttpServlet {
+@WebServlet("/SkuController")
+public class SkuController extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     private static String action = "";
     private static String page = "";
 
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-    private BranchService branchService = (BranchService) context.getBean("branchService");
+    private SkuService skuService = (SkuService) context.getBean("skuService");
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BranchController() {
+    public SkuController() {
         super();
     }
 
@@ -38,18 +41,18 @@ public class BranchController extends HttpServlet {
         try {
             action = request.getParameter("action");
 
-            if ("showBranch".equals(action)) {
-                request.setAttribute("branch", new JSONArray(branchService.getBranch()));
-                page = "pages/maintenance/branch.jsp";
+            if ("showSku".equals(action)) {
+                request.setAttribute("sku", new JSONArray(skuService.getSku()));
+                page = "pages/maintenance/sku.jsp";
             } else if ("saveItem".equals(action)) {
-                String message = branchService.saveItem(request);
+                String message = skuService.saveItem(request);
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
             } else if ("deleteItem".equals(action)) {
-                String message = branchService.deleteItem(request);
+                String message = skuService.deleteItem(request);
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
-            } 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

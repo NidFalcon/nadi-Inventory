@@ -5,27 +5,27 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.cpi.is.dao.RawMaterialDAO;
-import com.cpi.is.entity.RawMaterialEntity;
+import com.cpi.is.dao.DppDAO;
+import com.cpi.is.entity.DppEntity;
 import com.cpi.is.util.HBUtil;
 
-public class RawMaterialDAOImpl implements RawMaterialDAO {
+public class DppDAOImpl implements DppDAO {
 
     @Override
-    public List<RawMaterialEntity> getRawMaterial() throws Exception {
-        List<RawMaterialEntity> rawMaterialList = null;
+    public List<DppEntity> getDpp() throws Exception {
+        List<DppEntity> dppList = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
-            rawMaterialList = session.createQuery("FROM RawMaterialEntity R ORDER BY R.materialCode ASC", RawMaterialEntity.class).list();
+            dppList = session.createQuery("FROM DppEntity D ORDER BY D.dppId ASC", DppEntity.class).list();
         }
-        return rawMaterialList;
+        return dppList;
     }
 
     @Override
-    public String saveItem(RawMaterialEntity item) throws Exception {
+    public String saveItem(DppEntity item) throws Exception {
         Transaction transaction = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            if (item.getMaterialCode() == null || item.getMaterialCode().isEmpty()) {
+            if (item.getDppId() == null) {
                 session.persist(item);
             } else {
                 session.merge(item);
@@ -39,9 +39,9 @@ public class RawMaterialDAOImpl implements RawMaterialDAO {
         }
         return "success";
     }
-
+    
     @Override
-    public String deleteItem(RawMaterialEntity item) throws Exception {
+    public String deleteItem(DppEntity item) throws Exception {
         Transaction transaction = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();

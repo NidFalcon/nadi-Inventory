@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,40 +19,54 @@ public class RawMaterialListEntity {
 	@Column(name="MATERIAL_LIST_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer materialListId;
+	@Column(name="MATERIAL_CD")
+	private String materialCode;
 	@ManyToOne
-    @JoinColumn(name = "MATERIAL_CD")
+	@JoinColumn(name = "MATERIAL_CD", insertable = false, updatable = false)
 	private RawMaterialEntity material;
 	private Integer quantity;
+	@Column(name="USER_ID")
+	private Integer userId;
 	@ManyToOne
-	@JoinColumn(name="USER_ID")
-	private UserEntity userId;
+	@JoinColumn(name="USER_ID", insertable = false, updatable = false)
+	private UserEntity user;
 	@Column(name="date_receive")
 	private Date dateRecieve;
+	@Column(name="BRANCH_ID")
+	private Integer branchId;
 	@ManyToOne
-    @JoinColumn(name = "BRANCH_ID")
+    @JoinColumn(name = "BRANCH_ID", insertable = false, updatable = false)
 	private BranchEntity branch;
 	
 	public RawMaterialListEntity() {
 		super();
 	}
 
-	public RawMaterialListEntity(Integer materialListId, RawMaterialEntity material, Integer quantity,
-			UserEntity userId, Date dateRecieve, BranchEntity branch) {
+	public RawMaterialListEntity(Integer materialListId, String materialCode, Integer quantity, Integer userId,
+			Date dateRecieve, Integer branchId) {
 		super();
 		this.materialListId = materialListId;
-		this.material = material;
+		this.materialCode = materialCode;
 		this.quantity = quantity;
 		this.userId = userId;
 		this.dateRecieve = dateRecieve;
-		this.branch = branch;
+		this.branchId = branchId;
+	}
+
+	public Integer getMaterialListId() {
+		return materialListId;
 	}
 
 	public void setMaterialListId(Integer materialListId) {
 		this.materialListId = materialListId;
 	}
-	
-	public Integer getMaterialListId() {
-		return materialListId;
+
+	public String getMaterialCode() {
+		return materialCode;
+	}
+
+	public void setMaterialCode(String materialCode) {
+		this.materialCode = materialCode;
 	}
 
 	public RawMaterialEntity getMaterial() {
@@ -72,12 +85,20 @@ public class RawMaterialListEntity {
 		this.quantity = quantity;
 	}
 
-	public UserEntity getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(UserEntity userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
 	public Date getDateRecieve() {
@@ -88,6 +109,14 @@ public class RawMaterialListEntity {
 		this.dateRecieve = dateRecieve;
 	}
 
+	public Integer getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(Integer branchId) {
+		this.branchId = branchId;
+	}
+
 	public BranchEntity getBranch() {
 		return branch;
 	}
@@ -95,7 +124,6 @@ public class RawMaterialListEntity {
 	public void setBranch(BranchEntity branch) {
 		this.branch = branch;
 	}
-	
-	
+
 	
 }

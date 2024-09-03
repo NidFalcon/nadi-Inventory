@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.cpi.is.entity.BranchEntity;
 
-
 public interface BranchDAO {
-	public List<BranchEntity>getAllBranches() throws Exception;
+	List<BranchEntity> getBranch() throws Exception;
+	String saveItem(BranchEntity item) throws Exception;
+	String deleteItem(BranchEntity item) throws Exception;
+
 }

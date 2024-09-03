@@ -1,33 +1,33 @@
 package com.cpi.is.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.cpi.is.service.DppService;
 
-import com.cpi.is.service.BranchService;
 /**
- * Servlet implementation class BranchController
+ * Servlet implementation class DppController
  */
-@WebServlet("/BranchController")
-public class BranchController extends HttpServlet {
+@WebServlet("/DppController")
+public class DppController extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     private static String action = "";
     private static String page = "";
 
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-    private BranchService branchService = (BranchService) context.getBean("branchService");
+    private DppService dppService = (DppService) context.getBean("dppService");
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BranchController() {
+    public DppController() {
         super();
     }
 
@@ -38,18 +38,18 @@ public class BranchController extends HttpServlet {
         try {
             action = request.getParameter("action");
 
-            if ("showBranch".equals(action)) {
-                request.setAttribute("branch", new JSONArray(branchService.getBranch()));
-                page = "pages/maintenance/branch.jsp";
+            if ("showDpp".equals(action)) {
+                request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
+                page = "pages/dpp.jsp";
             } else if ("saveItem".equals(action)) {
-                String message = branchService.saveItem(request);
+                String message = dppService.saveItem(request);
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
             } else if ("deleteItem".equals(action)) {
-                String message = branchService.deleteItem(request);
+                String message = dppService.deleteItem(request);
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
-            } 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
