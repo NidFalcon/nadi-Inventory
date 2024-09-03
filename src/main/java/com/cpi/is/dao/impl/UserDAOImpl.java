@@ -14,13 +14,12 @@ import com.cpi.is.util.HBUtil;
 public class UserDAOImpl implements UserDAO {
 
 	@Override
-	public UserEntity authenticate(UserEntity user) throws Exception {
+	public UserEntity authenticate(String username) throws Exception {
 		UserEntity authenticated = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			List<UserEntity> results = (List<UserEntity>) session
-					.createQuery("FROM UserEntity U WHERE U.username = :username AND U.password = :password", UserEntity.class)
-					.setParameter("username", user.getUsername())
-					.setParameter("password", user.getPassword())
+					.createQuery("FROM UserEntity U WHERE U.username = :username", UserEntity.class)
+					.setParameter("username", username)
 					.list();
 			if (results.size() > 0) {
 				authenticated = results.get(0);

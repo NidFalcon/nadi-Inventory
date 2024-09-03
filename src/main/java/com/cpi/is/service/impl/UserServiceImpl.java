@@ -43,10 +43,11 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserEntity authenticate(HttpServletRequest request) throws Exception {
-		UserEntity user = new UserEntity();
-		user.setUsername(request.getParameter("username"));
-		user.setPassword(request.getParameter("password"));
-		return userDAO.authenticate(user);
+		UserEntity user = userDAO.authenticate(request.getParameter("username"));
+		if(!(user != null && passwordEncoder.matches(request.getParameter("password"), user.getPassword()))) {
+			user = null;
+		};
+		return user;
 	}
 	
 	public String registerNewUser(HttpServletRequest request) throws Exception {
