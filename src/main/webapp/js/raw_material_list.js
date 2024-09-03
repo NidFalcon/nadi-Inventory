@@ -14,9 +14,9 @@ var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
 		{title:"Material Code", field: 'material.materialCode'},
 		{title:"Material Name", field: 'material.materialName'},
 		{title:"Quantity", field: 'quantity'},
-		{title:"User ID", field: 'userId.userId'},
+		{title:"User ID", field: 'userId'},
 		{title:"Date", field: 'dateRecieve'},
-		{title:"Batch Id", field:'branch.branchId'}
+		{title:"Batch Id", field:'branchId'}
 	],
 });
 
@@ -64,9 +64,9 @@ function populateDeleteForm(row) {
 		$('#deleteRawMaterialId').val(row.materialListId);
 		$('#deleteRawMaterialCode').val(row.material.materialCode);
 		$('#deleteRawMaterialQuantity').val(row.quantity);
-		$('#deleteRawMaterialUserId').val(row.userId.userId);
+		$('#deleteRawMaterialUserId').val(row.userId);
 		$('#deleteRawMaterialDate').val(row.dateRecieve);
-		$('#deleteRawMaterialBranchId').val(row.branch.branchId);	
+		$('#deleteRawMaterialBranchId').val(row.branchId);	
 	}
 }
 

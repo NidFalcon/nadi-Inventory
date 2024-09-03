@@ -42,9 +42,9 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 				json.getInt("materialListId"),
 				json.getString("materialCode"),
 				json.getInt("quantity"),
-				userDao.getUser(json.getInt("userId")),
+				json.getInt("userId"),
 				convertStringToSqlDate(json.getString("dateRecieve")),
-				branchDao.getBranch(json.getInt("branchId")));
+				json.getInt("branchId"));
 	}
 	
 	private static Date convertStringToSqlDate(String dateString) {
