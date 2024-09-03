@@ -19,9 +19,6 @@
   </bean>
   <bean id="rawMaterialListService" class="com.cpi.is.service.impl.RawMaterialListServiceImpl" depends-on="rawMaterialListDAO, rawMaterialDAO, branchDAO, userDAO">
   	<property name="rawMaterialListDAO" ref="rawMaterialListDAO" />
-  	<property name="rawMaterialDAO" ref="rawMaterialDAO" />
-  	<property name="branchDAO" ref="branchDAO" />
-  	<property name="userDAO" ref="userDAO" />
   </bean>
   
   <bean id="dppDAO" class="com.cpi.is.dao.impl.DppDAOImpl"></bean>

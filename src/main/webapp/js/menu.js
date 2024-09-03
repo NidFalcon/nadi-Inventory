@@ -32,6 +32,7 @@ $('#btnDpp').click(function () {
 });
 
 $('#btnMngDispatchType').click(function () {
+	console.log("TEST");
 	$.post('DispatchTypeController', {
 		action: 'showDispatchType'
 	}, function(response) {
@@ -48,6 +49,7 @@ $('#btnMngBranch').click(function () {
 });
 
 $('#btnMngSku').click(function () {
+	console.log("btnMngSKU");
 	$.post('SkuController', {
 		action: 'showSku'
 	}, function(response) {
@@ -55,7 +57,8 @@ $('#btnMngSku').click(function () {
 	});
 });
 
-$('#btnMngRawMaterial').click(function () {
+$('#btnMngMaterial').click(function () {
+	console.log("test");
 	$.post('RawMaterialController', {
 		action: 'showRawMaterial'
 	}, function(response) {

@@ -45,7 +45,6 @@ public class UserController extends HttpServlet {
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
 	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
-	private RawMaterialListServiceImpl testService = (RawMaterialListServiceImpl) context.getBean("rawMaterialListService");
     
 	
 	/**
