@@ -9,7 +9,7 @@ import com.cpi.is.entity.RawMaterialListEntity;
 
 public interface RawMaterialListService {
 
-	List<RawMaterialListEntity> getRawMaterialList() throws Exception;
+	List<RawMaterialListEntity>  getRawMaterialList(HttpServletRequest request) throws Exception;
 	String deleteRawMaterial(HttpServletRequest request) throws Exception;
 	String saveRawMaterial(HttpServletRequest request, HttpSession session) throws Exception;
 }

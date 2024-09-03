@@ -64,8 +64,10 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
         }
     }
 	
-	public List<RawMaterialListEntity>  getRawMaterialList() throws Exception {
-		return rawMaterialListDAO.getRawMaterialList(3);
+	public List<RawMaterialListEntity>  getRawMaterialList(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		return rawMaterialListDAO.getRawMaterialList(user.getBranchId());
 	}
 
 

@@ -161,3 +161,4 @@ $('#btnDeleteRawMaterial').click(function() {
 });
 
 createOptions();
+console.log(rawMaterialList);
