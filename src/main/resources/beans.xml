@@ -13,6 +13,11 @@
   	<property name="inventoryDAO" ref="inventoryDAO" />
   </bean>
   
+  <bean id="dppDAO" class="com.cpi.is.dao.impl.DppDAOImpl"></bean>
+  <bean id="dppService" class="com.cpi.is.service.impl.DppServiceImpl" depends-on="dppDAO">
+  	<property name="dppDAO" ref="dppDAO" />
+  </bean>
+  
   <bean id="dispatchTypeDAO" class="com.cpi.is.dao.impl.DispatchTypeDAOImpl"></bean>
   <bean id="dispatchTypeService" class="com.cpi.is.service.impl.DispatchTypeServiceImpl" depends-on="dispatchTypeDAO">
   	<property name="dispatchTypeDAO" ref="dispatchTypeDAO" />
