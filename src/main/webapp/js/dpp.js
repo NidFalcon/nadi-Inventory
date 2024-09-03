@@ -29,6 +29,14 @@ function createOptions(){
 		}
 	})
 	$(".selectSkuCode").html(html);
+	
+	html = '';
+	$.each(dpp, function(index, item){
+		if ("y" == item.isActive){
+			html += '<option id="item'+item.dispatchTypeCode+'" value="'+"" +item.dispatchTypeCode+'">'+item.dispatchTypeCode+ " " +item.dispatchTypeName+'</option>';
+		}
+	})
+	$(".selectStatus").html(html);
 }
 
 $('#btnShowUpdateDpp').hide();

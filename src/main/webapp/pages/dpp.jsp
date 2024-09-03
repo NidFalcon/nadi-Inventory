@@ -47,8 +47,14 @@
 						<select type="submit" class="form-control selectSkuCode"></select>
 					</div>
 					<div class="mb-3">
-						<label for="chkIsActive">is Active?</label> <input id="chkIsActive"
-							class="form-check-input" type="checkbox" />
+						<label for="txtQuantity">Quantity</label>
+                		<input type="number" id="txtQuantity" class="form-control" min="1"/>
+					</div>
+					<div class="mb-3">
+						<label for="selectStatus">Status</label>
+				        <select id="selectStatus">
+				            <!-- Options will be added dynamically -->
+				        </select>
 					</div>
 				</form>
 			</div>
@@ -65,5 +71,6 @@
 <script type="text/javascript">
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
+    var dispatchType = JSON.parse('${dispatchType}');
 </script>
 <script src="js/dpp.js"></script>
