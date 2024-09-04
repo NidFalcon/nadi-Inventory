@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,19 +19,23 @@ public class UserEntity implements Serializable {
 	
 	@Id
 	@Column(name="USER_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
 	private String username;
 	private String password;
-	@Column(name="BRANCH_ID")
+	@Column (name="BRANCH_ID")
 	private Integer branchId;
+	@ManyToOne
+	@JoinColumn(name="BRANCH_ID", insertable=false, updatable=false)
+	private BranchEntity branch;
 	@Column(name="IS_ACTIVE")
-	private Boolean isActive;
+	private String isActive;
 	
 	public UserEntity() {
 		super();
 	}
 
-	public UserEntity(Integer userId, String username, String password, Integer branchId, Boolean isActive) {
+	public UserEntity(Integer userId, String username, String password, Integer branchId, String isActive) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -68,19 +76,33 @@ public class UserEntity implements Serializable {
 		this.branchId = branchId;
 	}
 
-	public Boolean getIsActive() {
+
+	public BranchEntity getBranch() {
+		return branch;
+	}
+
+	public void setBranch(BranchEntity branch) {
+		this.branch = branch;
+	}
+
+	public String getIsActive() {
 		return isActive;
 	}
 
-	public void setIsActive(Boolean isActive) {
+	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
 
-	@Override
-	public String toString() {
-		return "{userId=" + userId 
-			 + ", username=" + username 
-			 + ", password=" + password + "}";
-	}
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", branchId=" + branchId +
+                ", isActive='" + isActive + '\'' +
+                '}';
+    }
+
 	
 }

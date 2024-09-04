@@ -23,10 +23,52 @@ $('#btnInventory').click(function() {
 	});
 });
 
-// Maintenance Module
-$('#btnMngDispatchTypes').click(function () {
+$('#btnDpp').click(function () {
+	$.post('DppController', {
+		action: 'showDpp'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngDispatchType').click(function () {
+	console.log("TEST");
 	$.post('DispatchTypeController', {
-		action: 'showDispatchTypes'
+		action: 'showDispatchType'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngBranch').click(function () {
+	$.post('BranchController', {
+		action: 'showBranch'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngSku').click(function () {
+	console.log("btnMngSKU");
+	$.post('SkuController', {
+		action: 'showSku'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnMngMaterial').click(function () {
+	console.log("test");
+	$.post('RawMaterialController', {
+		action: 'showRawMaterial'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnDPP').click(function () {
+	$.post('DppController', {
+		action: 'showDpp'
 	}, function(response) {
 		$('#divContent').html(response);
 	});

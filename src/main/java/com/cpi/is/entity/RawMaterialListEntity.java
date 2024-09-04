@@ -1,77 +1,129 @@
 package com.cpi.is.entity;
 
+import java.sql.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="qkc_raw_material")
+@Table(name="qkc_raw_material_list")
 public class RawMaterialListEntity {
 	
 	@Id
 	@Column(name="MATERIAL_LIST_ID")
-	private String materialListId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer materialListId;
 	@Column(name="MATERIAL_CD")
 	private String materialCode;
-	private String quantity;
+	@ManyToOne
+	@JoinColumn(name = "MATERIAL_CD", insertable = false, updatable = false)
+	private RawMaterialEntity material;
+	private Integer quantity;
 	@Column(name="USER_ID")
-	private String userId;
-	@Column(name="DATE_RECIEVE")
-	private String dateRecieve;
-	@Column(name="IS_ACTIVE")
-	private String isActive;
+	private Integer userId;
+	@ManyToOne
+	@JoinColumn(name="USER_ID", insertable = false, updatable = false)
+	private UserEntity user;
+	@Column(name="date_receive")
+	private Date dateRecieve;
+	@Column(name="BRANCH_ID")
+	private Integer branchId;
+	@ManyToOne
+    @JoinColumn(name = "BRANCH_ID", insertable = false, updatable = false)
+	private BranchEntity branch;
 	
 	public RawMaterialListEntity() {
 		super();
 	}
-	
-	public RawMaterialListEntity(String materialListId, String materialCode, String quantity, String userId,
-			String dateRecieve, String isActive) {
+
+	public RawMaterialListEntity(Integer materialListId, String materialCode, Integer quantity, Integer userId,
+			Date dateRecieve, Integer branchId) {
 		super();
 		this.materialListId = materialListId;
 		this.materialCode = materialCode;
 		this.quantity = quantity;
 		this.userId = userId;
 		this.dateRecieve = dateRecieve;
-		this.isActive = isActive;
+		this.branchId = branchId;
 	}
-	public String getMaterialListId() {
+
+	public Integer getMaterialListId() {
 		return materialListId;
 	}
-	public void setMaterialListId(String materialListId) {
+
+	public void setMaterialListId(Integer materialListId) {
 		this.materialListId = materialListId;
 	}
+
 	public String getMaterialCode() {
 		return materialCode;
 	}
+
 	public void setMaterialCode(String materialCode) {
 		this.materialCode = materialCode;
 	}
-	public String getQuantity() {
+
+	public RawMaterialEntity getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(RawMaterialEntity material) {
+		this.material = material;
+	}
+
+	public Integer getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(String quantity) {
+
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-	public String getUserId() {
+
+	public Integer getUserId() {
 		return userId;
 	}
-	public void setUserId(String userId) {
+
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	public String getDateRecieve() {
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+
+	public Date getDateRecieve() {
 		return dateRecieve;
 	}
-	public void setDateRecieve(String dateRecieve) {
+
+	public void setDateRecieve(Date dateRecieve) {
 		this.dateRecieve = dateRecieve;
 	}
-	public String getIsActive() {
-		return isActive;
+
+	public Integer getBranchId() {
+		return branchId;
 	}
-	public void setIsActive(String isActive) {
-		this.isActive = isActive;
+
+	public void setBranchId(Integer branchId) {
+		this.branchId = branchId;
 	}
-	
+
+	public BranchEntity getBranch() {
+		return branch;
+	}
+
+	public void setBranch(BranchEntity branch) {
+		this.branch = branch;
+	}
+
 	
 }

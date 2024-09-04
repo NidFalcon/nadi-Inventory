@@ -1,6 +1,8 @@
 package com.cpi.is.controller;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,9 +12,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.cpi.is.dao.RawMaterialDAO;
+import com.cpi.is.dao.impl.BranchDAOImpl;
+import com.cpi.is.dao.impl.RawMaterialDAOImpl;
+import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
+import com.cpi.is.dao.impl.UserDAOImpl;
+import com.cpi.is.entity.BranchEntity;
+import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.entity.UserEntity;
+import com.cpi.is.service.impl.BranchServiceImpl;
+import com.cpi.is.service.impl.InventoryServiceImpl;
+import com.cpi.is.service.impl.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.UserServiceImpl;
+import com.cpi.is.util.HBUtil;
 
+import org.hibernate.Session;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -28,8 +44,10 @@ public class UserController extends HttpServlet {
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
+	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
+    
 	
-    /**
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public UserController() {
@@ -96,10 +114,21 @@ public class UserController extends HttpServlet {
 						}
 					}
 				}
+			} else if ("showRegisterPage".equals(action)) {
+				JSONArray test = new JSONArray(branchService.getBranch());
+				System.out.println(test);
+				request.setAttribute("branches", test );
+				page="pages/registration.jsp";
+			} else if ("registerNewUser".equals(action)) {
+				request.setAttribute("message", userService.registerNewUser(request));
+				page = "pages/message.jsp";
 			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			System.out.println(page);
 			request.getRequestDispatcher(page).forward(request, response);
 		}
 	}

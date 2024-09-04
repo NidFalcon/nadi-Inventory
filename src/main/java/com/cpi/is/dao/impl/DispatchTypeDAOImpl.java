@@ -12,23 +12,23 @@ import com.cpi.is.util.HBUtil;
 public class DispatchTypeDAOImpl implements DispatchTypeDAO {
 
 	@Override
-	public List<DispatchTypeEntity> getDispatchTypes() throws Exception {
-		List<DispatchTypeEntity> dispatchTypesX = null;
+	public List<DispatchTypeEntity> getDispatchType() throws Exception {
+		List<DispatchTypeEntity> dispatchType = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
-			dispatchTypesX = session.createQuery("FROM DispatchTypeEntity T ORDER BY T.dispatchTypeCode ASC", DispatchTypeEntity.class).list();
+			dispatchType = session.createQuery("FROM DispatchTypeEntity T ORDER BY T.dispatchTypeCode ASC", DispatchTypeEntity.class).list();
 		}
-		return dispatchTypesX;
+		return dispatchType;
 	}
 
 	@Override
-	public String saveItem(DispatchTypeEntity dispatchType) throws Exception {
+	public String saveItem(DispatchTypeEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
-			if (dispatchType.getDispatchTypeCode() == null || dispatchType.getDispatchTypeCode().isEmpty()) {
-				session.persist(dispatchType); // add a new record
+			if (item.getDispatchTypeCode() == null || item.getDispatchTypeCode().isEmpty()) {
+				session.persist(item);
 			} else {
-				session.merge(dispatchType); // update an existing record
+				session.merge(item);
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -41,11 +41,11 @@ public class DispatchTypeDAOImpl implements DispatchTypeDAO {
 	}
 
 	@Override
-	public String deleteItem(DispatchTypeEntity dispatchType) throws Exception {
+	public String deleteItem(DispatchTypeEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
-			session.remove(session.contains(dispatchType) ? dispatchType : session.merge(dispatchType));
+			session.remove(session.contains(item) ? item : session.merge(item));
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {

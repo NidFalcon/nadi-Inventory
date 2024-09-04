@@ -1,8 +1,7 @@
-<div id="divDispatchTypesTable"></div>
+<div id="divDispatchTypeTable"></div>
 <br>
-<div id="divDispatchTypesForm">
+<div id="divDispatchTypeForm">
   <form>
-    <input type="hidden" id="txtIsActive" value="" />
     <table>
       <tr>
         <td><label for="txtDispatchTypeCode">Dispatch Type CD</label></td>
@@ -11,6 +10,10 @@
       <tr>
         <td><label for="txtDispatchTypeName">Dispatch Type Name</label></td>
         <td><input type="text" class="input" id="txtDispatchTypeName" /></td>
+      </tr>
+      <tr>
+        <td><label for="chkIsActive">Active</label></td>
+        <td><input type="checkbox" id="chkIsActive" /></td>
       </tr>
       <tr>
         <td></td>
@@ -25,6 +28,6 @@
 </div>
 <br>
 <script type="text/javascript">
-	var dispatchTypes = JSON.parse('${dispatchTypes}');
+    var dispatchType = JSON.parse('${dispatchType}');
 </script>
-<script src="js/maintenance/dispatchTypes.js"></script>
+<script src="js/maintenance/dispatch_type.js"></script>
