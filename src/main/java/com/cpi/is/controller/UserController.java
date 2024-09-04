@@ -21,7 +21,6 @@ import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.BranchServiceImpl;
-import com.cpi.is.service.impl.InventoryServiceImpl;
 import com.cpi.is.service.impl.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.UserServiceImpl;
 import com.cpi.is.util.HBUtil;

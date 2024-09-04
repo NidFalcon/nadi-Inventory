@@ -124,4 +124,3 @@ public class RawMaterialListEntity {
 		this.branch = branch;
 	}
 }
-
