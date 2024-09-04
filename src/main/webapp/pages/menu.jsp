@@ -31,7 +31,7 @@
                                 <a class="nav-link" href="#" btn="btnReports"><i class="bi bi-clipboard-data-fill me-1"></i>Reports</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" id=""><i class="bi bi-truck me-1"></i>Dispatch</a>
+                                <a class="nav-link" href="#" id="btnDispatching"><i class="bi bi-truck me-1"></i>Dispatch</a>
 
                             </li>
                             <li class="nav-item dropdown">
