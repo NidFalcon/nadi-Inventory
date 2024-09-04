@@ -54,7 +54,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                            	<a class="nav-link" href="#" id="btnDPP">DPP</a>
+                            	<a class="nav-link" href="#" id="btnDpp">DPP</a>
                             </li>
                         </ul>
                     </div>

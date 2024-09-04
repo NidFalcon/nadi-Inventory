@@ -24,6 +24,7 @@ $('#btnInventory').click(function() {
 });
 
 $('#btnDpp').click(function () {
+	console.log("dpp");
 	$.post('DppController', {
 		action: 'showDpp'
 	}, function(response) {
