@@ -11,12 +11,7 @@
   	<property name="passwordEncoder" ref="passwordEncoder" />
   </bean>
   
-  <bean id="inventoryDAO" class="com.cpi.is.dao.impl.InventoryDAOImpl"></bean>
   <bean id="rawMaterialListDAO" class="com.cpi.is.dao.impl.RawMaterialListDAOImpl"></bean>
-  
-  <bean id="inventoryService" class="com.cpi.is.service.impl.InventoryServiceImpl" depends-on="inventoryDAO">
-  	<property name="inventoryDAO" ref="inventoryDAO" />
-  </bean>
   <bean id="rawMaterialListService" class="com.cpi.is.service.impl.RawMaterialListServiceImpl" depends-on="rawMaterialListDAO, rawMaterialDAO, branchDAO, userDAO">
   	<property name="rawMaterialListDAO" ref="rawMaterialListDAO" />
   </bean>

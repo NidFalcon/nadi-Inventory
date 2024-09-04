@@ -7,23 +7,24 @@ $('#btnLogout').click(function () {
 	});
 });
 
-$('#btnDashboard').click(function() {
-	$.get('DashboardController', {
-		action: 'showDashboard'
+$('#btnRawMaterials').click(function() {
+	$.get('RawMaterialListController', {
+		action: 'showRawMaterialList'
 	}, function(response) {
 		$('#divContent').html(response);
 	});
 });
 
-$('#btnInventory').click(function() {
-	$.get('InventoryController', {
-		action: 'showInventory'
+$('#btnDashboard').click(function () {
+	$.post('DashboardController' , {
+		action:'showDashboard'
 	}, function(response) {
 		$('#divContent').html(response);
 	});
 });
 
 $('#btnDpp').click(function () {
+	console.log("dpp");
 	$.post('DppController', {
 		action: 'showDpp'
 	}, function(response) {

@@ -1,15 +1,4 @@
 
-<!-- 
-<ul class="menu">
-  <li><button type="button" class="button white" id="btnDashboard">Dashboard</button></li>
-  <li><button type="button" class="button white" id="btnInventory">Inventory</button></li>
-  <li><button type="button" class="button white" id="btnDpp">Daily Planned Production</button></li>
-  <li><button type="button" class="button white" id="btnMngDispatchType">Dispatch Types</button></li>
-  <li><button type="button" class="button white" id="btnMngBranch">Branches</button></li>
-  <li><button type="button" class="button white" id="btnDispatching">Dispatching</button></li>
-  <li><button type="button" class="button white" id="btnReports">Reports</button></li>
--->
-
     <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg"
@@ -42,7 +31,8 @@
                                 <a class="nav-link" href="#" btn="btnReports"><i class="bi bi-clipboard-data-fill me-1"></i>Reports</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" id=""><i class="bi bi-truck me-1"></i>Dispatch</a>
+                                <a class="nav-link" href="#" id="btnDispatching"><i class="bi bi-truck me-1"></i>Dispatch</a>
+
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-database-fill-gear me-1"></i>Maintenance</a>
@@ -54,7 +44,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                            	<a class="nav-link" href="#" id="btnDPP">DPP</a>
+                            	<a class="nav-link" href="#" id="btnDpp">DPP</a>
                             </li>
                         </ul>
                     </div>
