@@ -46,8 +46,6 @@ public class DppController extends HttpServlet {
             if ("showDpp".equals(action)) {
                 request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
                 request.setAttribute("sku", new JSONArray(skuService.getSku()));
-                request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
-                
                 page = "pages/dpp.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = dppService.saveItem(request);

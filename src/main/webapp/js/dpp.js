@@ -29,20 +29,59 @@ function createOptions(){
 		}
 	})
 	$(".selectSkuCode").html(html);
-	
-	html = '';
-	$.each(dpp, function(index, item){
-		if ("y" == item.isActive){
-			html += '<option id="item'+item.dispatchTypeCode+'" value="'+"" +item.dispatchTypeCode+'">'+item.dispatchTypeCode+ " " +item.dispatchTypeName+'</option>';
-		}
-	})
-	$(".selectStatus").html(html);
 }
 
 $('#btnShowUpdateDpp').hide();
 $('#btnShowDeleteDpp').hide();
 
+function createItem() {
+	let dppId = $('#txtDppId').val().trim();
+	let item = {
+		dppId: dppId === '' ? null : parseInt(dppId, 10),
+		productionDate: $('#txtProductionDate').val(),
+		//branchId: $('#txtBranchId').val(),
+		skuCode: $('#selectSkuCode').val(),
+		quantity: $('#txtQuantity').val(),
+		status: $('#selectStatus').val()
+	};
+	console.log(item)
+	return item;
+}
+
+function validate(item) {
+	let valid = true;
+	if (item.productionDate === '' || item.branchId === '' || item.skuCode === '' || item.quantity === '' || item.status === '') {
+		alert('Please correctly fill out all required fields');
+		valid = false;
+	} else if (item.quantity < 0) {
+		alert('Quantity must be a non-negative number');
+		valid = false;
+	}
+	return valid;
+}
+
+function addItem() {
+	let item = createItem();
+	if (validate(item)) {
+		$.post('DppController', {
+			action: 'saveItem',
+			item: JSON.stringify(item)
+		}, function(response) {
+			if (response.includes('success')) {
+				$('#btnCloseAddModal').click();
+				$('#btnDpp').click();
+			} else {
+				alert('Unable to save changes');
+			}
+		});
+	}
+}
+
+$('#btnAddDpp').click(addItem);
+
 createOptions();
+
+
 
 /*
 function toggleAddButton() {

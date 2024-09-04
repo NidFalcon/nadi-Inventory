@@ -43,8 +43,8 @@
 							class="form-control" type="date" />
 					</div>
 					<div class="mb-3">
-						<label for="txtSkuCode">SKU Code</label>
-						<select type="submit" class="form-control selectSkuCode"></select>
+						<label for="selectSkuCode">SKU Code</label>
+						<select type="submit" class="form-select selectSkuCode" id="selectSkuCode"></select>
 					</div>
 					<div class="mb-3">
 						<label for="txtQuantity">Quantity</label>
@@ -52,8 +52,10 @@
 					</div>
 					<div class="mb-3">
 						<label for="selectStatus">Status</label>
-				        <select id="selectStatus">
-				            <!-- Options will be added dynamically -->
+				        <select id="selectStatus" class="form-select">
+				            <option value="Planned">Planned</option>
+				            <option value="In Progress">In Progress</option>
+				            <option value="Completed">Completed</option>
 				        </select>
 					</div>
 				</form>
@@ -61,7 +63,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnAddSku">Add
+				<button type="button" class="btn btn-primary" id="btnAddDpp">Add
 					SKU</button>
 			</div>
 		</div>
@@ -71,6 +73,5 @@
 <script type="text/javascript">
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
-    var dispatchType = JSON.parse('${dispatchType}');
 </script>
 <script src="js/dpp.js"></script>

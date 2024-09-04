@@ -1,7 +1,7 @@
 <main role="main" class="m-4">
 	<div class="alert alert-warning d-none mt-1" role="alert" id="divAlert"></div>
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mt-2 pb-2 mb-3 border-bottom">
-		<h1 class="h2"><i class="bi bi-boxes me-2"></i>Raw Material List</h1>
+		<h1 class="h2"><i class="bi bi-boxes me-2"></i>SKU Codes</h1>
 		<div class="btn-toolbar mb-2 mb-md-0">
 			<button type="button" class="btn btn-primary me-1" data-bs-toggle="modal"
 				data-bs-target="#addModal">+ add</button>

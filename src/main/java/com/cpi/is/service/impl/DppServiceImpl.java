@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONObject;
 import com.cpi.is.dao.impl.DppDAOImpl;
 import com.cpi.is.entity.DppEntity;
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.DppService;
 
 public class DppServiceImpl implements DppService {
@@ -40,8 +41,10 @@ public class DppServiceImpl implements DppService {
 
     @Override
     public String saveItem(HttpServletRequest request) throws Exception {
-        return dppDAO.saveItem(
-                jsonToEntity(new JSONObject(request.getParameter("item"))));
+    	JSONObject newDppJson = new JSONObject(request.getParameter("item"));
+    	UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+    	newDppJson.put("branchId", user.getBranchId());
+        return dppDAO.saveItem(jsonToEntity(newDppJson));
     }
 
     @Override
