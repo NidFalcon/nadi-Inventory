@@ -71,7 +71,7 @@
 </div>
 
 <!-- update modal -->
-<div class="modal fade" id="addModal" tabindex="-1"
+<div class="modal fade" id="updateModal" tabindex="-1"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -88,7 +88,7 @@
                 		<td><input type="text" id="txtDppId" readonly /></td>
 						 -->
 						<label for="txtUpdateDppId" class="col-form-label">DPP ID:</label>
-						<input type="text" class="form-control" id="txtcDppId" value = '' readonly>
+						<input type="text" class="form-control" id="txtUpdateDppId" value = '' readonly>
 					</div>
 					<div class="mb-3">
 						<label for="txtUpdateProductionDate" class="col-form-label">Production Date:</label>
@@ -116,8 +116,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseUpdateModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnUpdateDpp">Add
-					SKU</button>
+				<button type="button" class="btn btn-primary" id="btnUpdateDpp">Update DPP</button>
 			</div>
 		</div>
 	</div>

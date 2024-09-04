@@ -50,14 +50,15 @@ dppTable.on('rowClick',function() {
 
 function populateForm(row) {
 	if(row !== undefined) {
-		$('#updateSkuCode').val(row.skuCode);
-		$('#updateSkuName').val(row.skuName);
-		$('#updateSkuUnitOfMesaurement').val(row.unitOfMeasurement);
-		row.isActive === 'y' ? $('#updateIsActive').prop('checked', true) : $('#updateIsActive').prop('checked', false);
+		$('#txtUpdateDppId').val(row.dppId)
+		$('#selectUpdateSkuCode').val(row.skuCode);
+		$('#txtUpdateProductionDate').val(row.productionDate);
+		$('#txtUpdateQuantity').val(row.quantity);
+		$('#selectUpdateStatus').val(row.status)
 	}
 }
 
-function createItem() {
+function createItem(crudOperation) {
 	let dppId;
 	let item;
 	if (crudOperation === "create"){
@@ -95,8 +96,8 @@ function validate(item) {
 	return valid;
 }
 
-function addItem() {
-	let item = createItem();
+function addItem(crudOperation) {
+	let item = createItem(crudOperation);
 	if (validate(item)) {
 		$.post('DppController', {
 			action: 'saveItem',
@@ -112,8 +113,13 @@ function addItem() {
 	}
 }
 
-$('#btnAddDpp').click(addItem);
-$('#btnUpdateDpp').click(addItem);
+$('#btnAddDpp').click(function(){
+	addItem("create");
+});
+$('#btnUpdateDpp').click(function(){
+	console.log("UPDATING");
+	addItem("update");
+});
 
 createOptions();
 
