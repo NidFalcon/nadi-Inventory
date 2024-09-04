@@ -100,6 +100,10 @@
 	</div>
 </div>
 <!--
+=======
+<div id="divSkuTable"></div>
+<br>
+>>>>>>> dispatch_module
 <div id="divSkuForm">
   <form>
     <table>
@@ -131,6 +135,7 @@
   </form>
 </div>
 <br>
+<<<<<<< HEAD
 -->
 <script type="text/javascript">
     var sku = JSON.parse('${sku}');

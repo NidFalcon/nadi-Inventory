@@ -45,4 +45,9 @@
   <bean id="rawMaterialService" class="com.cpi.is.service.impl.RawMaterialServiceImpl" depends-on="rawMaterialDAO">
   	<property name="rawMaterialDAO" ref="rawMaterialDAO" />
   </bean>
+  
+  <bean id="dispatchingDAO" class="com.cpi.is.dao.impl.DispatchingDAOImpl"></bean>
+  <bean id="dispatchingService" class="com.cpi.is.service.impl.DispatchingServiceImpl" depends-on="dispatchingDAO">
+  	<property name="dispatchingDAO" ref="dispatchingDAO" />
+  </bean>
 </beans>

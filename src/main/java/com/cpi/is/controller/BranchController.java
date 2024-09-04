@@ -18,12 +18,14 @@ import com.cpi.is.service.BranchService;
  */
 @WebServlet("/BranchController")
 public class BranchController extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     private static String action = "";
     private static String page = "";
 
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private BranchService branchService = (BranchService) context.getBean("branchService");
+
     /**
      * @see HttpServlet#HttpServlet()
      */

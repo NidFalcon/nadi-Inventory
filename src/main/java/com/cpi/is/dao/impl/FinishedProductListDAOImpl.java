@@ -9,7 +9,7 @@ import com.cpi.is.dao.BranchDAO;
 import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.util.HBUtil;
 
-public class BranchDAOImpl implements BranchDAO {
+public class FinishedProductListDAOImpl implements BranchDAO {
 
     @Override
     public List<BranchEntity> getBranch() throws Exception {
@@ -19,21 +19,6 @@ public class BranchDAOImpl implements BranchDAO {
         }
         return branchList;
     }
-    
-	public BranchEntity getBranch(Integer branchId) {
-		BranchEntity foundBranch = null;
-		try (Session session = HBUtil.getSessionFactory().openSession()) {
-			List<BranchEntity> results = (List<BranchEntity>) session
-					.createQuery("FROM BranchEntity B WHERE B.branchId = :branchId", BranchEntity.class)
-					.setParameter("branchId", branchId)
-					.list();
-			if (results.size() > 0) {
-				foundBranch = results.get(0);
-			}
-			
-			return foundBranch;
-		}
-	}
 
     @Override
     public String saveItem(BranchEntity item) throws Exception {

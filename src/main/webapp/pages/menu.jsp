@@ -6,11 +6,8 @@
   <li><button type="button" class="button white" id="btnDpp">Daily Planned Production</button></li>
   <li><button type="button" class="button white" id="btnMngDispatchType">Dispatch Types</button></li>
   <li><button type="button" class="button white" id="btnMngBranch">Branches</button></li>
-  <li><button type="button" class="button white" id="btnMngSku">SKU</button></li>
-  <li><button type="button" class="button white" id="btnMngRawMaterial">Raw Materials</button></li>
-  <li><button type="button" class="button white" id="btnLogout">Logout (${username})</button></li>
-</ul>
-
+  <li><button type="button" class="button white" id="btnDispatching">Dispatching</button></li>
+  <li><button type="button" class="button white" id="btnReports">Reports</button></li>
 -->
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
