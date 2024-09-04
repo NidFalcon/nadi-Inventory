@@ -1,15 +1,15 @@
-<div id="divBranchTable"></div>
+<div id="divDispatchTypeTable"></div>
 <br>
-<div id="divBranchForm">
+<div id="divDispatchTypeForm">
   <form>
     <table>
       <tr>
-        <td><label for="txtBranchId">Branch ID</label></td>
-        <td><input type="text" class="input" id="txtBranchId" /></td>
+        <td><label for="txtDispatchTypeCode">Dispatch Type CD</label></td>
+        <td><input type="text" class="input" id="txtDispatchTypeCode" /></td>
       </tr>
       <tr>
-        <td><label for="txtBranchName">Branch Name</label></td>
-        <td><input type="text" class="input" id="txtBranchName" /></td>
+        <td><label for="txtDispatchTypeName">Dispatch Type Name</label></td>
+        <td><input type="text" class="input" id="txtDispatchTypeName" /></td>
       </tr>
       <tr>
         <td><label for="chkIsActive">Active</label></td>
@@ -28,6 +28,6 @@
 </div>
 <br>
 <script type="text/javascript">
-    var branch = JSON.parse('${branch}');
+    var dispatchType = JSON.parse('${dispatchType}');
 </script>
-<script src="js/maintenance/branch.js"></script>
+<script src="js/navbar/maintenance/dispatch_type.js"></script>

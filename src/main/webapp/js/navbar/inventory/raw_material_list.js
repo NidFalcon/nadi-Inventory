@@ -1,14 +1,17 @@
 var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
-	layout: 'fitColumns',
+	layout: 'fitDataFill',
 	data: rawMaterialList,
 	pagination: 'local',
 	pagination: true,
-	paginationSize: 5,
+	paginationSize: 10,
 	paginationSizeSelector:[5, 10, 15, 20],
 	paginationCounter:"rows",
 	selectableRows:1,
 	movableColumns:true,
 	responsiveLayout:true,
+	initialSort: [
+		{column:"materialListId", dir:"asc"}
+	],
 	columns: [
 		{title:"Material ID", field: 'materialListId'},
 		{title:"Material Code", field: 'material.materialCode'},
@@ -32,7 +35,6 @@ rawMaterialTable.on('rowClick',function() {
 		$('#btnUpdateMaterial').show();
 		$('#btnDeleteMaterial').show();
 	} else {
-		resetForm();
 		$('#btnUpdateMaterial').hide();
 		$('#btnDeleteMaterial').hide();
 	}
@@ -69,13 +71,6 @@ function populateDeleteForm(row) {
 		$('#deleteRawMaterialBranchId').val(row.branchId);	
 	}
 }
-
-function resetForm() {
-	rawMaterialTable.deselectRow();	
-	$('#updateRawMaterialName').val(''),
-	$('#updateRawMaterialQuantity').val(''),
-	$('#updateRawMaterialListDateSelected').val('')
-};
 
 function createItem(isAdd) {
 	let item = {
@@ -161,4 +156,3 @@ $('#btnDeleteRawMaterial').click(function() {
 });
 
 createOptions();
-console.log(rawMaterialList);
