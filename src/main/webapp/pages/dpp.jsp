@@ -70,6 +70,59 @@
 	</div>
 </div>
 
+<!-- update modal -->
+<div class="modal fade" id="addModal" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Update DPP:</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="mb-3">
+						<!-- 
+						<td><label for="txtDppId">c</label></td>
+                		<td><input type="text" id="txtDppId" readonly /></td>
+						 -->
+						<label for="txtUpdateDppId" class="col-form-label">DPP ID:</label>
+						<input type="text" class="form-control" id="txtcDppId" value = '' readonly>
+					</div>
+					<div class="mb-3">
+						<label for="txtUpdateProductionDate" class="col-form-label">Production Date:</label>
+						<input id="txtUpdateProductionDate"
+							class="form-control" type="date" />
+					</div>
+					<div class="mb-3">
+						<label for="selectUpdateSkuCode">SKU Code</label>
+						<select type="submit" class="form-select selectSkuCode" id="selectUpdateSkuCode"></select>
+					</div>
+					<div class="mb-3">
+						<label for="txtUpdateQuantity">Quantity</label>
+                		<input type="number" id="txtUpdateQuantity" class="form-control" min="1"/>
+					</div>
+					<div class="mb-3">
+						<label for="selectUpdateStatus">Status</label>
+				        <select id="selectUpdateStatus" class="form-select">
+				            <option value="Planned">Planned</option>
+				            <option value="In Progress">In Progress</option>
+				            <option value="Completed">Completed</option>
+				        </select>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btnCloseAddModal"
+					data-bs-dismiss="modal" id="btnCloseUpdateModal">Close</button>
+				<button type="button" class="btn btn-primary" id="btnUpdateDpp">Add
+					SKU</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');

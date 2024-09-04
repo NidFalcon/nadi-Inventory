@@ -34,16 +34,51 @@ function createOptions(){
 $('#btnShowUpdateDpp').hide();
 $('#btnShowDeleteDpp').hide();
 
+dppTable.on('rowClick',function() {
+	let row = dppTable.getSelectedData()[0];
+	if (row !== undefined) {
+		populateForm(row);
+		//populateDeleteForm(row);
+		$('#btnShowUpdateDpp').show();
+		$('#btnShowDeleteDpp').show();
+	} else {
+		resetForm();
+		$('#btnShowUpdateDpp').hide();
+		$('#btnShowDeleteDpp').hide();
+	}
+})
+
+function populateForm(row) {
+	if(row !== undefined) {
+		$('#updateSkuCode').val(row.skuCode);
+		$('#updateSkuName').val(row.skuName);
+		$('#updateSkuUnitOfMesaurement').val(row.unitOfMeasurement);
+		row.isActive === 'y' ? $('#updateIsActive').prop('checked', true) : $('#updateIsActive').prop('checked', false);
+	}
+}
+
 function createItem() {
-	let dppId = $('#txtDppId').val().trim();
-	let item = {
-		dppId: dppId === '' ? null : parseInt(dppId, 10),
-		productionDate: $('#txtProductionDate').val(),
-		//branchId: $('#txtBranchId').val(),
-		skuCode: $('#selectSkuCode').val(),
-		quantity: $('#txtQuantity').val(),
-		status: $('#selectStatus').val()
-	};
+	let dppId;
+	let item;
+	if (crudOperation === "create"){
+		dppId = $('#txtDppId').val().trim();
+		item = {
+			dppId: dppId === '' ? null : parseInt(dppId, 10),
+			productionDate: $('#txtProductionDate').val(),
+			skuCode: $('#selectSkuCode').val(),
+			quantity: $('#txtQuantity').val(),
+			status: $('#selectStatus').val()
+		};
+	} else if (crudOperation === "update"){
+		dppId = $('#txtUpdateDppId').val().trim();
+		item = {
+			dppId: dppId === '' ? null : parseInt(dppId, 10),
+			productionDate: $('#txtUpdateProductionDate').val(),
+			skuCode: $('#selectUpdateSkuCode').val(),
+			quantity: $('#txtUpdateQuantity').val(),
+			status: $('#selectUpdateStatus').val()
+		};
+	}
 	console.log(item)
 	return item;
 }
@@ -78,6 +113,7 @@ function addItem() {
 }
 
 $('#btnAddDpp').click(addItem);
+$('#btnUpdateDpp').click(addItem);
 
 createOptions();
 
