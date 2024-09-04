@@ -1,3 +1,105 @@
+var rawMaterials = new Tabulator("#divRawMaterialTable" , {
+	layout: 'fitColumns',
+	data: rawMaterial,
+	pagination: 'local',
+	pagination: true,
+	paginationSize: 5,
+	paginationSizeSelector:[5, 10, 15, 20],
+	paginationCounter:"rows",
+	selectableRows:1,
+	movableColumns:true,
+	responsiveLayout:true,
+	columns: [
+		{title:"Material Code", field: 'materialCode'},
+		{title:"Material Name", field: 'materialName'},
+		{title:"Unit of Measurement", field: 'unitOfMeasurement'},
+		{title:"Active", field: 'isActive'}
+	],
+});
+
+$('#btnShowUpdateRawMaterial').hide();
+$('#btnShowDeleteRawMaterial').hide();
+
+rawMaterials.on('rowClick',function() {
+	let row = rawMaterials.getSelectedData()[0];
+	if (row !== undefined) {
+		populateForm(row);
+		//populateDeleteForm(row);
+		$('#btnShowUpdateRawMaterial').show();
+		$('#btnShowDeleteRawMaterial').show();
+	} else {
+		resetForm();
+		$('#btnShowUpdateRawMaterial').hide();
+		$('#btnShowUpdateRawMaterial').hide();
+	}
+})
+
+function populateForm(row) {
+	if(row !== undefined) {
+		$('#txtUpdateRawMaterialCode').val(row.materialCode)
+		$('#txtUpdateRawMaterialName').val(row.materialName);
+		$('#txtUpdateRawMaterialUnit').val(row.unitOfMeasurement);
+		row.isActive === 'y' ? $('#chkUpdateRawMaterialIsActive').prop('checked', true) : $('#chkUpdateRawMaterialIsActive').prop('checked', false);
+	}
+}
+
+function createItem(crudOperation) {
+	let rawMaterial;
+	if (crudOperation === "create"){
+		item = {
+			materialCode: $('#txtMaterialCode').val() !== '' ? $('#txtMaterialCode').val() : '',
+			materialName: $('#txtRawMaterialName').val(),
+			unitOfMeasurement: $('#txtRawMaterialUnit').val(),
+			isActive: $('#chkRawMaterialIsActive').is(':checked') ? 'y' : 'n',
+		};
+	} else if (crudOperation === "update"){
+		item = {
+			materialCode: $('#txtUpdateRawMaterialCode').val() !== '' ? $('#txtUpdateRawMaterialCode').val() : '',
+			materialName: $('#txtUpdateRawMaterialName').val(),
+			unitOfMeasurement: $('#txtUpdateRawMaterialUnit').val(),
+			isActive: $('#chkUpdateRawMaterialIsActive').is(':checked') ? 'y' : 'n',
+		};
+	}
+	return item;
+}
+
+function validate(item) {
+    let valid = true;
+    if (item.materialName === '') {
+        alert('Please fill out the Material Name');
+        valid = false;
+    }
+    return valid;
+}
+
+function addItem(crudOperation) {
+    let item = createItem(crudOperation);
+	console.log(item);
+	if (validate(item)) {
+        $.post('RawMaterialController', {
+            action: 'saveItem',
+            item: JSON.stringify(item)
+        }, function(response) {
+            if (response.includes('success')) {
+				$('.btnCloseModal').click();
+                $('#btnMngMaterial').click();
+            } else {
+                alert('Unable to save changes');
+            }
+        });
+    }
+}
+
+
+$('#btnAddRawMaterial').click(function(){
+	addItem("create");
+});
+$('#btnUpdateRawMaterial').click(function(){
+	addItem("update");
+});
+
+
+/*
 function toggleAddButton() {
     if ('' === $('#txtMaterialCode').val()) {
         $('#btnAdd').html('Add');
@@ -106,3 +208,4 @@ $('#btnDelete').click(function() {
 });
 
 createRawMaterialTable(rawMaterial);
+*/
