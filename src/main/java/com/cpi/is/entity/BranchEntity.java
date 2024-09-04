@@ -1,6 +1,4 @@
 package com.cpi.is.entity;
-
-
 import java.io.Serializable;
 import java.util.List;
 

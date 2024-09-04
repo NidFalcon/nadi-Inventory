@@ -53,7 +53,6 @@ public class UserDAOImpl{
 		}
 		return authenticated;
 	}
-
 	//@Override
 	public String registerUser(UserEntity user) throws Exception {
 		Transaction transaction = null;
@@ -92,3 +91,4 @@ public class UserDAOImpl{
 	}
 
 }
+

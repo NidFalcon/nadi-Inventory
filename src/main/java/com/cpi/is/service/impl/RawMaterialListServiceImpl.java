@@ -21,8 +21,7 @@ import com.cpi.is.service.RawMaterialListService;
 
 public class RawMaterialListServiceImpl implements RawMaterialListService{
 	
-	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
-	
+	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();	
 	
 	public RawMaterialListDAOImpl getRawMaterialListDAO() {
 		return rawMaterialListDAO;
