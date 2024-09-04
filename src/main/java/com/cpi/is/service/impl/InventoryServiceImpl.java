@@ -36,7 +36,7 @@ public class InventoryServiceImpl implements InventoryService {
 	    Date dateFinished = null;
 	    try {
 	        // Change the format to match the one used in your JSON
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-DD-YYYY");
 	        dateFinished = dateFormat.parse(dateFinishedStr);
 	    } catch (ParseException e) {
 	        e.printStackTrace();

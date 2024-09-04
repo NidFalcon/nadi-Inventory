@@ -41,7 +41,6 @@ public class RawMaterialListEntity {
 	public RawMaterialListEntity() {
 		super();
 	}
-
 	public RawMaterialListEntity(Integer materialListId, String materialCode, Integer quantity, Integer userId,
 			Date dateRecieve, Integer branchId) {
 		super();
@@ -124,6 +123,5 @@ public class RawMaterialListEntity {
 	public void setBranch(BranchEntity branch) {
 		this.branch = branch;
 	}
-
-	
 }
+

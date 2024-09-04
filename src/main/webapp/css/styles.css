@@ -56,12 +56,13 @@ hr {
   display: inline;
 }
 
-.inventory, .dispatchType, .branch, .sku, .rawMaterial, .dpp {
+.inventory, .dispatchType, .branch, .sku, .rawMaterial, .dpp, .rawMaterial {
   border-collapse: collapse;
   width: 80%;
 }
 
-.inventory th, .inventory td, .dispatchType th, .dispatchType td, .branch th, .branch td, .sku th, .sku td, .rawMaterial th, .rawMaterial td, .dpp th, .dpp td {
+.inventory th, .inventory td, .dispatch th, .dispatch td, .dispatchType th, .dispatchType td, .branch th, .branch td, .sku th, .sku td, .rawMaterial th, .rawMaterial td {
+
   border: 1px solid #ddd;
   padding: 8px;
 }

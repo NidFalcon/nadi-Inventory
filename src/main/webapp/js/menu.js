@@ -66,9 +66,10 @@ $('#btnMngMaterial').click(function () {
 	});
 });
 
-$('#btnDPP').click(function () {
-	$.post('DppController', {
-		action: 'showDpp'
+
+$('#btnDispatching').click(function() {
+	$.get('DispatchingController', {
+		action: 'showDispatching'
 	}, function(response) {
 		$('#divContent').html(response);
 	});

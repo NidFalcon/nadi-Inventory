@@ -96,7 +96,9 @@ $('#btnAddSku').click(function(){
 $('#btnUpdateSku').click(function(){
 	addItem("update");
 });
+
 /*
+>>>>>>> dispatch_module
 function toggleAddButton() {
     if ('' === $('#txtSkuCode').val()) {
         $('#btnAdd').html('Add');
