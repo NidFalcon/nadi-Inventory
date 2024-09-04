@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import com.cpi.is.dao.impl.RawMaterialDAOImpl;
 import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
 import com.cpi.is.dao.impl.UserDAOImpl;
 import com.cpi.is.entity.RawMaterialListEntity;
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.RawMaterialListService;
 
 public class RawMaterialListServiceImpl implements RawMaterialListService{
@@ -38,11 +40,11 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 		
 		return new RawMaterialListEntity(
 				json.getInt("materialListId"),
-				rawMaterialDAOImpl.getRawMaterial(json.getString("materialCode")),
+				json.getString("materialCode"),
 				json.getInt("quantity"),
-				userDao.getUser(json.getInt("userId")),
+				json.getInt("userId"),
 				convertStringToSqlDate(json.getString("dateRecieve")),
-				branchDao.getBranch(json.getInt("branchId")));
+				json.getInt("branchId"));
 	}
 	
 	private static Date convertStringToSqlDate(String dateString) {
@@ -62,20 +64,29 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
         }
     }
 	
-	public List<RawMaterialListEntity>  getRawMaterialList() throws Exception {
-		return rawMaterialListDAO.getRawMaterialList(3);
+	public List<RawMaterialListEntity>  getRawMaterialList(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		return rawMaterialListDAO.getRawMaterialList(user.getBranchId());
 	}
 
 
 
 	@Override
-	public String saveRawMaterial(HttpServletRequest request) throws Exception {
+	public String saveRawMaterial(HttpServletRequest request, HttpSession session) throws Exception {
+		JSONObject json = new JSONObject(request.getParameter("item"));
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		json.put("userId", user.getUserId());
+		json.put("branchId", user.getBranchId());
+		System.out.println(json);
 		return rawMaterialListDAO.saveRawMaterial(
-				jsonToEntity(new JSONObject(request.getParameter("item"))));
+				jsonToEntity(json));
+		//return null;		
 	}
 
 	@Override
 	public String deleteRawMaterial(HttpServletRequest request) throws Exception {
+		System.out.println(request.getParameter("item"));
 		return rawMaterialListDAO.deleteRawMaterial(
 				jsonToEntity(new JSONObject(request.getParameter("item"))));
 	}

@@ -6,12 +6,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.impl.RawMaterialListServiceImpl;
+import com.cpi.is.service.impl.RawMaterialServiceImpl;
 
 @WebServlet("/RawMaterialListController")
 public class RawMaterialListController extends HttpServlet {
@@ -21,8 +24,9 @@ public class RawMaterialListController extends HttpServlet {
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private RawMaterialListServiceImpl rawMaterialListService = (RawMaterialListServiceImpl) context.getBean("rawMaterialListService");
-
-    public RawMaterialListController() {
+	private RawMaterialServiceImpl rawMaterialService = (RawMaterialServiceImpl) context.getBean("rawMaterialService");
+    
+	public RawMaterialListController() {
         super();
 
     }
@@ -31,12 +35,16 @@ public class RawMaterialListController extends HttpServlet {
 		try {
 			action = request.getParameter("action");
 			if ("showRawMaterialList".equals(action)) {
-				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList()));
+				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
+				request.setAttribute("materialOptions", new JSONArray(rawMaterialService.getAllRawMaterials()));
 				page = "pages/rawMaterialList.jsp";
-			} else if ("saveItem".equals(action)) {
-				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request));
+			} else if ("saveRawMaterial".equals(action)) {
+				HttpSession session = request.getSession();
+				System.out.println("saving Item");
+				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
 				page = "pages/message.jsp";
-			} else if ("deleteItem".equals(action)) {
+			} else if ("deleteRawMaterial".equals(action)) {
+				System.out.println("HELLO");
 				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
 				page = "pages/message.jsp";
 			}

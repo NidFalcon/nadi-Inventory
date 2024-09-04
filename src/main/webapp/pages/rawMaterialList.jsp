@@ -31,11 +31,13 @@
 				<form>
 					<div class="mb-3">
 						<label for="rawMaterialId" class="col-form-label">Material ID:</label>
-						<input type="text" class="form-control" id="rawMaterialId" placeholder="0" readonly>
+						<input type="text" class="form-control" id="rawMaterialId" value="0" placeholder="0" readonly>
 					</div>
 					<div class="mb-3">
-						<label for="rawMaterialListName" class="col-form-label">Material Name:</label>
-						<input type="text" class="form-control" id="rawMaterialListName">
+						<label for="rawMaterialListName" class="col-form-label">Material:</label>
+						<select id="rawMaterialListName">
+							<option value="MAT001">FLOUR</option>
+						</select> 
 					</div>
 					<div class="mb-3">
 						<label for="rawMaterialListQuantity" class="col-form-label">Quantity:</label>
@@ -49,8 +51,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-secondary btnCloseAddModal"
+					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
 				<button type="button" class="btn btn-primary" id="btnAddRawMaterial">Add
 					Material</button>
 			</div>
@@ -76,8 +78,10 @@
 						<input type="text" class="form-control" id="updateRawMaterialId" readonly>
 					</div>
 					<div class="mb-3">
-						<label for="updateRawMaterialName" class="col-form-label">Name:</label>
-						<input type="text" class="form-control" id="updateRawMaterialName">
+						<label for="updateRawMaterialName" class="col-form-label">Material:</label>
+						<select id="updateRawMaterialName">
+							<option value="MAT001">FLOUR</option>
+						</select> 
 					</div>
 					<div class="mb-3">
 						<label for="updateRawMaterialQuantity" class="col-form-label">Quantity:</label>
@@ -91,7 +95,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
+				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary"
 					id="btnUpdateRawMaterial">update material</button>
@@ -127,9 +131,9 @@
 				</form>
 			</div>
 			<div class="modal-footer">
+
 				<button type="button" class="btn btn-danger" id="btnDeleteRawMaterial">Yes</button>
-				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
-				
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnDeleteRawMaterialCancel">No</button>				
 			</div>
 		</div>
 	</div>
@@ -137,6 +141,7 @@
 
 <script type=text/javascript>
 	var rawMaterialList = JSON.parse('${rawMaterialList}');
+	var materialOptions = JSON.parse('${materialOptions}');
 </script>
 <script src="js/raw_material_list.js">
 	

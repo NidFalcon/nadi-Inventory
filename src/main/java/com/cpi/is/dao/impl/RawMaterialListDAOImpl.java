@@ -13,7 +13,10 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 
 	public List<RawMaterialListEntity>  getRawMaterialList(Integer targetBranchId) throws Exception {
         try (Session session = HBUtil.getSessionFactory().openSession()){
-        	List<RawMaterialListEntity> rawMaterialLists = session.createQuery("FROM RawMaterialListEntity", RawMaterialListEntity.class).list();
+        	List<RawMaterialListEntity> rawMaterialLists = session.createQuery("FROM RawMaterialListEntity R WHERE R.branchId = :targetBranchId"
+        				, RawMaterialListEntity.class)
+        			    .setParameter("targetBranchId", targetBranchId)
+        			    .list();
         	return rawMaterialLists;
         }
 	}
@@ -54,12 +57,6 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 			throw e;
 		}
 		return "success";
-	}
-
-	@Override
-	public List<Object[]> getRawMaterialList() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

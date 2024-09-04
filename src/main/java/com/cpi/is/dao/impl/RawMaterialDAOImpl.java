@@ -25,5 +25,15 @@ public class RawMaterialDAOImpl implements RawMaterialDAO {
 			return foundMaterial;
 		}
 	}
+	
+	public List<RawMaterialEntity> getAllRawMaterials(){
+		List<RawMaterialEntity> rawMaterials = null;
+		try (Session session = HBUtil.getSessionFactory().openSession()) {
+			rawMaterials = (List<RawMaterialEntity>) session
+					.createQuery("FROM RawMaterialEntity M", RawMaterialEntity.class)
+					.list();
+			return rawMaterials;
+		}
+	}
 
 }
