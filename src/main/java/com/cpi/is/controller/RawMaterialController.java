@@ -43,7 +43,7 @@ public class RawMaterialController extends HttpServlet {
 
             if ("showRawMaterial".equals(action)) {
                 request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
-                page = "pages/maintenance/rawMaterial.jsp";
+                page = "pages/navbar/maintenance/rawMaterial.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = rawMaterialService.saveItem(request);
                 request.setAttribute("message", message);

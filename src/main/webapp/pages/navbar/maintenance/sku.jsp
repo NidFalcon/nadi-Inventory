@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="d-flex justify-content-center mt-5">
-		<div id="divSkuTable"></div> <!--Raw Material Table-->
+		<div id="divSkuTable"></div> <!--SKU Table-->
 	</div>
 </main>
 <br>
@@ -99,45 +99,8 @@
 		</div>
 	</div>
 </div>
-<!--
-=======
-<div id="divSkuTable"></div>
-<br>
->>>>>>> dispatch_module
-<div id="divSkuForm">
-  <form>
-    <table>
-      <tr>
-        <td><label for="txtSkuCode">SKU Code</label></td>
-        <td><input type="text" class="input" id="txtSkuCode" /></td>
-      </tr>
-      <tr>
-        <td><label for="txtSkuName">SKU Name</label></td>
-        <td><input type="text" class="input" id="txtSkuName" /></td>
-      </tr>
-      <tr>
-        <td><label for="txtUnitOfMeasurement">Unit of Measurement</label></td>
-        <td><input type="text" class="input" id="txtUnitOfMeasurement" /></td>
-      </tr>
-      <tr>
-        <td><label for="chkIsActive">Active</label></td>
-        <td><input type="checkbox" id="chkIsActive" /></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <button type="button" class="button" id="btnClear">Clear</button>
-          <button type="button" class="button blue" id="btnAdd">Add</button>
-          <button type="button" class="button red" id="btnDelete">Delete</button>
-        </td>
-      </tr>
-    </table>
-  </form>
-</div>
-<br>
-<<<<<<< HEAD
--->
+
 <script type="text/javascript">
     var sku = JSON.parse('${sku}');
 </script>
-<script src="js/maintenance/sku.js"></script>
+<script src="js/navbar/maintenance/sku.js"></script>

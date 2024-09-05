@@ -51,4 +51,4 @@
 <script type="text/javascript">
     var branch = JSON.parse('${branch}');
 </script>
-<script src="js/maintenance/branch.js"></script>
+<script src="js/navbar/maintenance/branch.js"></script>

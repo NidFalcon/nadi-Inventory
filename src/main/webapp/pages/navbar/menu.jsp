@@ -62,4 +62,4 @@
             </ul>
         </div>
     </nav>
-<script src="js/menu.js"></script>
+<script src="js/navbar/menu.js"></script>

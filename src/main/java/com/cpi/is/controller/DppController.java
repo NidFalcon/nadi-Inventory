@@ -46,7 +46,7 @@ public class DppController extends HttpServlet {
             if ("showDpp".equals(action)) {
                 request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
                 request.setAttribute("sku", new JSONArray(skuService.getSku()));
-                page = "pages/dpp.jsp";
+                page = "pages/navbar/dpp.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = dppService.saveItem(request);
                 request.setAttribute("message", message);
