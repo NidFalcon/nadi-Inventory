@@ -6,7 +6,7 @@
 			<button type="button" class="btn btn-primary me-1" data-bs-toggle="modal"
 				data-bs-target="#addModal">+ add</button>
 			<button type="button" class="btn btn-primary  me-1" data-bs-toggle="modal"
-				data-bs-target="#updateModal" id="btnUpdate">Update</button>
+				data-bs-target="#updateModal" id="btnShowUpdateDispatching">Update</button>
 			<button type="button" class="btn btn-danger  me-1" data-bs-toggle="modal"
 				data-bs-target="#deleteModal" id="btnDelete">Delete</button>
 		</div>
@@ -28,7 +28,7 @@
 			</div>
 			<div class="modal-body">
 				<form>
-					<div class="mb-3">
+					<div class="mb-3 d-none">
 						<label for="addDispatchId" class="col-form-label">Dispatch Type ID:</label>
 						<input type="text" class="form-control" id="addDispatchId" value="0" placeholder="0" readonly>
 					</div>
@@ -49,15 +49,15 @@
 					<div class="row mb-3">
 					   <div class="col-sm-4">
 					        <label for="txtSkuName" class="col-form-label">SKU Name</label>
-					        <input type="text" id="txtSkuName" class="form-control" readonly="readonly"/>
+					        <input type="text" id="txtSkuName" class="form-control txtSkuName" readonly="readonly"/>
 					    </div>
 					    <div class="col-sm-4">
 					        <label for="txtQuantityFPL" class="col-form-label">Quantity</label>
-					        <input type="text" id="txtQuantityFPL" class="form-control" readonly="readonly"/>
+					        <input type="text" id="txtQuantityFPL" class="form-control txtQuantityFPL" readonly="readonly"/>
 					    </div>
 					    <div class="col-sm-4">
 					        <label for="txtDateFinished" class="col-form-label">Date Finished</label>
-					        <input type="text" id="txtDateFinished" class="form-control" readonly="readonly"/>
+					        <input type="text" id="txtDateFinished" class="form-control txtDateFinished" readonly="readonly"/>
 					    </div>
 					</div>
 					<div class="mb-3">
@@ -100,20 +100,37 @@
 			</div>
 			<div class="modal-body">
 				<form>
-					<div class="mb-3">
+					<div class="mb-3" >
 						<label for="updateDispatchId" class="col-form-label">Dispatch Type ID:</label>
 						<input type="text" class="form-control" id="updateDispatchId" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="updateDispatchType" class="col-form-label">Dispatch Type:</label>
-						<select class="form-select" id="updateDispatchType">
+						<select class="form-select selDispatchType" id="updateDispatchType">
 							<option></option>
+							<option value="DIS004">DIS001M</option>
 						</select> 
 					</div>
 					<div class="mb-3">
-						<label for="updateFinishedProductId" class="col-form-label">Finished Product ID:</label>
-						<input type="text" class="form-control"
-							id="updateFinishedProductId">
+						<label for="updateFinishedProductId">Finished Product List</label>
+						<select id="updateFinishedProductId" class="form-select selFinishedProd">
+						            <option value="" class="option">Select Finished Product</option>
+						            <option value="23" class="option">test value 23</option>
+						</select>
+					</div>
+					<div class="row mb-3">
+					   <div class="col-sm-4">
+					        <label for="txtSkuName" class="col-form-label">SKU Name</label>
+					        <input type="text" class="form-control txtSkuName" readonly="readonly"/>
+					    </div>
+					    <div class="col-sm-4">
+					        <label for="txtQuantityFPL" class="col-form-label">Quantity</label>
+					        <input type="text" class="form-control txtQuantityFPL" readonly="readonly"/>
+					    </div>
+					    <div class="col-sm-4">
+					        <label for="txtDateFinished" class="col-form-label">Date Finished</label>
+					        <input type="text" class="form-control txtDateFinished" readonly="readonly"/>
+					    </div>
 					</div>
 					<div class="mb-3">
 						<label for="updateDispatchQuantity" class="col-form-label">Quantity:</label>
@@ -132,6 +149,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
+				<button type="button" class="btn btn-success btnConfirmDate"
+				 >Confirm Date</button>
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary"
