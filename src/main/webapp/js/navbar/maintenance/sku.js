@@ -16,7 +16,7 @@ var skuTable = new Tabulator("#divSkuTable" , {
 		{title:"SKU Code", field: 'skuCode'},
 		{title:"SKU Name", field: 'skuName'},
 		{title:"Unit of Measurement", field: 'unitOfMeasurement'},
-		{title:"Active?", field: 'isActive'},
+		{title:"Active?", field: 'isActive'}
 	],
 });
 
