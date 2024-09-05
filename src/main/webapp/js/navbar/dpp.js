@@ -1,9 +1,9 @@
 var dppTable = new Tabulator("#divDppTable" , {
-	layout: 'fitColumns',
+	layout: 'fitDataFill',
 	data: dpp,
 	pagination: 'local',
 	pagination: true,
-	paginationSize: 5,
+	paginationSize: 10,
 	paginationSizeSelector:[5, 10, 15, 20],
 	paginationCounter:"rows",
 	selectableRows:1,
@@ -31,6 +31,7 @@ function createOptions(){
 	$(".selectSkuCode").html(html);
 }
 
+$('#btnShowMaterialDpp').hide();
 $('#btnShowUpdateDpp').hide();
 $('#btnShowDeleteDpp').hide();
 
@@ -39,10 +40,11 @@ dppTable.on('rowClick',function() {
 	if (row !== undefined) {
 		populateForm(row);
 		//populateDeleteForm(row);
+		$('#btnShowMaterialDpp').show();
 		$('#btnShowUpdateDpp').show();
 		$('#btnShowDeleteDpp').show();
 	} else {
-		resetForm();
+		$('#btnShowMaterialDpp').hide();
 		$('#btnShowUpdateDpp').hide();
 		$('#btnShowDeleteDpp').hide();
 	}
@@ -123,7 +125,27 @@ $('#btnUpdateDpp').click(function(){
 
 createOptions();
 
+// for Adding Materials
 
+function addselect() {
+	let html = '';
+	html += '<tr id="newMaterialSelect">',
+	html += '	<td><Select class="form-select selectMaterial" id="selectMaterial">',
+	html += '		<option></option>',
+	html += '	</Select></td>',
+	html += '	<td><input type="number" class="form-control" min="1"></td>',
+	html += '</tr>'
+	
+	$('#selectAdd').click(function () {
+		$('.table').append(html)
+	})
+	
+	$('#btnCloseAddSelectModal').click(function () {
+		$('.table #newMaterialSelect').remove();
+	})
+}	
+
+addselect();
 
 /*
 function toggleAddButton() {
