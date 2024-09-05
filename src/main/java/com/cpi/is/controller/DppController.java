@@ -12,6 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.DispatchTypeService;
 import com.cpi.is.service.DppService;
+import com.cpi.is.service.RawMaterialService;
 import com.cpi.is.service.SkuService;
 
 /**
@@ -27,7 +28,7 @@ public class DppController extends HttpServlet {
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private DppService dppService = (DppService) context.getBean("dppService");
     private SkuService skuService = (SkuService) context.getBean("skuService");
-	private DispatchTypeService dispatchTypeService = (DispatchTypeService) context.getBean("dispatchTypeService");
+    private RawMaterialService rawMaterialService = (RawMaterialService) context.getBean("rawMaterialService");
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -46,6 +47,7 @@ public class DppController extends HttpServlet {
             if ("showDpp".equals(action)) {
                 request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
                 request.setAttribute("sku", new JSONArray(skuService.getSku()));
+                request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
                 page = "pages/dpp.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = dppService.saveItem(request);
