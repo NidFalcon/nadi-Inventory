@@ -46,6 +46,9 @@
                             <li class="nav-item">
                             	<a class="nav-link" href="#" id="btnDpp">DPP</a>
                             </li>
+                            <li class="nav-item">
+                            	<a class="nav-link" href="#" id="btnProductionMaterial">Production Materials</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
