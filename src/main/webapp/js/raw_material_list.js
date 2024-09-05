@@ -1,9 +1,9 @@
 var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
-	layout: 'fitColumns',
+	layout: 'fitDataFill',
 	data: rawMaterialList,
 	pagination: 'local',
 	pagination: true,
-	paginationSize: 5,
+	paginationSize: 10,
 	paginationSizeSelector:[5, 10, 15, 20],
 	paginationCounter:"rows",
 	selectableRows:1,
@@ -16,7 +16,7 @@ var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
 		{title:"Quantity", field: 'quantity'},
 		{title:"User ID", field: 'userId'},
 		{title:"Date", field: 'dateRecieve'},
-		{title:"Batch Id", field:'branchId'}
+		{title:"Branch Id", field:'branchId'}
 	],
 });
 
