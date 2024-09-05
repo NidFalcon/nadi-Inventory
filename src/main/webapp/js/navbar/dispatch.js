@@ -10,7 +10,7 @@ var dispatchTable = new Tabulator("#divDispatchingTable" , {
 	movableColumns:true,
 	responsiveLayout:true,
 	initialSort: [
-		{column:"materialListId", dir:"asc"}
+		{column:"dispatchTrackId", dir:"asc"}
 	],
 	columns: [
 		{title:"Dispatch Type ID", field: 'dispatchType.dispatchTypeCode'},
@@ -28,6 +28,12 @@ var dispatchTable = new Tabulator("#divDispatchingTable" , {
 
 $('#btnUpdate').hide();
 $('#btnDelete').hide();
+$('.btnConfirmDate').hide();
+
+// Function to show the confirm button when #dateDispatchDate changes
+function handleDateChange() {
+    $('.btnConfirmDate').show();
+}
 
 dispatchTable.on('rowClick',function() {
 	let row = dispatchTable.getSelectedData()[0];
@@ -49,12 +55,54 @@ function createOptions(){
 	})
 	$(".selDispatchType").html(html);
 	
+	/*
 	html = '';
 	$.each(finishedProduct, function(index, item){
 		html += '<option id="item'+item.fplId+'" value="'+"" +item.fplId+'">FPL ID ' +item.fplId+" "+item.sku.skuName+'</option>'
 	})
 	$(".selFinishedProd").html(html);
+	*/
 }
+
+function getCurrentDate() {
+    let date = new Date();
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+    let year = date.getFullYear();
+    return `${year}-${month}-${day}`; // Format as "yyyy-MM-dd"
+}
+
+function updateFplIDOptionsByDate() {
+    let selectedDate = new Date($('#dateSelected').val());
+    console.log('Selected Date:', selectedDate); // Debugging statement
+
+    let html = '<option value="">';
+    $.each(finishedProduct, function(index, item) {
+        let dateFinished = new Date(item.dateFinished);
+        console.log('Finished Product Date:', dateFinished); // Debugging statement
+
+        // Filter items to show only those with dateFinished on or before the selected date
+        if (dateFinished <= selectedDate) {
+            html += '<option value="' + item.fplId + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + '</option>';
+        }
+    });
+
+    html += '</option>';
+    $('#selFinishedProdId').html(html);
+
+    // Log the updated options for verification
+    console.log('Updated Options HTML:', html);
+}
+
+// Call the function to set default dates when the form is first loaded
+$(document).ready(function() {
+    $('#dateSelected').val(getCurrentDate());
+    // Bind change event to update FPL options based on the selected date
+    $('#dateSelected').change(updateFplIDOptionsByDate);
+});
+
+// Add event listener to #dateDispatchDate to handle change
+$('#dateSelected').change(handleDateChange);
 
 function getFplID() {
     let currentDate = new Date(getCurrentDate());
@@ -108,12 +156,12 @@ function createItem(crudOperation) {
 	
 	if (crudOperation === "create") {
 		item = {
-						dispatchTrackId: $('#addDispatchId').val(),
-						dispatchTypeCd: $('#addDispatchType').val(),
-						fplId: $('#selFinishedProdId').val(),
-						quantity: $('#addDispatchQuantity').val(),
-						destination: $('#addDispatchDestination').val(),	
-						dispatchDate: $('#dateSelected').val()
+			dispatchTrackId: $('#addDispatchId').val(),
+			dispatchTypeCd: $('#addDispatchType').val(),
+			fplId: $('#selFinishedProdId').val(),
+			quantity: $('#addDispatchQuantity').val(),
+			destination: $('#addDispatchDestination').val(),	
+			dispatchDate: $('#dateSelected').val()
 		};
 	} else if (crudOperation === "update") {
 		item = {
@@ -174,12 +222,17 @@ function addItem(isAdd) {
 	}
 }
 
+// Function to handle "Confirm Changes" button click
+$('.btnConfirmDate').click(function() {
+    updateFplIDOptionsByDate();
+    $('.btnConfirmDate').hide(); // Hide the confirm button after updating
+});
 
 $('#btnAddDispatch').click(function(){
-	addItem(true);
+	addItem("create");
 });
 $('#btnUpdateDispatch').click(function(){
-	addItem(false);
+	addItem("update");
 });
 
 $('#btnDeleteDispatch').click(function() {

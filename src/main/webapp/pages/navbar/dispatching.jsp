@@ -77,6 +77,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
+				<button type="button" class="btn btn-success btnConfirmDate"
+				 >Confirm Date</button>
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
 				<button type="button" class="btn btn-primary" id="btnAddDispatch">Add
@@ -124,7 +126,8 @@
 							id="updateDispatchDestination">
 					</div>
 					<div class="mb-3">
-						<label for="material-date">Dispatch Date:</label> <input id="updateDate" class="form-control" type="date" />
+						<label for="material-date">Dispatch Date:</label> 
+						<input id="updateDate" class="form-control" type="date" />
 					</div>
 				</form>
 			</div>
