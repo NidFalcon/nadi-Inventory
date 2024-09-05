@@ -45,4 +45,9 @@
   <bean id="dispatchingService" class="com.cpi.is.service.impl.DispatchingServiceImpl" depends-on="dispatchingDAO">
   	<property name="dispatchingDAO" ref="dispatchingDAO" />
   </bean>
+  
+  <bean id="finishedProductListDAO" class="com.cpi.is.dao.impl.FinishedProductListDAOImpl"></bean>
+  <bean id="finishedProductListService" class="com.cpi.is.service.impl.FinishedProductListServiceImpl" depends-on="dispatchingDAO">
+  	<property name="finishedProductListDAO" ref="finishedProductListDAO" />
+  </bean>
 </beans>

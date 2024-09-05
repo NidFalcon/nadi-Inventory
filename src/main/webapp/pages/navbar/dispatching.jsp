@@ -34,14 +34,31 @@
 					</div>
 					<div class="mb-3">
 						<label for="addDispatchType" class="col-form-label">Dispatch Type:</label>
-						<select class="form-select" id="addDispatchType">
+						<select class="form-select selDispatchType" id="addDispatchType">
 							<option></option>
+							<option value="DIS004">DIS001M</option>
 						</select> 
 					</div>
 					<div class="mb-3">
-						<select id="selFinishedProdId" class="form-select">
+						<label for="selFinishedProdId">Finished Product List</label>
+						<select id="selFinishedProdId" class="form-select selFinishedProd">
 						            <option value="" class="option">Select Finished Product</option>
+						            <option value="23" class="option">test value 23</option>
 						</select>
+					</div>
+					<div class="row mb-3">
+					   <div class="col-sm-4">
+					        <label for="txtSkuName" class="col-form-label">SKU Name</label>
+					        <input type="text" id="txtSkuName" class="form-control" readonly="readonly"/>
+					    </div>
+					    <div class="col-sm-4">
+					        <label for="txtQuantityFPL" class="col-form-label">Quantity</label>
+					        <input type="text" id="txtQuantityFPL" class="form-control" readonly="readonly"/>
+					    </div>
+					    <div class="col-sm-4">
+					        <label for="txtDateFinished" class="col-form-label">Date Finished</label>
+					        <input type="text" id="txtDateFinished" class="form-control" readonly="readonly"/>
+					    </div>
 					</div>
 					<div class="mb-3">
 						<label for="addDispatchQuantity" class="col-form-label">Quantity:</label>

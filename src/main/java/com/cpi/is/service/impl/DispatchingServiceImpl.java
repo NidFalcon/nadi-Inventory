@@ -32,7 +32,7 @@ public class DispatchingServiceImpl implements DispatchingService {
         String dispatchTypeCd = json.optString("dispatchTypeCd");
         Long fplId = Long.parseLong(json.getString("fplId"));
         Integer quantity = Integer.parseInt(json.getString("quantity"));
-        Integer branchId = json.has("branchId") ? Integer.parseInt(json.getString("branchId")) : null;
+        Integer branchId = json.has("branchId") ? json.getInt("branchId") : null;
         String destination = json.optString("destination");
 
         // Assuming dispatchDate is in a specific string format, e.g., "MM-dd-yyyy"
@@ -60,7 +60,7 @@ public class DispatchingServiceImpl implements DispatchingService {
     public String saveItem(HttpServletRequest request) throws Exception {
     	HttpSession session = request.getSession();
     	UserEntity user = (UserEntity) session.getAttribute("user");
-    	JSONObject json = new JSONObject(request.getAttribute("item"));
+    	JSONObject json = new JSONObject(request.getParameter("item"));
     	json.put("branchId", user.getBranchId());
         return dispatchingDAO.saveItem(jsonToEntity(json));
     }

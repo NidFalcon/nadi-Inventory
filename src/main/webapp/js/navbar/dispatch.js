@@ -45,11 +45,35 @@ dispatchTable.on('rowClick',function() {
 function createOptions(){
 	let html = '';
 	$.each(dispatchType, function(index, item){
-		if ("y" == item.isActive){
-						html += '<option id="item'+item.dispatchTypeCode+'" value="'+"" +item.dispatchTypeCode+'">'+item.dispatchTypeCode+ " " +item.dispatchTypeName+'</option>';
-		}
+		html += '<option id="item'+item.dispatchTypeCode+'" value="'+"" +item.dispatchTypeCode+'">' +item.dispatchTypeCode+" "+item.dispatchTypeName+'</option>'
 	})
-	$("selFinishedProdId").html(html);
+	$(".selDispatchType").html(html);
+	
+	html = '';
+	$.each(finishedProduct, function(index, item){
+		html += '<option id="item'+item.fplId+'" value="'+"" +item.fplId+'">FPL ID ' +item.fplId+" "+item.sku.skuName+'</option>'
+	})
+	$(".selFinishedProd").html(html);
+}
+
+function getFplID() {
+    let currentDate = new Date(getCurrentDate());
+    let html = '<option value="">';
+    $.each(finishedProduct, function(index, item) {
+        let dateFinished = new Date(item.dateFinished);
+        // Filter items to show only those with dateFinished on or before the current date
+        if (dateFinished <= currentDate) {
+            html += '<option value="' + item.fplId + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + '</option>';
+        }
+    });
+    $('#selFinishedProdId').html(html);
+    
+    $('#selFinishedProdId').change(function() {
+        let selectedOption = $(this).find('option:selected');
+        $('#txtSkuName').val(selectedOption.data('sku-name'));
+        $('#txtQuantityFPL').val(selectedOption.data('quantity'));
+        $('#txtDateFinished').val(selectedOption.data('date-finished'));
+    });
 }
 
 //fill up the form for updates
@@ -79,15 +103,28 @@ function populateDeleteForm(row) {
 	}
 }
 
-function createItem(isAdd) {
-	let item = {
-		dispatchTrackId: $('#addDispatchId').val(),
-		dispatchTypeCd: $('#addDispatchType').val(),
-		fplId: $('#addFinishedProductId').val(),
-		quantity: $('#addDispatchQuantity').val(),
-		destination: $('#addDispatchDestination').val(),	
-		dispatchDate: $('#dateSelected').val()
-	};
+function createItem(crudOperation) {
+	let item 
+	
+	if (crudOperation === "create") {
+		item = {
+						dispatchTrackId: $('#addDispatchId').val(),
+						dispatchTypeCd: $('#addDispatchType').val(),
+						fplId: $('#selFinishedProdId').val(),
+						quantity: $('#addDispatchQuantity').val(),
+						destination: $('#addDispatchDestination').val(),	
+						dispatchDate: $('#dateSelected').val()
+		};
+	} else if (crudOperation === "update") {
+		item = {
+			dispatchTrackId: $('#addDispatchId').val(),
+			dispatchTypeCd: $('#addDispatchType').val(),
+			fplId: $('#selFinishedProdId').val(),
+			quantity: $('#addDispatchQuantity').val(),
+			destination: $('#addDispatchDestination').val(),	
+			dispatchDate: $('#dateSelected').val()
+		};
+	}
 	return item;
 }
 
@@ -120,7 +157,6 @@ function validate(item) {
 }
 
 function addItem(isAdd) {
-	console.log("clicked");
 	let item = createItem(isAdd);
 	console.log(item);
 	if (validate(item)) {
@@ -168,6 +204,7 @@ $('#btnDeleteDispatch').click(function() {
 });
 
 createOptions();
+getFplID();
 
 //function toggleAddButton() {
 //	if ('' === $('#txtDispatchId').val()) {

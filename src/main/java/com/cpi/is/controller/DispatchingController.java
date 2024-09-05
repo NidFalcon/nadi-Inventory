@@ -16,6 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.service.impl.BranchServiceImpl;
 import com.cpi.is.service.impl.DispatchTypeServiceImpl;
 import com.cpi.is.service.impl.DispatchingServiceImpl;
+import com.cpi.is.service.impl.FinishedProductListServiceImpl;
 
 /**
  * Servlet implementation class DispatchingController
@@ -31,7 +32,9 @@ public class DispatchingController extends HttpServlet {
 	private DispatchingServiceImpl dispatchingService = (DispatchingServiceImpl) context.getBean("dispatchingService");
 	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
 	private DispatchTypeServiceImpl dispatchTypeService = (DispatchTypeServiceImpl) context
-			.getBean("dispatchTypeService"); 
+			.getBean("dispatchTypeService");
+	private FinishedProductListServiceImpl finishedProductListService = (FinishedProductListServiceImpl) context
+			.getBean("finishedProductListService");
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -58,7 +61,7 @@ public class DispatchingController extends HttpServlet {
 				request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranch(branchId)));
 				request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
 				request.setAttribute("branch", new JSONArray(branchService.getBranch()));
-				
+				request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList()));
 				page = "pages/navbar/dispatching.jsp";
 			} else if ("saveItem".equals(action)) {
 				request.setAttribute("message", dispatchingService.saveItem(request));
