@@ -165,14 +165,15 @@
 				<form>
 					<table class="table">
 						<tr>
-							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
-							<th scope="col"><label for="materialQuantity"></label>quantity:</th>
+							<th scope="col">
+								<label for="materialDppId">DPP ID: </label>
+								<input type="text" class="form-control" id="materialDppId" readonly>
+							</th>
 						</tr>
 						<tr>
-							<td><Select class="form-select selectMaterial" id="selectMaterial">
-								<option></option>
-							</Select></td>
-							<td><input type="number" class="form-control" min="1"></td>
+							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
+							<th scope="col"><label for="materialQuantity"></label>Quantity:</th>
+							<!-- <th scope="col"><label for="materialQuantity"></label>Unit of Measurement:</th> -->
 						</tr>
 					</table>
 				<button id="selectAdd" class="btn btn-primary"> + </button>
@@ -193,3 +194,4 @@
     var rawMaterial = JSON.parse('${rawMaterial}');
 </script>
 <script src="js/dpp.js"></script>
+<script src="js/production_material.js"></script>
