@@ -24,9 +24,16 @@ $('#btnDashboard').click(function () {
 });
 
 $('#btnDpp').click(function () {
-	console.log("dpp");
 	$.post('DppController', {
 		action: 'showDpp'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnProductionMaterial').click(function () {
+	$.post('ProductionMaterialController', {
+		action: 'showProductionMaterial'
 	}, function(response) {
 		$('#divContent').html(response);
 	});
