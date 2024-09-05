@@ -70,7 +70,7 @@
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
 				<button type="button" class="btn btn-primary" id="btnAddDpp">Add
-					SKU</button>
+					DPP</button>
 			</div>
 		</div>
 	</div>
@@ -128,6 +128,29 @@
 	</div>
 </div>
 
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete DPP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this DPP?</p>
+                <input type="hidden" id="txtDeleteDppId">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btnCloseAddModal" 
+                data-bs-dismiss="modal" id="btnCloseDeleteModal">Close</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDeleteDpp">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- select modal -->
 <div class="modal fade" id="selectModal" tabindex="-1"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -142,14 +165,15 @@
 				<form>
 					<table class="table">
 						<tr>
-							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
-							<th scope="col"><label for="materialQuantity"></label>quantity:</th>
+							<th scope="col">
+								<label for="materialDppId">DPP ID: </label>
+								<input type="text" class="form-control" id="materialDppId" readonly>
+							</th>
 						</tr>
 						<tr>
-							<td><Select class="form-select selectMaterial" id="selectMaterial">
-								<option></option>
-							</Select></td>
-							<td><input type="number" class="form-control" min="1"></td>
+							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
+							<th scope="col"><label for="materialQuantity"></label>Quantity:</th>
+							<!-- <th scope="col"><label for="materialQuantity"></label>Unit of Measurement:</th> -->
 						</tr>
 					</table>
 				<button id="selectAdd" class="btn btn-primary"> + </button>
@@ -167,5 +191,7 @@
 <script type="text/javascript">
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
+    var rawMaterial = JSON.parse('${rawMaterial}');
 </script>
 <script src="js/navbar/dpp.js"></script>
+<script src="js/production_material.js"></script>
