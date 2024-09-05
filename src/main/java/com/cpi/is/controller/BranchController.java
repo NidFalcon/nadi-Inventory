@@ -42,7 +42,7 @@ public class BranchController extends HttpServlet {
 
             if ("showBranch".equals(action)) {
                 request.setAttribute("branch", new JSONArray(branchService.getBranch()));
-                page = "pages/maintenance/branch.jsp";
+                page = "pages/navbar/maintenance/branch.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = branchService.saveItem(request);
                 request.setAttribute("message", message);

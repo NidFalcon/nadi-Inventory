@@ -31,7 +31,7 @@ public class DashboardController extends HttpServlet {
 		action = request.getParameter("action");
 				
 		if ("showDashboard".equals(action)) {
-			page = "pages/dashboard.jsp";
+			page = "pages/navbar/dashboard.jsp";
 		}
 		
 		request.getRequestDispatcher(page).forward(request, response);

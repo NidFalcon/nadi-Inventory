@@ -126,4 +126,4 @@
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
 </script>
-<script src="js/dpp.js"></script>
+<script src="js/navbar/dpp.js"></script>

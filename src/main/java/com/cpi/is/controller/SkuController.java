@@ -43,7 +43,7 @@ public class SkuController extends HttpServlet {
 
             if ("showSku".equals(action)) {
                 request.setAttribute("sku", new JSONArray(skuService.getSku()));
-                page = "pages/maintenance/sku.jsp";
+                page = "pages/navbar/maintenance/sku.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = skuService.saveItem(request);
                 request.setAttribute("message", message);
