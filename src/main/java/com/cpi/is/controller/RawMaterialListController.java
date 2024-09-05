@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -37,7 +36,7 @@ public class RawMaterialListController extends HttpServlet {
 			if ("showRawMaterialList".equals(action)) {
 				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
 				request.setAttribute("materialOptions", new JSONArray(rawMaterialService.getRawMaterial()));
-				page = "pages/rawMaterialList.jsp";
+				page = "pages/navbar/inventory/rawMaterialList.jsp";
 			} else if ("saveRawMaterial".equals(action)) {
 				HttpSession session = request.getSession();
 				System.out.println("saving Item");

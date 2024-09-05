@@ -35,8 +35,8 @@
 					</div>
 					<div class="mb-3">
 						<label for="rawMaterialListName" class="col-form-label">Material:</label>
-						<select id="rawMaterialListName">
-							<option value="MAT001">FLOUR</option>
+						<select class="form-select" id="rawMaterialListName">
+							<option></option>
 						</select> 
 					</div>
 					<div class="mb-3">
@@ -79,8 +79,8 @@
 					</div>
 					<div class="mb-3">
 						<label for="updateRawMaterialName" class="col-form-label">Material:</label>
-						<select id="updateRawMaterialName">
-							<option value="MAT001">FLOUR</option>
+						<select class="form-select" id="updateRawMaterialName">
+							<option></option>
 						</select> 
 					</div>
 					<div class="mb-3">
@@ -90,7 +90,7 @@
 					</div>
 					<div class="mb-3">
 						<label for="updateDate">Date</label> <input id="updateDate"
-							class="form-control" type="date" /> <span id="updateDate"></span>
+							class="form-control" type="date" />
 					</div>
 				</form>
 			</div>
@@ -143,6 +143,6 @@
 	var rawMaterialList = JSON.parse('${rawMaterialList}');
 	var materialOptions = JSON.parse('${materialOptions}');
 </script>
-<script src="js/raw_material_list.js">
+<script src="js/navbar/inventory/raw_material_list.js">
 	
 </script>
