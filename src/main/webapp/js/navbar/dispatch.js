@@ -49,7 +49,7 @@ function createOptions(){
 						html += '<option id="item'+item.dispatchTypeCode+'" value="'+"" +item.dispatchTypeCode+'">'+item.dispatchTypeCode+ " " +item.dispatchTypeName+'</option>';
 		}
 	})
-	$("select").html(html);
+	$("selFinishedProdId").html(html);
 }
 
 //fill up the form for updates
@@ -81,10 +81,12 @@ function populateDeleteForm(row) {
 
 function createItem(isAdd) {
 	let item = {
-		dispatchId: isAdd ? $("#addDispatchId").val() : $("#updateDispatchId").val(),
-		dispatchType: isAdd ? $('#addDispatchType').val() : $("#updateDispatchType").val(),
-		quantity: parseInt( isAdd ? $('#addDispatchQuantity').val() : $("#updateDispatchQuantity").val()),
-		dispatchDate: isAdd ? $('#dateSelected').val() : $("#updateDate").val()
+		dispatchTrackId: $('#addDispatchId').val(),
+		dispatchTypeCd: $('#addDispatchType').val(),
+		fplId: $('#addFinishedProductId').val(),
+		quantity: $('#addDispatchQuantity').val(),
+		destination: $('#addDispatchDestination').val(),	
+		dispatchDate: $('#dateSelected').val()
 	};
 	return item;
 }
@@ -122,7 +124,7 @@ function addItem(isAdd) {
 	let item = createItem(isAdd);
 	console.log(item);
 	if (validate(item)) {
-		$.post('DispatchTypeController', {
+		$.post('DispatchingController', {
 			action: 'saveItem',
 			item: JSON.stringify(item)
 		}, function(response) {
@@ -147,7 +149,7 @@ $('#btnUpdateDispatch').click(function(){
 $('#btnDeleteDispatch').click(function() {
 	if ($('#deleteRawMaterialId').val() !== '') {
 
-		$.post('DispatchTypeController', {
+		$.post('DispatchingController', {
 			action: 'deleteItem',
 			item: JSON.stringify(createDeleteItem())
 		}, function(response) {

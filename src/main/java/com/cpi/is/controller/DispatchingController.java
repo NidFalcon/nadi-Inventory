@@ -31,7 +31,7 @@ public class DispatchingController extends HttpServlet {
 	private DispatchingServiceImpl dispatchingService = (DispatchingServiceImpl) context.getBean("dispatchingService");
 	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
 	private DispatchTypeServiceImpl dispatchTypeService = (DispatchTypeServiceImpl) context
-			.getBean("dispatchTypeService");
+			.getBean("dispatchTypeService"); 
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -58,6 +58,7 @@ public class DispatchingController extends HttpServlet {
 				request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranch(branchId)));
 				request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
 				request.setAttribute("branch", new JSONArray(branchService.getBranch()));
+				
 				page = "pages/navbar/dispatching.jsp";
 			} else if ("saveItem".equals(action)) {
 				request.setAttribute("message", dispatchingService.saveItem(request));

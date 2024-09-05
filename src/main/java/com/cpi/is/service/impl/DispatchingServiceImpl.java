@@ -6,11 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import com.cpi.is.dao.DispatchingDAO;
 import com.cpi.is.entity.DispatchingEntity;
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.DispatchingService;
 
 public class DispatchingServiceImpl implements DispatchingService {
@@ -56,8 +58,11 @@ public class DispatchingServiceImpl implements DispatchingService {
 
     @Override
     public String saveItem(HttpServletRequest request) throws Exception {
-        return dispatchingDAO.saveItem(
-                jsonToEntity(new JSONObject(request.getParameter("item"))));
+    	HttpSession session = request.getSession();
+    	UserEntity user = (UserEntity) session.getAttribute("user");
+    	JSONObject json = new JSONObject(request.getAttribute("item"));
+    	json.put("branchId", user.getBranchId());
+        return dispatchingDAO.saveItem(jsonToEntity(json));
     }
 
     @Override

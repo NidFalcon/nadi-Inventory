@@ -39,9 +39,9 @@
 						</select> 
 					</div>
 					<div class="mb-3">
-						<label for="addFinishedProductId" class="col-form-label">Finished Product ID:</label>
-						<input type="text" class="form-control"
-							id="addFinishedProductId">
+						<select id="selFinishedProdId" class="form-select">
+						            <option value="" class="option">Select Finished Product</option>
+						</select>
 					</div>
 					<div class="mb-3">
 						<label for="addDispatchQuantity" class="col-form-label">Quantity:</label>
@@ -161,6 +161,7 @@
 <script type="text/javascript">
     var dispatch = JSON.parse('${dispatch}');
     var dispatchType = JSON.parse('${dispatchType}');
+    var finishedProduct = JSON.parse('${finishedProduct}');
     var branchId = '${branchId}';
 </script>
 <script src="js/navbar/dispatch.js"></script>
