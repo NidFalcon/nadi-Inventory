@@ -9,9 +9,6 @@ var dispatchTable = new Tabulator("#divDispatchingTable" , {
 	selectableRows:1,
 	movableColumns:true,
 	responsiveLayout:true,
-	initialSort: [
-		{column:"dispatchTrackId", dir:"asc"}
-	],
 	columns: [
 		{title:"Dispatch Track ID", field: 'dispatchTrackId'},
 		{title:"Dispatch Type Name", field: 'dispatchType.dispatchTypeName'},
@@ -153,7 +150,7 @@ function populateForm(row) {
 //fill up the form to delete
 function populateDeleteForm(row) {
 	if(row !== undefined) {
-		$('#deleteDispatchId').val(row.dispatchType.dispatchTypeCode);
+		$('#deleteDispatchId').val(row.dispatchTrackId);
 		$('#deleteDispatchName').val(row.dispatchType.dispatchTypeName);
 		$('#deleteFinishedProductId').val(row.fplId);
 		$('#deleteSkuName').val(row.fpl.sku.skuName);
@@ -185,6 +182,16 @@ function createItem(crudOperation) {
 			quantity: $('#updateDispatchQuantity').val(),
 			destination: $('#updateDispatchDestination').val(),	
 			dispatchDate: $('#updateDate').val()
+		};
+	} else if (crudOperation === "delete") {
+		item = {
+			dispatchTrackId: $('#deleteDispatchId').val(),
+			dispatchTypeCd: $('#updateDispatchType').val(),
+			fplId: $('#deleteFinishedProductId').val(),
+			quantity: $('#deleteDispatchQuantity').val(),
+			destination: $('#deleteDestination').val(),	
+			dispatchDate: $('#deleteDispatchDate').val(),
+			branchId: $('#deleteBranchId').val()
 		};
 	}
 	return item;
@@ -251,11 +258,10 @@ $('#btnUpdateDispatch').click(function(){
 });
 
 $('#btnDeleteDispatch').click(function() {
-	if ($('#deleteRawMaterialId').val() !== '') {
-
+	if ($('#deleteDispatchId').val() !== '') {
 		$.post('DispatchingController', {
 			action: 'deleteItem',
-			item: JSON.stringify(createDeleteItem())
+			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteDispatchCancel').click();
