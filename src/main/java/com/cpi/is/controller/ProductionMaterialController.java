@@ -58,6 +58,8 @@ public class ProductionMaterialController extends HttpServlet {
                 page = "pages/message.jsp";
             } else if ("saveBulkItems".equals(action)) {
             	String message = productionMaterialService.saveBulkItems(request);
+                request.setAttribute("message", message);
+                page = "pages/message.jsp";
             }
         } catch (Exception e) {
             e.printStackTrace();

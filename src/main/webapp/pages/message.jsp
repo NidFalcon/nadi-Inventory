@@ -1,1 +1,1 @@
-<p style="color: red">${message}</p>
+<div class="alert alert-danger" role="alert">${message}</div>
