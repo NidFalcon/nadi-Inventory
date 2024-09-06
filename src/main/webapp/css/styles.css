@@ -1,87 +1,63 @@
 @charset "ISO-8859-1";
 
 body {
-  font-family: "Lucida Console";
+	font-family: Verdana;
+  	background-color: #FFF8E8;
 }
 
-hr {
-  border: 0;
-  border-top: 1px solid #ccc;
+.divContent .loginContainer {
+	background-color: #674636;
 }
 
-.button {
-  border: none;
-  color: white;
-  display: inline-block;
-  font-size: 16px;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
+.divContent .loginContainer blockquote {
+	color: #fff;
 }
 
-.red {
-  background-color: #f44336;
+.divContent .loginContainer .remember {
+	color: #fff;
 }
 
-.green {
-  background-color: #04AA6D;
+.divContent .mainWrapper {
+	background-color: rgba(103, 70, 54,.5);
+	border-radius: .375rem;
+	color: #fff;
 }
 
-.blue {
-  background-color: #008CBA;
+.divContent .contentNavbar {
+	background-color: #674636;
+	height:90px;
+	background-image: url(https://static.wikia.nocookie.net/kaoruhana/images/e/ef/FRbJYBgagAENPM.png);
+	background-repeat:no-repeat;
+	background-position: 80%;
+	border-radius: .375rem;
 }
 
-.white {
-  background-color: white;
-  color: black;
+.divContent .modalHeader {
+	background-color: #674636;
 }
 
-.input {
-  width: 100%;
-  padding: 8px 16px;
-  margin: 4px 0;
-  box-sizing: border-box;
+.divContent .modalBody {
+	background-color: rgba(103, 70, 54,.5);
+	color: #000;
 }
 
-.left {
-  float: left;
+.divContent .modalFooter {
+	background-color: rgba(103, 70, 54,.5);
 }
 
-.right {
-  float: right;
+#divMenu .divMenu {
+	background-color: #AAB396;
+	background-image:url(../images/menu.png);
+	background-repeat:no-repeat;
+	background-position:80%;
 }
 
-.menu li {
-  list-style-type: none;
-  display: inline;
+#divMenu .divMenu .menuIcon {
+	height: 40px;
+  	width: fit-content;
 }
 
-.inventory, .dispatchType, .branch, .sku, .rawMaterial, .dpp, .rawMaterial {
-  border-collapse: collapse;
-  width: 80%;
+#divMenu .divMenu ul {
+	font-size: 18px;
 }
 
-.inventory th, .inventory td, .dispatch th, .dispatch td, .dispatchType th, .dispatchType td, .branch th, .branch td, .sku th, .sku td, .rawMaterial th, .rawMaterial td {
-
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.inventory .center-aligned, .dispatchType .center-aligned, .branch .center-aligned, .sku .center-aligned, .rawMaterial .center-aligned, .dpp .center-aligned {
-  text-align: center;
-}
-
-.inventory tr:nth-child(even), .dispatchType tr:nth-child(even), .branch tr:nth-child(even), .sku tr:nth-child(even), .rawMaterial tr:nth-child(even), .dpp tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.inventory tr:hover, .dispatchType tr:hover, .branch tr:hover, .sku tr:hover, .rawMaterial tr:hover, .dpp tr:hover {
-  background-color: #ddd;
-}
-
-.inventory th, .dispatchType th, .branch th, .sku th, .rawMaterial th, .dpp th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  background-color: #04AA6D;
-  color: white;
-}
