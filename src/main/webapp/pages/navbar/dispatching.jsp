@@ -43,19 +43,18 @@
 						<label for="selFinishedProdId">Finished Product List</label>
 						<select id="selFinishedProdId" class="form-select selFinishedProd">
 						            <option value="" class="option">Select Finished Product</option>
-						            <option value="23" class="option">test value 23</option>
 						</select>
 					</div>
 					<div class="row mb-3">
-					   <div class="col-sm-4">
+					   <!-- <div class="col-sm-4">
 					        <label for="txtSkuName" class="col-form-label">SKU Name</label>
 					        <input type="text" id="txtSkuName" class="form-control txtSkuName" readonly="readonly"/>
-					    </div>
-					    <div class="col-sm-4">
+					    </div> -->
+					    <div class="col-sm-6">
 					        <label for="txtQuantityFPL" class="col-form-label">Quantity</label>
 					        <input type="text" id="txtQuantityFPL" class="form-control txtQuantityFPL" readonly="readonly"/>
 					    </div>
-					    <div class="col-sm-4">
+					    <div class="col-sm-6">
 					        <label for="txtDateFinished" class="col-form-label">Date Finished</label>
 					        <input type="text" id="txtDateFinished" class="form-control txtDateFinished" readonly="readonly"/>
 					    </div>
@@ -119,15 +118,15 @@
 						</select>
 					</div>
 					<div class="row mb-3">
-					   <div class="col-sm-4">
+					  <!--  <div class="col-sm-4">
 					        <label for="txtSkuName" class="col-form-label">SKU Name</label>
 					        <input type="text" class="form-control txtSkuName" readonly="readonly"/>
-					    </div>
-					    <div class="col-sm-4">
+					    </div> -->
+					    <div class="col-sm-6">
 					        <label for="txtQuantityFPL" class="col-form-label">Quantity</label>
 					        <input type="text" class="form-control txtQuantityFPL" readonly="readonly"/>
 					    </div>
-					    <div class="col-sm-4">
+					    <div class="col-sm-6">
 					        <label for="txtDateFinished" class="col-form-label">Date Finished</label>
 					        <input type="text" class="form-control txtDateFinished" readonly="readonly"/>
 					    </div>
@@ -202,5 +201,6 @@
     var dispatchType = JSON.parse('${dispatchType}');
     var finishedProduct = JSON.parse('${finishedProduct}');
     var branchId = '${branchId}';
+ 	var currentInventory = JSON.parse('${currentInventory}');
 </script>
 <script src="js/navbar/dispatch.js"></script>

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.cpi.is.dao.DispatchingDAO;
 import com.cpi.is.entity.DispatchingEntity;
+import com.cpi.is.entity.ReportsEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.DispatchingService;
 
@@ -50,12 +51,16 @@ public class DispatchingServiceImpl implements DispatchingService {
         return new DispatchingEntity(dispatchTrackId, dispatchTypeCd, fplId, quantity, branchId, destination, dispatchDate);
     }
 
-
     @Override
     public List<DispatchingEntity> getDispatchingByBranch(Integer branchId) throws Exception {
         return dispatchingDAO.getDispatchingByBranchId(branchId);
     }
 
+    @Override
+    public List<Object[]> getCurrentInventory() throws Exception {
+        return dispatchingDAO.getCurrentInventory();
+    }
+    
     @Override
     public String saveItem(HttpServletRequest request) throws Exception {
     	HttpSession session = request.getSession();

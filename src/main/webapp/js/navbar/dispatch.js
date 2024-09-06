@@ -83,10 +83,10 @@ function updateFplIDOptionsByDate() {
 
         // Filter items to show only those with dateFinished on or before the selected date
         if (dateFinished <= selectedDate) {
-            html += '<option value="' + item.fplId + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + '</option>';
+            html += '<option value="' + item.fplId + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName +  '</option>';
         }
         if (dateFinished <= updateDate) {
-            html2 += '<option value="' + item.fplId + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + '</option>';
+            html2 += '<option value="' + item.fplId + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';
         }
     });
 
@@ -113,22 +113,35 @@ $('#updateDate').change(handleDateChange);
 function getFplID() {
     let currentDate = new Date(getCurrentDate());
     let html = '<option value="">';
+    
+    // Build SKU to quantity map from currentInventory
+    let skuToQuantityMap = {};
+    $.each(currentInventory, function(index, item) {
+        skuToQuantityMap[item[0]] = item[1]; // item[0] is SKU code, item[1] is quantity
+    });
+    
     $.each(finishedProduct, function(index, item) {
         let dateFinished = new Date(item.dateFinished);
         // Filter items to show only those with dateFinished on or before the current date
         if (dateFinished <= currentDate) {
-            html += '<option value="' + item.fplId + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + '</option>';
+            html += '<option value="' + item.fplId + '" data-sku-code="' + item.sku.skuCode + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';
         }
     });
+    
     $('.selFinishedProd').html(html);
     
     $('.selFinishedProd').change(function() {
         let selectedOption = $(this).find('option:selected');
+        let skuCode = selectedOption.data('sku-code');
+        let quantity = skuToQuantityMap[skuCode] || 0; // Get quantity from the map
+        
         $('.txtSkuName').val(selectedOption.data('sku-name'));
-        $('.txtQuantityFPL').val(selectedOption.data('quantity'));
+        $('.txtQuantityFPL').val(quantity);
         $('.txtDateFinished').val(selectedOption.data('date-finished'));
+        $('.txtCurrentQuantity').val(quantity); // Add this line to show current inventory quantity
     });
 }
+
 
 //fill up the form for updates
 function populateForm(row) {
