@@ -22,6 +22,7 @@ public class InventoryEntity implements Serializable {
 	private Long quantity;
 	@Column(name="BRANCH_ID")
 	private String branchId;
+	@Column(name="DATE_FINISHED")
 	private Date dateFinished;
 	
 	public InventoryEntity() {

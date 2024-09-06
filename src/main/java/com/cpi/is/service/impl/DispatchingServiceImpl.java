@@ -6,11 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import com.cpi.is.dao.DispatchingDAO;
 import com.cpi.is.entity.DispatchingEntity;
+import com.cpi.is.entity.ReportsEntity;
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.DispatchingService;
 
 public class DispatchingServiceImpl implements DispatchingService {
@@ -30,7 +33,7 @@ public class DispatchingServiceImpl implements DispatchingService {
         String dispatchTypeCd = json.optString("dispatchTypeCd");
         Long fplId = Long.parseLong(json.getString("fplId"));
         Integer quantity = Integer.parseInt(json.getString("quantity"));
-        Integer branchId = json.has("branchId") ? Integer.parseInt(json.getString("branchId")) : null;
+        Integer branchId = json.has("branchId") ? json.getInt("branchId") : null;
         String destination = json.optString("destination");
 
         // Assuming dispatchDate is in a specific string format, e.g., "MM-dd-yyyy"
@@ -48,16 +51,23 @@ public class DispatchingServiceImpl implements DispatchingService {
         return new DispatchingEntity(dispatchTrackId, dispatchTypeCd, fplId, quantity, branchId, destination, dispatchDate);
     }
 
-
     @Override
     public List<DispatchingEntity> getDispatchingByBranch(Integer branchId) throws Exception {
         return dispatchingDAO.getDispatchingByBranchId(branchId);
     }
 
     @Override
+    public List<Object[]> getCurrentInventory() throws Exception {
+        return dispatchingDAO.getCurrentInventory();
+    }
+    
+    @Override
     public String saveItem(HttpServletRequest request) throws Exception {
-        return dispatchingDAO.saveItem(
-                jsonToEntity(new JSONObject(request.getParameter("item"))));
+    	HttpSession session = request.getSession();
+    	UserEntity user = (UserEntity) session.getAttribute("user");
+    	JSONObject json = new JSONObject(request.getParameter("item"));
+    	json.put("branchId", user.getBranchId());
+        return dispatchingDAO.saveItem(jsonToEntity(json));
     }
 
     @Override

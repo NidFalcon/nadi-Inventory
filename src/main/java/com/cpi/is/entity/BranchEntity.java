@@ -1,5 +1,4 @@
 package com.cpi.is.entity;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class BranchEntity implements Serializable {
 
     @Column(name="IS_ACTIVE")
     private String isActive;
-    
-	public BranchEntity() {
+
+    public BranchEntity() {
         super();
     }
 
@@ -63,7 +62,7 @@ public class BranchEntity implements Serializable {
     public void setIsActive(String isActive) {
         this.isActive = isActive;
     }
-    
+
     @Override
     public String toString() {
         return "BranchEntity{" +

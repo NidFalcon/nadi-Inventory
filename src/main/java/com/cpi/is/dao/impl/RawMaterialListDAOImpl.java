@@ -5,32 +5,34 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.cpi.is.dao.InventoryDAO;
-import com.cpi.is.entity.InventoryEntity;
+import com.cpi.is.dao.RawMaterialListDAO;
+import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.util.HBUtil;
 
-public class InventoryDAOImpl implements InventoryDAO {
-	
-	@Override
-	public List<InventoryEntity> getInventory() throws Exception {
-		List<InventoryEntity> inventory = null;
-		try (Session session = HBUtil.getSessionFactory().openSession()) {
-			inventory = (List<InventoryEntity>) 
-					session.createQuery("From InventoryEntity T ORDER BY T.inventoryId ASC", InventoryEntity.class).list();
-		}
-		return inventory;
+public class RawMaterialListDAOImpl implements RawMaterialListDAO {
+
+	public List<RawMaterialListEntity>  getRawMaterialList(Integer targetBranchId) throws Exception {
+        try (Session session = HBUtil.getSessionFactory().openSession()){
+        	List<RawMaterialListEntity> rawMaterialLists = session.createQuery("FROM RawMaterialListEntity R WHERE R.branchId = :targetBranchId"
+        				, RawMaterialListEntity.class)
+        			    .setParameter("targetBranchId", targetBranchId)
+        			    .list();
+        	return rawMaterialLists;
+        }
 	}
 
 	@Override
-	public String saveItem(InventoryEntity item) throws Exception {
+	public String saveRawMaterial(RawMaterialListEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
-			if (0 == item.getFplId()) {
+			if (0 == item.getMaterialListId()) {
+				item.setMaterialListId(null); 
 				session.persist(item);	// add a new record
 			} else {
 				session.merge(item);	// update an existing record
 			}
+			System.out.println("Nevermind");
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {
@@ -39,10 +41,10 @@ public class InventoryDAOImpl implements InventoryDAO {
 			throw e;
 		}
 		return "success";
-	}
+	}	
 
 	@Override
-	public String deleteItem(InventoryEntity item) throws Exception {
+	public String deleteRawMaterial(RawMaterialListEntity item) throws Exception {
 		Transaction transaction = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			transaction = session.beginTransaction();
@@ -56,5 +58,5 @@ public class InventoryDAOImpl implements InventoryDAO {
 		}
 		return "success";
 	}
-	
+
 }

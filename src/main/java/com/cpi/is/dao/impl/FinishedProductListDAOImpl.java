@@ -1,31 +1,29 @@
 package com.cpi.is.dao.impl;
 
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import com.cpi.is.dao.BranchDAO;
-import com.cpi.is.entity.BranchEntity;
+import com.cpi.is.dao.FinishedProductListDAO;
+import com.cpi.is.entity.FinishedProductListEntity;
 import com.cpi.is.util.HBUtil;
 
-public class FinishedProductListDAOImpl implements BranchDAO {
+public class FinishedProductListDAOImpl implements FinishedProductListDAO {
 
     @Override
-    public List<BranchEntity> getBranch() throws Exception {
-        List<BranchEntity> branchList = null;
+    public List<FinishedProductListEntity> getFinishedProductList() throws Exception { // Fixed method name
+        List<FinishedProductListEntity> finishedProductList = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
-            branchList = session.createQuery("FROM BranchEntity T ORDER BY T.branchId ASC", BranchEntity.class).list();
+            finishedProductList = session.createQuery("FROM FinishedProductListEntity T ORDER BY T.fplId ASC", FinishedProductListEntity.class).list();
         }
-        return branchList;
+        return finishedProductList;
     }
 
     @Override
-    public String saveItem(BranchEntity item) throws Exception {
+    public String saveItem(FinishedProductListEntity item) throws Exception { // Fixed parameter type
         Transaction transaction = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            if (item.getBranchId() == null) {
+            if (item.getFplId() == null) {
                 session.persist(item);
             } else {
                 session.merge(item);
@@ -41,7 +39,7 @@ public class FinishedProductListDAOImpl implements BranchDAO {
     }
 
     @Override
-    public String deleteItem(BranchEntity item) throws Exception {
+    public String deleteItem(FinishedProductListEntity item) throws Exception { // Fixed parameter type
         Transaction transaction = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();

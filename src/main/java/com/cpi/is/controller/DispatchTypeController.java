@@ -42,7 +42,7 @@ public class DispatchTypeController extends HttpServlet {
 			
 			if ("showDispatchType".equals(action)) {
 				request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
-				page = "pages/maintenance/dispatchType.jsp";
+				page = "pages/navbar/maintenance/dispatchType.jsp";
 			} else if ("saveItem".equals(action)) {
 				String message = dispatchTypeService.saveItem(request);
 				request.setAttribute("message", message);

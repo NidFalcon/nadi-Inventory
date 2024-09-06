@@ -60,7 +60,7 @@ public class DispatchTypeEntity implements Serializable {
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "DispatchTypeEntity{" +
