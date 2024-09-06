@@ -1,40 +1,40 @@
-var dppTable = new Tabulator("#divDppTable" , {
+var dppTable = new Tabulator("#divDppTable", {
 	layout: 'fitDataFill',
 	data: dpp,
 	pagination: 'local',
 	pagination: true,
 	paginationSize: 10,
-	paginationSizeSelector:[5, 10, 15, 20],
-	paginationCounter:"rows",
-	selectableRows:1,
-	movableColumns:true,
-	responsiveLayout:true,
+	paginationSizeSelector: [5, 10, 15, 20],
+	paginationCounter: "rows",
+	selectableRows: 1,
+	movableColumns: true,
+	responsiveLayout: true,
 	columns: [
-		{title:"DPP ID", field: 'dppId'},
-		{title:"Production Date", field: 'productionDate'},
-		{title:"Branch ID", field: 'branch.branchId'},
-		{title:"SKU Code", field: 'sku.skuCode'},
-		{title:"SKU Name", field: 'sku.skuName'},
-		{title:"Quantity", field: 'quantity'},
-		{title:"Status", field: 'status'}
+		{ title: "DPP ID", field: 'dppId' },
+		{ title: "Production Date", field: 'productionDate' },
+		{ title: "Branch ID", field: 'branch.branchId' },
+		{ title: "SKU Code", field: 'sku.skuCode' },
+		{ title: "SKU Name", field: 'sku.skuName' },
+		{ title: "Quantity", field: 'quantity' },
+		{ title: "Status", field: 'status' }
 	],
 });
 
-function createSkuOptions(){
+function createSkuOptions() {
 	let html = '';
-	$.each(sku, function(index, item){
-		if ("y" == item.isActive){
-			html += '<option id="item'+item.skuCode+'" value="'+"" +item.skuCode+'">'+item.skuCode+ " " +item.skuName+'</option>';
+	$.each(sku, function(index, item) {
+		if ("y" == item.isActive) {
+			html += '<option id="item' + item.skuCode + '" value="' + "" + item.skuCode + '">' + item.skuCode + " " + item.skuName + '</option>';
 		}
 	})
-	$("#selectSkuCode").html(html);
+	$("#selectSkuCode, #selectUpdateSkuCode").html(html);
 }
 
-function createRawMaterialOptions(){
+function createRawMaterialOptions() {
 	let html = '';
-	$.each(rawMaterial, function(index, item){
-		if ("y" == item.isActive){
-			html += '<option id="item'+item.materialCode+'" value="'+"" +item.materialCode+'">'+item.materialCode+ " " +item.materialName+'</option>';
+	$.each(rawMaterial, function(index, item) {
+		if ("y" == item.isActive) {
+			html += '<option id="item' + item.materialCode + '" value="' + "" + item.materialCode + '">' + item.materialCode + " " + item.materialName + '</option>';
 		}
 	})
 	$(".selectMaterial").html(html);
@@ -45,11 +45,10 @@ $('#btnShowMaterialDpp').hide();
 $('#btnShowUpdateDpp').hide();
 $('#btnShowDeleteDpp').hide();
 
-dppTable.on('rowClick',function() {
+dppTable.on('rowClick', function() {
 	let row = dppTable.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
-		//populateDeleteForm(row);
 		$('#btnShowMaterialDpp').show();
 		$('#btnShowUpdateDpp').show();
 		$('#btnShowDeleteDpp').show();
@@ -61,7 +60,7 @@ dppTable.on('rowClick',function() {
 })
 
 function populateForm(row) {
-	if(row !== undefined) {
+	if (row !== undefined) {
 		$('#txtUpdateDppId').val(row.dppId)
 		$('#selectUpdateSkuCode').val(row.skuCode);
 		$('#txtUpdateProductionDate').val(row.productionDate);
@@ -69,37 +68,46 @@ function populateForm(row) {
 		$('#selectUpdateStatus').val(row.status);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
-		
-		var productionMaterialFiltered = productionMaterial.filter(material => material.dppId === row.dppId);
-		
-		if (productionMaterialFiltered.length !== 0){
-			$('#divProductionMaterialTable').show();
-			var productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
-			    layout: 'fitColumns',
-			    data: productionMaterialFiltered,
-			    pagination: 'local',
-			    paginationSize: 3,
-			    paginationCounter: "rows",
-			    selectableRows: 1,
-			    movableColumns: true,
-			    responsiveLayout: true,
-			    columns: [
-			        {title: "PM ID", field: 'pmId'},
-					{title: "DPP ID", field: 'dppId'},
-			        {title: "Material Code", field: 'materialCode'},
-			        {title: "Quantity to Use", field: 'quantityToUse'}
-			    ],
-			});
-		} else {
-			$('#divProductionMaterialTable').hide();
-		}
+		filterProductionMaterial(row);
 	}
 }
+
+var productionMaterialTable;
+
+function filterProductionMaterial(row){
+	var productionMaterialFiltered = productionMaterial.filter(function(material) {
+		return material.dppId === row.dppId;
+	});
+
+	if (productionMaterialFiltered.length !== 0) {
+		$('#divProductionMaterialTable').show();
+		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
+			layout: 'fitColumns',
+			data: productionMaterialFiltered,
+			pagination: 'local',
+			paginationSize: 3,
+			paginationCounter: "rows",
+			selectableRows: 1,
+			movableColumns: true,
+			responsiveLayout: true,
+			columns: [
+				{ title: "PM ID", field: 'pmId' },
+				{ title: "DPP ID", field: 'dppId' },
+				{ title: "Material Code", field: 'materialCode' },
+				{ title: "Quantity to Use", field: 'quantityToUse' }
+			],
+		});
+	} else {
+		$('#divProductionMaterialTable').hide();
+	}
+}
+
+$('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function createItem(crudOperation) {
 	let dppId;
 	let item;
-	if (crudOperation === "create"){
+	if (crudOperation === "create") {
 		dppId = $('#txtDppId').val().trim();
 		item = {
 			dppId: dppId === '' ? null : parseInt(dppId, 10),
@@ -108,7 +116,7 @@ function createItem(crudOperation) {
 			quantity: $('#txtQuantity').val(),
 			status: $('#selectStatus').val()
 		};
-	} else if (crudOperation === "update"){
+	} else if (crudOperation === "update") {
 		dppId = $('#txtUpdateDppId').val().trim();
 		item = {
 			dppId: dppId === '' ? null : parseInt(dppId, 10),
@@ -152,10 +160,10 @@ function addItem(crudOperation) {
 	}
 }
 
-$('#btnAddDpp').click(function(){
+$('#btnAddDpp').click(function() {
 	addItem("create");
 });
-$('#btnUpdateDpp').click(function(){
+$('#btnUpdateDpp').click(function() {
 	addItem("update");
 });
 
@@ -165,11 +173,11 @@ var materialCounter = 0; // Counter to track added material rows
 
 // Function to dynamically add materials
 function addSelect() {
-    // Increment counter for each added material row
-    materialCounter++;
+	// Increment counter for each added material row
+	materialCounter++;
 
-    // Create a new row for material and quantity input with unique IDs
-    let html = `
+	// Create a new row for material and quantity input with unique IDs
+	let html = `
         <tr id="newMaterialSelect${materialCounter}">
 			<td>
                 <select class="form-select selectMaterial" id="selectMaterial${materialCounter}">
@@ -185,35 +193,32 @@ function addSelect() {
         </tr>
     `;
 
-    // Append the new row to the table
-    $('.table').append(html);
+	// Append the new row to the table
+	$('.table').append(html);
 }
 
 // Function to dynamically create options for the select dropdown
 function createRawMaterialOptions() {
-    let optionsHtml = '';
-    $.each(rawMaterial, function(index, item) {
-        if (item.isActive === "y") {
-            optionsHtml += `<option value="${item.materialCode}">${item.materialCode} ${item.materialName}</option>`;
-        }
-    });
-    return optionsHtml;
+	let optionsHtml = '';
+	$.each(rawMaterial, function(index, item) {
+		if (item.isActive === "y") {
+			optionsHtml += `<option value="${item.materialCode}">${item.materialCode} ${item.materialName}</option>`;
+		}
+	});
+	return optionsHtml;
 }
 
 // Function to remove a material row by counter
 function removeMaterial(counter) {
-    $(`#newMaterialSelect${counter}`).remove(); // Remove the specific row
+	$(`#newMaterialSelect${counter}`).remove(); 
 }
 
 // Event handler for the 'Add Material' button
-$('#selectAdd').on('click', function(e) {
-    addSelect(); // Call function to add material row
+$('#selectAdd').on('click', function() {
+	addSelect(); 
 });
 
 // Event handler for the modal close button to remove added rows
 $('#btnCloseAddSelectModal').on('click', function() {
-    $('.table tr[id^="newMaterialSelect"]').remove(); // Remove all dynamically added rows
+	$('.table tr[id^="newMaterialSelect"]').remove();
 });
-
-
-
