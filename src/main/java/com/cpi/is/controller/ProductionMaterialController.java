@@ -14,9 +14,6 @@ import com.cpi.is.service.DppService;
 import com.cpi.is.service.ProductionMaterialService;
 import com.cpi.is.service.RawMaterialService;
 
-/**
- * Servlet implementation class ProductionMaterialController
- */
 @WebServlet("/ProductionMaterialController")
 public class ProductionMaterialController extends HttpServlet {
 
@@ -28,17 +25,11 @@ public class ProductionMaterialController extends HttpServlet {
     private DppService dppService = (DppService) context.getBean("dppService");
     private ProductionMaterialService productionMaterialService = (ProductionMaterialService) context.getBean("productionMaterialService");
     private RawMaterialService rawMaterialService = (RawMaterialService) context.getBean("rawMaterialService");
-
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+ 
     public ProductionMaterialController() {
         super();
     }
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
@@ -70,9 +61,6 @@ public class ProductionMaterialController extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

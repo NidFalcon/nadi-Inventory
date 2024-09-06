@@ -1,5 +1,5 @@
 var skuTable = new Tabulator("#divSkuTable" , {
-	layout: 'fitDataFill',
+	layout: 'fitColumns',
 	data: sku,
 	pagination: 'local',
 	pagination: true,
