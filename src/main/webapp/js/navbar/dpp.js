@@ -169,14 +169,10 @@ $('#btnUpdateDpp').click(function() {
 
 createSkuOptions();
 
-var materialCounter = 0; // Counter to track added material rows
+var materialCounter = 0;
 
-// Function to dynamically add materials
 function addSelect() {
-	// Increment counter for each added material row
 	materialCounter++;
-
-	// Create a new row for material and quantity input with unique IDs
 	let html = `
         <tr id="newMaterialSelect${materialCounter}">
 			<td>
@@ -193,11 +189,9 @@ function addSelect() {
         </tr>
     `;
 
-	// Append the new row to the table
 	$('.table').append(html);
 }
 
-// Function to dynamically create options for the select dropdown
 function createRawMaterialOptions() {
 	let optionsHtml = '';
 	$.each(rawMaterial, function(index, item) {
@@ -208,17 +202,14 @@ function createRawMaterialOptions() {
 	return optionsHtml;
 }
 
-// Function to remove a material row by counter
 function removeMaterial(counter) {
 	$(`#newMaterialSelect${counter}`).remove(); 
 }
 
-// Event handler for the 'Add Material' button
 $('#selectAdd').on('click', function() {
 	addSelect(); 
 });
 
-// Event handler for the modal close button to remove added rows
-$('#btnCloseAddSelectModal').on('click', function() {
+$('#btnCloseAddPmModal').on('click', function() {
 	$('.table tr[id^="newMaterialSelect"]').remove();
 });

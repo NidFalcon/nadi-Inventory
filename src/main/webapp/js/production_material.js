@@ -6,7 +6,7 @@ $("#btnAddProductionMaterial").click(function() {
 		item: productionMaterials
 	}, function(response){
 		if (response.includes('success')){
-			$('#btnCloseAddSelectModal').click();
+			$('#btnCloseAddPmModal').click();
 		} else {
 			alert('unable to add production materials');
 		}
