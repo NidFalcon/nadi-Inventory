@@ -18,14 +18,15 @@ $("#btnAddProductionMaterial").click(function() {
 function createProductionMaterialObjects(){
 	let testObjArr = [];
 		for (let i = 1; i <= materialCounter; i++){
-			testObj = {
-				pmId: null,
-				dppId: $('#materialDppId').val(),
-				materialCode: $(`#selectMaterial${i}`).val(),
-				quantityToUse: $(`#materialQuantity${i}`).val()
-			}
-			
-			testObjArr.push(testObj);
+			if ($(`#selectMaterial${i}`).length){
+				testObj = {
+					pmId: null,
+					dppId: $('#materialDppId').val(),
+					materialCode: $(`#selectMaterial${i}`).val(),
+					quantityToUse: $(`#materialQuantity${i}`).val()
+				}
+				testObjArr.push(testObj);
+			}			
 		}
 	
 	return JSON.stringify(testObjArr);

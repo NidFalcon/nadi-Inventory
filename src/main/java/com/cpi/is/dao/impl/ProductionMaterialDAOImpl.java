@@ -63,6 +63,6 @@ public class ProductionMaterialDAOImpl implements ProductionMaterialDAO {
 			System.out.println(item.get(i));
 			System.out.println(saveItem(item.get(i)));
 		}
-		return null;
+		return "success";
 	}
 }
