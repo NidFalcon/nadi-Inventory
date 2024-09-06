@@ -49,7 +49,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btnCloseAddModal"
                     data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnAddMaterial">Add Material</button>
+                <button type="button" class="btn btn-primary" id="btnAddProductionMaterial">Add Material</button>
             </div>
         </div>
     </div>

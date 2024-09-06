@@ -1,7 +1,11 @@
 package com.cpi.is.service.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import com.cpi.is.dao.impl.ProductionMaterialDAOImpl;
 import com.cpi.is.entity.ProductionMaterialEntity;
@@ -48,4 +52,14 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         return productionMaterialDAO.deleteItem(
                 jsonToEntity(new JSONObject(request.getParameter("item"))));
     }
+
+	@Override
+	public String saveBulkItems(HttpServletRequest request) throws Exception {
+		JSONArray jsonArr = new JSONArray(request.getParameter("item"));
+		List<ProductionMaterialEntity> productionMaterials = new ArrayList<ProductionMaterialEntity>();
+		for (int i = 0; i < jsonArr.length(); i++) {
+			productionMaterials.add(jsonToEntity(jsonArr.getJSONObject(i)));
+		}
+		return productionMaterialDAO.saveBulkItems(productionMaterials);
+	}
 }

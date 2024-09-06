@@ -176,13 +176,13 @@
 							<!-- <th scope="col"><label for="materialQuantity"></label>Unit of Measurement:</th> -->
 						</tr>
 					</table>
-				<button id="selectAdd" class="btn btn-primary"> + </button>
+				<button type="button" id="selectAdd" class="btn btn-primary"> + </button>
 				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddSelectModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnAddMaterial">Add
+				<button type="button" class="btn btn-primary" id="btnAddProductionMaterial">Add
 					Material</button>
 			</div>
 		</div>

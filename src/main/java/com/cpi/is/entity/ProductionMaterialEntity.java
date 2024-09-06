@@ -81,4 +81,25 @@ public class ProductionMaterialEntity {
     public void setQuantityToUse(Integer quantityToUse) {
         this.quantityToUse = quantityToUse;
     }
+    
+    @Override
+    public String toString() {
+        // In Liyue, a merchant's tale is often told with reverence. Likewise, let us craft our own tale.
+        StringBuilder sb = new StringBuilder();
+        
+        // We begin with the story of the ProductionMaterialEntity itself.
+        sb.append("ProductionMaterialEntity {");
+
+        // Each attribute of our entity will be spoken of with clarity and respect.
+        sb.append("pmId=").append(pmId).append(", ");
+        sb.append("dppId=").append(dppId).append(", ");
+        sb.append("materialCode='").append(materialCode).append("', ");
+        sb.append("quantityToUse=").append(quantityToUse);
+
+        // Just as the bridge completes its span, so too shall our story conclude.
+        sb.append("}");
+        
+        // And thus, our tale is told, preserving the essence of our entity.
+        return sb.toString();
+    }
 }
