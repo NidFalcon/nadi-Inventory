@@ -69,6 +69,30 @@ function populateForm(row) {
 		$('#selectUpdateStatus').val(row.status);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
+		
+		var productionMaterialFiltered = productionMaterial.filter(material => material.dppId === row.dppId);
+		
+		if (productionMaterialFiltered.length !== 0){
+			$('#divProductionMaterialTable').show();
+			var productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
+			    layout: 'fitColumns',
+			    data: productionMaterialFiltered,
+			    pagination: 'local',
+			    paginationSize: 3,
+			    paginationCounter: "rows",
+			    selectableRows: 1,
+			    movableColumns: true,
+			    responsiveLayout: true,
+			    columns: [
+			        {title: "PM ID", field: 'pmId'},
+					{title: "DPP ID", field: 'dppId'},
+			        {title: "Material Code", field: 'materialCode'},
+			        {title: "Quantity to Use", field: 'quantityToUse'}
+			    ],
+			});
+		} else {
+			$('#divProductionMaterialTable').hide();
+		}
 	}
 }
 

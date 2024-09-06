@@ -31,25 +31,8 @@ function createProductionMaterialObjects(){
 	
 	return JSON.stringify(testObjArr);
 }
-/*
-var productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
-    layout: 'fitColumns',
-    data: productionMaterial,
-    pagination: 'local',
-    paginationSize: 5,
-    paginationSizeSelector: [5, 10, 15, 20],
-    paginationCounter: "rows",
-    selectableRows: 1,
-    movableColumns: true,
-    responsiveLayout: true,
-    columns: [
-        {title: "PM ID", field: 'pmId'},
-        {title: "DPP ID", field: 'dppId'},
-        {title: "Material Code", field: 'materialCode'},
-        {title: "Quantity to Use", field: 'quantityToUse'}
-    ],
-});
 
+/*
 function createMaterialOptions() {
     let html = '';
     $.each(rawMaterial, function(index, item) {

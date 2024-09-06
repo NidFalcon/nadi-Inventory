@@ -162,6 +162,8 @@
 					aria-label="Close" id="btnCloseAddSelectModal"></button>
 			</div>
 			<div class="modal-body">
+				<div id="divProductionMaterialTable">
+				</div>
 				<form>
 					<table class="table">
 						<tr>
@@ -192,6 +194,7 @@
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
     var rawMaterial = JSON.parse('${rawMaterial}');
+    var productionMaterial = JSON.parse('${productionMaterials}')
 </script>
 <script src="js/navbar/dpp.js"></script>
 <script src="js/production_material.js"></script>
