@@ -10,7 +10,7 @@
 			<div>
 				<button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#selectModal" id="btnShowMaterialDpp">+ add Material</button>	
 			</div>
-			<div class="ms-auto btn-toolbar mb-2 mb-md-0">
+			<div class="ms-auto btn-toolbar mb-2 mb-md-0 me-3 ms-2">
 				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">+ add</button>
 				<button type="button" class="btn btn-primary  me-2" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnShowUpdateDpp">Update</button>
 				<button type="button" class="btn btn-danger  me-2" data-bs-toggle="modal" data-bs-target="#deleteModal" id="btnShowDeleteDpp">Delete</button>
