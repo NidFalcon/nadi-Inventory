@@ -4,7 +4,7 @@
 		<h1 class="h2"><i class="bi bi-boxes me-2"></i>Dispatch</h1>
 		<div class="btn-toolbar mb-2 mb-md-0">
 			<button type="button" class="btn btn-primary me-1" data-bs-toggle="modal"
-				data-bs-target="#addModal">+ add</button>
+				data-bs-target="#addModal">+ Add</button>
 			<button type="button" class="btn btn-primary  me-1" data-bs-toggle="modal"
 				data-bs-target="#updateModal" id="btnShowUpdateDispatching">Update</button>
 			<button type="button" class="btn btn-danger  me-1" data-bs-toggle="modal"
@@ -61,7 +61,7 @@
 					</div>
 					<div class="mb-3">
 						<label for="addDispatchQuantity" class="col-form-label">Quantity:</label>
-						<input type="text" class="form-control"
+						<input type="number" class="form-control"
 							id="addDispatchQuantity">
 					</div>
 					<div class="mb-3">
@@ -81,7 +81,7 @@
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
 				<button type="button" class="btn btn-primary" id="btnAddDispatch">Add
-					Material</button>
+					Dispatch</button>
 			</div>
 		</div>
 	</div>
@@ -107,14 +107,12 @@
 						<label for="updateDispatchType" class="col-form-label">Dispatch Type:</label>
 						<select class="form-select selDispatchType" id="updateDispatchType">
 							<option></option>
-							<option value="DIS004">DIS001M</option>
 						</select> 
 					</div>
 					<div class="mb-3">
 						<label for="updateFinishedProductId">Finished Product List</label>
 						<select id="updateFinishedProductId" class="form-select selFinishedProd">
 						            <option value="" class="option">Select Finished Product</option>
-						            <option value="23" class="option">test value 23</option>
 						</select>
 					</div>
 					<div class="row mb-3">
@@ -133,7 +131,7 @@
 					</div>
 					<div class="mb-3">
 						<label for="updateDispatchQuantity" class="col-form-label">Quantity:</label>
-						<input type="text" class="form-control"
+						<input type="number" class="form-control"
 							id="updateDispatchQuantity">
 					</div>
 					<div class="mb-3">
@@ -153,7 +151,7 @@
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary"
-					id="btnUpdateDispatch">update material</button>
+					id="btnUpdateDispatch">Update Dispatch</button>
 			</div>
 		</div>
 	</div>
