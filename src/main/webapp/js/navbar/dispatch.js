@@ -1,5 +1,5 @@
 var dispatchTable = new Tabulator("#divDispatchingTable" , {
-	layout: 'fitDataFill',
+	layout: "fitColumns",
 	data: dispatch,
 	pagination: 'local',
 	pagination: true,
@@ -9,9 +9,6 @@ var dispatchTable = new Tabulator("#divDispatchingTable" , {
 	selectableRows:1,
 	movableColumns:true,
 	responsiveLayout:true,
-	initialSort: [
-		{column:"materialListId", dir:"asc"}
-	],
 	columns: [
 		{title:"Dispatch Type ID", field: 'dispatchType.dispatchTypeCode'},
 		{title:"Dispatch Type Name", field: 'dispatchType.dispatchTypeName'},

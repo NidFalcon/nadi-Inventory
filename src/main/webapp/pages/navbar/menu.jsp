@@ -1,17 +1,17 @@
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+    <nav class="navbar navbar-expand-lg sticky-top divMenu">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg"
                     aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <!--navbar items-->
                 <ul class="navbar-nav ms-3 me-auto mb-2 mb-lg-0">
                     <li class="navbar-brand">
-                        <span>Inventory System</span>
+                        <img src="images/icon.png" class="me-1 menuIcon"><span>Patisserie Plain</span>
                     </li>
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="navbarOffcanvasLg" aria-laballededby="navbarOffcanvasLgLabel">
                     <!--menu header-->
                     <div class="offcanvas-header">     
-                        <h5 class="offcanvas-title" id="navbarOffcanvasLgLabel"><i class="bi bi-box-fill me-1"></i>Inventory System</h5>
+                        <h5 class="offcanvas-title" id="navbarOffcanvasLgLabel"><i class="bi bi-box-fill me-1"></i>Patisserie Plain</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <!--menu body-->
@@ -44,7 +44,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                            	<a class="nav-link" href="#" id="btnDpp">DPP</a>
+                            	<a class="nav-link" href="#" id="btnDpp"><i class="bi bi-card-heading me-1"></i>DPP</a>
                             </li>
                         </ul>
                     </div>

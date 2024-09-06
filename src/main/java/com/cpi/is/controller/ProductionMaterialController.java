@@ -13,10 +13,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.service.DppService;
 import com.cpi.is.service.ProductionMaterialService;
 import com.cpi.is.service.RawMaterialService;
-import com.cpi.is.service.SkuService;
 
-@WebServlet("/DppController")
-public class DppController extends HttpServlet {
+@WebServlet("/ProductionMaterialController")
+public class ProductionMaterialController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private static String action = "";
@@ -24,35 +23,39 @@ public class DppController extends HttpServlet {
 
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private DppService dppService = (DppService) context.getBean("dppService");
-    private SkuService skuService = (SkuService) context.getBean("skuService");
-    private RawMaterialService rawMaterialService = (RawMaterialService) context.getBean("rawMaterialService");
     private ProductionMaterialService productionMaterialService = (ProductionMaterialService) context.getBean("productionMaterialService");
-
-    public DppController() {
+    private RawMaterialService rawMaterialService = (RawMaterialService) context.getBean("rawMaterialService");
+    
+    public ProductionMaterialController() {
         super();
     }
-
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
 
-            if ("showDpp".equals(action)) {
+            if ("showProductionMaterial".equals(action)) {
+                request.setAttribute("productionMaterial", new JSONArray(productionMaterialService.getProductionMaterial()));
                 request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
-                request.setAttribute("sku", new JSONArray(skuService.getSku()));
                 request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
-                request.setAttribute("productionMaterials", new JSONArray(productionMaterialService.getProductionMaterial()));
-                page = "pages/navbar/dpp.jsp";
+                page = "pages/productionMaterial.jsp";
             } else if ("saveItem".equals(action)) {
-                String message = dppService.saveItem(request);
+                String message = productionMaterialService.saveItem(request);
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
             } else if ("deleteItem".equals(action)) {
-                String message = dppService.deleteItem(request);
+                String message = productionMaterialService.deleteItem(request);
+                request.setAttribute("message", message);
+                page = "pages/message.jsp";
+            } else if ("saveBulkItems".equals(action)) {
+            	String message = productionMaterialService.saveBulkItems(request);
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
             }
         } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("message", "An error occurred: " + e.getMessage());
+            page = "pages/error.jsp";
         } finally {
             request.getRequestDispatcher(page).forward(request, response);
         }

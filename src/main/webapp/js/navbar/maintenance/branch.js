@@ -1,52 +1,77 @@
-function toggleAddButton() {
-    if ($('#txtBranchId').val() === '') {
-        $('#btnAdd').html('Add');
-    } else {
-        $('#btnAdd').html('Update');
-    }
+var branches = new Tabulator("#divBranchTableTable" , {
+	layout: 'fitColumns',
+	data: branch,
+	pagination: 'local',
+	pagination: true,
+	paginationSize: 5,
+	paginationSizeSelector:[5, 10, 15, 20],
+	paginationCounter:"rows",
+	selectableRows:1,
+	movableColumns:true,
+	responsiveLayout:true,
+	columns: [
+		{title:"Branch ID", field: 'branchId'},
+		{title:"Branch Name", field: 'branchName'},
+		{title:"Active", field: 'isActive'}
+	],
+});
+
+$('#btnShowUpdateBranches').hide();
+$('#btnShowDeleteBranches').hide();
+
+branches.on('rowClick',function() {
+	let row = branches.getSelectedData()[0];
+	if (row !== undefined) {
+		populateForm(row);
+		populateDeleteForm(row);
+		$('#btnShowUpdateBranches').show();
+		$('#btnShowDeleteBranches').show();
+	} else {
+		resetForm();
+		$('#btnShowUpdateBranches').hide();
+		$('#btnShowDeleteBranches').hide();
+	}
+})
+
+function populateForm(row) {
+	if(row !== undefined) {
+		$('#txtUpdateBranchId').val(row.branchId)
+		$('#txtUpdateBranchName').val(row.branchName);
+		row.isActive === 'y' ? $('#chkUpdateBranchIsActive').prop('checked', true) : $('#chkUpdateBranchIsActive').prop('checked', false);
+	}
 }
 
-function bindRowsClick(branch) {
-    $.each(branch, function(index, item) {
-        $('#item'+index+'row').click(function() {
-            $('#chkIsActive').prop('checked', item.isActive === 'y');
-            $('#txtBranchId').val(item.branchId);
-            $('#txtBranchName').val(item.branchName);
-            toggleAddButton();
-        });
-    });
+function populateDeleteForm(row) {
+	if(row !== undefined) {
+		$('#deleteBranchId').val(row.branchId)
+		$('#deleteBranchName').val(row.branchName);
+		$('#deleteStatus').val(row.isActive);	
+	}
 }
 
-function createBranchTable(branch) {
-    let html = '';
-    html += '<table class="branch">';
-    html += '  <tr>';
-    html += '    <th>Branch ID</th>';
-    html += '    <th>Branch Name</th>';
-    html += '    <th>Active</th>'; 
-    html += '  </tr>';
-    $.each(branch, function(index, item) {
-        html += '<tr id="item'+index+'row">';
-        html += '  <td id="item'+index+'id">' + item.branchId + '</td>';
-        html += '  <td id="item'+index+'name" class="center-aligned">' + item.branchName + '</td>';
-        html += '  <td>' + (item.isActive === 'y' ? 'Yes' : 'No') + '</td>';
-        html += '</tr>';
-    });
-    html += '</table>';
-    $('#divBranchTable').html(html);
-    bindRowsClick(branch);
+function createItem(crudOperation) {
+	let item;
+	if (crudOperation === "create"){
+		item = {
+			branchId: $('#txtBranchId').val() !== '' ? $('#txtBranchId').val() : null,
+			branchName: $('#txtBranchName').val(),
+			isActive: $('#chkBranchIsActive').is(':checked') ? 'y' : 'n',
+		};
+	} else if (crudOperation === "update"){
+		item = {
+			branchId: $('#txtUpdateBranchId').val() !== '' ? $('#txtUpdateBranchId').val() : '',
+			branchName: $('#txtUpdateBranchName').val(),
+			isActive: $('#chkUpdateBranchIsActive').is(':checked') ? 'y' : 'n',
+		};
+	} else if (crudOperation === "delete"){
+		item = {
+			branchId: $('#deleteBranchId').val() !== '' ? $('#deleteBranchId').val() : '',
+			branchName: $('#deleteBranchName').val(),
+			isActive: $('#deleteStatus').val()
+		}
+	}
+	return item;
 }
-
-function createItem() {
-    let branchId = $('#txtBranchId').val().trim();
-    let item = {
-        isActive: $('#chkIsActive').is(':checked') ? 'y' : 'n',
-        branchId: branchId === '' ? null : parseInt(branchId, 10),
-        branchName: $('#txtBranchName').val().trim()
-    };
-    return item;
-}
-
 
 function validate(item) {
     let valid = true;
@@ -57,14 +82,15 @@ function validate(item) {
     return valid;
 }
 
-function addItem() {
-    let item = createItem();
+function addItem(crudOperation) {
+    let item = createItem(crudOperation);
     if (validate(item)) {
         $.post('BranchController', {
             action: 'saveItem',
             item: JSON.stringify(item)
         }, function(response) {
             if (response.includes('success')) {
+				$('.btnCloseModal').click();
                 $('#btnMngBranch').click();
             } else {
                 alert('Unable to save changes');
@@ -73,33 +99,30 @@ function addItem() {
     }
 }
 
-$('#btnAdd').click(addItem);
-
-function resetBranchForm() {
-    $('#chkIsActive').prop('checked', false);
-    $('#txtBranchId').val('');
-    $('#txtBranchName').val('');
-    toggleAddButton();
-}
-
-$('#btnClear').click(resetBranchForm);
-
-$('#btnDelete').click(function() {
-    if ($('#txtBranchId').val() !== '') {
-        let item = createItem();
-        $.post('BranchController', {
-            action: 'deleteItem',
-            item: JSON.stringify(item)
-        }, function(response) {
-            if (response.includes('success')) {
-                $('#btnMngBranch').click();
-            } else {
-                alert('Unable to delete item');
-            }
-        });
-    } else {
-        alert('Please select a branch to delete');
-    }
+$('#btnAddBranch').click(function(){
+	addItem("create");
+});
+$('#btnUpdateBranchId').click(function(){
+	addItem("update");
 });
 
-createBranchTable(branch);
+$('#btnDeleteBranch').click(function() {
+	console.log(JSON.stringify(createItem("delete")));
+	if ($('#deleteRawMaterialCode').val() !== '') {
+		$.post('BranchController', {
+			action: 'deleteItem',
+			item: JSON.stringify(createItem("delete"))
+		}, function(response) {
+			if (response.includes('success')) {
+				$('#btnDeleteBranchCancel').click();
+				$('#btnMngBranch').click();
+			} else {
+				$('#divAlert').removeClass('d-none');
+				$('#divAlert').html('Unable to save changes');
+			}
+		});
+	} else {
+		$('#divAlert').removeClass('d-none');
+		$('#divAlert').html('Please select an item to delete');
+	}
+});
