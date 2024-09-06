@@ -24,11 +24,11 @@
 
 <!-- add modal -->
 <div class="modal fade" id="addModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="addDppModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add New
+				<h5 class="modal-title" id="addDppModalLabel">Add New
 					DPP:</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
@@ -78,11 +78,11 @@
 
 <!-- update modal -->
 <div class="modal fade" id="updateModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="updateDppModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Update DPP:</h5>
+				<h5 class="modal-title" id="updateDppModalLabel">Update DPP:</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
@@ -130,11 +130,11 @@
 
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    aria-labelledby="deleteDppModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete DPP</h5>
+                <h5 class="modal-title" id="deleteDppModalLabel">Delete DPP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
@@ -153,15 +153,17 @@
 
 <!-- select modal -->
 <div class="modal fade" id="selectModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="addPmModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add Material:</h5>
+				<h5 class="modal-title" id="addPmModalLabel">Add Production Material/s:</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close" id="btnCloseAddSelectModal"></button>
 			</div>
 			<div class="modal-body">
+				<div id="divProductionMaterialTable">
+				</div>
 				<form>
 					<table class="table">
 						<tr>
@@ -192,6 +194,7 @@
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
     var rawMaterial = JSON.parse('${rawMaterial}');
+    var productionMaterial = JSON.parse('${productionMaterials}')
 </script>
 <script src="js/navbar/dpp.js"></script>
 <script src="js/production_material.js"></script>
