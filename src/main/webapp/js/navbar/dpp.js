@@ -136,28 +136,60 @@ $('#btnUpdateDpp').click(function(){
 });
 
 createSkuOptions();
-createRawMaterialOptions();
 
-// for Adding Materials
+var materialCounter = 0; // Counter to track added material rows
 
-function addselect() {
-	let html = '';
-	html += '<tr id="newMaterialSelect">',
-	html += '	<td><Select class="form-select selectMaterial" id="selectMaterial">',
-	html += '		<option></option>',
-	html += '	</Select></td>',
-	html += '	<td><input type="number" class="form-control" min="1"></td>',
-	html += '</tr>'
-	
-	$('#selectAdd').click(function () {
-		$('.table').append(html)
-	})
-	
-	$('#btnCloseAddSelectModal').click(function () {
-		$('.table #newMaterialSelect').remove();
-	})
-}	
+// Function to dynamically add materials
+function addSelect() {
+    // Increment counter for each added material row
+    materialCounter++;
 
-addselect();
+    // Create a new row for material and quantity input with unique IDs
+    let html = `
+        <tr id="newMaterialSelect${materialCounter}">
+			<td>
+                <select class="form-select selectMaterial" id="selectMaterial${materialCounter}">
+                    ${createRawMaterialOptions()}
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control" id="materialQuantity${materialCounter}" min="1" placeholder="Enter quantity" />
+            </td>
+            <td>
+                <button class="btn btn-danger" type="button" onclick="removeMaterial(${materialCounter})">X</button>
+            </td>
+        </tr>
+    `;
+
+    // Append the new row to the table
+    $('.table').append(html);
+}
+
+// Function to dynamically create options for the select dropdown
+function createRawMaterialOptions() {
+    let optionsHtml = '';
+    $.each(rawMaterial, function(index, item) {
+        if (item.isActive === "y") {
+            optionsHtml += `<option value="${item.materialCode}">${item.materialCode} ${item.materialName}</option>`;
+        }
+    });
+    return optionsHtml;
+}
+
+// Function to remove a material row by counter
+function removeMaterial(counter) {
+    $(`#newMaterialSelect${counter}`).remove(); // Remove the specific row
+}
+
+// Event handler for the 'Add Material' button
+$('#selectAdd').on('click', function(e) {
+    addSelect(); // Call function to add material row
+});
+
+// Event handler for the modal close button to remove added rows
+$('#btnCloseAddSelectModal').on('click', function() {
+    $('.table tr[id^="newMaterialSelect"]').remove(); // Remove all dynamically added rows
+});
+
 
 

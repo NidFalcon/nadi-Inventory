@@ -56,6 +56,10 @@ public class ProductionMaterialController extends HttpServlet {
                 String message = productionMaterialService.deleteItem(request);
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
+            } else if ("saveBulkItems".equals(action)) {
+            	String message = productionMaterialService.saveBulkItems(request);
+                request.setAttribute("message", message);
+                page = "pages/message.jsp";
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.cpi.is.dao.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -55,4 +56,13 @@ public class ProductionMaterialDAOImpl implements ProductionMaterialDAO {
         }
         return "success";
     }
+
+	@Override
+	public String saveBulkItems(List<ProductionMaterialEntity> item) throws Exception {
+		for(int i = 0; i < item.size(); i++) {
+			System.out.println(item.get(i));
+			System.out.println(saveItem(item.get(i)));
+		}
+		return "success";
+	}
 }

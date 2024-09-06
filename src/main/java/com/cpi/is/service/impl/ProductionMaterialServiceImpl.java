@@ -1,7 +1,11 @@
 package com.cpi.is.service.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import com.cpi.is.dao.impl.ProductionMaterialDAOImpl;
 import com.cpi.is.entity.ProductionMaterialEntity;
@@ -20,11 +24,20 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         this.productionMaterialDAO = productionMaterialDAO;
     }
 
-    private ProductionMaterialEntity jsonToEntity(JSONObject json) {
-        Long pmId = json.has("pmId") && !json.isNull("pmId") ? json.getLong("pmId") : null;
-        Long dppId = json.has("dppId") ? json.getLong("dppId") : null;
-        String materialCode = json.has("materialCode") ? json.getString("materialCode") : null;
-        Integer quantityToUse = json.has("quantityToUse") ? json.getInt("quantityToUse") : null;
+    private ProductionMaterialEntity jsonToEntity(JSONObject json) throws Exception {
+        Long pmId = null;
+        Long dppId = null;
+        String materialCode = null;
+        Integer quantityToUse = null;
+        
+    	if (json.has("pmId") && json.has("dppId") && json.has("materialCode") && json.has("quantityToUse")) {
+            pmId = !json.isNull("pmId") ? json.getLong("pmId") : null;
+            dppId = json.getLong("dppId");
+            materialCode = json.getString("materialCode");
+            quantityToUse = json.getInt("quantityToUse");
+    	} else {
+    		throw new Exception("JSON malformed");
+    	}
 
         return new ProductionMaterialEntity(pmId, dppId, materialCode, quantityToUse);
     }
@@ -48,4 +61,14 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         return productionMaterialDAO.deleteItem(
                 jsonToEntity(new JSONObject(request.getParameter("item"))));
     }
+
+	@Override
+	public String saveBulkItems(HttpServletRequest request) throws Exception {
+		JSONArray jsonArr = new JSONArray(request.getParameter("item"));
+		List<ProductionMaterialEntity> productionMaterials = new ArrayList<ProductionMaterialEntity>();
+		for (int i = 0; i < jsonArr.length(); i++) {
+			productionMaterials.add(jsonToEntity(jsonArr.getJSONObject(i)));
+		}
+		return productionMaterialDAO.saveBulkItems(productionMaterials);
+	}
 }
