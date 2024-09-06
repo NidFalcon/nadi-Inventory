@@ -22,7 +22,7 @@ $('#btnLogin').click(function() {
 	}
 */
 
-$('#btnRegisterLink').click(function(){
+$('#btnRegister').click(function(){
 	//$('#divContent').load('pages/registration.jsp');
 	$.get("UserController", {
 		action: "showRegisterPage"
