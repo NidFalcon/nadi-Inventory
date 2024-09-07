@@ -1,14 +1,14 @@
 $("#btnAddProductionMaterial").click(function() {
-	let productionMaterials = createProductionMaterialObjects();
+	let productionMaterial = createProductionMaterialObjects();
 	
 	$.post("ProductionMaterialController", {
 		action: "saveBulkItems",
-		item: productionMaterials
+		item: productionMaterial
 	}, function(response){
 		if (response.includes('success')){
 			$('#btnCloseAddPmModal').click();
 		} else {
-			alert('unable to add production materials');
+			alert('Unable to add production materials');
 		}
 	})
 })
@@ -16,16 +16,15 @@ $("#btnAddProductionMaterial").click(function() {
 function createProductionMaterialObjects(){
 	let pmObjArr = [];
 		for (let i = 1; i <= materialCounter; i++){
-			if ($(`#selectMaterial${i}`).length){
+			if ($(`#selectRawMaterial${i}`).length){
 				pmObj = {
 					pmId: null,
 					dppId: $('#materialDppId').val(),
-					materialCode: $(`#selectMaterial${i}`).val(),
+					materialCode: $(`#selectRawMaterial${i}`).val(),
 					quantityToUse: $(`#materialQuantity${i}`).val()
 				}
 				pmObjArr.push(pmObj);
 			}			
-		}
-	
+		};
 	return JSON.stringify(pmObjArr);
 }

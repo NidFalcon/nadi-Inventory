@@ -65,10 +65,10 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
 	@Override
 	public String saveBulkItems(HttpServletRequest request) throws Exception {
 		JSONArray jsonArr = new JSONArray(request.getParameter("item"));
-		List<ProductionMaterialEntity> productionMaterials = new ArrayList<ProductionMaterialEntity>();
+		List<ProductionMaterialEntity> productionMaterial = new ArrayList<ProductionMaterialEntity>();
 		for (int i = 0; i < jsonArr.length(); i++) {
-			productionMaterials.add(jsonToEntity(jsonArr.getJSONObject(i)));
+			productionMaterial.add(jsonToEntity(jsonArr.getJSONObject(i)));
 		}
-		return productionMaterialDAO.saveBulkItems(productionMaterials);
+		return productionMaterialDAO.saveBulkItems(productionMaterial);
 	}
 }

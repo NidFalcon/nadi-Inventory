@@ -204,12 +204,12 @@ function createRawMaterialOptions() {
 }
 
 var materialCounter = 0;
-function addSelect() {
+function addPmRow() {
 	materialCounter++;
 	let html = `
-        <tr id="newMaterialSelect${materialCounter}">
+        <tr id="pmRow${materialCounter}">
 			<td>
-                <select class="form-select selectMaterial" id="selectMaterial${materialCounter}">
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}">
                     ${createRawMaterialOptions()}
                 </select>
             </td>
@@ -217,7 +217,7 @@ function addSelect() {
                 <input type="number" class="form-control" id="materialQuantity${materialCounter}" min="1" placeholder="Enter quantity" />
             </td>
             <td>
-                <button class="btn btn-danger" type="button" onclick="removeMaterial(${materialCounter})">X</button>
+                <button class="btn btn-danger" type="button" onclick="deletePmRow(${materialCounter})">X</button>
             </td>
         </tr>
     `;
@@ -225,14 +225,14 @@ function addSelect() {
 	$('.table').append(html);
 }
 
-function removeMaterial(counter) {
-	$(`#newMaterialSelect${counter}`).remove(); 
-}
-
-$('#selectAdd').on('click', function() {
-	addSelect(); 
+$('#btnAddPmRow').on('click', function() {
+	addPmRow(); 
 });
 
+function deletePmRow(materialCounter) {
+	$(`#pmRow${materialCounter}`).remove(); 
+}
+
 $('#btnCloseAddPmModal').on('click', function() {
-	$('.table tr[id^="newMaterialSelect"]').remove();
+	$('.table tr[id^="pmRow"]').remove();
 });

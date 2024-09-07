@@ -6,9 +6,9 @@
 		</div>
 		<div>
 			<button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal"
-				data-bs-target="#selectAddPmModal" id="btnShowAddPm">+ add PM</button>	
+				data-bs-target="#addPmModal" id="btnShowAddPm">+ add PM</button>	
 			<button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal"
-				data-bs-target="#selectUpdatePmModal" id="btnShowUpdatePm">update PM</button>	
+				data-bs-target="#updatePmModal" id="btnShowUpdatePm">update PM</button>	
 		</div>
 		<div class="ms-auto btn-toolbar mb-2 mb-md-0">
 			<button type="button" class="btn btn-primary me-1" data-bs-toggle="modal"
@@ -153,7 +153,7 @@
 </div>
 
 <!-- add PM modal -->
-<div class="modal fade" id="selectAddPmModal" tabindex="-1"
+<div class="modal fade" id="addPmModal" tabindex="-1"
 	aria-labelledby="addPmModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -179,7 +179,7 @@
 							<!-- <th scope="col"><label for="materialQuantity"></label>Unit of Measurement:</th> -->
 						</tr>
 					</table>
-				<button type="button" id="selectAdd" class="btn btn-primary"> + </button>
+				<button type="button" id="btnAddPmRow" class="btn btn-primary"> + </button>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -194,7 +194,7 @@
 </div>
 
 <!-- update PM modal -->
-<div class="modal fade" id="selectUpdatePmModal" tabindex="-1"
+<div class="modal fade" id="updatePmModal" tabindex="-1"
 	aria-labelledby="updatePmModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -234,7 +234,7 @@
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
     var rawMaterial = JSON.parse('${rawMaterial}');
-    var productionMaterial = JSON.parse('${productionMaterials}')
+    var productionMaterial = JSON.parse('${productionMaterial}')
 </script>
 <script src="js/navbar/dpp.js"></script>
 <script src="js/production_material.js"></script>
