@@ -54,6 +54,7 @@ function populateForm(row) {
 		$('#materialDppId').val(row.dppId);
 		$('#updateMaterialDppId').val(row.dppId);
 		filterProductionMaterial(row);
+		populateUpdatePmForm();
 	}
 }
 
@@ -93,7 +94,6 @@ function createItem(crudOperation) {
 			status: $('#selectUpdateStatus').val()
 		};
 	}
-	console.log(item)
 	return item;
 }
 
@@ -127,48 +127,51 @@ function addItem(crudOperation) {
 	}
 }
 
-$('#btnAddDpp').click(function() {
+$('#btnAddDppSubmit').click(function() {
 	addItem("create");
 });
-$('#btnUpdateDpp').click(function() {
+
+$('#btnUpdateDppSubmit').click(function() {
 	addItem("update");
 });
 
 function deleteItem() {
-    let deletePmId = $('#txtDeleteDppId').val().trim();
-    if (deletePmId !== '') {
-        let item = {
-            dppId: deletePmId
-        };
-        $.post('DppController', {
-            action: 'deleteItem',
-            item: JSON.stringify(item)
-        }, function(response) {
-            if (response.includes('success')) {
-                $('#btnCloseDeleteModal').click();
-                $('#btnDpp').click();
-            } else {
-                alert('Unable to delete item');
-            }
-        });
-    } else {
-        alert('Please select an item to delete');
-    }
+	let deleteDppId = $('#txtDeleteDppId').val().trim();
+	if (deleteDppId !== '') {
+		let item = {
+			dppId: deleteDppId
+		};
+		$.post('DppController', {
+			action: 'deleteItem',
+			item: JSON.stringify(item)
+		}, function(response) {
+			if (response.includes('success')) {
+				$('#btnCloseDeleteModal').click();
+				$('#btnDpp').click();
+			} else {
+				alert('Unable to delete item');
+			}
+		});
+	} else {
+		alert('Please select an item to delete');
+	}
 }
 
-
 $('#btnConfirmDeleteDpp').click(function() {
-    deleteItem()
+	deleteItem()
 });
 
 // Production Materials
 var productionMaterialTable;
-function filterProductionMaterial(row){
-	var productionMaterialFiltered = productionMaterial.filter(function(material) {
+var productionMaterialFiltered;
+
+function filterProductionMaterial(row) {
+	productionMaterialFiltered = productionMaterial.filter(function(material) {
 		return material.dppId === row.dppId;
 	});
 
 	if (productionMaterialFiltered.length !== 0) {
+		$('#materialDppIdContainer').hide();
 		$('#divProductionMaterialTable').show();
 		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
 			layout: 'fitColumns',
@@ -187,6 +190,7 @@ function filterProductionMaterial(row){
 			],
 		});
 	} else {
+		$('#materialDppIdContainer').show();
 		$('#divProductionMaterialTable').hide();
 	}
 }
@@ -200,6 +204,7 @@ function createRawMaterialOptions() {
 					</option>`;
 		}
 	});
+
 	return html;
 }
 
@@ -214,25 +219,64 @@ function addPmRow() {
                 </select>
             </td>
             <td>
-                <input type="number" class="form-control" id="materialQuantity${materialCounter}" min="1" placeholder="Enter quantity" />
+                <input type="number" class="form-control" id="txtMaterialQuantity${materialCounter}" 
+				min="1" placeholder="Enter quantity" />
             </td>
             <td>
-                <button class="btn btn-danger" type="button" onclick="deletePmRow(${materialCounter})">X</button>
+                <button class="btn btn-danger" type="button" 
+				onclick="deletePmRow(${materialCounter})">X</button>
             </td>
         </tr>
     `;
 
-	$('.table').append(html);
+	$('#tblAddPm').append(html);
 }
 
 $('#btnAddPmRow').on('click', function() {
-	addPmRow(); 
+	addPmRow();
 });
 
-function deletePmRow(materialCounter) {
-	$(`#pmRow${materialCounter}`).remove(); 
+function populateUpdatePmForm() {
+	let html = '';
+	$.each(productionMaterialFiltered, function(index, item) {
+		html += `
+		<tr id="updatePmRow${index + 1}">
+			<td>
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}">
+                    ${createRawMaterialOptions()}
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control" id="txtMaterialQuantity${index + 1}" 
+				min="1" placeholder="Enter quantity" />
+            </td>
+            <td>
+                <button class="btn btn-danger" type="button" 
+				onclick="deletePmItem(${index + 1})">X</button>
+            </td>
+			<td>
+                <input type="hidden" id="txtUpdatePmId${index + 1}" value="${item.pmId}" />
+            </td>
+        </tr>
+		`;
+	});
+
+	$('#tblUpdatePm').find('tr:gt(1)').remove();
+	$('#tblUpdatePm').append(html);
+
+	$.each(productionMaterialFiltered, function(index, item) {
+		$(`#selectRawMaterial${index + 1}`).val(item.materialCode);
+		$(`#txtMaterialQuantity${index + 1}`).val(item.quantityToUse);
+	});
 }
 
-$('#btnCloseAddPmModal').on('click', function() {
+
+function deletePmRow(counter) {
+	$(`#pmRow${counter}`).remove();
+}
+
+$('.btnCloseAddPmModal', '.btnCloseUpdatePmModal').on('click', function() {
 	$('.table tr[id^="pmRow"]').remove();
+	$('.table tr[id^="updatePmRow"]').remove();
+	materialCounter = 0;
 });
