@@ -30,7 +30,7 @@ dppTable.on('rowClick', function() {
 	if (row !== undefined) {
 		populateForm(row);
 		$('#btnShowAddPm').show();
-		$('#btnShowUpdatePm').show();
+		//$('#btnShowUpdatePm').show();
 		$('#btnShowUpdateDpp').show();
 		$('#btnShowDeleteDpp').show();
 	} else {
@@ -54,7 +54,6 @@ function populateForm(row) {
 		$('#materialDppId').val(row.dppId);
 		$('#updateMaterialDppId').val(row.dppId);
 		filterProductionMaterial(row);
-		populateUpdatePmForm();
 	}
 }
 
@@ -137,6 +136,7 @@ $('#btnUpdateDppSubmit').click(function() {
 
 function deleteItem() {
 	let deleteDppId = $('#txtDeleteDppId').val().trim();
+	console.log(deleteDppId);
 	if (deleteDppId !== '') {
 		let item = {
 			dppId: deleteDppId
@@ -145,6 +145,7 @@ function deleteItem() {
 			action: 'deleteItem',
 			item: JSON.stringify(item)
 		}, function(response) {
+			console.log(response);
 			if (response.includes('success')) {
 				$('#btnCloseDeleteModal').click();
 				$('#btnDpp').click();
@@ -171,6 +172,7 @@ function filterProductionMaterial(row) {
 	});
 
 	if (productionMaterialFiltered.length !== 0) {
+		$('#btnShowUpdatePm').show();
 		$('#materialDppIdContainer').hide();
 		$('#divProductionMaterialTable').show();
 		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
@@ -192,6 +194,7 @@ function filterProductionMaterial(row) {
 	} else {
 		$('#materialDppIdContainer').show();
 		$('#divProductionMaterialTable').hide();
+		$('#btnShowUpdatePm').hide();
 	}
 }
 
@@ -224,7 +227,7 @@ function addPmRow() {
             </td>
             <td>
                 <button class="btn btn-danger" type="button" 
-				onclick="deletePmRow(${materialCounter})">X</button>
+				onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
     `;
@@ -235,6 +238,10 @@ function addPmRow() {
 $('#btnAddPmRow').on('click', function() {
 	addPmRow();
 });
+
+function deleteAddPmRow(counter) {
+	$(`#pmRow${counter}`).remove();
+}
 
 function populateUpdatePmForm() {
 	let html = '';
@@ -270,13 +277,20 @@ function populateUpdatePmForm() {
 	});
 }
 
+$('#btnShowUpdatePm').on('click', function() {
+	populateUpdatePmForm();
+});
 
-function deletePmRow(counter) {
-	$(`#pmRow${counter}`).remove();
+function clearPmRows() {
+    $('.table tr[id^="pmRow"]').remove();
+    $('.table tr[id^="updatePmRow"]').remove();
+    materialCounter = 0;
 }
 
-$('.btnCloseAddPmModal', '.btnCloseUpdatePmModal').on('click', function() {
-	$('.table tr[id^="pmRow"]').remove();
-	$('.table tr[id^="updatePmRow"]').remove();
-	materialCounter = 0;
+$('.btnCloseAddPmModal, .btnCloseUpdatePmModal').on('click', clearPmRows);
+
+$(document).keydown(function(event) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+        clearPmRows();
+    }
 });

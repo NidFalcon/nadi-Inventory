@@ -32,12 +32,10 @@ function createProductionMaterialObjects() {
 
 $('#btnUpdatePmSubmit').click(function() {
 	var updateProductionMaterial = updateProductionMaterialObjects();
-	console.log("func2- production material inside the onclick: " + updateProductionMaterial);
 	$.post("ProductionMaterialController", {
 		action: "saveBulkItems",
 		item: updateProductionMaterial
 	}, function(response) {
-		console.log("func2- "+response);
 		if (response.includes('success')) {
 			$('.btnCloseUpdatePmModal').click();
 			$('#btnDpp').click();
@@ -49,7 +47,6 @@ $('#btnUpdatePmSubmit').click(function() {
 
 function updateProductionMaterialObjects() {
 	var updPmObjArr = [];
-	console.log("func1- productionMaterialFiltered.length: " + productionMaterialFiltered.length);
 	for (let i = 1; i <= productionMaterialFiltered.length; i++) {
 		if ($(`#selectRawMaterial${i}`).length) {
 			var updPmObj = {
@@ -62,14 +59,13 @@ function updateProductionMaterialObjects() {
 		}
 	};
 
-	console.log("func1- updatePmObjArr: " + JSON.stringify(updPmObjArr));
 	return JSON.stringify(updPmObjArr);
 }
 
 function deletePmItem(index) {
-	var deletePmId = $(`#txtUpdatePmId${index}`).val();
+	let deletePmId = $(`#txtUpdatePmId${index}`).val().trim();
 	if (deletePmId !== '') {
-		let item = {
+		var item = {
 			pmId: deletePmId
 		};
 		$.post('ProductionMaterialController', {
@@ -77,13 +73,11 @@ function deletePmItem(index) {
 			item: JSON.stringify(item)
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnCloseUpdatePmModal').click();
-				$('#btnDpp').click();
+				$('.btnCloseUpdatePmModal').click();
+				$('.btnShowUpdatePm').click();
 			} else {
 				alert('Unable to delete production material item');
 			}
 		});
-	} else {
-		alert('Please select a valid item to delete');
 	}
 }

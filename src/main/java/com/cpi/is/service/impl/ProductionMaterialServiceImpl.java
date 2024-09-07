@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import com.cpi.is.dao.impl.ProductionMaterialDAOImpl;
 import com.cpi.is.entity.ProductionMaterialEntity;
@@ -25,19 +26,21 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
     }
 
     private ProductionMaterialEntity jsonToEntity(JSONObject json) throws Exception {
-        Long pmId = null;
+    	Long pmId = null;
         Long dppId = null;
         String materialCode = null;
         Integer quantityToUse = null;
-        
-    	if (json.has("pmId") && json.has("dppId") && json.has("materialCode") && json.has("quantityToUse")) {
+
+        if (json.has("pmId") && json.has("dppId") && json.has("materialCode") && json.has("quantityToUse")) {
             pmId = !json.isNull("pmId") ? json.getLong("pmId") : null;
             dppId = json.getLong("dppId");
             materialCode = json.getString("materialCode");
             quantityToUse = json.getInt("quantityToUse");
-    	} else {
-    		throw new Exception("JSON malformed");
-    	}
+        } else if (json.has("pmId")) { 
+            pmId = json.getLong("pmId");
+        } else {
+            throw new Exception("JSON malformed: Missing required fields");
+        }
 
         return new ProductionMaterialEntity(pmId, dppId, materialCode, quantityToUse);
     }
@@ -52,7 +55,6 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         JSONObject newMaterialJson = new JSONObject(request.getParameter("item"));
         UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 
-        // If user data is needed for saving, you can add it here or handle it accordingly
         return productionMaterialDAO.saveItem(jsonToEntity(newMaterialJson));
     }
 
@@ -61,7 +63,7 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         return productionMaterialDAO.deleteItem(
                 jsonToEntity(new JSONObject(request.getParameter("item"))));
     }
-
+    
 	@Override
 	public String saveBulkItems(HttpServletRequest request) throws Exception {
 		JSONArray jsonArr = new JSONArray(request.getParameter("item"));
