@@ -20,28 +20,8 @@ var dppTable = new Tabulator("#divDppTable", {
 	],
 });
 
-function createSkuOptions() {
-	let html = '';
-	$.each(sku, function(index, item) {
-		if ("y" == item.isActive) {
-			html += '<option id="item' + item.skuCode + '" value="' + "" + item.skuCode + '">' + item.skuCode + " " + item.skuName + '</option>';
-		}
-	})
-	$("#selectSkuCode, #selectUpdateSkuCode").html(html);
-}
-
-function createRawMaterialOptions() {
-	let html = '';
-	$.each(rawMaterial, function(index, item) {
-		if ("y" == item.isActive) {
-			html += '<option id="item' + item.materialCode + '" value="' + "" + item.materialCode + '">' + item.materialCode + " " + item.materialName + '</option>';
-		}
-	})
-	$(".selectMaterial").html(html);
-	console.log(html);
-}
-
-$('#btnShowMaterialDpp').hide();
+$('#btnShowAddPm').hide();
+$('#btnShowUpdatePm').hide();
 $('#btnShowUpdateDpp').hide();
 $('#btnShowDeleteDpp').hide();
 
@@ -49,15 +29,19 @@ dppTable.on('rowClick', function() {
 	let row = dppTable.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
-		$('#btnShowMaterialDpp').show();
+		$('#btnShowAddPm').show();
+		$('#btnShowUpdatePm').show();
 		$('#btnShowUpdateDpp').show();
 		$('#btnShowDeleteDpp').show();
 	} else {
-		$('#btnShowMaterialDpp').hide();
+		$('#btnShowAddPm').hide();
+		$('#btnShowUpdatePm').hide();
 		$('#btnShowUpdateDpp').hide();
 		$('#btnShowDeleteDpp').hide();
 	}
 })
+
+$('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
 	if (row !== undefined) {
@@ -68,41 +52,24 @@ function populateForm(row) {
 		$('#selectUpdateStatus').val(row.status);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
+		$('#updateMaterialDppId').val(row.dppId);
 		filterProductionMaterial(row);
 	}
 }
 
-var productionMaterialTable;
-
-function filterProductionMaterial(row){
-	var productionMaterialFiltered = productionMaterial.filter(function(material) {
-		return material.dppId === row.dppId;
+function createSkuOptions() {
+	let html = '';
+	$.each(sku, function(index, item) {
+		if (item.isActive === "y") {
+			html += `<option id="item${item.skuCode}" value="${item.skuCode}">
+						${item.skuCode} ${item.skuName}
+					</option>`;
+		}
 	});
-
-	if (productionMaterialFiltered.length !== 0) {
-		$('#divProductionMaterialTable').show();
-		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
-			layout: 'fitColumns',
-			data: productionMaterialFiltered,
-			pagination: 'local',
-			paginationSize: 3,
-			paginationCounter: "rows",
-			selectableRows: 1,
-			movableColumns: true,
-			responsiveLayout: true,
-			columns: [
-				{ title: "PM ID", field: 'pmId' },
-				{ title: "DPP ID", field: 'dppId' },
-				{ title: "Material Code", field: 'materialCode' },
-				{ title: "Quantity to Use", field: 'quantityToUse' }
-			],
-		});
-	} else {
-		$('#divProductionMaterialTable').hide();
-	}
+	$("#selectSkuCode, #selectUpdateSkuCode").html(html);
 }
 
-$('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
+createSkuOptions();
 
 function createItem(crudOperation) {
 	let dppId;
@@ -167,10 +134,76 @@ $('#btnUpdateDpp').click(function() {
 	addItem("update");
 });
 
-createSkuOptions();
+function deleteItem() {
+    let deletePmId = $('#txtDeleteDppId').val().trim();
+    if (deletePmId !== '') {
+        let item = {
+            dppId: deletePmId
+        };
+        $.post('DppController', {
+            action: 'deleteItem',
+            item: JSON.stringify(item)
+        }, function(response) {
+            if (response.includes('success')) {
+                $('#btnCloseDeleteModal').click();
+                $('#btnDpp').click();
+            } else {
+                alert('Unable to delete item');
+            }
+        });
+    } else {
+        alert('Please select an item to delete');
+    }
+}
+
+
+$('#btnConfirmDeleteDpp').click(function() {
+    deleteItem()
+});
+
+// Production Materials
+var productionMaterialTable;
+function filterProductionMaterial(row){
+	var productionMaterialFiltered = productionMaterial.filter(function(material) {
+		return material.dppId === row.dppId;
+	});
+
+	if (productionMaterialFiltered.length !== 0) {
+		$('#divProductionMaterialTable').show();
+		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
+			layout: 'fitColumns',
+			data: productionMaterialFiltered,
+			pagination: 'local',
+			paginationSize: 3,
+			paginationCounter: "rows",
+			selectableRows: 1,
+			movableColumns: true,
+			responsiveLayout: true,
+			columns: [
+				{ title: "PM ID", field: 'pmId' },
+				{ title: "DPP ID", field: 'dppId' },
+				{ title: "Material Code", field: 'materialCode' },
+				{ title: "Quantity to Use", field: 'quantityToUse' }
+			],
+		});
+	} else {
+		$('#divProductionMaterialTable').hide();
+	}
+}
+
+function createRawMaterialOptions() {
+	let html = '';
+	$.each(rawMaterial, function(index, item) {
+		if (item.isActive === "y") {
+			html += `<option id="item${item.materialCode}" value="${item.materialCode}">
+						${item.materialCode} ${item.materialName} (${item.unitOfMeasurement})
+					</option>`;
+		}
+	});
+	return html;
+}
 
 var materialCounter = 0;
-
 function addSelect() {
 	materialCounter++;
 	let html = `
@@ -190,16 +223,6 @@ function addSelect() {
     `;
 
 	$('.table').append(html);
-}
-
-function createRawMaterialOptions() {
-	let optionsHtml = '';
-	$.each(rawMaterial, function(index, item) {
-		if (item.isActive === "y") {
-			optionsHtml += `<option value="${item.materialCode}">${item.materialCode} ${item.materialName}</option>`;
-		}
-	});
-	return optionsHtml;
 }
 
 function removeMaterial(counter) {

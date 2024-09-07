@@ -5,8 +5,10 @@
 			<h2 class="h2"><i class="bi bi-boxes me-2"></i>Daily Planned Production</h2>		
 		</div>
 		<div>
-			<button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal"
-				data-bs-target="#selectAddPmModal" id="btnShowMaterialDpp">+ add Material</button>	
+			<button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal"
+				data-bs-target="#selectAddPmModal" id="btnShowAddPm">+ add PM</button>	
+			<button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal"
+				data-bs-target="#selectUpdatePmModal" id="btnShowUpdatePm">update PM</button>	
 		</div>
 		<div class="ms-auto btn-toolbar mb-2 mb-md-0">
 			<button type="button" class="btn btn-primary me-1" data-bs-toggle="modal"
@@ -28,8 +30,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="addDppModalLabel">Add New
-					DPP:</h5>
+				<h5 class="modal-title" id="addDppModalLabel">Add New DPP:</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
@@ -184,8 +185,9 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddPmModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnAddProductionMaterial">Add
-					Material</button>
+				<button type="button" class="btn btn-primary" id="btnAddProductionMaterial">
+					Add PM
+				</button>
 			</div>
 		</div>
 	</div>
@@ -202,30 +204,27 @@
 					aria-label="Close" id="btnCloseUpdatePmModal"></button>
 			</div>
 			<div class="modal-body">
-				<div id="divProductionMaterialTable">
-				</div>
 				<form>
 					<table class="table">
 						<tr>
 							<th scope="col">
-								<label for="materialDppId">DPP ID: </label>
-								<input type="text" class="form-control" id="materialDppId" readonly>
+								<label for="updateMaterialDppId">DPP ID: </label>
+								<input type="text" class="form-control" id="updateMaterialDppId" readonly>
 							</th>
 						</tr>
 						<tr>
-							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
-							<th scope="col"><label for="materialQuantity"></label>Quantity:</th>
-							<!-- <th scope="col"><label for="materialQuantity"></label>Unit of Measurement:</th> -->
+							<th scope="col">Select Material/s:</th>
+							<th scope="col">Quantity:</th>
 						</tr>
 					</table>
-				<button type="button" id="selectAdd" class="btn btn-primary"> + </button>
 				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseUpdatePmModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnAddProductionMaterial">Add
-					Material</button>
+				<button type="button" class="btn btn-primary" id="btnAddProductionMaterial">
+					Update PM
+				</button>
 			</div>
 		</div>
 	</div>
