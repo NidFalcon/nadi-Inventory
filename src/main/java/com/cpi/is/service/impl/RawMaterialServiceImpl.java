@@ -47,4 +47,5 @@ public class RawMaterialServiceImpl implements RawMaterialService {
         return rawMaterialDAO.deleteItem(
                 jsonToEntity(new JSONObject(request.getParameter("item"))));
     }
+    
 }
