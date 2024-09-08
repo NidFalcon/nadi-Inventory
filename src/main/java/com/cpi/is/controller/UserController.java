@@ -74,8 +74,6 @@ public class UserController extends HttpServlet {
 					// set user session
 					HttpSession session = request.getSession();
 					session.setAttribute("user", user);
-					
-					request.setAttribute("username", user.getUsername());
 					page = "pages/menu.jsp";
 				} else {
 					request.setAttribute("message", "Invalid Username or Password");

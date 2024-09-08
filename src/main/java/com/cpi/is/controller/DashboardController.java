@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cpi.is.entity.UserEntity;
+
 /**
  * Servlet implementation class DashboardController
  */
@@ -31,6 +33,9 @@ public class DashboardController extends HttpServlet {
 		action = request.getParameter("action");
 				
 		if ("showDashboard".equals(action)) {
+			UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+			request.setAttribute("username", user.getUsername());
+			request.setAttribute("branchId", user.getBranchId());
 			page = "pages/dashboard.jsp";
 		}
 		
