@@ -1,8 +1,6 @@
 package com.cpi.is.controller;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,23 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.cpi.is.dao.RawMaterialDAO;
-import com.cpi.is.dao.impl.BranchDAOImpl;
-import com.cpi.is.dao.impl.RawMaterialDAOImpl;
-import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
-import com.cpi.is.dao.impl.UserDAOImpl;
-import com.cpi.is.entity.BranchEntity;
-import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.BranchServiceImpl;
-import com.cpi.is.service.impl.InventoryServiceImpl;
-import com.cpi.is.service.impl.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.UserServiceImpl;
-import com.cpi.is.util.HBUtil;
 
-import org.hibernate.Session;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -74,7 +60,9 @@ public class UserController extends HttpServlet {
 					// set user session
 					HttpSession session = request.getSession();
 					session.setAttribute("user", user);
-					page = "pages/menu.jsp";
+                    session.setAttribute("branchId", user.getBranchId()); // Store branchId in session
+					request.setAttribute("username", user.getUsername());
+					page = "pages/navbar/menu.jsp";
 				} else {
 					request.setAttribute("message", "Invalid Username or Password");
 					page = "pages/message.jsp";
@@ -99,14 +87,14 @@ public class UserController extends HttpServlet {
 				
 				if (user != null) {
 					request.setAttribute("username", user.getUsername());
-					page = "pages/menu.jsp";
+					page = "pages/navbar/menu.jsp";
 				} else {
 					Cookie[] cookies = request.getCookies();
 					if (cookies != null) {
 						for (Cookie cookie : cookies) {
 							if (cookie.getName().equals("user")) {
 								request.setAttribute("username", cookie.getValue());
-								page = "pages/menu.jsp";
+								page = "pages/navbar/menu.jsp";
 								break;
 							}
 						}

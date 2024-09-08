@@ -11,12 +11,7 @@
   	<property name="passwordEncoder" ref="passwordEncoder" />
   </bean>
   
-  <bean id="inventoryDAO" class="com.cpi.is.dao.impl.InventoryDAOImpl"></bean>
   <bean id="rawMaterialListDAO" class="com.cpi.is.dao.impl.RawMaterialListDAOImpl"></bean>
-  
-  <bean id="inventoryService" class="com.cpi.is.service.impl.InventoryServiceImpl" depends-on="inventoryDAO">
-  	<property name="inventoryDAO" ref="inventoryDAO" />
-  </bean>
   <bean id="rawMaterialListService" class="com.cpi.is.service.impl.RawMaterialListServiceImpl" depends-on="rawMaterialListDAO, rawMaterialDAO, branchDAO, userDAO">
   	<property name="rawMaterialListDAO" ref="rawMaterialListDAO" />
   </bean>
@@ -24,6 +19,11 @@
   <bean id="dppDAO" class="com.cpi.is.dao.impl.DppDAOImpl"></bean>
   <bean id="dppService" class="com.cpi.is.service.impl.DppServiceImpl" depends-on="dppDAO">
   	<property name="dppDAO" ref="dppDAO" />
+  </bean>
+  
+  <bean id="productionMaterialDAO" class="com.cpi.is.dao.impl.ProductionMaterialDAOImpl"></bean>
+  <bean id="productionMaterialService" class="com.cpi.is.service.impl.ProductionMaterialServiceImpl" depends-on="productionMaterialDAO">
+  	<property name="productionMaterialDAO" ref="productionMaterialDAO" />
   </bean>
   
   <bean id="dispatchTypeDAO" class="com.cpi.is.dao.impl.DispatchTypeDAOImpl"></bean>
@@ -44,5 +44,15 @@
   <bean id="rawMaterialDAO" class="com.cpi.is.dao.impl.RawMaterialDAOImpl"></bean>
   <bean id="rawMaterialService" class="com.cpi.is.service.impl.RawMaterialServiceImpl" depends-on="rawMaterialDAO">
   	<property name="rawMaterialDAO" ref="rawMaterialDAO" />
+  </bean>
+  
+  <bean id="dispatchingDAO" class="com.cpi.is.dao.impl.DispatchingDAOImpl"></bean>
+  <bean id="dispatchingService" class="com.cpi.is.service.impl.DispatchingServiceImpl" depends-on="dispatchingDAO">
+  	<property name="dispatchingDAO" ref="dispatchingDAO" />
+  </bean>
+  
+  <bean id="finishedProductListDAO" class="com.cpi.is.dao.impl.FinishedProductListDAOImpl"></bean>
+  <bean id="finishedProductListService" class="com.cpi.is.service.impl.FinishedProductListServiceImpl" depends-on="dispatchingDAO">
+  	<property name="finishedProductListDAO" ref="finishedProductListDAO" />
   </bean>
 </beans>

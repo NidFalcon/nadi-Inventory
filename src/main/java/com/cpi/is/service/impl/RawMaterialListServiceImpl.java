@@ -24,8 +24,7 @@ import com.cpi.is.validation.JsonValidate;
 
 public class RawMaterialListServiceImpl implements RawMaterialListService, JsonValidate, DateValidate{
 	
-	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
-	
+	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();	
 	
 	public RawMaterialListDAOImpl getRawMaterialListDAO() {
 		return rawMaterialListDAO;

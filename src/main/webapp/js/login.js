@@ -22,7 +22,7 @@ $('#btnLogin').click(function() {
 	}
 */
 
-$('#btnRegisterLink').click(function(){
+$('#btnRegister').click(function(){
 	//$('#divContent').load('pages/registration.jsp');
 	$.get("UserController", {
 		action: "showRegisterPage"
@@ -41,5 +41,11 @@ function checkUserSession() {
 		}
 	});
 }
+
+$('#txtPassword').on('keypress',function(e) {
+    if(e.which == 13) {
+        $('#btnLogin').click();
+    }
+});
 
 checkUserSession();

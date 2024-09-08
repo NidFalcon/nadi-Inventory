@@ -8,5 +8,4 @@ public interface RawMaterialDAO {
 	List<RawMaterialEntity> getRawMaterial() throws Exception;
 	String saveItem(RawMaterialEntity item) throws Exception;
 	String deleteItem(RawMaterialEntity item) throws Exception;
-
 }
