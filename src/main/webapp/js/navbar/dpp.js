@@ -20,28 +20,8 @@ var dppTable = new Tabulator("#divDppTable", {
 	],
 });
 
-function createSkuOptions() {
-	let html = '';
-	$.each(sku, function(index, item) {
-		if ("y" == item.isActive) {
-			html += '<option id="item' + item.skuCode + '" value="' + "" + item.skuCode + '">' + item.skuCode + " " + item.skuName + '</option>';
-		}
-	})
-	$("#selectSkuCode, #selectUpdateSkuCode").html(html);
-}
-
-function createRawMaterialOptions() {
-	let html = '';
-	$.each(rawMaterial, function(index, item) {
-		if ("y" == item.isActive) {
-			html += '<option id="item' + item.materialCode + '" value="' + "" + item.materialCode + '">' + item.materialCode + " " + item.materialName + '</option>';
-		}
-	})
-	$(".selectMaterial").html(html);
-	console.log(html);
-}
-
-$('#btnShowMaterialDpp').hide();
+$('#btnShowAddPm').hide();
+$('#btnShowUpdatePm').hide();
 $('#btnShowUpdateDpp').hide();
 $('#btnShowDeleteDpp').hide();
 
@@ -49,15 +29,19 @@ dppTable.on('rowClick', function() {
 	let row = dppTable.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
-		$('#btnShowMaterialDpp').show();
+		$('#btnShowAddPm').show();
+		//$('#btnShowUpdatePm').show();
 		$('#btnShowUpdateDpp').show();
 		$('#btnShowDeleteDpp').show();
 	} else {
-		$('#btnShowMaterialDpp').hide();
+		$('#btnShowAddPm').hide();
+		$('#btnShowUpdatePm').hide();
 		$('#btnShowUpdateDpp').hide();
 		$('#btnShowDeleteDpp').hide();
 	}
 })
+
+$('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
 	if (row !== undefined) {
@@ -68,41 +52,24 @@ function populateForm(row) {
 		$('#selectUpdateStatus').val(row.status);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
+		$('#updateMaterialDppId').val(row.dppId);
 		filterProductionMaterial(row);
 	}
 }
 
-var productionMaterialTable;
-
-function filterProductionMaterial(row){
-	var productionMaterialFiltered = productionMaterial.filter(function(material) {
-		return material.dppId === row.dppId;
+function createSkuOptions() {
+	let html = '';
+	$.each(sku, function(index, item) {
+		if (item.isActive === "y") {
+			html += `<option id="item${item.skuCode}" value="${item.skuCode}">
+						${item.skuCode} ${item.skuName}
+					</option>`;
+		}
 	});
-
-	if (productionMaterialFiltered.length !== 0) {
-		$('#divProductionMaterialTable').show();
-		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
-			layout: 'fitColumns',
-			data: productionMaterialFiltered,
-			pagination: 'local',
-			paginationSize: 3,
-			paginationCounter: "rows",
-			selectableRows: 1,
-			movableColumns: true,
-			responsiveLayout: true,
-			columns: [
-				{ title: "PM ID", field: 'pmId' },
-				{ title: "DPP ID", field: 'dppId' },
-				{ title: "Material Code", field: 'materialCode' },
-				{ title: "Quantity to Use", field: 'quantityToUse' }
-			],
-		});
-	} else {
-		$('#divProductionMaterialTable').hide();
-	}
+	$("#selectSkuCode, #selectUpdateSkuCode").html(html);
 }
 
-$('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
+createSkuOptions();
 
 function createItem(crudOperation) {
 	let dppId;
@@ -126,7 +93,6 @@ function createItem(crudOperation) {
 			status: $('#selectUpdateStatus').val()
 		};
 	}
-	console.log(item)
 	return item;
 }
 
@@ -160,65 +126,171 @@ function addItem(crudOperation) {
 	}
 }
 
-$('#btnAddDpp').click(function() {
+$('#btnAddDppSubmit').click(function() {
 	addItem("create");
 });
-$('#btnUpdateDpp').click(function() {
+
+$('#btnUpdateDppSubmit').click(function() {
 	addItem("update");
 });
 
-createSkuOptions();
+function deleteItem() {
+	let deleteDppId = $('#txtDeleteDppId').val().trim();
+	console.log(deleteDppId);
+	if (deleteDppId !== '') {
+		let item = {
+			dppId: deleteDppId
+		};
+		$.post('DppController', {
+			action: 'deleteItem',
+			item: JSON.stringify(item)
+		}, function(response) {
+			console.log(response);
+			if (response.includes('success')) {
+				$('#btnCloseDeleteModal').click();
+				$('#btnDpp').click();
+			} else {
+				alert('Unable to delete item');
+			}
+		});
+	} else {
+		alert('Please select an item to delete');
+	}
+}
 
-var materialCounter = 0; // Counter to track added material rows
+$('#btnConfirmDeleteDpp').click(function() {
+	deleteItem()
+});
 
-// Function to dynamically add materials
-function addSelect() {
-	// Increment counter for each added material row
+// Production Materials
+var productionMaterialTable;
+var productionMaterialFiltered;
+
+function filterProductionMaterial(row) {
+	productionMaterialFiltered = productionMaterial.filter(function(material) {
+		return material.dppId === row.dppId;
+	});
+
+	if (productionMaterialFiltered.length !== 0) {
+		$('#btnShowUpdatePm').show();
+		$('#materialDppIdContainer').hide();
+		$('#divProductionMaterialTable').show();
+		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
+			layout: 'fitColumns',
+			data: productionMaterialFiltered,
+			pagination: 'local',
+			paginationSize: 3,
+			paginationCounter: "rows",
+			selectableRows: 1,
+			movableColumns: true,
+			responsiveLayout: true,
+			columns: [
+				{ title: "PM ID", field: 'pmId' },
+				{ title: "DPP ID", field: 'dppId' },
+				{ title: "Material Code", field: 'materialCode' },
+				{ title: "Quantity to Use", field: 'quantityToUse' }
+			],
+		});
+	} else {
+		$('#materialDppIdContainer').show();
+		$('#divProductionMaterialTable').hide();
+		$('#btnShowUpdatePm').hide();
+	}
+}
+
+function createRawMaterialOptions() {
+	let html = '';
+	$.each(rawMaterial, function(index, item) {
+		if (item.isActive === "y") {
+			html += `<option id="item${item.materialCode}" value="${item.materialCode}">
+						${item.materialCode} ${item.materialName} (${item.unitOfMeasurement})
+					</option>`;
+		}
+	});
+
+	return html;
+}
+
+var materialCounter = 0;
+function addPmRow() {
 	materialCounter++;
-
-	// Create a new row for material and quantity input with unique IDs
 	let html = `
-        <tr id="newMaterialSelect${materialCounter}">
+        <tr id="pmRow${materialCounter}">
 			<td>
-                <select class="form-select selectMaterial" id="selectMaterial${materialCounter}">
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}">
                     ${createRawMaterialOptions()}
                 </select>
             </td>
             <td>
-                <input type="number" class="form-control" id="materialQuantity${materialCounter}" min="1" placeholder="Enter quantity" />
+                <input type="number" class="form-control" id="txtMaterialQuantity${materialCounter}" 
+				min="1" placeholder="Enter quantity" />
             </td>
             <td>
-                <button class="btn btn-danger" type="button" onclick="removeMaterial(${materialCounter})">X</button>
+                <button class="btn btn-danger" type="button" 
+				onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
     `;
 
-	// Append the new row to the table
-	$('.table').append(html);
+	$('#tblAddPm').append(html);
 }
 
-// Function to dynamically create options for the select dropdown
-function createRawMaterialOptions() {
-	let optionsHtml = '';
-	$.each(rawMaterial, function(index, item) {
-		if (item.isActive === "y") {
-			optionsHtml += `<option value="${item.materialCode}">${item.materialCode} ${item.materialName}</option>`;
-		}
-	});
-	return optionsHtml;
-}
-
-// Function to remove a material row by counter
-function removeMaterial(counter) {
-	$(`#newMaterialSelect${counter}`).remove(); 
-}
-
-// Event handler for the 'Add Material' button
-$('#selectAdd').on('click', function() {
-	addSelect(); 
+$('#btnAddPmRow').on('click', function() {
+	addPmRow();
 });
 
-// Event handler for the modal close button to remove added rows
-$('#btnCloseAddSelectModal').on('click', function() {
-	$('.table tr[id^="newMaterialSelect"]').remove();
+function deleteAddPmRow(counter) {
+	$(`#pmRow${counter}`).remove();
+}
+
+function populateUpdatePmForm() {
+	let html = '';
+	$.each(productionMaterialFiltered, function(index, item) {
+		html += `
+		<tr id="updatePmRow${index + 1}">
+			<td>
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}">
+                    ${createRawMaterialOptions()}
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control" id="txtMaterialQuantity${index + 1}" 
+				min="1" placeholder="Enter quantity" />
+            </td>
+            <td>
+                <button class="btn btn-danger" type="button" 
+				onclick="deletePmItem(${index + 1})">X</button>
+            </td>
+			<td>
+                <input type="hidden" id="txtUpdatePmId${index + 1}" value="${item.pmId}" />
+            </td>
+        </tr>
+		`;
+	});
+
+	$('#tblUpdatePm').find('tr:gt(1)').remove();
+	$('#tblUpdatePm').append(html);
+
+	$.each(productionMaterialFiltered, function(index, item) {
+		$(`#selectRawMaterial${index + 1}`).val(item.materialCode);
+		$(`#txtMaterialQuantity${index + 1}`).val(item.quantityToUse);
+	});
+}
+
+$('#btnShowUpdatePm').on('click', function() {
+	populateUpdatePmForm();
+});
+
+function clearPmRows() {
+    $('.table tr[id^="pmRow"]').remove();
+    $('.table tr[id^="updatePmRow"]').remove();
+    materialCounter = 0;
+}
+
+$('.btnCloseAddPmModal, .btnCloseUpdatePmModal').on('click', clearPmRows);
+
+$(document).keydown(function(event) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+        clearPmRows();
+    }
 });

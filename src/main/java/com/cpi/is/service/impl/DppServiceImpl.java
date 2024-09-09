@@ -30,7 +30,6 @@ public class DppServiceImpl implements DppService {
         Long branchId = json.has("branchId") ? json.getLong("branchId") : null;
         String skuCode = json.has("skuCode") ? json.getString("skuCode") : null;
 
-        System.out.println(json);
         return new DppEntity(dppId, productionDate, quantity, status, branchId, skuCode);
     }
 

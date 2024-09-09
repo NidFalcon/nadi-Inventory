@@ -58,11 +58,30 @@ public class ProductionMaterialDAOImpl implements ProductionMaterialDAO {
 
 	@Override
 	public String saveBulkItems(List<ProductionMaterialEntity> item) throws Exception {
-		for(int i = 0; i < item.size(); i++) {
-			System.out.println(item.get(i));
-			System.out.println(saveItem(item.get(i)));
-		}
-		return "success";
+		Transaction transaction = null;
+	    try (Session session = HBUtil.getSessionFactory().openSession()) {
+	        transaction = session.beginTransaction();
+	        for (ProductionMaterialEntity entity : item) {
+	            if (entity.getPmId() == null) {
+	                session.persist(entity); 
+	            } else {
+	                session.merge(entity); 
+	            }
+	            
+	            if (item.indexOf(entity) % 50 == 0) { 
+	                session.flush();
+	                session.clear();
+	            }
+	        }
+	        transaction.commit();
+	    } catch (Exception e) {
+	        if (transaction != null) {
+	            transaction.rollback();
+	        }
+	        throw e;
+	    }
+	    
+	    return "success";
 	}
 }
 
