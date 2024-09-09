@@ -28,10 +28,10 @@ skuTable.on('rowClick', function() {
 	let row = skuTable.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
+		populateDeleteForm(row);
 		$('#btnShowUpdateSku').show();
 		$('#btnShowDeleteSku').show();
 	} else {
-		resetForm();
 		$('#btnShowUpdateSku').hide();
 		$('#btnShowDeleteSku').hide();
 	}
@@ -43,6 +43,15 @@ function populateForm(row) {
 		$('#updateSkuName').val(row.skuName);
 		$('#updateSkuUnitOfMesaurement').val(row.unitOfMeasurement);
 		row.isActive === 'y' ? $('#updateIsActive').prop('checked', true) : $('#updateIsActive').prop('checked', false);
+	}
+}
+
+function populateDeleteForm(row) {
+	if(row !== undefined) {
+		$('#deleteSkuCode').val(row.skuCode)
+		$('#deleteSkuName').val(row.skuName);
+		$('#deleteSkuMeasurement').val(row.unitOfMeasurement);
+		$('#deleteSkuisActive').val(row.isActive);	
 	}
 }
 
@@ -61,11 +70,20 @@ function createItem(crudOperation) {
 			isActive: $('#updateIsActive').is(':checked') ? 'y' : 'n',
 			skuCode: $('#updateSkuCode').val() !== '' ? $('#updateSkuCode').val() : '',
 			skuName: $('#updateSkuName').val(),
-			unitOfMeasurement: $('#updateSkuUnitOfMesaurement').val()
+			unitOfMeasurement: $('#updateSkuUnitOfMeasurement').val()
+		};
+	} else if (crudOperation === "delete") {
+		item = {
+			isActive: $('#deleteIsActive').is(':checked') ? 'y' : 'n',
+			skuCode: $('#deleteSkuCode').val() !== '' ? $('#deleteSkuCode').val() : '',
+			skuName: $('#deleteSkuName').val(),
+			unitOfMeasurement: $('#deleteSkuMeasurement').val()
 		};
 	}
+	
 	return item;
 }
+
 
 function validate(item) {
 	let valid = true;
@@ -98,4 +116,25 @@ $('#btnAddSku').click(function() {
 });
 $('#btnUpdateSku').click(function() {
 	addItem("update");
+});
+
+$('#btnDeleteSku').click(function() {
+	console.log("DELETE");
+	if ($('#deleteSkuCode').val() !== '') {
+		$.post('SkuController', {
+			action: 'deleteItem',
+			item: JSON.stringify(createItem("delete"))
+		}, function(response) {
+			if (response.includes('success')) {
+				$('#btnDeleteSkuCancel').click();
+				$('#btnMngSku').click();
+			} else {
+				$('#divAlert').removeClass('d-none');
+				$('#divAlert').html('Unable to save changes');
+			}
+		});
+	} else {
+		$('#divAlert').removeClass('d-none');
+		$('#divAlert').html('Please select an item to delete');
+	}
 });
