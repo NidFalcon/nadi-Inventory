@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.impl.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.RawMaterialServiceImpl;
 import com.cpi.is.util.JsonUtil;
@@ -49,10 +50,11 @@ public class RawMaterialListController extends HttpServlet {
 				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
 				page = "pages/message.jsp";
 			}
-		} catch (JSONException e) {
+		} catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());
 			page = "pages/message.jsp";
 		} catch (Exception e) {
+			e.printStackTrace();
 			request.setAttribute("message", "something went wrong! oops~");
 			page = "pages/message.jsp";
 		} finally {

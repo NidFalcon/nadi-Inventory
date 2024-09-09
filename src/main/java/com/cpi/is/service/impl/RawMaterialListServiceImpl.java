@@ -1,5 +1,6 @@
 package com.cpi.is.service.impl;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.text.ParseException;
@@ -19,13 +20,15 @@ import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
 import com.cpi.is.dao.impl.UserDAOImpl;
 import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.entity.UserEntity;
+import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.RawMaterialListService;
 import com.cpi.is.validation.DateValidate;
 import com.cpi.is.validation.JsonValidate;
 
 public class RawMaterialListServiceImpl implements RawMaterialListService, JsonValidate, DateValidate{
 	
-	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();	
+	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
+	private RawMaterialDAOImpl rawMaterialDAO = new RawMaterialDAOImpl();
 	
 	public RawMaterialListDAOImpl getRawMaterialListDAO() {
 		return rawMaterialListDAO;
@@ -93,44 +96,57 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 
 	@Override
 	public boolean isValidDate(String dateStr) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sdf.setLenient(false);
-        try {
-            Date date = (Date) sdf.parse(dateStr);
-            return date != null;
-        } catch (ParseException e) {
-            return false;
-        }
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    sdf.setLenient(false);
+	    try {
+	        // Parse the string into a java.util.Date
+	        java.util.Date utilDate = sdf.parse(dateStr);
+	        
+	        // Convert java.util.Date to java.sql.Date
+	        Date sqlDate = new Date(utilDate.getTime());
+	        
+	        // If conversion was successful, the date is valid
+	        return sqlDate != null;
+	    } catch (ParseException e) {
+	        // If parsing fails, the date is invalid
+	        return false;
+	    }
 	}
 
 	@Override
-	public void validateJson(JSONObject jsonObject) throws JSONException {
-		final Pattern INTEGER_PATTERN = Pattern.compile("^\\d+$");
-		
-		// Validate required fields
-        String[] requiredFields = {"materialListId", "materialCode", "quantity", "userId", "dateRecieve", "branchId"};
-        for (String field : requiredFields) {
-            if (!jsonObject.has(field)) {
-                throw new JSONException("Missing required field: " + field);
-            }
-        }
+	public void validateJson(JSONObject jsonObject) throws InvalidJsonException {
+	    final Pattern INTEGER_PATTERN = Pattern.compile("^\\d+$");
 
-        String quantityStr = jsonObject.getString("quantity");
+	    // Validate required fields
+	    String[] requiredFields = {"materialListId", "materialCode", "quantity", "userId", "dateRecieve", "branchId"};
+	    for (String field : requiredFields) {
+	        if (!jsonObject.has(field)) {
+	            throw new InvalidJsonException("Missing required field: " + field);
+	        }
+	    }
 
-        try {
-            BigInteger quantity = new BigInteger(quantityStr);
-            if (quantity.signum() < 0 || quantity.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
-                throw new JSONException("Invalid value for field 'quantity'. Must be a non-negative integer within the integer range.");
-            }
-        } catch (NumberFormatException e) {
-            throw new JSONException("Invalid value for field 'quantity'. Must be a valid integer.");
-        }
+	    // Validate quantity
+	    String quantityStr = jsonObject.get("quantity").toString();
+	    
+	    if (quantityStr.length() <= 0 || quantityStr.length() >= 10) {
+	    	throw new InvalidJsonException("Invalid value for field 'quantity'. Must be a non-negative integer within the integer range.");
+	    }
 
-        // Validate dateRecieve
-        String dateRecieve = jsonObject.getString("dateRecieve");
-        if (!isValidDate(dateRecieve)) {
-            throw new JSONException("Invalid date format for field 'dateRecieve'. Expected format: " + "yyyy-MM-dd");
-        }
+	    // Validate dateRecieve
+	    String dateRecieve = jsonObject.getString("dateRecieve");
+	    if (!isValidDate(dateRecieve)) {
+	        throw new InvalidJsonException("Invalid date format for field 'dateRecieve'. Expected format: yyyy-MM-dd");
+	    }
+	    
+	    if (isValidForeignKey(jsonObject.getString("materialCode"))){
+	        throw new InvalidJsonException("Invalid date format for field 'dateRecieve'. Expected format: yyyy-MM-dd");
+	    }
+	    	
 	}
+
+	private boolean isValidForeignKey(String foreignKey) {
+	   rawMaterialDAO.getRawMaterial();
+	   return false;
+   };
 	
 }

@@ -12,7 +12,7 @@ import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.util.HBUtil;
 import com.cpi.is.validation.ForeignKeyValidate;
 
-public class RawMaterialListDAOImpl implements RawMaterialListDAO, ForeignKeyValidate {
+public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 
 	public List<RawMaterialListEntity>  getRawMaterialList(Integer targetBranchId) throws Exception {
         try (Session session = HBUtil.getSessionFactory().openSession()){
@@ -62,28 +62,4 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO, ForeignKeyVal
 		return "success";
 	}
 
-	@Override
-	public boolean isValidForeignKey(Session session, String tableName, String columnName, String value) {
-	    Transaction tx = null;
-	    boolean isValid = false;
-	    try {
-	        tx = session.beginTransaction();
-	        String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE " + columnName + " = :value";
-	        Query<Long> query = session.createNativeQuery(sql, Long.class);
-	        query.setParameter("value", value);
-	        Long count = query.uniqueResult();
-	        tx.commit();
-	        isValid = count != null && count > 0;
-	    } catch (HibernateException e) {
-	        if (tx != null) {
-	            tx.rollback();
-	        }
-	        throw e; // Rethrow the exception to the caller
-	    } finally {
-	        if (session != null && session.isOpen()) {
-	            session.close(); // Ensure session is closed
-	        }
-	    }
-	    return isValid;
-	}
 }
