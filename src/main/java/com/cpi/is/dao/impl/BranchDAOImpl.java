@@ -18,6 +18,17 @@ public class BranchDAOImpl implements BranchDAO {
         }
         return branchList;
     }
+    
+    @Override
+    public BranchEntity getBranchById(Long branchId) throws Exception {
+        BranchEntity branch = null;
+        try (Session session = HBUtil.getSessionFactory().openSession()) {
+            branch = session.get(BranchEntity.class, branchId);
+        } catch (Exception e) {
+            throw e;
+        }
+        return branch;
+    }
 
 	public BranchEntity getBranch(Integer branchId) {
 		BranchEntity foundBranch = null;

@@ -19,6 +19,17 @@ public class RawMaterialDAOImpl implements RawMaterialDAO {
         }
         return rawMaterialList;
     }
+    
+    @Override
+    public RawMaterialEntity getRawMaterialById(String materialCode) throws Exception {
+        RawMaterialEntity rawMaterial = null;
+        try (Session session = HBUtil.getSessionFactory().openSession()) {
+            rawMaterial = session.get(RawMaterialEntity.class, materialCode); 
+        } catch (Exception e) {
+            throw e;
+        }
+        return rawMaterial;
+    }
 
     @Override
     public String saveItem(RawMaterialEntity item) throws Exception {
