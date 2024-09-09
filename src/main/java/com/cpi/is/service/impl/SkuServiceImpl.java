@@ -25,6 +25,7 @@ public class SkuServiceImpl implements SkuService, JsonValidate {
     }
 
     private SkuEntity jsonToEntity(JSONObject json) {
+    	validateJson(json);
         String skuCode = json.getString("skuCode");
         String skuName = json.getString("skuName");
         String unitOfMeasurement = json.getString("unitOfMeasurement");
