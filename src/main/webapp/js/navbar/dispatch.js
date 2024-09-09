@@ -1,5 +1,5 @@
 var dispatchTable = new Tabulator("#divDispatchingTable" , {
-	layout: 'fitDataFill',
+	layout: "fitColumns",
 	data: dispatch,
 	pagination: 'local',
 	pagination: true,

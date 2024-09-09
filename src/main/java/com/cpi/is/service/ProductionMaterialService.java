@@ -10,5 +10,6 @@ public interface ProductionMaterialService {
 
     List<ProductionMaterialEntity> getProductionMaterial() throws Exception;
     String saveItem(HttpServletRequest request) throws Exception;
+    String saveBulkItems(HttpServletRequest request) throws Exception;
     String deleteItem(HttpServletRequest request) throws Exception;
 }

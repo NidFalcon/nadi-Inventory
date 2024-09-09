@@ -1,5 +1,5 @@
-var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
-	layout: 'fitDataFill',
+var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
+	layout: "fitColumns",
 	data: rawMaterialList,
 	pagination: 'local',
 	pagination: true,
@@ -36,12 +36,11 @@ rawMaterialTable.on('rowClick', function() {
 	}
 })
 
-
-function createOptions(){
+function createOptions() {
 	let html = '';
-	$.each(materialOptions, function(index, item){
-		if ("y" == item.isActive){
-						html += '<option id="item'+item.materialCode+'" value="'+"" +item.materialCode+'">'+item.materialCode+ " " +item.materialName+'</option>';
+	$.each(materialOptions, function(index, item) {
+		if ("y" == item.isActive) {
+			html += '<option id="item' + item.materialCode + '" value="' + "" + item.materialCode + '">' + item.materialCode + " " + item.materialName + '</option>';
 		}
 	})
 	$("select").html(html);
@@ -49,8 +48,7 @@ function createOptions(){
 
 //fill up the form for updates
 function populateForm(row) {
-
-	if(row !== undefined) {
+	if (row !== undefined) {
 		$('#updateRawMaterialId').val(row.materialListId);
 		$('#updateRawMaterialName').val(row.material.materialCode);
 		$('#updateRawMaterialQuantity').val(row.quantity);
@@ -60,7 +58,6 @@ function populateForm(row) {
 
 //fill up the form to delete
 function populateDeleteForm(row) {
-
 	if(row !== undefined) {
 		$('#deleteRawMaterialId').val(row.materialListId);
 		$('#deleteRawMaterialCode').val(row.material.materialCode);

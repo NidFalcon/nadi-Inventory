@@ -1,5 +1,32 @@
 .tabulator {
-	font-family:Nervada,Arial;
-	border-radius:5px;
+	border: 1px solid #dee2e6; /* Bootstrap border color */
+	border-radius: .375rem; /* Bootstrap border radius */
 }
 
+/* Apply Bootstrap header styles to Tabulator header */
+.tabulator-header {
+	background-color: #f8f9fa; /* Bootstrap header background color */
+	border-bottom: 1px solid #dee2e6; /* Bootstrap border color */
+}
+
+/* Zebra striping for rows */
+.tabulator-row:nth-child(even) {
+	background-color: #f8f9fa; /* Bootstrap zebra striping */
+}
+
+/* Padding in cells */
+.tabulator-cell {
+	padding: .75rem; /* Bootstrap padding */
+}
+
+/* Footer styling to match Bootstrap */
+.tabulator-footer {
+	background-color: #f8f9fa; /* Bootstrap footer background */
+	border-top: 1px solid #dee2e6; /* Bootstrap border color */
+}
+
+/* Ensuring border-collapse is consistent */
+.tabulator-table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
