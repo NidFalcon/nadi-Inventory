@@ -70,7 +70,7 @@ function createItem(crudOperation) {
 			isActive: $('#updateIsActive').is(':checked') ? 'y' : 'n',
 			skuCode: $('#updateSkuCode').val() !== '' ? $('#updateSkuCode').val() : '',
 			skuName: $('#updateSkuName').val(),
-			unitOfMeasurement: $('#updateSkuUnitOfMeasurement').val()
+			unitOfMeasurement: $('#updateSkuUnitOfMesaurement').val()
 		};
 	} else if (crudOperation === "delete") {
 		item = {
@@ -96,6 +96,7 @@ function validate(item) {
 
 function addItem(crudOperation) {
 	let item = createItem(crudOperation);
+	console.log(item);
 	if (validate(item)) {
 		$.post('SkuController', {
 			action: 'saveItem',
