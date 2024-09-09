@@ -1,3 +1,5 @@
+console.log(rawMaterialList);
+
 var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 	layout: "fitColumns",
 	data: rawMaterialList,

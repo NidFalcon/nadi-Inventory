@@ -117,7 +117,7 @@ function addItem(crudOperation) {
             item: JSON.stringify(item)
         }, function(response) {
             if (response.includes('success')) {
-				$('#btnCloseAddModal').click();
+				$('.btnCloseAddModal').click();
                 $('#btnMngDispatchType').click();
             } else {
                 alert('Unable to save changes');
@@ -142,7 +142,7 @@ $('#btnDeleteDispatchType').click(function() {
             item: JSON.stringify(item)
         }, function(response) {
             if (response.includes('success')) {
-				$('#btnCloseAddModal').click();
+				$('#btnDeleteDispatchTypeCancel').click();
                 $('#btnMngDispatchType').click();
             } else {
                 alert('Unable to save changes');

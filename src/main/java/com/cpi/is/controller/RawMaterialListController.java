@@ -14,6 +14,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.impl.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.RawMaterialServiceImpl;
+import com.cpi.is.util.JsonUtil;
 
 @WebServlet("/RawMaterialListController")
 public class RawMaterialListController extends HttpServlet {
@@ -35,7 +36,8 @@ public class RawMaterialListController extends HttpServlet {
 			action = request.getParameter("action");
 			if ("showRawMaterialList".equals(action)) {
 				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
-				request.setAttribute("materialOptions", new JSONArray(rawMaterialService.getRawMaterial()));
+				JSONArray materials = new JSONArray(rawMaterialService.getRawMaterial());
+				request.setAttribute("material", materials);
 				page = "pages/navbar/inventory/rawMaterialList.jsp";
 			} else if ("saveRawMaterial".equals(action)) {
 				HttpSession session = request.getSession();
