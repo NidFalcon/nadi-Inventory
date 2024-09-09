@@ -133,7 +133,8 @@ function addItem(isAdd) {
 				$('.btnCloseAddModal').click();
 				$('#btnRawMaterials').click();
 			} else {
-				alert('Unable to save changes');
+				//alert('Unable to save changes');
+				$('#divMenu').append(response);
 			}
 		});
 	}

@@ -1,6 +1,8 @@
 package com.cpi.is.service.impl;
 
 import java.util.List;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
@@ -51,40 +53,39 @@ public class RawMaterialServiceImpl implements RawMaterialService {
     }
     
     public static void validateJson(JSONObject jsonObject) throws JSONException {
-        // Validate 'materialCode'
-        if (!jsonObject.has("materialCode") || jsonObject.isNull("materialCode")) {
-            throw new JSONException("Missing or null 'materialCode'");
+    	
+    	final Pattern BOOLEAN_PATTERN = Pattern.compile("^[yn]$");
+    	
+        // Validate required fields
+        String[] requiredFields = {"materialCode", "materialName", "unitOfMeasurement", "isActive"};
+        for (String field : requiredFields) {
+            if (!jsonObject.has(field) || jsonObject.isNull(field)) {
+                throw new JSONException("Missing required field: " + field);
+            }
         }
+
+        // Validate 'materialCode'
         String materialCode = jsonObject.getString("materialCode").trim();
         if (materialCode.isEmpty()) {
             throw new JSONException("Empty 'materialCode'");
         }
 
         // Validate 'materialName'
-        if (!jsonObject.has("materialName") || jsonObject.isNull("materialName")) {
-            throw new JSONException("Missing or null 'materialName'");
-        }
         String materialName = jsonObject.getString("materialName").trim();
         if (materialName.isEmpty()) {
             throw new JSONException("Empty 'materialName'");
         }
 
         // Validate 'unitOfMeasurement'
-        if (!jsonObject.has("unitOfMeasurement") || jsonObject.isNull("unitOfMeasurement")) {
-            throw new JSONException("Missing or null 'unitOfMeasurement'");
-        }
         String unitOfMeasurement = jsonObject.getString("unitOfMeasurement").trim();
         if (unitOfMeasurement.isEmpty()) {
             throw new JSONException("Empty 'unitOfMeasurement'");
         }
 
         // Validate 'isActive'
-        if (!jsonObject.has("isActive") || jsonObject.isNull("isActive")) {
-            throw new JSONException("Missing or null 'isActive'");
-        }
         String isActive = jsonObject.getString("isActive").trim();
-        if (!isActive.equals("y") && !isActive.equals("n")) {
-            throw new JSONException("Invalid 'isActive' value");
+        if (!BOOLEAN_PATTERN.matcher(isActive).matches()) {
+            throw new JSONException("Invalid 'isActive' value. Must be 'y' or 'n'.");
         }
     }
     

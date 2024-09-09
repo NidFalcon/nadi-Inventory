@@ -1,5 +1,6 @@
 package com.cpi.is.service.impl;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -114,10 +115,15 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
             }
         }
 
-        // Validate quantity
-        String quantity = jsonObject.getString("quantity");
-        if (!INTEGER_PATTERN.matcher(quantity).matches() || Integer.parseInt(quantity) < 0 || Integer.parseInt(quantity) > Integer.MAX_VALUE) {
-            throw new JSONException("Invalid value for field 'quantity'. Must be a non-negative integer within the integer range.");
+        String quantityStr = jsonObject.getString("quantity");
+
+        try {
+            BigInteger quantity = new BigInteger(quantityStr);
+            if (quantity.signum() < 0 || quantity.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+                throw new JSONException("Invalid value for field 'quantity'. Must be a non-negative integer within the integer range.");
+            }
+        } catch (NumberFormatException e) {
+            throw new JSONException("Invalid value for field 'quantity'. Must be a valid integer.");
         }
 
         // Validate dateRecieve
