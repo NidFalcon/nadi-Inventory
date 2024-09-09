@@ -76,8 +76,8 @@ public class DispatchingServiceImpl implements DispatchingService {
     }
 
     @Override
-    public List<Object[]> getCurrentInventory() throws Exception {
-        return dispatchingDAO.getCurrentInventory();
+    public List<Object[]> getCurrentInventory(Integer branchId) throws Exception {
+        return dispatchingDAO.getCurrentInventory(branchId);
     }
     
     @Override

@@ -1,3 +1,7 @@
+var fplQuantity = 0;
+var currentQuantity = 0;
+var totalQuantityUpdate = 0;
+
 var dispatchTable = new Tabulator("#divDispatchingTable", {
     layout: 'fitDataFill',
     data: dispatch,
@@ -25,6 +29,31 @@ var dispatchTable = new Tabulator("#divDispatchingTable", {
 $('#btnShowUpdateDispatching').hide();
 $('#btnDelete').hide();
 $('.btnConfirmDate').hide();
+
+$('button[data-bs-target="#addModal"]').click(function() {
+    clearAll(); // Clear all fields before showing the modal
+});
+
+function clearAll() {
+    // Clear Finished Product selection
+    $('#selFinishedProdId').val(''); 
+
+    // Clear Quantity and Date Finished fields (read-only fields)
+    $('#txtQuantityFPL').val('');
+    $('#txtDateFinished').val('');
+
+    // Clear Dispatch Quantity
+    $('#addDispatchQuantity').val('');
+
+    // Clear Destination
+    $('#addDispatchDestination').val('');
+
+    // Reset the Dispatch Date to the current date
+    $('#dateSelected').val(getCurrentDate());
+
+    // Optionally hide any confirmation buttons
+    $('.btnConfirmDate').hide();
+}
 
 // Function to show the confirm button when date changes
 function handleDateChange() {
@@ -103,33 +132,29 @@ function checkQuantity() {
     let fplId = $('#selFinishedProdId').val();
     if (!fplId) return; // If no fplId is selected, skip validation
 
-    let fplQuantity = parseFloat($(`option[value="${fplId}"]`).data('quantity'));
+    /*let fplQuantity = parseFloat($(`option[value="${fplId}"]`).data('quantity'));*/
     let dispatchQuantity = parseFloat($('#addDispatchQuantity').val());
 
-    if (isNaN(fplQuantity) || isNaN(dispatchQuantity)) {
+    if (isNaN(currentQuantity) || isNaN(dispatchQuantity)) {
         return;
     }
 
-    if (dispatchQuantity > fplQuantity) {
-        alert('Dispatch quantity cannot be greater than available quantity.');
-        $('#addDispatchQuantity').val(fplQuantity);
+    if (dispatchQuantity > currentQuantity) {
+        $('#addDispatchQuantity').val(totalQuantityUpdate);
     }
 }
 
 function checkQuantityUpdate() {
-    let fplId = $('#updateFinishedProductId').val();
-    if (!fplId) return; // If no fplId is selected, skip validation
+    let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); // Updated dispatch quantity
 
-    let fplQuantity = parseFloat($(`option[value="${fplId}"]`).data('quantity'));
-    let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val());
-
-    if (isNaN(fplQuantity) || isNaN(dispatchQuantityUpdate)) {
-        return;
+    if (isNaN(currentQuantity) || isNaN(dispatchQuantityUpdate)) {
+        return; // Return if either quantity is not a number
     }
-
-    if (dispatchQuantityUpdate > fplQuantity) {
-        alert('Dispatch quantity cannot be greater than available quantity.');
-        $('#updateDispatchQuantity').val(fplQuantity);
+    
+    // Ensure total quantity doesn't exceed currentQuantity
+    if (dispatchQuantityUpdate > totalQuantityUpdate) {
+/*        alert('Dispatch quantity cannot be greater than available quantity.'); */
+        $('#updateDispatchQuantity').val(totalQuantityUpdate); // Clear invalid input
     }
 }
 
@@ -137,6 +162,7 @@ $('#updateDispatchQuantity').on('input', checkQuantityUpdate);
 $('#addDispatchQuantity').on('input', checkQuantity);
 
 function getFplID() {
+	console.log("Tinatawag ako");
     let currentDate = new Date(getCurrentDate());
     let html = '<option value="">';
 
@@ -155,29 +181,46 @@ function getFplID() {
     $('.selFinishedProd').html(html);
 
     $('.selFinishedProd').change(function() {
+		console.log("Tinatawag ako to change currentQuantity");
         let selectedOption = $(this).find('option:selected');
         let skuCode = selectedOption.data('sku-code');
-        let quantity = skuToQuantityMap[skuCode] || 0;
+        currentQuantity = skuToQuantityMap[skuCode] || 0;
 
         $('.txtSkuName').val(selectedOption.data('sku-name'));
-        $('.txtQuantityFPL').val(quantity);
+        $('.txtQuantityFPL').val(currentQuantity);
         $('.txtDateFinished').val(selectedOption.data('date-finished'));
     });
 }
 
 function populateForm(row) {
+	let dateFinished = new Date(row.fpl.dateFinished).toLocaleDateString();
     if (row !== undefined) {
         $('#updateDispatchId').val(row.dispatchTrackId);
         $('#updateDispatchType').val(row.dispatchType.dispatchTypeCode);
         $('#updateFinishedProductId').val(row.fplId);
+        $('#updateSkuCode').val(row.fpl.sku.skuCode);
         $('#updateDispatchQuantity').val(row.quantity);
         $('#updateDispatchDestination').val(row.destination);
         $('#updateDate').val(row.dispatchDate);
-
-        let selectedOption = $('#updateFinishedProductId').find('option:selected');
+		
+		console.log("Dispatch Quantity = " + row.quantity);
+		console.log("Current Quantity = " + currentQuantity);
+	
+		let skuToQuantityMap = {};
+	    $.each(currentInventory, function(index, item) {
+	        skuToQuantityMap[item[0]] = item[1];
+	    });
+		
+        let selectedOption = $(this).find('option:selected');
+        let skuCd = row.fpl.sku.skuCode;
+        currentQuantity = skuToQuantityMap[skuCd] || 0;
+		
+		totalQuantityUpdate = row.quantity + currentQuantity; // Total quantity after update
+		
         $('.txtSkuName').val(selectedOption.data('sku-name'));
-        $('.txtQuantityFPL').val(selectedOption.data('quantity'));
-        $('.txtDateFinished').val(selectedOption.data('date-finished'));
+        $('.txtQuantityFPL').val(totalQuantityUpdate);
+        $('.txtDateFinished').val(dateFinished);
+
     }
 }
 

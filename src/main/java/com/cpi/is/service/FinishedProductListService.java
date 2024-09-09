@@ -6,7 +6,7 @@ import com.cpi.is.entity.FinishedProductListEntity;
 
 public interface FinishedProductListService {
     
-	List<FinishedProductListEntity> getFinishedProductList() throws Exception;
+	List<FinishedProductListEntity> getFinishedProductList(Integer branchId) throws Exception;
     String saveItem(HttpServletRequest request) throws Exception;
     String deleteItem(HttpServletRequest request) throws Exception;
 }

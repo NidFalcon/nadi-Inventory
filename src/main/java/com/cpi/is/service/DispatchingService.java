@@ -9,7 +9,7 @@ import com.cpi.is.entity.DispatchingEntity;
 public interface DispatchingService {
     
 	List<DispatchingEntity> getDispatchingByBranch(Integer branchId) throws Exception; // Add this method
-	List<Object[]> getCurrentInventory() throws Exception;
+	List<Object[]> getCurrentInventory(Integer branchId) throws Exception;
 	String saveItem(HttpServletRequest request) throws Exception;
     String deleteItem(HttpServletRequest request) throws Exception;
 }

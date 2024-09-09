@@ -23,7 +23,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Add Dispatch:</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button type="button" class="btn-close btnCloseAddModal" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -100,6 +100,7 @@
 			<div class="modal-body">
 				<form>
 					<div class="mb-3" >
+						<input type="text" class="form-control d-none" id="updateSkuCode">
 						<label for="updateDispatchId" class="col-form-label">Dispatch Type ID:</label>
 						<input type="text" class="form-control" id="updateDispatchId" readonly>
 					</div>
