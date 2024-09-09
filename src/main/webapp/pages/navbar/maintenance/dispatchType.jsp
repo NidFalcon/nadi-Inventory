@@ -66,7 +66,7 @@
 					<form>
 						<div class="mb-3">
 							<label for="updateDispatchTypeCode" class="col-form-label">Dispatch Type Code:</label>
-							<input type="text" class="form-control" id="updateDispatchTypeCode">
+							<input type="text" class="form-control" id="updateDispatchTypeCode" readonly>
 						</div>
 						<div class="mb-3">
 							<label for="updateDispatchTypeName" class="col-form-label">Dispatch Type Name:</label>

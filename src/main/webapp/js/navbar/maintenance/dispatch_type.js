@@ -16,7 +16,7 @@ var dispatchTypeTable = new Tabulator("#divDispatchTypeTable" , {
 	],
 });
 
-$('#updateDispatchTypeCode').hide();
+$('#btnShowTypeUpdate').hide();
 $('#btnShowTypeDelete').hide();
 
 dispatchTypeTable.on('rowClick',function() {
@@ -35,7 +35,7 @@ dispatchTypeTable.on('rowClick',function() {
 //populateForm
 function populateForm(row) {
 	if(row !== undefined) {
-		$('#updateDispatchCode').val(row.dispatchTypeCode);
+		$('#updateDispatchTypeCode').val(row.dispatchTypeCode);
 		$('#updateDispatchTypeName').val(row.dispatchTypeName);
 		row.isActive === 'y' ? $('#updatecheckActive').prop('checked', true) : $('#updatecheckActive').prop('checked', false);
 	}
