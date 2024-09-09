@@ -50,7 +50,7 @@ public class DppController extends HttpServlet {
                 request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
                 request.setAttribute("sku", new JSONArray(skuService.getSku()));
                 request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
-                request.setAttribute("productionMaterials", new JSONArray(productionMaterialService.getProductionMaterial()));
+                request.setAttribute("productionMaterial", new JSONArray(productionMaterialService.getProductionMaterial()));
                 page = "pages/navbar/dpp.jsp";
             } else if ("saveItem".equals(action)) {
                 String message = dppService.saveItem(request);
