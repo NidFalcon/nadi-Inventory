@@ -227,5 +227,5 @@
     var rawMaterial = JSON.parse('${rawMaterial}');
     var productionMaterial = JSON.parse('${productionMaterial}')
 </script>
-<script src="js/navbar/dpp.js"></script>
-<script src="js/production_material.js"></script>
+<script src="js/navbar/dpp/dpp.js"></script>
+<script src="js//navbar/dpp/production_material.js"></script>

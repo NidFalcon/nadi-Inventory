@@ -1,3 +1,5 @@
+console.log(rawMaterialList);
+
 var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 	layout: "fitColumns",
 	data: rawMaterialList,
@@ -65,7 +67,7 @@ function populateForm(row) {
 
 //fill up the form to delete
 function populateDeleteForm(row) {
-	if (row !== undefined) {
+	if(row !== undefined) {
 		$('#deleteRawMaterialId').val(row.materialListId);
 		$('#deleteRawMaterialCode').val(row.material.materialCode);
 		$('#deleteRawMaterialQuantity').val(row.quantity);
@@ -75,27 +77,42 @@ function populateDeleteForm(row) {
 	}
 }
 
-function createItem(isAdd) {
-	let item = {
-		materialListId: isAdd ? $("#rawMaterialId").val() : $("#updateRawMaterialId").val(),
-		materialCode: isAdd ? $('#rawMaterialListName').val() : $("#updateRawMaterialName").val(),
-		quantity: parseInt(isAdd ? $('#rawMaterialListQuantity').val() : $("#updateRawMaterialQuantity").val()),
-		dateRecieve: isAdd ? $('#dateSelected').val() : $("#updateDate").val()
-	};
-	return item;
-}
+function createItem(operationType) {
+    let item = {};
 
-function createDeleteItem() {
-	let json = {
-		materialListId: $('#deleteRawMaterialId').val(),
-		materialCode: $('#deleteRawMaterialCode').val(),
-		quantity: $('#deleteRawMaterialQuantity').val(),
-		userId: $('#deleteRawMaterialUserId').val(),
-		dateRecieve: $('#deleteRawMaterialDate').val(),
-		branchId: $('#deleteRawMaterialBranchId').val()
-	}
+    switch (operationType) {
+        case 'add':
+            item = {
+                materialListId: $("#rawMaterialId").val(),
+                materialCode: $('#rawMaterialListName').val(),
+                quantity: parseInt($('#rawMaterialListQuantity').val()),
+                dateRecieve: $('#dateSelected').val()
+            };
+            break;
+        case 'update':
+            item = {
+                materialListId: $("#updateRawMaterialId").val(),
+                materialCode: $("#updateRawMaterialName").val(),
+                quantity: parseInt($("#updateRawMaterialQuantity").val()),
+                dateRecieve: $("#updateDate").val()
+            };
+            break;
+        case 'delete':
+            item = {
+                materialListId: $('#deleteRawMaterialId').val(),
+                materialCode: $('#deleteRawMaterialCode').val(),
+                quantity: $('#deleteRawMaterialQuantity').val(),
+                userId: $('#deleteRawMaterialUserId').val(),
+                dateRecieve: $('#deleteRawMaterialDate').val(),
+                branchId: $('#deleteRawMaterialBranchId').val()
+            };
+            break;
+        default:
+            console.error('Invalid operation type');
+            break;
+    }
 
-	return json;
+    return item;
 }
 
 function validate(item) {
@@ -123,18 +140,25 @@ function addItem(isAdd) {
 				$('.btnCloseAddModal').click();
 				$('#btnRawMaterials').click();
 			} else {
-				alert('Unable to save changes');
+				//alert('Unable to save changes');
+				  // Select elements
+				  $('#divMenu').append(response);
+				  var $toastLiveExample = $('#liveToast');
+
+				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+
+				  toastBootstrap.show();
+
 			}
 		});
 	}
 }
 
-
 $('#btnAddRawMaterial').click(function() {
-	addItem(true);
+	addItem("add");
 });
 $('#btnUpdateRawMaterial').click(function() {
-	addItem(false);
+	addItem("update");
 });
 
 $('#btnDeleteRawMaterial').click(function() {
@@ -142,7 +166,7 @@ $('#btnDeleteRawMaterial').click(function() {
 
 		$.post('RawMaterialListController', {
 			action: 'deleteRawMaterial',
-			item: JSON.stringify(createDeleteItem())
+			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteRawMaterialCancel').click();

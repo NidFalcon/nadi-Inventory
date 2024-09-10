@@ -1,9 +1,14 @@
 package com.cpi.is.service.impl;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,11 +22,16 @@ import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
 import com.cpi.is.dao.impl.UserDAOImpl;
 import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.entity.UserEntity;
+import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.RawMaterialListService;
+import com.cpi.is.validation.DateValidate;
+import com.cpi.is.validation.JsonValidate;
+import com.cpi.is.validation.ValidationUtil;
 
-public class RawMaterialListServiceImpl implements RawMaterialListService{
+public class RawMaterialListServiceImpl implements RawMaterialListService, JsonValidate{
 	
-	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();	
+	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
+	private RawMaterialDAOImpl rawMaterialDAO = new RawMaterialDAOImpl();
 	
 	public RawMaterialListDAOImpl getRawMaterialListDAO() {
 		return rawMaterialListDAO;
@@ -74,7 +84,7 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		json.put("userId", user.getUserId());
 		json.put("branchId", user.getBranchId());
-		System.out.println(json);
+		validateJson(json);
 		return rawMaterialListDAO.saveRawMaterial(
 				jsonToEntity(json));
 		//return null;		
@@ -86,5 +96,36 @@ public class RawMaterialListServiceImpl implements RawMaterialListService{
 		return rawMaterialListDAO.deleteRawMaterial(
 				jsonToEntity(new JSONObject(request.getParameter("item"))));
 	}
+
+
+
+	@Override
+	public void validateJson(JSONObject jsonObject) throws InvalidJsonException {
+
+		String requiredFields[] = {"materialListId", "materialCode", "quantity", "userId", "dateRecieve", "branchId"};
+	    ValidationUtil.checkFields(requiredFields, jsonObject);
+
+	    ValidationUtil.isValidDate(jsonObject.getString("dateRecieve"));
+	    
+	    // Validate quantity
+	    String quantityStr = jsonObject.get("quantity").toString();
+	    
+	    ValidationUtil.checkNumber(quantityStr);
+
+	    try {
+			if (!isValidForeignKey(jsonObject.getString("materialCode"))){
+			    throw new InvalidJsonException("materialCode value is not a valid Foreign Key");
+			}
+		} catch (Exception e) {
+			if (e instanceof InvalidJsonException )
+			e.printStackTrace();
+		}
+	    	
+	}
+
+	private boolean isValidForeignKey(String foreignKey) throws Exception {
+	   rawMaterialDAO.getRawMaterialById(foreignKey);
+	   return true;
+   };
 	
 }

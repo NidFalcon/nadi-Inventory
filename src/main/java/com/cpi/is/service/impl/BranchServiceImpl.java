@@ -2,12 +2,15 @@ package com.cpi.is.service.impl;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import com.cpi.is.dao.BranchDAO;
 import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.service.BranchService;
+import com.cpi.is.validation.JsonValidate;
 
-public class BranchServiceImpl implements BranchService {
+public class BranchServiceImpl implements BranchService, JsonValidate {
 
     private BranchDAO branchDAO;
     
@@ -43,4 +46,35 @@ public class BranchServiceImpl implements BranchService {
         return branchDAO.deleteItem(
                 jsonToEntity(new JSONObject(request.getParameter("item"))));
     }
+
+	@Override
+	public void validateJson(JSONObject jsonObject) throws JSONException {
+		// Check if the JSONObject contains all required keys
+	    if (!jsonObject.has("branchId")) {
+	        throw new JSONException("Missing required field: branchId");
+	    }
+	    if (!jsonObject.has("branchName")) {
+	        throw new JSONException("Missing required field: branchName");
+	    }
+	    if (!jsonObject.has("isActive")) {
+	        throw new JSONException("Missing required field: isActive");
+	    }
+
+	    // Validate branchId is an integer
+	    if (!jsonObject.get("branchId").getClass().equals(Integer.class)) {
+	        throw new JSONException("Invalid type for field: branchId. Expected Integer.");
+	    }
+
+	    // Validate branchName is a string
+	    if (!jsonObject.get("branchName").getClass().equals(String.class)) {
+	        throw new JSONException("Invalid type for field: branchName. Expected String.");
+	    }
+
+	    // Validate isActive is a string and has correct value
+	    String isActive = jsonObject.getString("isActive");
+	    if (!isActive.equals("y") && !isActive.equals("n")) {
+	        throw new JSONException("Invalid value for field: isActive. Expected 'y' or 'n'.");
+	    }
+		
+	}
 }
