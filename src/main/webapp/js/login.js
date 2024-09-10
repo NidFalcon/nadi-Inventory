@@ -5,7 +5,12 @@ $('#btnLogin').click(function() {
 		password: $('#txtPassword').val()
 	}, function(response) {
 		if (response.includes('Invalid Username or Password')) {
-			$('#divMessage').html(response);
+			$('#divMessage').append(response);
+			var $toastLiveExample = $('#liveToast');
+
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+
+			toastBootstrap.show();
 		} else {
 			$('#divMenu').html(response);
 			$('#btnDashboard').click();
@@ -31,21 +36,8 @@ $('#btnRegister').click(function(){
 	})
 })
 
-function checkUserSession() {
-	$.get('UserController', {
-		action: 'checkUserSession'
-	}, function(response) {
-		if (response !== 'No existing user session') {
-			$('#divMenu').html(response);
-			$('#btnDashboard').click();
-		}
-	});
-}
-
 $('#txtPassword').on('keypress',function(e) {
     if(e.which == 13) {
         $('#btnLogin').click();
     }
 });
-
-checkUserSession();

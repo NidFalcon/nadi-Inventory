@@ -1,4 +1,4 @@
-let html = '';
+var html = '';
 	html +='<div class="d-flex justify-content-center">'
   	html +='<div class="spinner-border text-success" role="status">'
     html +='<span class="visually-hidden">Loading...</span>'

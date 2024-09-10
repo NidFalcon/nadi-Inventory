@@ -20,13 +20,15 @@
 	<title>Inventory System</title>
 	<script src="js/jquery-3.7.1.min.js"></script>
 	<script src="js/common.js"></script>
+	<script src="js/main.js"></script>
 	<link rel="stylesheet" href="css/styles.css">
 	<link rel="stylesheet" href="css/table.css">
 </head>
 <body>
 	<div id="divMenu"></div>
+	<div id="divMessage"></div>
 	<div id="divContent" class="container-fluid my-3 divContent">
-		<jsp:include page="pages/login.jsp"></jsp:include>
+<%-- 		<jsp:include page="pages/login.jsp"></jsp:include> --%>
   	</div>
 </body>
 </html>

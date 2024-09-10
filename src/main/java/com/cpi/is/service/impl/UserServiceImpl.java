@@ -7,8 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.cpi.is.dao.impl.UserDAOImpl;
+import com.cpi.is.entity.SessionEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.UserService;
+import com.cpi.is.util.CookieUtil;
 
 public class UserServiceImpl implements UserService {
 
@@ -67,6 +69,26 @@ public class UserServiceImpl implements UserService {
 		return userDAO.authenticate(user);
 	}
 	*/
+	
+
+	public void saveSession(HttpServletRequest request) throws Exception {
+		userDAO.saveSession(new SessionEntity(
+				request.getSession().getId(), request.getAttribute("username").toString()));
+	}
+
+
+	public SessionEntity validateSession(HttpServletRequest request) throws Exception {
+		return userDAO.validateSession(new SessionEntity(
+				CookieUtil.getCookieValue(request.getCookies(), "sessionId"), 
+				CookieUtil.getCookieValue(request.getCookies(), "user")));
+	}
+
+
+	public void deleteSession(HttpServletRequest request) throws Exception {
+		userDAO.deleteSession(new SessionEntity(
+				CookieUtil.getCookieValue(request.getCookies(), "sessionId"), 
+				CookieUtil.getCookieValue(request.getCookies(), "user")));
+	}
 	
 	public String registerNewUser(HttpServletRequest request) throws Exception {
 		UserEntity user = jsonToEntity(new JSONObject(request.getParameter("user")));

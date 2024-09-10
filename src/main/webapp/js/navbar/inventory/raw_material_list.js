@@ -135,7 +135,7 @@ function addItem(isAdd) {
 			} else {
 				//alert('Unable to save changes');
 				  // Select elements
-				  $('#divMenu').append(response);
+				  $('#divMessage').html(response);
 				  var $toastLiveExample = $('#liveToast');
 
 				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
