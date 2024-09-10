@@ -60,8 +60,12 @@ public class UserController extends HttpServlet {
 					// set user session
 					HttpSession session = request.getSession();
 					session.setAttribute("user", user);
+<<<<<<< HEAD
 					session.setAttribute("branchId", user.getBranchId()); // Store branchId in session
 					
+=======
+                    session.setAttribute("branchId", user.getBranchId()); // Store branchId in session
+>>>>>>> affd56a44b927c0105656dd4dfcbbf0ba99920df
 					request.setAttribute("username", user.getUsername());
 					page = "pages/navbar/menu.jsp";
 				} else {

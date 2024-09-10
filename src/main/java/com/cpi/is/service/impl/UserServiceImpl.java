@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 				);
 	}
 	
-	/*
+	
 	@Override
 	public UserEntity authenticate(HttpServletRequest request) throws Exception {
 		UserEntity user = userDAO.authenticate(request.getParameter("username"));
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 		};
 		return user;
 	}
-	*/
+	
 	
 	/**
 	 * THE OLD AUTHENTICATE
@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
 	 * @return
 	 * @throws Exception
 	 */
+	/*
 	@Override
 	public UserEntity authenticate(HttpServletRequest request) throws Exception {
 		UserEntity user = new UserEntity();
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(request.getParameter("password"));
 		return userDAO.authenticate(user);
 	}
-
+	*/
 	
 	public String registerNewUser(HttpServletRequest request) throws Exception {
 		UserEntity user = jsonToEntity(new JSONObject(request.getParameter("user")));

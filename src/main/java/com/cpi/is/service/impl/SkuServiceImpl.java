@@ -4,13 +4,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.cpi.is.dao.impl.SkuDAOImpl;
 import com.cpi.is.entity.SkuEntity;
 import com.cpi.is.service.SkuService;
+import com.cpi.is.validation.JsonValidate;
 
-public class SkuServiceImpl implements SkuService {
+public class SkuServiceImpl implements SkuService, JsonValidate {
 
     private SkuDAOImpl skuDAO;
 
@@ -23,6 +25,7 @@ public class SkuServiceImpl implements SkuService {
     }
 
     private SkuEntity jsonToEntity(JSONObject json) {
+    	validateJson(json);
         String skuCode = json.getString("skuCode");
         String skuName = json.getString("skuName");
         String unitOfMeasurement = json.getString("unitOfMeasurement");
@@ -47,4 +50,35 @@ public class SkuServiceImpl implements SkuService {
         return skuDAO.deleteItem(
                 jsonToEntity(new JSONObject(request.getParameter("item"))));
     }
+
+	@Override
+	public void validateJson(JSONObject jsonObject) throws JSONException {
+        String[] requiredFields = {"isActive", "skuCode", "skuName", "unitOfMeasurement"};
+
+        for (String field : requiredFields) {
+            if (!jsonObject.has(field)) {
+                throw new JSONException("Missing required field: " + field);
+            }
+        }
+
+        String isActive = jsonObject.getString("isActive");
+        if (!isActive.equals("y") && !isActive.equals("n")) {
+            throw new JSONException("Invalid value for field 'isActive'. Expected 'y' or 'n'.");
+        }
+
+        String skuCode = jsonObject.getString("skuCode");
+        if (skuCode.isEmpty()) {
+            throw new JSONException("Field 'skuCode' cannot be empty.");
+        }
+
+        String skuName = jsonObject.getString("skuName");
+        if (skuName.isEmpty()) {
+            throw new JSONException("Field 'skuName' cannot be empty.");
+        }
+
+        String unitOfMeasurement = jsonObject.getString("unitOfMeasurement");
+        if (unitOfMeasurement.isEmpty()) {
+            throw new JSONException("Field 'unitOfMeasurement' cannot be empty.");
+        }
+	}
 }

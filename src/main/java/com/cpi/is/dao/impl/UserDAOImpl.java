@@ -14,8 +14,7 @@ import com.cpi.is.util.HBUtil;
 //public class UserDAOImpl implements UserDAO {
 public class UserDAOImpl{
 
-	/*
-	@Override
+	//password ni Sunday: R0b1N1234
 	public UserEntity authenticate(String username) throws Exception {
 		UserEntity authenticated = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
@@ -29,7 +28,7 @@ public class UserDAOImpl{
 		}
 		return authenticated;
 	}
-	*/
+	
 	
 	/**
 	 * The Old User Authentication Logic
@@ -39,6 +38,7 @@ public class UserDAOImpl{
 	 * @return
 	 * @throws Exception
 	 */
+	/*
 	public UserEntity authenticate(UserEntity user) throws Exception {
 		UserEntity authenticated = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
@@ -53,6 +53,8 @@ public class UserDAOImpl{
 		}
 		return authenticated;
 	}
+	*/
+	
 	//@Override
 	public String registerUser(UserEntity user) throws Exception {
 		Transaction transaction = null;
