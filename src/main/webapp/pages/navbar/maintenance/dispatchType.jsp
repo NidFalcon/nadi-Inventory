@@ -1,6 +1,5 @@
 <div class="m-4 mainWrapper">
 	<main role="main">
-		<div class="alert alert-warning d-none mt-1" role="alert" id="divAlert"></div>
 		<div class="d-flex justify-content-between align-items-center contentNavbar">
 				<h1 class="h2">
 					<i class="bi bi-boxes me-2 ms-3"></i>Dispatch Type

@@ -1,5 +1,5 @@
 let html = '';
-	html +='<div class="d-flex justify-content-center">'
+	html +='<div class="d-flex justify-content-center mt-5">'
   	html +='<div class="spinner-border text-success" role="status">'
     html +='<span class="visually-hidden">Loading...</span>'
   	html +='</div>'
