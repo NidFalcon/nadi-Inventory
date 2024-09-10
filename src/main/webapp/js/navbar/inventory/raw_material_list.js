@@ -134,7 +134,14 @@ function addItem(isAdd) {
 				$('#btnRawMaterials').click();
 			} else {
 				//alert('Unable to save changes');
-				$('#divMenu').append(response);
+				  // Select elements
+				  $('#divMenu').append(response);
+				  var $toastLiveExample = $('#liveToast');
+
+				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+
+				  toastBootstrap.show();
+
 			}
 		});
 	}
