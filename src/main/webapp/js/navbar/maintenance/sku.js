@@ -1,4 +1,3 @@
-
 var skuTable = new Tabulator("#divSkuTable" , {
 	layout: 'fitColumns',
 	data: sku,
@@ -139,3 +138,4 @@ $('#btnDeleteSku').click(function() {
 		$('#divAlert').html('Please select an item to delete');
 	}
 });
+

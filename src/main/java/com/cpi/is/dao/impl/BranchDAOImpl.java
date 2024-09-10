@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.cpi.is.dao.BranchDAO;
 import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.util.HBUtil;
+import com.cpi.is.validation.JsonValidate;
 
 public class BranchDAOImpl implements BranchDAO {
     @Override
@@ -17,6 +20,17 @@ public class BranchDAOImpl implements BranchDAO {
             branchList = session.createQuery("FROM BranchEntity T ORDER BY T.branchId ASC", BranchEntity.class).list();
         }
         return branchList;
+    }
+    
+    @Override
+    public BranchEntity getBranchById(Long branchId) throws Exception {
+        BranchEntity branch = null;
+        try (Session session = HBUtil.getSessionFactory().openSession()) {
+            branch = session.get(BranchEntity.class, branchId);
+        } catch (Exception e) {
+            throw e;
+        }
+        return branch;
     }
 
 	public BranchEntity getBranch(Integer branchId) {

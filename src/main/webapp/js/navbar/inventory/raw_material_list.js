@@ -1,3 +1,5 @@
+console.log(rawMaterialList);
+
 var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 	layout: "fitColumns",
 	data: rawMaterialList,
@@ -131,7 +133,15 @@ function addItem(isAdd) {
 				$('.btnCloseAddModal').click();
 				$('#btnRawMaterials').click();
 			} else {
-				alert('Unable to save changes');
+				//alert('Unable to save changes');
+				  // Select elements
+				  $('#divMenu').append(response);
+				  var $toastLiveExample = $('#liveToast');
+
+				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+
+				  toastBootstrap.show();
+
 			}
 		});
 	}

@@ -10,10 +10,11 @@ import com.cpi.is.util.HBUtil;
 public class FinishedProductListDAOImpl implements FinishedProductListDAO {
 
     @Override
-    public List<FinishedProductListEntity> getFinishedProductList() throws Exception { // Fixed method name
+    public List<FinishedProductListEntity> getFinishedProductList(Integer branchId) throws Exception { // Fixed method name
         List<FinishedProductListEntity> finishedProductList = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
-            finishedProductList = session.createQuery("FROM FinishedProductListEntity T ORDER BY T.fplId ASC", FinishedProductListEntity.class).list();
+            finishedProductList = session.createQuery("FROM FinishedProductListEntity WHERE branchId = :branchId ORDER BY fplId ASC", 
+            		FinishedProductListEntity.class).setParameter("branchId", branchId ).list();
         }
         return finishedProductList;
     }

@@ -140,6 +140,6 @@
 </div>
 <script type=text/javascript>
 	var rawMaterialList = JSON.parse('${rawMaterialList}');
-	var materialOptions = JSON.parse('${materialOptions}');
+	var materialOptions = JSON.parse('${material}');
 </script>
 <script src="js/navbar/inventory/raw_material_list.js"></script>

@@ -9,11 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.impl.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.RawMaterialServiceImpl;
+import com.cpi.is.util.JsonUtil;
 
 @WebServlet("/RawMaterialListController")
 public class RawMaterialListController extends HttpServlet {
@@ -35,11 +38,11 @@ public class RawMaterialListController extends HttpServlet {
 			action = request.getParameter("action");
 			if ("showRawMaterialList".equals(action)) {
 				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
-				request.setAttribute("materialOptions", new JSONArray(rawMaterialService.getRawMaterial()));
+				JSONArray materials = new JSONArray(rawMaterialService.getRawMaterial());
+				request.setAttribute("material", materials);
 				page = "pages/navbar/inventory/rawMaterialList.jsp";
 			} else if ("saveRawMaterial".equals(action)) {
 				HttpSession session = request.getSession();
-				System.out.println("saving Item");
 				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
 				page = "pages/message.jsp";
 			} else if ("deleteRawMaterial".equals(action)) {
@@ -47,8 +50,13 @@ public class RawMaterialListController extends HttpServlet {
 				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
 				page = "pages/message.jsp";
 			}
+		} catch (InvalidJsonException e) {
+			request.setAttribute("message", e.getMessage());
+			page = "pages/message.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("message", "something went wrong! oops~");
+			page = "pages/message.jsp";
 		} finally {
 			request.getRequestDispatcher(page).forward(request, response);
 		}

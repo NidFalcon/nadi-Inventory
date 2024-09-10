@@ -81,16 +81,4 @@ public class ProductionMaterialEntity {
     public void setQuantityToUse(Integer quantityToUse) {
         this.quantityToUse = quantityToUse;
     }
-    
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ProductionMaterialEntity {");
-        sb.append("pmId=").append(pmId).append(", ");
-        sb.append("dppId=").append(dppId).append(", ");
-        sb.append("materialCode='").append(materialCode).append("', ");
-        sb.append("quantityToUse=").append(quantityToUse);
-        sb.append("}");
-        return sb.toString();
-    }
 }
