@@ -1,4 +1,3 @@
-
     <nav class="navbar navbar-expand-lg sticky-top divMenu">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg"
@@ -16,7 +15,7 @@
                     </div>
                     <!--menu body-->
                     <div class="offcanvas-body">
-                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <ul class="navbar-nav flex-wrap pe-3">
                             <li class="nav-item">
                                 <a class="nav-link active" href="#" id="btnDashboard"><i class="bi bi-border-all me-1"></i>Dashboard</a>
                             </li>

@@ -7,8 +7,8 @@
 				</h1>
 			<div class="btn-toolbar mb-2 mb-md-0 me-3 ms-2">
 				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">+ add</button>
-				<button type="button" class="btn btn-primary  me-2" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnUpdate">Update</button>
-				<button type="button" class="btn btn-danger  me-12" data-bs-toggle="modal" data-bs-target="#deleteModal" id="btnDelete">Delete</button>
+				<button type="button" class="btn btn-primary  me-2" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnShowTypeUpdate">Update</button>
+				<button type="button" class="btn btn-danger  me-12" data-bs-toggle="modal" data-bs-target="#deleteModal" id="btnShowTypeDelete">Delete</button>
 			</div>
 		</div>
 		<div class="container mt-4 pb-3">
@@ -16,7 +16,7 @@
 		</div>
 	</main>
 
-<!--Add Modal-->
+	<!--Add Modal-->
 	<div class="modal fade" id="addModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -34,9 +34,7 @@
 						</div>
 						<div class="mb-3">
 							<label for="addDispatchType" class="col-form-label">Dispatch Type Name:</label>
-							<select class="form-select" id="addDispatchTypeName">
-								<option></option>
-							</select> 	
+							<input class="form-control" id="addDispatchTypeName"> 	
 						</div>
 						<div class="mb-3">
 							<label for="checkActive" class="form-check-label">Active:</label>
@@ -68,17 +66,15 @@
 					<form>
 						<div class="mb-3">
 							<label for="updateDispatchId" class="col-form-label">Dispatch Type Code:</label>
-							<input type="text" class="form-control" id="updateDispatchCode">
+							<input type="text" class="form-control" id="updateDispatchTypeCode">
 						</div>
 						<div class="mb-3">
 							<label for="updateDispatchType" class="col-form-label">Dispatch Type Name:</label>
-							<select class="form-select" id="updateDispatchTypeName">
-								<option></option>
-							</select> 	
+							<input class="form-control" id="updateDispatchTypeName">	
 						</div>
 						<div class="mb-3">
 							<label for="checkActive" class="form-check-label">Active:</label>
-							<input class="form-check-input" type="checkbox" id="updateCheckActive">
+							<input class="form-check-input" type="checkbox" id="updatecheckActive">
 						</div>
 					</form>
 				</div>
