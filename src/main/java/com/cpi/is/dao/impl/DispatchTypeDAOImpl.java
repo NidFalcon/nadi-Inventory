@@ -19,7 +19,18 @@ public class DispatchTypeDAOImpl implements DispatchTypeDAO {
 		}
 		return dispatchType;
 	}
-
+	
+	@Override
+	public DispatchTypeEntity getDispatchTypeById(String dispatchTypeCode) throws Exception {
+	    DispatchTypeEntity dispatchType = null;
+	    try (Session session = HBUtil.getSessionFactory().openSession()) {
+	        dispatchType = session.get(DispatchTypeEntity.class, dispatchTypeCode); 
+	    } catch (Exception e) {
+	        throw e;
+	    }
+	    return dispatchType;
+	}
+	
 	@Override
 	public String saveItem(DispatchTypeEntity item) throws Exception {
 		Transaction transaction = null;

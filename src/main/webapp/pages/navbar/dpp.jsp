@@ -167,7 +167,7 @@
 						</tr>
 						<tr>
 							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
-							<th scope="col"><label for="materialQuantity"></label>Quantity:</th>
+							<th scope="col"><label for="materialQuantity"></label>Quantity to Use:</th>
 						</tr>
 					</table>
 				<button type="button" id="btnAddPmRow" class="btn btn-dark w-100"> + Add Row </button>
@@ -205,7 +205,7 @@
 						</tr>
 						<tr>
 							<th scope="col">Select Material/s:</th>
-							<th scope="col">Quantity:</th>
+							<th scope="col">Quantity to Use:</th>
 						</tr>
 					</table>
 				</form>
