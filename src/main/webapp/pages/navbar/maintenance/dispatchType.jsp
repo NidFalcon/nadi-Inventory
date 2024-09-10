@@ -16,7 +16,7 @@
 		</div>
 	</main>
 
-<!--Add Modal-->
+	<!--Add Modal-->
 	<div class="modal fade" id="addModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -33,8 +33,8 @@
 							<input type="text" class="form-control" id="addDispatchCode">
 						</div>
 						<div class="mb-3">
-							<label for="addDispatchTypeName" class="col-form-label">Dispatch Type Name:</label>
-							<input type="text" class="form-control" id="addDispatchTypeName">
+							<label for="addDispatchType" class="col-form-label">Dispatch Type Name:</label>
+							<input class="form-control" id="addDispatchTypeName"> 	
 						</div>
 						<div class="mb-3">
 							<label for="checkActive" class="form-check-label">Active:</label>
@@ -65,16 +65,16 @@
 				<div class="modal-body border-0 modalBody">
 					<form>
 						<div class="mb-3">
-							<label for="updateDispatchTypeCode" class="col-form-label">Dispatch Type Code:</label>
-							<input type="text" class="form-control" id="updateDispatchTypeCode" readonly>
+							<label for="updateDispatchId" class="col-form-label">Dispatch Type Code:</label>
+							<input type="text" class="form-control" id="updateDispatchTypeCode">
 						</div>
 						<div class="mb-3">
-							<label for="updateDispatchTypeName" class="col-form-label">Dispatch Type Name:</label>
-							<input type="text" class="form-control" id="updateDispatchTypeName">
+							<label for="updateDispatchType" class="col-form-label">Dispatch Type Name:</label>
+							<input class="form-control" id="updateDispatchTypeName">	
 						</div>
 						<div class="mb-3">
 							<label for="checkActive" class="form-check-label">Active:</label>
-							<input class="form-check-input" type="checkbox" id="updateCheckActive">
+							<input class="form-check-input" type="checkbox" id="updatecheckActive">
 						</div>
 					</form>
 				</div>
