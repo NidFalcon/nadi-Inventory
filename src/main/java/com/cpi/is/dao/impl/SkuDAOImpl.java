@@ -19,6 +19,17 @@ public class SkuDAOImpl implements SkuDAO {
         }
         return skuList;
     }
+    
+    @Override
+    public SkuEntity getSkuById(String skuCode) throws Exception {
+        SkuEntity sku = null;
+        try (Session session = HBUtil.getSessionFactory().openSession()) {
+            sku = session.get(SkuEntity.class, skuCode); 
+        } catch (Exception e) {
+            throw e;
+        }
+        return sku;
+    }
 
     @Override
     public String saveItem(SkuEntity item) throws Exception {
