@@ -30,7 +30,6 @@ dppTable.on('rowClick', function() {
 	if (row !== undefined) {
 		populateForm(row);
 		$('#btnShowAddPm').show();
-		//$('#btnShowUpdatePm').show();
 		$('#btnShowUpdateDpp').show();
 		$('#btnShowDeleteDpp').show();
 	} else {
@@ -136,7 +135,6 @@ $('#btnUpdateDppSubmit').click(function() {
 
 function deleteItem() {
 	let deleteDppId = $('#txtDeleteDppId').val().trim();
-	console.log(deleteDppId);
 	if (deleteDppId !== '') {
 		let item = {
 			dppId: deleteDppId
@@ -145,7 +143,6 @@ function deleteItem() {
 			action: 'deleteItem',
 			item: JSON.stringify(item)
 		}, function(response) {
-			console.log(response);
 			if (response.includes('success')) {
 				$('#btnCloseDeleteModal').click();
 				$('#btnDpp').click();
@@ -212,28 +209,50 @@ function createRawMaterialOptions() {
 }
 
 var materialCounter = 0;
+
 function addPmRow() {
-	materialCounter++;
-	let html = `
+    materialCounter++;
+    let html = `
         <tr id="pmRow${materialCounter}">
-			<td>
-                <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}">
+            <td>
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
                     ${createRawMaterialOptions()}
                 </select>
             </td>
             <td>
-                <input type="number" class="form-control" id="txtMaterialQuantity${materialCounter}" 
-				min="1" placeholder="Enter quantity" />
+                <input type="number" class="form-control" id="txtRmQty${materialCounter}" 
+                min="1" readonly/>
+            </td>
+            <td>
+                <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" 
+                min="1" placeholder="Enter quantity" />
             </td>
             <td>
                 <button class="btn btn-danger" type="button" 
-				onclick="deleteAddPmRow(${materialCounter})">X</button>
+                onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
     `;
 
-	$('#tblAddPm').append(html);
+    $('#tblAddPm').append(html);
+	fetchRmQty(materialCounter);
 }
+
+function fetchRmQty(counter) {
+    const selectedMaterialCode = $(`#selectRawMaterial${counter}`).val(); // Get the selected material code
+    if (selectedMaterialCode) {
+        const matchingMaterial = rawMaterialList.find(material => material.materialCode === selectedMaterialCode);
+		console.log("matching material: "+matchingMaterial);
+        if (matchingMaterial) {
+            $(`#txtRmQty${counter}`).val(matchingMaterial.quantity); // Set the quantity of the selected material
+        } else {
+            $(`#txtRmQty${counter}`).val(""); // Clear the field if no matching material found
+        }
+    }
+	console.log("selected mat code: "+selectedMaterialCode);
+	
+}
+
 
 $('#btnAddPmRow').on('click', function() {
 	addPmRow();
@@ -254,7 +273,7 @@ function populateUpdatePmForm() {
                 </select>
             </td>
             <td>
-                <input type="number" class="form-control" id="txtMaterialQuantity${index + 1}" 
+                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" 
 				min="1" placeholder="Enter quantity" />
             </td>
             <td>
@@ -273,7 +292,7 @@ function populateUpdatePmForm() {
 
 	$.each(productionMaterialFiltered, function(index, item) {
 		$(`#selectRawMaterial${index + 1}`).val(item.materialCode);
-		$(`#txtMaterialQuantity${index + 1}`).val(item.quantityToUse);
+		$(`#txtPmQtyToUse${index + 1}`).val(item.quantityToUse);
 	});
 }
 
@@ -282,15 +301,15 @@ $('#btnShowUpdatePm').on('click', function() {
 });
 
 function clearPmRows() {
-    $('.table tr[id^="pmRow"]').remove();
-    $('.table tr[id^="updatePmRow"]').remove();
-    materialCounter = 0;
+	$('.table tr[id^="pmRow"]').remove();
+	$('.table tr[id^="updatePmRow"]').remove();
+	materialCounter = 0;
 }
 
 $('.btnCloseAddPmModal, .btnCloseUpdatePmModal').on('click', clearPmRows);
 
 $(document).keydown(function(event) {
-    if (event.key === 'Escape' || event.key === 'Esc') {
-        clearPmRows();
-    }
+	if (event.key === 'Escape' || event.key === 'Esc') {
+		clearPmRows();
+	}
 });

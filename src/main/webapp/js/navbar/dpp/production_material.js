@@ -20,8 +20,9 @@ function createProductionMaterialObjects() {
 			pmObj = {
 				pmId: null,
 				dppId: $('#materialDppId').val(),
+				/*materialListId: 0,*/
 				materialCode: $(`#selectRawMaterial${i}`).val(),
-				quantityToUse: $(`#txtMaterialQuantity${i}`).val()
+				quantityToUse: $(`#txtPmQtyToUse${i}`).val()
 			}
 			pmObjArr.push(pmObj);
 		}
@@ -52,8 +53,9 @@ function updateProductionMaterialObjects() {
 			var updPmObj = {
 				pmId: $(`#txtUpdatePmId${i}`).val(),
 				dppId: $('#updateMaterialDppId').val(),
+				/*materialListId: 0,*/
 				materialCode: $(`#selectRawMaterial${i}`).val(),
-				quantityToUse: $(`#txtMaterialQuantity${i}`).val()
+				quantityToUse: $(`#txtPmQtyToUse${i}`).val()
 			}
 			updPmObjArr.push(updPmObj);
 		}

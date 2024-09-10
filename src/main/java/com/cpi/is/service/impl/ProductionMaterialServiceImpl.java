@@ -27,12 +27,14 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
     private ProductionMaterialEntity jsonToEntity(JSONObject json) throws Exception {
     	Long pmId = null;
         Long dppId = null;
+        Long materialListId = null;
         String materialCode = null;
         Integer quantityToUse = null;
 
-        if (json.has("pmId") && json.has("dppId") && json.has("materialCode") && json.has("quantityToUse")) {
+        if (json.has("pmId") && json.has("dppId") && json.has("materialListId") && json.has("materialCode") && json.has("quantityToUse")) {
             pmId = !json.isNull("pmId") ? json.getLong("pmId") : null;
             dppId = json.getLong("dppId");
+            materialListId = json.getLong("materialListId");
             materialCode = json.getString("materialCode");
             quantityToUse = json.getInt("quantityToUse");
         } else if (json.has("pmId")) { 
@@ -41,7 +43,7 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
             throw new Exception("JSON malformed: Missing required fields");
         }
 
-        return new ProductionMaterialEntity(pmId, dppId, materialCode, quantityToUse);
+        return new ProductionMaterialEntity(pmId, dppId, materialListId, materialCode, quantityToUse);
     }
 
     @Override
