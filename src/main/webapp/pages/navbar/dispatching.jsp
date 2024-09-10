@@ -164,5 +164,6 @@
     var dispatchType = JSON.parse('${dispatchType}');
     var finishedProduct = JSON.parse('${finishedProduct}');
     var branchId = '${branchId}';
+ 	var currentInventory = JSON.parse('${currentInventory}');
 </script>
 <script src="js/navbar/dispatch.js"></script>
