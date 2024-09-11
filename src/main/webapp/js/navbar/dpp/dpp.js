@@ -212,41 +212,24 @@ function createRawMaterialOptions() {
 	return html;
 }
 
-/*function createRawMaterialListOptions() {
-	let html = '';
-	$.each(rawMaterialList, function(index, item) {
-		if (item.material.isActive === "y") {
-			html += `<option materialListId="${item.materialListId}" id="item${item.materialCode}" value="${item.materialCode}">
-						ID${item.materialListId}: ${item.material.materialName} (${item.material.unitOfMeasurement})
-					</option>`;
-		}
-	});
-
-	return html;
-}*/
-
 function createRawMaterialListOptions() {
-    // Step 1: Create a map to hold unique material codes and their corresponding details
     const materialMap = {};
 
     rawMaterialList.forEach(item => {
         if (item.material.isActive === "y") {
-            // Check if material code is already in the map
             if (!materialMap[item.materialCode]) {
                 materialMap[item.materialCode] = [];
             }
-            // Add each material with its details to the array in the map
             materialMap[item.materialCode].push(item);
         }
     });
 
-    // Step 2: Build HTML for the dropdown
     let html = '';
     for (const [materialCode, items] of Object.entries(materialMap)) {
         html += `<optgroup label="${materialCode}">`;
         items.forEach(item => {
             html += `<option materialListId="${item.materialListId}" value="${item.materialListId}">
-                        ID${item.materialListId}: ${item.material.materialName} (${item.material.unitOfMeasurement})
+                        ${item.material.materialName} &nbsp;&nbsp;&nbsp; [${item.dateRecieve}]
                     </option>`;
         });
         html += `</optgroup>`;
@@ -254,6 +237,9 @@ function createRawMaterialListOptions() {
 
     return html;
 }
+
+
+
 
 
 var materialCounter = 0;
@@ -285,21 +271,6 @@ function addPmRow() {
 	$('#tblAddPm').append(html);
 	fetchRmQty(materialCounter);
 }
-
-/*function fetchRmQty(counter) {
-    const selectElement = $(`#selectRawMaterial${counter}`);
-    const selectedMaterialListId = selectElement.find('option:selected').attr('materialListId');
-
-    const matchingMaterial = rawMaterialList.find(function(material) {
-        return material.materialListId == selectedMaterialListId;
-    });
-
-    if (matchingMaterial) {
-        $(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
-    } else {
-        $(`#txtRmQty${counter}`).val(""); 
-    }
-}*/
 
 function fetchRmQty(counter) {
     const selectElement = $(`#selectRawMaterial${counter}`);
