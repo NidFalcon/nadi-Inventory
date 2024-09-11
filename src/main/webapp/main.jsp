@@ -26,9 +26,13 @@
 </head>
 <body>
 	<div id="divMenu"></div>
+<<<<<<< HEAD
 	<div id="divAlert"></div>
+=======
+	<div id="divMessage"></div>
+>>>>>>> login
 	<div id="divContent" class="container-fluid my-3 divContent">
-		<jsp:include page="pages/login.jsp"></jsp:include>
+<%-- 		<jsp:include page="pages/login.jsp"></jsp:include> --%>
   	</div>
 </body>
 </html>

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import com.cpi.is.entity.SessionEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.util.HBUtil;
