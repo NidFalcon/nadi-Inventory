@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import com.cpi.is.dao.impl.ProductionMaterialDAOImpl;
 import com.cpi.is.entity.ProductionMaterialEntity;

@@ -9,14 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.impl.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.RawMaterialServiceImpl;
-import com.cpi.is.util.JsonUtil;
 
 @WebServlet("/RawMaterialListController")
 public class RawMaterialListController extends HttpServlet {

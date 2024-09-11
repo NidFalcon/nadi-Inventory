@@ -1,9 +1,8 @@
-package com.cpi.is.service.impl;
+  package com.cpi.is.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.cpi.is.dao.impl.UserDAOImpl;

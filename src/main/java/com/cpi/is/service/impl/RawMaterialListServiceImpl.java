@@ -1,14 +1,10 @@
 package com.cpi.is.service.impl;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.regex.Pattern;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,15 +12,13 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.cpi.is.dao.impl.BranchDAOImpl;
+
 import com.cpi.is.dao.impl.RawMaterialDAOImpl;
 import com.cpi.is.dao.impl.RawMaterialListDAOImpl;
-import com.cpi.is.dao.impl.UserDAOImpl;
 import com.cpi.is.entity.RawMaterialListEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.RawMaterialListService;
-import com.cpi.is.validation.DateValidate;
 import com.cpi.is.validation.JsonValidate;
 import com.cpi.is.validation.ValidationUtil;
 
@@ -32,15 +26,6 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	
 	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
 	private RawMaterialDAOImpl rawMaterialDAO = new RawMaterialDAOImpl();
-	
-	public RawMaterialListDAOImpl getRawMaterialListDAO() {
-		return rawMaterialListDAO;
-	}
-
-	public void setRawMaterialListDAO(RawMaterialListDAOImpl rawMaterialListDAO) {
-		this.rawMaterialListDAO = rawMaterialListDAO;
-	}
-
 	
 	private RawMaterialListEntity jsonToEntity(JSONObject json) throws NumberFormatException, JSONException, Exception {
 		
@@ -53,6 +38,20 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 				json.getInt("branchId"));
 	}
 	
+	
+	
+	public RawMaterialListDAOImpl getRawMaterialListDAO() {
+		return rawMaterialListDAO;
+	}
+
+
+
+	public void setRawMaterialListDAO(RawMaterialListDAOImpl rawMaterialListDAO) {
+		this.rawMaterialListDAO = rawMaterialListDAO;
+	}
+
+
+
 	private static Date convertStringToSqlDate(String dateString) {
         // Define the format of the input string
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -111,21 +110,23 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	    String quantityStr = jsonObject.get("quantity").toString();
 	    
 	    ValidationUtil.checkNumber(quantityStr);
-
-	    try {
-			if (!isValidForeignKey(jsonObject.getString("materialCode"))){
-			    throw new InvalidJsonException("materialCode value is not a valid Foreign Key");
-			}
-		} catch (Exception e) {
-			if (e instanceof InvalidJsonException )
-			e.printStackTrace();
-		}
+	    
+	    checkForeignKey(jsonObject.getString("materialCode"));
 	    	
 	}
 
-	private boolean isValidForeignKey(String foreignKey) throws Exception {
-	   rawMaterialDAO.getRawMaterialById(foreignKey);
-	   return true;
-   };
+	public boolean checkForeignKey (String jsonObject) throws InvalidJsonException {
+		try {
+			if (rawMaterialDAO.getRawMaterialById(jsonObject) == null) {
+				throw new InvalidJsonException("Invalid Parameter");
+			}
+		} catch (Exception e) {
+			if (e instanceof InvalidJsonException) {
+				throw (InvalidJsonException) e;
+			}
+			e.printStackTrace();
+		}
+		return true;
+	}
 	
 }

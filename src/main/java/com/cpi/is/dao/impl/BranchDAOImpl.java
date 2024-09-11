@@ -4,13 +4,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.cpi.is.dao.BranchDAO;
 import com.cpi.is.entity.BranchEntity;
 import com.cpi.is.util.HBUtil;
-import com.cpi.is.validation.JsonValidate;
 
 public class BranchDAOImpl implements BranchDAO {
     @Override

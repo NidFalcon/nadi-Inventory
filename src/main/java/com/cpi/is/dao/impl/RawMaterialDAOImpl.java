@@ -10,8 +10,15 @@ import com.cpi.is.entity.RawMaterialEntity;
 import com.cpi.is.util.HBUtil;
 
 public class RawMaterialDAOImpl implements RawMaterialDAO {
+	
+	
 
-    @Override
+    public RawMaterialDAOImpl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
     public List<RawMaterialEntity> getRawMaterial() throws Exception {
         List<RawMaterialEntity> rawMaterialList = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
