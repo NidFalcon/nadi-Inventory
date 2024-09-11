@@ -208,10 +208,17 @@
 								<label for="updateMaterialDppId">DPP ID: </label>
 								<input type="text" class="form-control" id="updateMaterialDppId" readonly>
 							</th>
+							<th scope="col" id="updateDppSkuNameContainer">
+								<label for="updateDppSkuName">SKU Name: </label>
+								<input type="text" class="form-control" id="updateDppSkuName" readonly>
+							</th>
 						</tr>
 						<tr>
 							<th scope="col">Select Material/s:</th>
+							<th scope="col">Unit of Measurement</th>
+							<th scope="col">Initial Stock:</th>
 							<th scope="col">Quantity to Use:</th>
+							<th scope="col">Remaining Stock:</th>
 						</tr>
 					</table>
 				</form>

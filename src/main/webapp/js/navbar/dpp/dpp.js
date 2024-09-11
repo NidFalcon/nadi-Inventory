@@ -54,6 +54,7 @@ function populateForm(row) {
 		$('#materialDppId').val(row.dppId);
 		$('#dppSkuName').val(row.sku.skuName);
 		$('#updateMaterialDppId').val(row.dppId);
+		$('#updateDppSkuName').val(row.sku.skuName);
 		filterProductionMaterial(row);
 	}
 }
@@ -174,6 +175,7 @@ function filterProductionMaterial(row) {
 		$('#btnShowUpdatePm').show();
 		$('#materialDppIdContainer').hide();
 		$('#dppSkuNameContainer').hide();
+		$('#updateDppSkuNameContainer').hide();
 		$('#divProductionMaterialTable').show();
 		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
 			layout: 'fitColumns',
@@ -194,6 +196,7 @@ function filterProductionMaterial(row) {
 	} else {
 		$('#materialDppIdContainer').show();
 		$('#dppSkuNameContainer').show();
+		$('#updateDppSkuNameContainer').show();
 		$('#divProductionMaterialTable').hide();
 		$('#btnShowUpdatePm').hide();
 	}
@@ -320,13 +323,22 @@ function populateUpdatePmForm() {
 		html += `
 		<tr id="updatePmRow${index + 1}">
 			<td>
-                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}">
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}" onchange="fetchRmQty(${index + 1})>
                     ${createRawMaterialListOptions()}
                 </select>
             </td>
+			<td>
+                <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" readonly/>
+            </td>
             <td>
-                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" 
+                <input type="text" class="form-control" id="txtRmQty${index + 1}" readonly/>
+            </td>
+			<td>
+                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" oninput="fetchQtyRemaining(${index + 1})"
 				min="1" placeholder="Enter quantity" />
+            </td>
+            <td>
+                <input type="text" class="form-control" id="txtRmQtyRemaining${index + 1}" readonly/>
             </td>
             <td>
                 <button class="btn btn-danger" type="button" 
@@ -345,6 +357,8 @@ function populateUpdatePmForm() {
 	$.each(productionMaterialFiltered, function(index, item) {
 		$(`#selectRawMaterial${index + 1}`).val(item.materialCode);
 		$(`#txtPmQtyToUse${index + 1}`).val(item.quantityToUse);
+		fetchRmQty(index + 1);
+		fetchQtyRemaining(index + 1);
 	});
 }
 
