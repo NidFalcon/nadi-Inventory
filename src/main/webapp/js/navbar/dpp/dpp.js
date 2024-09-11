@@ -43,6 +43,7 @@ dppTable.on('rowClick', function() {
 $('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
+	console.log(row);
 	if (row !== undefined) {
 		$('#txtUpdateDppId').val(row.dppId)
 		$('#selectUpdateSkuCode').val(row.skuCode);
@@ -51,6 +52,7 @@ function populateForm(row) {
 		$('#selectUpdateStatus').val(row.status);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
+		$('#dppSkuName').val(row.sku.skuName);
 		$('#updateMaterialDppId').val(row.dppId);
 		filterProductionMaterial(row);
 	}
@@ -171,6 +173,7 @@ function filterProductionMaterial(row) {
 	if (productionMaterialFiltered.length !== 0) {
 		$('#btnShowUpdatePm').show();
 		$('#materialDppIdContainer').hide();
+		$('#dppSkuNameContainer').hide();
 		$('#divProductionMaterialTable').show();
 		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
 			layout: 'fitColumns',
@@ -190,6 +193,7 @@ function filterProductionMaterial(row) {
 		});
 	} else {
 		$('#materialDppIdContainer').show();
+		$('#dppSkuNameContainer').show();
 		$('#divProductionMaterialTable').hide();
 		$('#btnShowUpdatePm').hide();
 	}
@@ -208,15 +212,28 @@ function createRawMaterialOptions() {
 	return html;
 }
 
+function createRawMaterialListOptions() {
+	let html = '';
+	$.each(rawMaterialList, function(index, item) {
+		if (item.material.isActive === "y") {
+			html += `<option materialListId="${item.materialListId}" id="item${item.materialCode}" value="${item.materialCode}">
+						ID${item.materialListId}: ${item.material.materialName} (${item.material.unitOfMeasurement})
+					</option>`;
+		}
+	});
+
+	return html;
+}
+
 var materialCounter = 0;
 
 function addPmRow() {
-    materialCounter++;
-    let html = `
+	materialCounter++;
+	let html = `
         <tr id="pmRow${materialCounter}">
             <td>
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
-                    ${createRawMaterialOptions()}
+                    ${createRawMaterialListOptions()}
                 </select>
             </td>
             <td>
@@ -234,24 +251,60 @@ function addPmRow() {
         </tr>
     `;
 
-    $('#tblAddPm').append(html);
+	$('#tblAddPm').append(html);
 	fetchRmQty(materialCounter);
 }
 
-function fetchRmQty(counter) {
-    const selectedMaterialCode = $(`#selectRawMaterial${counter}`).val(); // Get the selected material code
-    if (selectedMaterialCode) {
-        const matchingMaterial = rawMaterialList.find(material => material.materialCode === selectedMaterialCode);
+/*function fetchRmQty(counter) {
+	const selectedMaterialCode = $(`#selectRawMaterial${counter}`).val(); // Get the selected material code
+	if (selectedMaterialCode) {
+		const matchingMaterial = rawMaterialList.find(material => material.materialCode === selectedMaterialCode);
 		console.log("matching material: "+matchingMaterial);
-        if (matchingMaterial) {
-            $(`#txtRmQty${counter}`).val(matchingMaterial.quantity); // Set the quantity of the selected material
-        } else {
-            $(`#txtRmQty${counter}`).val(""); // Clear the field if no matching material found
-        }
-    }
+		if (matchingMaterial) {
+			$(`#txtRmQty${counter}`).val(matchingMaterial.quantity); // Set the quantity of the selected material
+		} else {
+			$(`#txtRmQty${counter}`).val(""); // Clear the field if no matching material found
+		}
+	}
 	console.log("selected mat code: "+selectedMaterialCode);
 	
+}*/
+
+/*function fetchRmQty(counter) {
+	const selectElement = $(`#selectRawMaterial${counter}`);
+	const selectedMaterialCode = selectElement.val(); // Get the selected material code
+	const selectedMaterialListId = selectElement.find('option:selected').attr('materialListId'); // Get the selected materialListId
+
+	const matchingMaterial = rawMaterialList.find(material =>
+				material.materialCode === selectedMaterialCode &&
+				material.materialListId === selectedMaterialListId
+			);
+
+			if (matchingMaterial) {
+				$(`#txtRmQty${counter}`).val(matchingMaterial.quantity); // Set the quantity of the selected material
+			} else {
+				$(`#txtRmQty${counter}`).val(""); // Clear the field if no matching material found
+			}
+
+	console.log("selected mat code: " + selectedMaterialCode);
+	console.log("selected mat list id: " + selectedMaterialListId);
+}*/
+
+function fetchRmQty(counter) {
+    const selectElement = $(`#selectRawMaterial${counter}`);
+    const selectedMaterialListId = selectElement.find('option:selected').attr('materialListId');
+
+    const matchingMaterial = rawMaterialList.find(function(material) {
+        return material.materialListId == selectedMaterialListId;
+    });
+
+    if (matchingMaterial) {
+        $(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
+    } else {
+        $(`#txtRmQty${counter}`).val(""); 
+    }
 }
+
 
 
 $('#btnAddPmRow').on('click', function() {

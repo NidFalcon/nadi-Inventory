@@ -147,7 +147,7 @@
 <!-- add PM modal -->
 <div class="modal fade" id="addPmModal" tabindex="-1"
 	aria-labelledby="addPmModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="addPmModalLabel">Add Production Material/s:</h5>
@@ -155,14 +155,17 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div id="divProductionMaterialTable">
-				</div>
+				<div id="divProductionMaterialTable"></div>
 				<form>
 					<table class="table" id="tblAddPm">
 						<tr>
 							<th scope="col" id="materialDppIdContainer">
 								<label for="materialDppId">DPP ID: </label>
 								<input type="text" class="form-control" id="materialDppId" readonly>
+							</th>
+							<th scope="col" id="dppSkuNameContainer">
+								<label for="dppSkuName">SKU Name: </label>
+								<input type="text" class="form-control" id="dppSkuName" readonly>
 							</th>
 						</tr>
 						<tr>
@@ -188,7 +191,7 @@
 <!-- update PM modal -->
 <div class="modal fade" id="updatePmModal" tabindex="-1"
 	aria-labelledby="updatePmModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="updatePmModalLabel">Update Production Material/s:</h5>
