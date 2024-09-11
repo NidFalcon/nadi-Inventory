@@ -170,8 +170,10 @@
 						</tr>
 						<tr>
 							<th scope="col">Select Material/s:</th>
+							<th scope="col">Unit of Measurement</th>
 							<th scope="col">Initial Stock:</th>
 							<th scope="col">Quantity to Use:</th>
+							<th scope="col">Remaining Stock:</th>
 						</tr>
 					</table>
 				<button type="button" id="btnAddPmRow" class="btn btn-dark w-100"> + Add Row </button>

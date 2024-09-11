@@ -25,26 +25,54 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
     }
 
     private ProductionMaterialEntity jsonToEntity(JSONObject json) throws Exception {
-    	Long pmId = null;
+        Long pmId = null;
         Long dppId = null;
         Long materialListId = null;
         String materialCode = null;
         Integer quantityToUse = null;
 
-        if (json.has("pmId") && json.has("dppId") && json.has("materialListId") && json.has("materialCode") && json.has("quantityToUse")) {
-            pmId = !json.isNull("pmId") ? json.getLong("pmId") : null;
-            dppId = json.getLong("dppId");
-            materialListId = json.getLong("materialListId");
-            materialCode = json.getString("materialCode");
-            quantityToUse = json.getInt("quantityToUse");
-        } else if (json.has("pmId")) { 
-            pmId = json.getLong("pmId");
+        // Log the incoming JSON for debugging
+        System.out.println("Incoming JSON: " + json.toString());
+
+        if (json.has("pmId")) {
+            pmId = json.isNull("pmId") ? null : json.optLong("pmId");
         } else {
+            System.out.println("Missing pmId");
+        }
+
+        if (json.has("dppId")) {
+            dppId = json.optLong("dppId");
+        } else {
+            System.out.println("Missing dppId");
+        }
+
+        if (json.has("materialListId")) {
+            materialListId = json.optLong("materialListId");
+        } else {
+            System.out.println("Missing materialListId");
+        }
+
+        if (json.has("materialCode")) {
+            materialCode = json.optString("materialCode", null);
+        } else {
+            System.out.println("Missing materialCode");
+        }
+
+        if (json.has("quantityToUse")) {
+            quantityToUse = json.optInt("quantityToUse", 0);
+        } else {
+            System.out.println("Missing quantityToUse");
+        }
+
+        // Validate required fields
+        if (dppId == null || materialListId == null || materialCode == null || quantityToUse == null) {
             throw new Exception("JSON malformed: Missing required fields");
         }
 
         return new ProductionMaterialEntity(pmId, dppId, materialListId, materialCode, quantityToUse);
     }
+
+
 
     @Override
     public List<ProductionMaterialEntity> getProductionMaterial() throws Exception {

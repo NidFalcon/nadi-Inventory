@@ -199,19 +199,6 @@ function filterProductionMaterial(row) {
 	}
 }
 
-function createRawMaterialOptions() {
-	let html = '';
-	$.each(rawMaterial, function(index, item) {
-		if (item.isActive === "y") {
-			html += `<option id="item${item.materialCode}" value="${item.materialCode}">
-						${item.materialCode} ${item.materialName} (${item.unitOfMeasurement})
-					</option>`;
-		}
-	});
-
-	return html;
-}
-
 function createRawMaterialListOptions() {
     const materialMap = {};
 
@@ -228,8 +215,8 @@ function createRawMaterialListOptions() {
     for (const [materialCode, items] of Object.entries(materialMap)) {
         html += `<optgroup label="${materialCode}">`;
         items.forEach(item => {
-            html += `<option materialListId="${item.materialListId}" value="${item.materialListId}">
-                        ${item.material.materialName} &nbsp;&nbsp;&nbsp; [${item.dateRecieve}]
+            html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
+                        ${item.material.materialName} &nbsp;&nbsp; [${item.dateRecieve}]
                     </option>`;
         });
         html += `</optgroup>`;
@@ -238,43 +225,46 @@ function createRawMaterialListOptions() {
     return html;
 }
 
-
-
-
-
 var materialCounter = 0;
 
 function addPmRow() {
-	materialCounter++;
-	let html = `
+    materialCounter++;
+    let html = `
         <tr id="pmRow${materialCounter}">
             <td>
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
                     ${createRawMaterialListOptions()}
                 </select>
             </td>
-            <td>
-                <input type="number" class="form-control" id="txtRmQty${materialCounter}" 
-                min="1" readonly/>
+			<td>
+                <input type="text" class="form-control" id="txtUnitOfMeasurement${materialCounter}" readonly/>
             </td>
             <td>
-                <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" 
-                min="1" placeholder="Enter quantity" />
+                <input type="text" class="form-control" id="txtRmQty${materialCounter}" readonly/>
             </td>
             <td>
-                <button class="btn btn-danger" type="button" 
-                onclick="deleteAddPmRow(${materialCounter})">X</button>
+                <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" min="1" placeholder="Enter quantity" oninput="fetchQtyRemaining(${materialCounter})"/>
+            </td>
+            <td>
+                <input type="text" class="form-control" id="txtRmQtyRemaining${materialCounter}" readonly/>
+            </td>
+            <td>
+                <button class="btn btn-danger" type="button" onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
     `;
 
-	$('#tblAddPm').append(html);
-	fetchRmQty(materialCounter);
+    $('#tblAddPm').append(html);
+    fetchRmQty(materialCounter);
+	fetchQtyRemaining(materialCounter);
 }
 
 function fetchRmQty(counter) {
     const selectElement = $(`#selectRawMaterial${counter}`);
-    const selectedMaterialListId = selectElement.find('option:selected').attr('materialListId');
+    const selectedOption = selectElement.find('option:selected'); // Get the selected option
+    const selectedMaterialListId = selectedOption.attr('materialListId'); // Get the materialListId from the custom attribute
+
+    console.log(`Fetching RM Qty for MaterialListId: ${selectedMaterialListId}`);
 
     // Find the material by materialListId
     const matchingMaterial = rawMaterialList.find(function(material) {
@@ -282,12 +272,39 @@ function fetchRmQty(counter) {
     });
 
     if (matchingMaterial) {
+        // Update the Quantity field
         $(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
+        console.log(`Matched Material Quantity: ${matchingMaterial.quantity}`);
+
+        // Update the Unit of Measurement field
+        $(`#txtUnitOfMeasurement${counter}`).val(matchingMaterial.material.unitOfMeasurement);
+        console.log(`Matched Material UOM: ${matchingMaterial.material.unitOfMeasurement}`);
     } else {
         $(`#txtRmQty${counter}`).val("");
+        $(`#txtUnitOfMeasurement${counter}`).val(""); // Clear the UOM field if no material is found
+        console.log(`No matching material found for MaterialListId: ${selectedMaterialListId}`);
     }
 }
 
+
+
+function fetchQtyRemaining(counter) {
+    // Get the initial stock (rmQty) and the quantity to use (qtyToUse)
+    const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
+    let qtyToUse = parseFloat($(`#txtPmQtyToUse${counter}`).val()) || 0;
+
+    // If the quantity to use exceeds the available stock, cap it to the stock value
+    if (qtyToUse > rmQty) {
+        qtyToUse = rmQty;
+        $(`#txtPmQtyToUse${counter}`).val(rmQty);
+    }
+
+    // Calculate the remaining quantity after usage
+    const remainingQty = rmQty - qtyToUse;
+
+    // Update the remaining quantity field
+    $(`#txtRmQtyRemaining${counter}`).val(remainingQty);
+}
 
 $('#btnAddPmRow').on('click', function() {
 	addPmRow();
@@ -304,7 +321,7 @@ function populateUpdatePmForm() {
 		<tr id="updatePmRow${index + 1}">
 			<td>
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}">
-                    ${createRawMaterialOptions()}
+                    ${createRawMaterialListOptions()}
                 </select>
             </td>
             <td>
