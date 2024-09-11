@@ -54,6 +54,11 @@ public class ProductionMaterialEntity {
         this.materialCode = materialCode;
         this.quantityToUse = quantityToUse;
     }
+    
+    public ProductionMaterialEntity(Long pmId) {
+        super();
+        this.pmId = pmId;
+    }
 
     public Long getPmId() {
         return pmId;
