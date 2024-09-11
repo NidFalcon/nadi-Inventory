@@ -5,7 +5,6 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 import com.cpi.is.dao.DispatchingDAO;
-import com.cpi.is.entity.FinishedProductListEntity;
 import com.cpi.is.entity.DispatchingEntity;
 import com.cpi.is.util.HBUtil;
 

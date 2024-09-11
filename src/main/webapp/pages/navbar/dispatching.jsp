@@ -1,21 +1,20 @@
 <div class="m-4 mainWrapper">
-<main role="main">
-	<div class="alert alert-warning d-none mt-1" role="alert" id="divAlert"></div>
-	<div class="d-flex justify-content-between align-items-center contentNavbar">
-		<h1 class="h2">
-				<i class="bi bi-boxes me-2 ms-3"></i>Dispatch
-		</h1>
-		<div class="btn-toolbar mb-2 mb-md-0 me-3 ms-2">
-			<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">+ Add</button>
-			<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnShowUpdateDispatching">Update</button>
-			<button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal" id="btnDelete">Delete</button>
+	<main role="main">
+		<div class="d-flex justify-content-between align-items-center contentNavbar">
+				<h1 class="h2">
+					<i class="bi bi-boxes me-2 ms-3"></i>Dispatch
+				</h1>
+			<div class="btn-toolbar mb-2 mb-md-0 me-3 ms-2">
+				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal" id="btnShowAddDispatching">+ Add</button>
+				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnShowUpdateDispatching">Update</button>
+				<button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#deleteModal" id="btnDelete">Delete</button>
+			</div>
 		</div>
-	</div>
-	<div class="container mt-4 pb-3">
-		<div class="mb-4" id="divDispatchingTable"></div> <!--Dispatch Table-->
-	</div>
-</main>
-
+		<div class="container mt-4 pb-3">
+			<div class="mb-4" id="divDispatchingTable"></div> <!--Dispatch Table-->
+		</div>
+	</main>
+	
 	<!--Add Modal-->
 	<div class="modal fade" id="addModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -46,10 +45,6 @@
 							</select>
 						</div>
 						<div class="row mb-3">
-						   <!-- <div class="col-sm-4">
-						        <label for="txtSkuName" class="col-form-label">SKU Name</label>
-						        <input type="text" id="txtSkuName" class="form-control txtSkuName" readonly="readonly"/>
-						    </div> -->
 						    <div class="col-sm-6">
 						        <label for="txtQuantityFPL" class="col-form-label">Quantity</label>
 						        <input type="text" id="txtQuantityFPL" class="form-control txtQuantityFPL" readonly="readonly"/>
@@ -112,15 +107,11 @@
 						</div>
 						<div class="mb-3">
 							<label for="updateFinishedProductId">Finished Product List</label>
-							<select id="updateFinishedProductId" class="form-select selFinishedProd">
+							<select id="updateFinishedProductId" class="form-select updateFinishedProductId">
 							     <option></option>
 							</select>
 						</div>
 						<div class="row mb-3">
-						  <!--  <div class="col-sm-4">
-						        <label for="txtSkuName" class="col-form-label">SKU Name</label>
-						        <input type="text" class="form-control txtSkuName" readonly="readonly"/>
-						    </div> -->
 						    <div class="col-sm-6">
 						        <label for="txtQuantityFPL" class="col-form-label">Quantity</label>
 						        <input type="text" class="form-control txtQuantityFPL" readonly="readonly"/>
@@ -160,40 +151,42 @@
 	
 	<!-- delete modal-->
 	<div class="modal fade" id="deleteModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header border-0 modalHeader">
-				<h5 class="modal-title" id="exampleModalLabel">Delete row:</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body border-0 modalBody">
-				<form>
-					<div class="mb-3">
-						<input type="text" class="form-control d-none" id="deleteDispatchId">
-						<input type="text" class="form-control d-none" id="deleteDispatchName">
-						<input type="text" class="form-control d-none" id="deleteFinishedProductId">
-						<input type="text" class="form-control d-none" id="deleteSkuName">
-						<input type="text" class="form-control d-none" id="deleteDispatchQuantity">
-						<input type="text" class="form-control d-none" id="deleteBranchId">
-						<input type="text" class="form-control d-none" id="deleteBranchName">
-						<input type="text" class="form-control d-none" id="deleteDestination">
-						<input type="text" class="form-control d-none" id="deleteDispatchDate">
-					</div>
-					<div class="mb-3">
-						<span>Are you sure you want to delete this row?</span>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer border-0 modalFooter">
-
-				<button type="button" class="btn btn-danger" id="btnDeleteDispatch">Yes</button>
-				<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnDeleteDispatchCancel">No</button>				
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header border-0 modalHeader">
+					<h5 class="modal-title" id="exampleModalLabel">Delete row:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body border-0 modalBody">
+					<form>
+						<div class="mb-3">
+							<input type="text" class="form-control d-none" id="deleteDispatchId">
+							<input type="text" class="form-control d-none" id="deleteDispatchName">
+							<input type="text" class="form-control d-none" id="deleteFinishedProductId">
+							<input type="text" class="form-control d-none" id="deleteSkuName">
+							<input type="text" class="form-control d-none" id="deleteDispatchQuantity">
+							<input type="text" class="form-control d-none" id="deleteBranchId">
+							<input type="text" class="form-control d-none" id="deleteBranchName">
+							<input type="text" class="form-control d-none" id="deleteDestination">
+							<input type="text" class="form-control d-none" id="deleteDispatchDate">
+						</div>
+						<div class="mb-3">
+							<span>Are you sure you want to delete this row?</span>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer border-0 modalFooter">
+	
+					<button type="button" class="btn btn-danger" id="btnDeleteDispatch">Yes</button>
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnDeleteDispatchCancel">No</button>				
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-</div>
+
 
 <script type="text/javascript">
     var dispatch = JSON.parse('${dispatch}');

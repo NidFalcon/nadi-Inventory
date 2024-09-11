@@ -38,13 +38,6 @@ rawMaterialTable.on('rowClick', function() {
 	}
 })
 
-function showAlert () {
-	$('#divMenu').append(response);
-	var $toastLiveExample = $('#liveToast');
-	var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-	toastBootstrap.show();
-}
-
 function createOptions() {
 	let html = '';
 	$.each(materialOptions, function(index, item) {
@@ -140,13 +133,9 @@ function addItem(isAdd) {
 				$('.btnCloseAddModal').click();
 				$('#btnRawMaterials').click();
 			} else {
-				//alert('Unable to save changes');
-				  // Select elements
-				  $('#divMenu').append(response);
+				  $('#divAlert').html(response);
 				  var $toastLiveExample = $('#liveToast');
-
 				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-
 				  toastBootstrap.show();
 
 			}

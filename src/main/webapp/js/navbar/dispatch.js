@@ -1,6 +1,7 @@
 var fplQuantity = 0;
 var currentQuantity = 0;
 var totalQuantityUpdate = 0;
+var totalQuantityAdd = 0;
 
 var dispatchTable = new Tabulator("#divDispatchingTable", {
     layout: 'fitDataTable',
@@ -35,11 +36,19 @@ $('button[data-bs-target="#addModal"]').click(function() {
 });
 
 function clearAll() {
+    fplQuantity = 0;
+    currentQuantity = 0;
+    totalQuantityUpdate = 0;
+    
+    console.log('Current Quantity: ', currentQuantity);
+    console.log('Total Quantity Update: ', totalQuantityUpdate);
+    console.log('FPL Quantity: ', fplQuantity);
+
     // Clear Finished Product selection
     $('#selFinishedProdId').val(''); 
 
     // Clear Quantity and Date Finished fields (read-only fields)
-    $('#txtQuantityFPL').val('');
+    $('#txtQuantityFPL').val(0);
     $('#txtDateFinished').val('');
 
     // Clear Dispatch Quantity
@@ -66,14 +75,16 @@ dispatchTable.on('rowClick', function() {
         populateForm(row);
         populateDeleteForm(row);
         $('#btnShowUpdateDispatching').show();
+        $('#btnShowAddDispatching').hide();
         $('#btnDelete').show();
     } else {
         $('#btnShowUpdateDispatching').hide();
+        $('#btnShowAddDispatching').show();
         $('#btnDelete').hide();
     }
-})
+});
 
-function createOptions() {
+function createDispatchOptions() {
     let html = '';
     $.each(dispatchType, function(index, item) {
         html += '<option id="item' + item.dispatchTypeCode + '" value="' + item.dispatchTypeCode + '">' + item.dispatchTypeName + '</option>';
@@ -132,28 +143,26 @@ function checkQuantity() {
     let fplId = $('#selFinishedProdId').val();
     if (!fplId) return; // If no fplId is selected, skip validation
 
-    /let fplQuantity = parseFloat($(`option[value="${fplId}"]`).data('quantity'));/
     let dispatchQuantity = parseFloat($('#addDispatchQuantity').val());
 
-    if (isNaN(currentQuantity) || isNaN(dispatchQuantity)) {
+    if (isNaN(totalQuantityAdd) || isNaN(dispatchQuantity)) {
         return;
     }
 
-    if (dispatchQuantity > currentQuantity) {
-        $('#addDispatchQuantity').val(totalQuantityUpdate);
+    if (dispatchQuantity > totalQuantityAdd) {
+        $('#addDispatchQuantity').val(totalQuantityAdd);
     }
 }
 
 function checkQuantityUpdate() {
     let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); // Updated dispatch quantity
 
-    if (isNaN(currentQuantity) || isNaN(dispatchQuantityUpdate)) {
+    if (isNaN(totalQuantityUpdate) || isNaN(dispatchQuantityUpdate)) {
         return; // Return if either quantity is not a number
     }
     
     // Ensure total quantity doesn't exceed currentQuantity
     if (dispatchQuantityUpdate > totalQuantityUpdate) {
-/*        alert('Dispatch quantity cannot be greater than available quantity.'); */
         $('#updateDispatchQuantity').val(totalQuantityUpdate); // Clear invalid input
     }
 }
@@ -162,7 +171,7 @@ $('#updateDispatchQuantity').on('input', checkQuantityUpdate);
 $('#addDispatchQuantity').on('input', checkQuantity);
 
 function getFplID() {
-	console.log("Tinatawag ako");
+    console.log("Fetching FPL ID");
     let currentDate = new Date(getCurrentDate());
     let html = '<option value="">';
 
@@ -181,205 +190,244 @@ function getFplID() {
     $('.selFinishedProd').html(html);
 
     $('.selFinishedProd').change(function() {
-		console.log("Tinatawag ako to change currentQuantity");
+        console.log("Updating currentQuantity on Add");
         let selectedOption = $(this).find('option:selected');
         let skuCode = selectedOption.data('sku-code');
-        currentQuantity = skuToQuantityMap[skuCode] || 0;
+        totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
 
-        $('.txtSkuName').val(selectedOption.data('sku-name'));
-        $('.txtQuantityFPL').val(currentQuantity);
-        $('.txtDateFinished').val(selectedOption.data('date-finished'));
-    });
-}
-
-function populateForm(row) {
-	let dateFinished = new Date(row.fpl.dateFinished).toLocaleDateString();
-	    if (row !== undefined) {
-	        $('#updateDispatchId').val(row.dispatchTrackId);
-	        $('#updateDispatchType').val(row.dispatchType.dispatchTypeCode);
-	        $('#updateFinishedProductId').val(row.fplId);
-	        $('#updateSkuCode').val(row.fpl.sku.skuCode);
-	        $('#updateDispatchQuantity').val(row.quantity);
-	        $('#updateDispatchDestination').val(row.destination);
-	        $('#updateDate').val(row.dispatchDate);
-			
-			console.log("Dispatch Quantity = " + row.quantity);
-			console.log("Current Quantity = " + currentQuantity);
-		
-			let skuToQuantityMap = {};
-		    $.each(currentInventory, function(index, item) {
-		        skuToQuantityMap[item[0]] = item[1];
+        $('.txtQuantityFPL').val(totalQuantityAdd);
+        $('.txtDateF	inished').val(selectedOption.data('date-finished'));
+		        
 		    });
-			
-	        let selectedOption = $(this).find('option:selected');
-	        let skuCd = row.fpl.sku.skuCode;
-	        currentQuantity = skuToQuantityMap[skuCd] || 0;
-			
-			totalQuantityUpdate = row.quantity + currentQuantity; // Total quantity after update
-			
-	        $('.txtSkuName').val(selectedOption.data('sku-name'));
-	        $('.txtQuantityFPL').val(totalQuantityUpdate);
-	        $('.txtDateFinished').val(dateFinished);
+		}
+		getFplID();
 
-	    }
-	}
 
-	function populateDeleteForm(row) {
-	    if (row !== undefined) {
-	        $('#deleteDispatchId').val(row.dispatchTrackId);
-	        $('#deleteDispatchName').val(row.dispatchType.dispatchTypeName);
-	        $('#deleteFinishedProductId').val(row.fplId);
-	        $('#deleteSkuName').val(row.fpl.sku.skuName);
-	        $('#deleteDispatchQuantity').val(row.quantity);
-	        $('#deleteBranchId').val(row.branch.branchId);
-	        $('#deleteBranchName').val(row.branch.branchName);
-	        $('#deleteDestination').val(row.destination);
-	        $('#deleteDispatchDate').val(row.dispatchDate);
-	    }
-	}
+		function populateForm(row) {
+		    if (!row) {
+		        console.error('Invalid row data');
+		        return;
+		    }
 
-	function createItem(crudOperation) {
-	    let item;
+		    let currentDate = new Date(getCurrentDate());
+		    let selectedFplId = row.fplId; // Save the initial FPL ID from the selected row
+		    let html = '<option value="">';
 
-	    if (crudOperation === "create") {
-	        item = {
-	            dispatchTrackId: $('#addDispatchId').val(),
-	            dispatchTypeCd: $('#addDispatchType').val(),
-	            fplId: $('#selFinishedProdId').val(),
-	            quantity: $('#addDispatchQuantity').val(),
-	            destination: $('#addDispatchDestination').val(),
-	            dispatchDate: $('#dateSelected').val()
-	        };
-	    } else if (crudOperation === "update") {
-	        item = {
-	            dispatchTrackId: $('#updateDispatchId').val(),
-	            dispatchTypeCd: $('#updateDispatchType').val(),
-	            fplId: $('#updateFinishedProductId').val(),
-	            quantity: $('#updateDispatchQuantity').val(),
-	            destination: $('#updateDispatchDestination').val(),
-	            dispatchDate: $('#updateDate').val()
-	        };
-	    } else if (crudOperation === "delete") {
-	        item = {
-	            dispatchTrackId: $('#deleteDispatchId').val(),
-	            dispatchTypeCd: $('#updateDispatchType').val(),
-	            fplId: $('#deleteFinishedProductId').val(),
-	            quantity: $('#deleteDispatchQuantity').val(),
-	            destination: $('#deleteDestination').val(),
-	            dispatchDate: $('#deleteDispatchDate').val(),
-	            branchId: $('#deleteBranchId').val()
-	        };
-	    }
-	    return item;
-	}
+		    // Populate the form with the dispatch details from the selected row
+		    $('#updateDispatchId').val(row.dispatchTrackId);
+		    $('#updateDispatchType').val(row.dispatchType.dispatchTypeCode);
+		    $('#updateDispatchQuantity').val(row.quantity); // Set initial value to row.quantity
+		    $('#updateDispatchDestination').val(row.destination);
+		    $('#updateDate').val(row.dispatchDate);
 
-	function createDeleteItem() {
-	    let json = {
-	        dispatchId: $('#deleteDispatchId').val(),
-	        dispatchName: $('#deleteDispatchName').val(),
-	        finishedProductId: $('#deleteFinishedProductId').val(),
-	        skuName: $('#deleteSkuName').val(),
-	        quantity: $('#deleteDispatchQuantity').val(),
-	        branchId: $('#deleteBranchId').val(),
-	        branchName: $('#deleteBranchName').val(),
-	        destination: $('#deleteDestination').val(),
-	        dispatchDate: $('#deleteDispatchDate').val()
-	    };
+		    // Logic for populating FPL options
+		    let skuToQuantityMapUpdate = {};
+		    $.each(currentInventory, function(index, item) {
+		        skuToQuantityMapUpdate[item[0]] = item[1];
+		    });
 
-	    return json;
-	}
+		    $.each(finishedProduct, function(index, item) {
+		        let dateFinished = new Date(item.dateFinished);
+		        if (dateFinished <= currentDate) {
+		            html += `<option value="${item.fplId}" data-sku-code="${item.sku.skuCode}" data-sku-name="${item.sku.skuName}" data-quantity="${item.quantity}" data-date-finished="${new Date(item.dateFinished).toLocaleDateString()}">${item.fplId} ${item.sku.skuName}</option>`;
+		        }
+		    });
 
-	function validate(item) {
-	    let valid = true;
-	    if (item.dispatchTrackId === '' || item.quantity === '' || item.dispatchDate === '') {
-	        alert('Please correctly fill out all required fields');
-	        valid = false;
-	    } else if (item.quantity < 0) {
-	        alert('Quantity must be a non-negative number');
-	        valid = false;
-	    }
-	    return valid;
-	}
+		    let $updateFinishedProductId = $('#updateFinishedProductId');
+		    $updateFinishedProductId.html(html);
 
-	function addItem(isAdd) {
-	    let item = createItem(isAdd);
-	    console.log(item);
+		    // Set the initial FPL ID based on the selected row
+		    $updateFinishedProductId.val(selectedFplId);
 
-	    // Perform validation checks
-	    if (!validate(item)) {
-	        return; // Stop execution if validation fails
-	    }
+		    // Function to handle changes in the FPL ID
+		    function handleFplChange() {
+		        let selectedOption = $updateFinishedProductId.find('option:selected');
+		        let skuCode = selectedOption.data('sku-code');
+		        let availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
 
-	    // Additional client-side validation before sending data
-	    if (!validateQuantities(item)) {
-	        return; // Stop execution if quantity validation fails
-	    }
+		        // Update the dispatch quantity
+		        if ($updateFinishedProductId.val() == selectedFplId) {
+		            $('#updateDispatchQuantity').val(row.quantity);
+		        } else {
+		            $('#updateDispatchQuantity').val(0);
+		        }
+		        
+		        // Update totalQuantityUpdate based on available quantity plus initial dispatch quantity
+		    	totalQuantityUpdate = availableQuantity + (parseFloat($('#updateDispatchQuantity').val()) || 0);
+		        
+		        // Log values for debugging
+		        console.log('Selected FPL ID:', $updateFinishedProductId.val());
+		        console.log('Available Quantity for SKU Code:', availableQuantity);
+		        console.log('Total Quantity Update:', totalQuantityUpdate);
+		        
+		        // Update the total available quantity and date finished
+		        $('.txtQuantityFPL').val(totalQuantityUpdate);
+		        $('.txtDateFinished').val(selectedOption.data('date-finished'));
+		    }
 
-	    $.post('DispatchingController', {
-	        action: 'saveItem',
-	        item: JSON.stringify(item)
-	    }, function(response) {
-	        if (response.includes('success')) {
-	            $('.btnCloseAddModal').click();
-	            $('#btnDispatching').click();
-	        } else {
-	            alert('Unable to save changes');
-	        }
-	    });
-	}
+		    // Bind the change event handler
+		    $updateFinishedProductId.off('change').on('change', handleFplChange);
 
-	function validateQuantities(item) {
-	    let isValid = true;
+		    // Call the function to initialize the form with the default FPL ID values
+		    handleFplChange();
+		}
 
-	    // Check if FPL ID is selected
-	    if (!item.fplId) {
-	        alert('Please select a finished product.');
-	        isValid = false;
-	    }
 
-	    // Check if quantity is valid
-	    let fplQuantity = parseFloat($(`option[value="${item.fplId}"]`).data('quantity'));
-	    if (isNaN(fplQuantity) || item.quantity > fplQuantity) {
-	        alert('Dispatch quantity cannot be greater than available quantity.');
-	        isValid = false;
-	    }
+		function populateDeleteForm(row) {
+		    if (row !== undefined) {
+		        $('#deleteDispatchId').val(row.dispatchTrackId);
+		        $('#deleteDispatchName').val(row.dispatchType.dispatchTypeName);
+		        $('#deleteFinishedProductId').val(row.fplId);
+		        $('#deleteSkuName').val(row.fpl.sku.skuName);
+		        $('#deleteDispatchQuantity').val(row.quantity);
+		        $('#deleteBranchId').val(row.branch.branchId);
+		        $('#deleteBranchName').val(row.branch.branchName);
+		        $('#deleteDestination').val(row.destination);
+		        $('#deleteDispatchDate').val(row.dispatchDate);
+		    }
+		}
 
-	    return isValid;
-	}
+		function createItem(crudOperation) {
+		    let item;
 
-	$('.btnConfirmDate').click(function() {
-	    console.log("confirming date");
-	    updateFplIDOptionsByDate();
-	    $('.btnConfirmDate').hide(); // Hide the confirm button after updating
-	});
+		    if (crudOperation === "create") {
+		        item = {
+		            dispatchTrackId: $('#addDispatchId').val(),
+		            dispatchTypeCd: $('#addDispatchType').val(),
+		            fplId: $('#selFinishedProdId').val(),
+		            quantity: $('#addDispatchQuantity').val(),
+		            destination: $('#addDispatchDestination').val(),
+		            dispatchDate: $('#dateSelected').val()
+		        };
+		    } else if (crudOperation === "update") {
+		        item = {
+		            dispatchTrackId: $('#updateDispatchId').val(),
+		            dispatchTypeCd: $('#updateDispatchType').val(),
+		            fplId: $('#updateFinishedProductId').val(),
+		            quantity: $('#updateDispatchQuantity').val(),
+		            destination: $('#updateDispatchDestination').val(),
+		            dispatchDate: $('#updateDate').val()
+		        };
+		    } else if (crudOperation === "delete") {
+		        item = {
+		            dispatchTrackId: $('#deleteDispatchId').val(),
+		            dispatchTypeCd: $('#updateDispatchType').val(),
+		            fplId: $('#deleteFinishedProductId').val(),
+		            quantity: $('#deleteDispatchQuantity').val(),
+		            destination: $('#deleteDestination').val(),
+		            dispatchDate: $('#deleteDispatchDate').val(),
+		            branchId: $('#deleteBranchId').val()
+		        };
+		    }
+		    return item;
+		}
 
-	$('#btnAddDispatch').click(function() {
-	    addItem("create");
-	});
+		function createDeleteItem() {
+		    let json = {
+		        dispatchId: $('#deleteDispatchId').val(),
+		        dispatchName: $('#deleteDispatchName').val(),
+		        finishedProductId: $('#deleteFinishedProductId').val(),
+		        skuName: $('#deleteSkuName').val(),
+		        quantity: $('#deleteDispatchQuantity').val(),
+		        branchId: $('#deleteBranchId').val(),
+		        branchName: $('#deleteBranchName').val(),
+		        destination: $('#deleteDestination').val(),
+		        dispatchDate: $('#deleteDispatchDate').val()
+		    };
 
-	$('#btnUpdateDispatch').click(function() {
-	    addItem("update");
-	});
+		    return json;
+		}
 
-	$('#btnDeleteDispatch').click(function() {
-	    if ($('#deleteDispatchId').val() !== '') {
-	        $.post('DispatchingController', {
-	            action: 'deleteItem',
-	            item: JSON.stringify(createItem("delete"))
-	        }, function(response) {
-	            if (response.includes('success')) {
-	                $('#btnDeleteDispatchCancel').click();
-	                $('#btnDispatching').click();
-	            } else {
-	                $('#divAlert').removeClass('d-none');
-	                $('#divAlert').html('Unable to save changes');
-	            }
-	        });
-	    } else {
-	        $('#divAlert').removeClass('d-none');
-	        $('#divAlert').html('Please select an item to delete');
-	    }
-	});
+		function validate(item) {
+		    let valid = true;
+		    if (item.dispatchTrackId === '' || item.quantity === '' || item.dispatchDate === '') {
+		        alert('Please correctly fill out all required fields');
+		        valid = false;
+		    } else if (item.quantity < 0) {
+		        alert('Quantity must be a non-negative number');
+		        valid = false;
+		    }
+		    return valid;
+		}
 
-	createOptions();
-	getFplID();
+		function addItem(isAdd) {
+		    let item = createItem(isAdd);
+		    console.log(item);
+
+		    // Perform validation checks
+		    if (!validate(item)) {
+		        return; // Stop execution if validation fails
+		    }
+
+		    // Additional client-side validation before sending data
+		    if (!validateQuantities(item)) {
+		        return; // Stop execution if quantity validation fails
+		    }
+
+		    $.post('DispatchingController', {
+		        action: 'saveItem',
+		        item: JSON.stringify(item)
+		    }, function(response) {
+		        if (response.includes('success')) {
+		            $('.btnCloseAddModal').click();
+		            $('#btnDispatching').click();
+		        } else {
+		            alert('Unable to save changes');
+		        }
+		    });
+		}
+
+		function validateQuantities(item) {
+		    let isValid = true;
+
+		    // Check if FPL ID is selected
+		    if (!item.fplId) {
+		        alert('Please select a finished product.');
+		        isValid = false;
+		    }
+
+		    // Check if quantity is valid
+		    let fplQuantity = parseFloat($(`option[value="${item.fplId}"]`).data('quantity'));
+		    if (isNaN(fplQuantity) || item.quantity > fplQuantity) {
+		        alert('Dispatch quantity cannot be greater than available quantity.');
+				        isValid = false;
+				    }
+
+				    return isValid;
+				}
+
+				$('.btnConfirmDate').click(function() {
+				    console.log("Confirming date");
+				    updateFplIDOptionsByDate();
+				    $('.btnConfirmDate').hide(); // Hide the confirm button after updating
+				});
+
+				$('#btnAddDispatch').click(function() {
+				    addItem("create");
+				});
+
+				$('#btnUpdateDispatch').click(function() {
+				    addItem("update");
+				});
+
+				$('#btnDeleteDispatch').click(function() {
+				    if ($('#deleteDispatchId').val() !== '') {
+				        $.post('DispatchingController', {
+				            action: 'deleteItem',
+				            item: JSON.stringify(createItem("delete"))
+				        }, function(response) {
+				            if (response.includes('success')) {
+				                $('#btnDeleteDispatchCancel').click();
+				                $('#btnDispatching').click();
+				            } else {
+				                $('#divAlert').removeClass('d-none');
+				                $('#divAlert').html('Unable to save changes');
+				            }
+				        });
+				    } else {
+				        $('#divAlert').removeClass('d-none');
+				        $('#divAlert').html('Please select an item to delete');
+				    }
+				});
+
+				createDispatchOptions();

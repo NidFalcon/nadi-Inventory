@@ -1,32 +1,77 @@
 .tabulator {
-	border: 1px solid #dee2e6; /* Bootstrap border color */
-	border-radius: .375rem; /* Bootstrap border radius */
+	border-radius: .375rem;
 }
 
-/* Apply Bootstrap header styles to Tabulator header */
 .tabulator-header {
-	background-color: #f8f9fa; /* Bootstrap header background color */
-	border-bottom: 1px solid #dee2e6; /* Bootstrap border color */
+	background-color: #AAB396 !important;
+	color: #fff !important;
 }
 
-/* Zebra striping for rows */
+.tabulator-col {
+	background-color: #AAB396 !important;
+	color: #fff !important;
+}
+
+/* Cells */
+.tabulator-cell{
+    border-color: #374151 !important;
+ }
+
+/* Rows */
+.tabulator-row{
+	border-color: #374151 !important; 
+	border-right: 0px solid !important;
+}
+    
+.tabulator-row:nth-child(odd) {
+   	background-color: #fff !important; 
+}
+
 .tabulator-row:nth-child(even) {
-	background-color: #f8f9fa; /* Bootstrap zebra striping */
+    background-color: #d9d9d9 !important; 
 }
 
-/* Padding in cells */
+.tabulator-row:hover {
+    background-color: #969593 !important;
+}
+
+    /* Cells */
 .tabulator-cell {
-	padding: .75rem; /* Bootstrap padding */
-}
+    border-color: #4b5563 !important; 
+    color: #000 !important; 
+    }
 
-/* Footer styling to match Bootstrap */
 .tabulator-footer {
-	background-color: #f8f9fa; /* Bootstrap footer background */
-	border-top: 1px solid #dee2e6; /* Bootstrap border color */
+	background-color: #AAB396 !important;
+	color: #fff !important;
+}
+    
+.tabulator-page{
+   color: #fff !important;
+}
+    
+.tabulator-pages button.active{
+	border-color: #FFFFFF !important;
+	background-color: #374151 !important;
+	color: #FFFFFF !important;
+}
+	    
+.tabulator label{
+	color: #d1d5db !important; 
+}
+	
+.tabulator select{
+	background-color: #374151; 
+	border-color: #4B5563; 
+	color: #FFFFFF; 
+}
+	
+.tabulator select:placeholder {
+    color: #9CA3AF; 
 }
 
-/* Ensuring border-collapse is consistent */
-.tabulator-table {
-	border-collapse: separate;
-	border-spacing: 0;
+.tabulator select:focus {
+	outline:2px solid transparent;
+	outline-offset: 2px;
+	border-color: #AAB396;
 }
