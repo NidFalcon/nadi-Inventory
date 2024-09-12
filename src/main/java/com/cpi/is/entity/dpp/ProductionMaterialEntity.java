@@ -1,5 +1,6 @@
 package com.cpi.is.entity.dpp;
 
+import com.cpi.is.entity.inventory.RawMaterialListEntity;
 import com.cpi.is.entity.maintenance.RawMaterialEntity;
 
 import jakarta.persistence.Column;
@@ -28,6 +29,13 @@ public class ProductionMaterialEntity {
     private Long dppId;
     
     @ManyToOne
+    @JoinColumn(name = "material_list_id", insertable=false, updatable=false)
+    private RawMaterialListEntity materialList;
+
+	@Column(name = "material_list_id")
+    private Long materialListId;
+	
+	@ManyToOne
     @JoinColumn(name = "material_cd", insertable=false, updatable=false)
     private RawMaterialEntity rawMaterial;
 
@@ -37,18 +45,30 @@ public class ProductionMaterialEntity {
     @Column(name = "quantity_to_use")
     private Integer quantityToUse;
 
-    // Default constructor
     public ProductionMaterialEntity() {
         super();
     }
 
-    // Constructor with fields
-    public ProductionMaterialEntity(Long pmId, Long dppId, String materialCode, Integer quantityToUse) {
+    public ProductionMaterialEntity(Long pmId, Long dppId, Long materialListId, String materialCode, Integer quantityToUse) {
         super();
         this.pmId = pmId;
         this.dppId = dppId;
+        this.materialListId = materialListId;
         this.materialCode = materialCode;
         this.quantityToUse = quantityToUse;
+    }
+    
+    public ProductionMaterialEntity(Long pmId) {
+        super();
+        this.pmId = pmId;
+    }
+
+    public Long getPmId() {
+        return pmId;
+    }
+
+    public void setPmId(Long pmId) {
+        this.pmId = pmId;
     }
 
     public Long getDppId() {
@@ -59,16 +79,15 @@ public class ProductionMaterialEntity {
 		this.dppId = dppId;
 	}
 
-	// Getters and Setters
-    public Long getPmId() {
-        return pmId;
-    }
+    public Long getMaterialListId() {
+		return materialListId;
+	}
 
-    public void setPmId(Long pmId) {
-        this.pmId = pmId;
-    }
-
-    public String getMaterialCode() {
+	public void setMaterialListId(Long materialListId) {
+		this.materialListId = materialListId;
+	}
+	
+	public String getMaterialCode() {
         return materialCode;
     }
 

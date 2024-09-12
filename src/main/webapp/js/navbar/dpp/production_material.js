@@ -1,34 +1,36 @@
 $('#btnAddPmSubmit').click(function() {
-	var productionMaterial = createProductionMaterialObjects();
-	$.post("ProductionMaterialController", {
-		action: "saveBulkItems",
-		item: productionMaterial
-	}, function(response) {
-		if (response.includes('success')) {
-			$('.btnCloseAddPmModal').click();
-			$('#btnDpp').click();
-		} else {
-			alert('Unable to add production materials');
-		}
-	});
+    var productionMaterial = createProductionMaterialObjects();
+    $.post("ProductionMaterialController", {
+        action: "saveBulkItems",
+        item: productionMaterial
+    }, function(response) {
+        if (response.includes('success')) {
+            $('.btnCloseAddPmModal').click();
+            $('#btnDpp').click();
+        } else {
+            alert('Unable to add production materials');
+        }
+    });
 });
 
 function createProductionMaterialObjects() {
-	var pmObjArr = [];
-	for (let i = 1; i <= materialCounter; i++) {
-		if ($(`#selectRawMaterial${i}`).length) {
-			pmObj = {
-				pmId: null,
-				dppId: $('#materialDppId').val(),
-				materialCode: $(`#selectRawMaterial${i}`).val(),
-				quantityToUse: $(`#txtMaterialQuantity${i}`).val()
-			}
-			pmObjArr.push(pmObj);
-		}
-	};
+    var pmObjArr = [];
+    for (let i = 1; i <= materialCounter; i++) {
+        if ($(`#selectRawMaterial${i}`).length) {
+            pmObj = {
+                pmId: null,
+                dppId: $('#materialDppId').val(),
+                materialListId: $(`#selectRawMaterial${i} option:selected`).attr('materialListId'), // Fetch from selected option
+                materialCode: $(`#selectRawMaterial${i}`).val(),
+                quantityToUse: $(`#txtPmQtyToUse${i}`).val()
+            }
+            pmObjArr.push(pmObj);
+        }
+    };
 
-	return JSON.stringify(pmObjArr);
+    return JSON.stringify(pmObjArr);
 }
+
 
 $('#btnUpdatePmSubmit').click(function() {
 	var updateProductionMaterial = updateProductionMaterialObjects();
@@ -52,8 +54,9 @@ function updateProductionMaterialObjects() {
 			var updPmObj = {
 				pmId: $(`#txtUpdatePmId${i}`).val(),
 				dppId: $('#updateMaterialDppId').val(),
+				materialListId: $(`#selectRawMaterial${i} option:selected`).attr('materialListId'), // Fetch from selected option
 				materialCode: $(`#selectRawMaterial${i}`).val(),
-				quantityToUse: $(`#txtMaterialQuantity${i}`).val()
+				quantityToUse: $(`#txtPmQtyToUse${i}`).val()
 			}
 			updPmObjArr.push(updPmObj);
 		}
