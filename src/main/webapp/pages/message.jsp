@@ -1,5 +1,8 @@
 <div class="toast-container position-fixed top-0 end-0 p-3">
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
   	<div id="liveToast" class="toast text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
     	<div class="toast-header text-bg-danger">
       		<i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -11,3 +14,7 @@
     	</div>
   	</div>
 </div>
+<<<<<<< HEAD
+=======
+  
+>>>>>>> dev

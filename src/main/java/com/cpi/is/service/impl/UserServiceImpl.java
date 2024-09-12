@@ -52,24 +52,6 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 	
-	
-	/**
-	 * THE OLD AUTHENTICATE
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	/*
-	@Override
-	public UserEntity authenticate(HttpServletRequest request) throws Exception {
-		UserEntity user = new UserEntity();
-		user.setUsername(request.getParameter("username"));
-		user.setPassword(request.getParameter("password"));
-		return userDAO.authenticate(user);
-	}
-	*/
-	
-
 	public void saveSession(HttpServletRequest request) throws Exception {
 		userDAO.saveSession(new SessionEntity(
 				request.getSession().getId(), request.getAttribute("username").toString()));

@@ -147,7 +147,7 @@
 <!-- add PM modal -->
 <div class="modal fade" id="addPmModal" tabindex="-1"
 	aria-labelledby="addPmModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="addPmModalLabel">Add Production Material/s:</h5>
@@ -155,8 +155,7 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<div id="divProductionMaterialTable">
-				</div>
+				<div id="divProductionMaterialTable"></div>
 				<form>
 					<table class="table" id="tblAddPm">
 						<tr>
@@ -164,10 +163,17 @@
 								<label for="materialDppId">DPP ID: </label>
 								<input type="text" class="form-control" id="materialDppId" readonly>
 							</th>
+							<th scope="col" id="dppSkuNameContainer">
+								<label for="dppSkuName">SKU Name: </label>
+								<input type="text" class="form-control" id="dppSkuName" readonly>
+							</th>
 						</tr>
 						<tr>
-							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
-							<th scope="col"><label for="materialQuantity"></label>Quantity to Use:</th>
+							<th scope="col">Select Material/s:</th>
+							<th scope="col">Unit of Measurement</th>
+							<th scope="col">Initial Stock:</th>
+							<th scope="col">Quantity to Use:</th>
+							<th scope="col">Remaining Stock:</th>
 						</tr>
 					</table>
 				<button type="button" id="btnAddPmRow" class="btn btn-dark w-100"> + Add Row </button>
@@ -187,7 +193,7 @@
 <!-- update PM modal -->
 <div class="modal fade" id="updatePmModal" tabindex="-1"
 	aria-labelledby="updatePmModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="updatePmModalLabel">Update Production Material/s:</h5>
@@ -202,10 +208,17 @@
 								<label for="updateMaterialDppId">DPP ID: </label>
 								<input type="text" class="form-control" id="updateMaterialDppId" readonly>
 							</th>
+							<th scope="col" id="updateDppSkuNameContainer">
+								<label for="updateDppSkuName">SKU Name: </label>
+								<input type="text" class="form-control" id="updateDppSkuName" readonly>
+							</th>
 						</tr>
 						<tr>
 							<th scope="col">Select Material/s:</th>
+							<th scope="col">Unit of Measurement</th>
+							<th scope="col">Initial Stock:</th>
 							<th scope="col">Quantity to Use:</th>
+							<th scope="col">Remaining Stock:</th>
 						</tr>
 					</table>
 				</form>
@@ -225,6 +238,7 @@
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
     var rawMaterial = JSON.parse('${rawMaterial}');
+    var rawMaterialList = JSON.parse('${rawMaterialList}');
     var productionMaterial = JSON.parse('${productionMaterial}')
 </script>
 <script src="js/navbar/dpp/dpp.js"></script>

@@ -2,7 +2,7 @@ function checkUserSession() {
 	$.get('UserController', {
 		action: 'checkUserSession'
 	}, function(response) {
-		if (response.includes('loginForm')) {
+		if (response.includes('showRegisterPage')) {
 			$('#divContent').html(response);
 		} else {
 			$('#divMenu').html(response);
@@ -11,4 +11,4 @@ function checkUserSession() {
 	});
 }
 
-checkUserSession();
+//checkUserSession();

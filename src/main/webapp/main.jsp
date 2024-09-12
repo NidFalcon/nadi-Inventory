@@ -27,7 +27,7 @@
 <body>
 	<div id="divMenu"></div>
 	<div id="divAlert"></div>
-	<div id="divMessage"></div>
+<!-- 	<div id="divMessage"></div> -->
 	<div id="divContent" class="container-fluid my-3 divContent">
 		<jsp:include page="pages/login.jsp"></jsp:include>
   	</div>

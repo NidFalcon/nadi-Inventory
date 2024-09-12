@@ -14,10 +14,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.entity.UserEntity;
-import com.cpi.is.service.impl.BranchServiceImpl;
-import com.cpi.is.service.impl.DispatchTypeServiceImpl;
 import com.cpi.is.service.impl.DispatchingServiceImpl;
-import com.cpi.is.service.impl.FinishedProductListServiceImpl;
+import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
+import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
+import com.cpi.is.service.impl.maintenance.DispatchTypeServiceImpl;
 
 /**
  * Servlet implementation class DispatchingController

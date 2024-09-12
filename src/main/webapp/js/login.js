@@ -7,7 +7,6 @@ $('#btnLogin').click(function() {
 		if (response.includes('Invalid Username or Password')) {
 			$('#divMessage').append(response);
 			var $toastLiveExample = $('#liveToast');
-
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 
 			toastBootstrap.show();
@@ -18,17 +17,7 @@ $('#btnLogin').click(function() {
 	});
 });
 
-/*
-{
-		action: 'register',
-		username: $('#txtRegUsername').val(),
-		password: $('#txtRegPassword').val(),
-		branchId: $('#txtBranchId')
-	}
-*/
-
 $('#btnRegister').click(function(){
-	//$('#divContent').load('pages/registration.jsp');
 	$.get("UserController", {
 		action: "showRegisterPage"
 	}, function(response) {	

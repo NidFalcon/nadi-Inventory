@@ -2,6 +2,8 @@ package com.cpi.is.entity;
 
 import java.io.Serializable;
 
+import com.cpi.is.entity.maintenance.BranchEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

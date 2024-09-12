@@ -7,4 +7,8 @@
 <div>
 	<p>${username }</p>
 	<p>branch: ${branchId}</p>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+>>>>>>> dev

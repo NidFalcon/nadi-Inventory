@@ -12,16 +12,13 @@ import javax.servlet.http.HttpSession;
 
 import com.cpi.is.entity.SessionEntity;
 import com.cpi.is.entity.UserEntity;
-import com.cpi.is.service.impl.BranchServiceImpl;
 import com.cpi.is.service.impl.UserServiceImpl;
+import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
 
 import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * Servlet implementation class UserController
- */
 @WebServlet("/UserController")
 public class UserController extends HttpServlet {
 	
@@ -33,18 +30,10 @@ public class UserController extends HttpServlet {
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
 	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
     
-	
-	/**
-     * @see HttpServlet#HttpServlet()
-     */
     public UserController() {
         super();
     }
 
-	/**
-	 * @throws IOException 
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
@@ -119,9 +108,6 @@ public class UserController extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
