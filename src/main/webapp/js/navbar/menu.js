@@ -1,3 +1,10 @@
+var html = '';
+	html +='<div class="d-flex justify-content-center mt-5">'
+  	html +='<div class="spinner-border text-success" role="status">'
+    html +='<span class="visually-hidden">Loading...</span>'
+  	html +='</div>'
+	html +='</div>'
+
 $('#btnLogout').click(function () {
 	$.post('UserController', {
 		action: 'logout'
@@ -8,6 +15,7 @@ $('#btnLogout').click(function () {
 });
 
 $('#btnRawMaterials').click(function() {
+	$('#divContent').html(html);
 	$.get('RawMaterialListController', {
 		action: 'showRawMaterialList'
 	}, function(response) {
@@ -16,6 +24,7 @@ $('#btnRawMaterials').click(function() {
 });
 
 $('#btnDashboard').click(function () {
+	$('#divContent').html(html);
 	$.post('DashboardController' , {
 		action:'showDashboard'
 	}, function(response) {
@@ -24,7 +33,7 @@ $('#btnDashboard').click(function () {
 });
 
 $('#btnDpp').click(function () {
-	console.log("dpp");
+	$('#divContent').html(html);
 	$.post('DppController', {
 		action: 'showDpp'
 	}, function(response) {
@@ -32,7 +41,17 @@ $('#btnDpp').click(function () {
 	});
 });
 
+$('#btnProductionMaterial').click(function () {
+	$('#divContent').html(html);
+	$.post('ProductionMaterialController', {
+		action: 'showProductionMaterial'
+	}, function(response) {
+		$('#divContent').html(response);
+	});
+});
+
 $('#btnMngDispatchType').click(function () {
+	$('#divContent').html(html);
 	console.log("TEST");
 	$.post('DispatchTypeController', {
 		action: 'showDispatchType'
@@ -42,6 +61,7 @@ $('#btnMngDispatchType').click(function () {
 });
 
 $('#btnMngBranch').click(function () {
+	$('#divContent').html(html);
 	$.post('BranchController', {
 		action: 'showBranch'
 	}, function(response) {
@@ -50,6 +70,7 @@ $('#btnMngBranch').click(function () {
 });
 
 $('#btnMngSku').click(function () {
+	$('#divContent').html(html);
 	console.log("btnMngSKU");
 	$.post('SkuController', {
 		action: 'showSku'
@@ -59,6 +80,7 @@ $('#btnMngSku').click(function () {
 });
 
 $('#btnMngMaterial').click(function () {
+	$('#divContent').html(html);
 	console.log("test");
 	$.post('RawMaterialController', {
 		action: 'showRawMaterial'
@@ -69,6 +91,7 @@ $('#btnMngMaterial').click(function () {
 
 
 $('#btnDispatching').click(function() {
+	$('#divContent').html(html);
 	$.get('DispatchingController', {
 		action: 'showDispatching'
 	}, function(response) {

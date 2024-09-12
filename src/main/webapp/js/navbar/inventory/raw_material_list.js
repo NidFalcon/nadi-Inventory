@@ -1,33 +1,31 @@
-var rawMaterialTable = new Tabulator("#divRawMaterialTable" , {
-	layout: 'fitDataFill',
+console.log(rawMaterialList);
+
+var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
+	layout: "fitColumns",
 	data: rawMaterialList,
 	pagination: 'local',
 	pagination: true,
 	paginationSize: 10,
-	paginationSizeSelector:[5, 10, 15, 20],
-	paginationCounter:"rows",
-	selectableRows:1,
-	movableColumns:true,
-	responsiveLayout:true,
-	initialSort: [
-		{column:"materialListId", dir:"asc"}
-	],
+	paginationSizeSelector: [5, 10, 15, 20],
+	paginationCounter: "rows",
+	selectableRows: 1,
+	movableColumns: true,
+	responsiveLayout: true,
 	columns: [
-		{title:"Material ID", field: 'materialListId'},
-		{title:"Material Code", field: 'material.materialCode'},
-		{title:"Material Name", field: 'material.materialName'},
-		{title:"Quantity", field: 'quantity'},
-		{title:"User ID", field: 'userId'},
-		{title:"Date", field: 'dateRecieve'},
-		{title:"Branch Id", field:'branchId'}
+		{ title: "Material ID", field: 'materialListId'},
+		{ title: "Material Code", field: 'material.materialCode' },
+		{ title: "Material Name", field: 'material.materialName' },
+		{ title: "Quantity", field: 'quantity' },
+		{ title: "User ID", field: 'userId' },
+		{ title: "Date", field: 'dateReceive' },
+		{ title: "Batch Id", field: 'branchId' }
 	],
 });
-
 
 $('#btnUpdateMaterial').hide();
 $('#btnDeleteMaterial').hide();
 
-rawMaterialTable.on('rowClick',function() {
+rawMaterialTable.on('rowClick', function() {
 	let row = rawMaterialTable.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
@@ -40,11 +38,11 @@ rawMaterialTable.on('rowClick',function() {
 	}
 })
 
-function createOptions(){
+function createOptions() {
 	let html = '';
-	$.each(materialOptions, function(index, item){
-		if ("y" == item.isActive){
-						html += '<option id="item'+item.materialCode+'" value="'+"" +item.materialCode+'">'+item.materialCode+ " " +item.materialName+'</option>';
+	$.each(materialOptions, function(index, item) {
+		if ("y" == item.isActive) {
+			html += '<option id="item' + item.materialCode + '" value="' + "" + item.materialCode + '">' + item.materialCode + " " + item.materialName + '</option>';
 		}
 	})
 	$("select").html(html);
@@ -52,11 +50,11 @@ function createOptions(){
 
 //fill up the form for updates
 function populateForm(row) {
-	if(row !== undefined) {
+	if (row !== undefined) {
 		$('#updateRawMaterialId').val(row.materialListId);
 		$('#updateRawMaterialName').val(row.material.materialCode);
 		$('#updateRawMaterialQuantity').val(row.quantity);
-		$('#updateDate').val(row.dateRecieve);
+		$('#updateDate').val(row.dateReceive);
 	}
 }
 
@@ -67,37 +65,52 @@ function populateDeleteForm(row) {
 		$('#deleteRawMaterialCode').val(row.material.materialCode);
 		$('#deleteRawMaterialQuantity').val(row.quantity);
 		$('#deleteRawMaterialUserId').val(row.userId);
-		$('#deleteRawMaterialDate').val(row.dateRecieve);
-		$('#deleteRawMaterialBranchId').val(row.branchId);	
+		$('#deleteRawMaterialDate').val(row.dateReceive);
+		$('#deleteRawMaterialBranchId').val(row.branchId);
 	}
 }
 
-function createItem(isAdd) {
-	let item = {
-		materialListId: isAdd ? $("#rawMaterialId").val() : $("#updateRawMaterialId").val(),
-		materialCode: isAdd ? $('#rawMaterialListName').val() : $("#updateRawMaterialName").val(),
-		quantity: parseInt( isAdd ? $('#rawMaterialListQuantity').val() : $("#updateRawMaterialQuantity").val()),
-		dateRecieve: isAdd ? $('#dateSelected').val() : $("#updateDate").val()
-	};
-	return item;
-}
+function createItem(operationType) {
+    let item = {};
 
-function createDeleteItem(){
-	let json = {
-		    materialListId: $('#deleteRawMaterialId').val(),
-		    materialCode: $('#deleteRawMaterialCode').val(),
-		    quantity: $('#deleteRawMaterialQuantity').val(),
-		    userId: $('#deleteRawMaterialUserId').val(),
-		    dateRecieve: $('#deleteRawMaterialDate').val(),
-		    branchId: $('#deleteRawMaterialBranchId').val()
-	}
-	
-	return json;
+    switch (operationType) {
+        case 'add':
+            item = {
+                materialListId: $("#rawMaterialId").val(),
+                materialCode: $('#rawMaterialListName').val(),
+                quantity: parseInt($('#rawMaterialListQuantity').val()),
+                dateReceive: $('#dateSelected').val()
+            };
+            break;
+        case 'update':
+            item = {
+                materialListId: $("#updateRawMaterialId").val(),
+                materialCode: $("#updateRawMaterialName").val(),
+                quantity: parseInt($("#updateRawMaterialQuantity").val()),
+                dateReceive: $("#updateDate").val()
+            };
+            break;
+        case 'delete':
+            item = {
+                materialListId: $('#deleteRawMaterialId').val(),
+                materialCode: $('#deleteRawMaterialCode').val(),
+                quantity: $('#deleteRawMaterialQuantity').val(),
+                userId: $('#deleteRawMaterialUserId').val(),
+                dateReceive: $('#deleteRawMaterialDate').val(),
+                branchId: $('#deleteRawMaterialBranchId').val()
+            };
+            break;
+        default:
+            console.error('Invalid operation type');
+            break;
+    }
+
+    return item;
 }
 
 function validate(item) {
 	let valid = true;
-	if(item.materialCode === '' || item.quantity === '' || item.date === '') {
+	if (item.materialCode === '' || item.quantity === '' || item.date === '') {
 		alert('Please correctly fill-out all required fields');
 		valid = false;
 	} else if (item.quantity < 0) {
@@ -120,18 +133,21 @@ function addItem(isAdd) {
 				$('.btnCloseAddModal').click();
 				$('#btnRawMaterials').click();
 			} else {
-				alert('Unable to save changes');
+				  $('#divAlert').html(response);
+				  var $toastLiveExample = $('#liveToast');
+				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				  toastBootstrap.show();
+
 			}
 		});
 	}
 }
 
-
-$('#btnAddRawMaterial').click(function(){
-	addItem(true);
+$('#btnAddRawMaterial').click(function() {
+	addItem("add");
 });
-$('#btnUpdateRawMaterial').click(function(){
-	addItem(false);
+$('#btnUpdateRawMaterial').click(function() {
+	addItem("update");
 });
 
 $('#btnDeleteRawMaterial').click(function() {
@@ -139,7 +155,7 @@ $('#btnDeleteRawMaterial').click(function() {
 
 		$.post('RawMaterialListController', {
 			action: 'deleteRawMaterial',
-			item: JSON.stringify(createDeleteItem())
+			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteRawMaterialCancel').click();

@@ -10,7 +10,7 @@ $('#btnTest').click(function(){
         	"materialCode" : "MAT003",
         	"quantity": "69",
         	"userId": 3,
-        	"dateRecieve" : "29-08-2024",
+        	"dateReceive" : "29-08-2024",
         	"branchId": "5"
 	}
 	

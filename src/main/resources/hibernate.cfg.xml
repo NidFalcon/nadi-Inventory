@@ -3,7 +3,7 @@
   "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-  	<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+    <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
     <property name="hibernate.connection.url">jdbc:oracle:thin:@training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com:1521:ORCL</property>
     <property name="hibernate.connection.username">NADI</property>
     <property name="hibernate.connection.password">SAe879fd</property>
@@ -11,15 +11,17 @@
     <property name="hibernate.hbm2ddl.auto">none</property>
     
     <mapping class="com.cpi.is.entity.UserEntity" />
-    <mapping class="com.cpi.is.entity.BranchEntity" />
-    <mapping class="com.cpi.is.entity.RawMaterialListEntity" />
-    <mapping class="com.cpi.is.entity.DppEntity" />
-    <mapping class="com.cpi.is.entity.DispatchTypeEntity" />
-    <mapping class="com.cpi.is.entity.BranchEntity" />
-    <mapping class="com.cpi.is.entity.SkuEntity" />
-    <mapping class="com.cpi.is.entity.RawMaterialEntity" />  
     <mapping class="com.cpi.is.entity.DispatchingEntity" />
-    <mapping class="com.cpi.is.entity.FinishedProductListEntity" />
     <mapping class="com.cpi.is.entity.ReportsEntity" />
+    <mapping class="com.cpi.is.entity.SessionEntity"/>
+	<mapping class="com.cpi.is.entity.dpp.ProductionMaterialEntity" />
+    <mapping class="com.cpi.is.entity.dpp.DppEntity" />
+    <mapping class="com.cpi.is.entity.inventory.RawMaterialListEntity" />
+    <mapping class="com.cpi.is.entity.inventory.FinishedProductListEntity" />
+    <mapping class="com.cpi.is.entity.maintenance.DispatchTypeEntity" />
+    <mapping class="com.cpi.is.entity.maintenance.BranchEntity" />
+    <mapping class="com.cpi.is.entity.maintenance.SkuEntity" />
+    <mapping class="com.cpi.is.entity.maintenance.RawMaterialEntity" />  
+
   </session-factory>
 </hibernate-configuration>

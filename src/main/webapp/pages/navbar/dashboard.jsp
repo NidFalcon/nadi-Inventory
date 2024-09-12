@@ -1,14 +1,10 @@
-<table>
-	<tr>
-		<td><select>
-				<option>1</option>
-				<option>2</option>
-				<option>3</option>
-		</select></td>
-	</tr>
-</table>
-<div>
-	<button id="add">+</button>
-</div>
+<p>Dashboard Page</p>
 
-<script src="js/navbar/dashboard.js"></script>
+<div>
+	<h4>Welcome ${username}!</h4>
+</div> 
+<hr/>
+<div>
+	<p>${username }</p>
+	<p>branch: ${branchId}</p>
+</div>
