@@ -132,6 +132,10 @@ function addItem(isAdd) {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#successToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
 				$('#btnRawMaterials').click();
 			} else {
 				  $('#divAlert').html(response);

@@ -111,7 +111,8 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	    
 	    // Validate quantity
 	    String quantityStr = jsonObject.get("quantity").toString();
-	    
+	    ValidationUtil.checkNumber(jsonObject.get("materialListId").toString());
+
 	    ValidationUtil.checkNumber(quantityStr);
 	    
 		if ("add".equals(operation)) {
@@ -120,6 +121,9 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 				throw new InvalidJsonException("Primary Key must not have a value for Add Operations");
 			}
 		} else if ("update".equals(operation)) {
+			if (jsonObject.isNull("materialListId") || jsonObject.getString("materialListId").isEmpty()) {
+				throw new InvalidJsonException("Primary Key must not be NULL for Update Operations");
+			}
 			validatePK(jsonObject.getLong("materialListId"));
 		    checkForeignKey(jsonObject.getString("materialCode"));
 		}
@@ -151,4 +155,6 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 			e.printStackTrace();
 		}
 	}
+	
+	//validate on update if RawMaterial
 }
