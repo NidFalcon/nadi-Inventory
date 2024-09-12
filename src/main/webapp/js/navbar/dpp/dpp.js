@@ -219,7 +219,7 @@ function createRawMaterialListOptions() {
         html += `<optgroup label="${materialCode}">`;
         items.forEach(item => {
             html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
-                        ${item.material.materialName} &nbsp;&nbsp; [${item.dateRecieve}]
+                        ${item.material.materialName} &nbsp;&nbsp; [${item.dateReceive}]
                     </option>`;
         });
         html += `</optgroup>`;
