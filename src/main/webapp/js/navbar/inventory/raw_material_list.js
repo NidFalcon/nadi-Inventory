@@ -127,7 +127,8 @@ function addItem(isAdd) {
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
 			action: 'saveRawMaterial',
-			item: JSON.stringify(item)
+			item: JSON.stringify(item),
+			operation: isAdd
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();

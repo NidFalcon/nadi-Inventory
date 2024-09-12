@@ -25,7 +25,6 @@ public class SkuServiceImpl implements SkuService, JsonValidate {
     }
 
     private SkuEntity jsonToEntity(JSONObject json) {
-    	validateJson(json);
         String skuCode = json.getString("skuCode");
         String skuName = json.getString("skuName");
         String unitOfMeasurement = json.getString("unitOfMeasurement");
@@ -41,8 +40,10 @@ public class SkuServiceImpl implements SkuService, JsonValidate {
 
     @Override
     public String saveItem(HttpServletRequest request) throws Exception {
-        return skuDAO.saveItem(
-                jsonToEntity(new JSONObject(request.getParameter("item"))));
+    	JSONObject json = new JSONObject(request.getParameter("item"));
+    	String operation = request.getParameter("operation");
+    	validateJson(json, operation);
+        return skuDAO.saveItem(jsonToEntity(json));
     }
 
     @Override
@@ -52,7 +53,7 @@ public class SkuServiceImpl implements SkuService, JsonValidate {
     }
 
 	@Override
-	public void validateJson(JSONObject jsonObject) throws JSONException {
+	public void validateJson(JSONObject jsonObject, String operation) throws JSONException {
         String[] requiredFields = {"isActive", "skuCode", "skuName", "unitOfMeasurement"};
 
         for (String field : requiredFields) {

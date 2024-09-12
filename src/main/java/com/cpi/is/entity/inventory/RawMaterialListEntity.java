@@ -22,7 +22,7 @@ public class RawMaterialListEntity {
 	@Id
 	@Column(name="MATERIAL_LIST_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer materialListId;
+	private Long materialListId;
 	@Column(name="MATERIAL_CD")
 	private String materialCode;
 	@ManyToOne
@@ -49,10 +49,9 @@ public class RawMaterialListEntity {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-	public RawMaterialListEntity(Integer materialListId, String materialCode, 
-			Integer quantity, Integer userId, Date dateReceive, Integer branchId) {
+	
+	public RawMaterialListEntity(Long materialListId, String materialCode, Integer quantity,
+			Integer userId, Date dateReceive, Integer branchId) {
 		super();
 		this.materialListId = materialListId;
 		this.materialCode = materialCode;
@@ -62,18 +61,14 @@ public class RawMaterialListEntity {
 		this.branchId = branchId;
 	}
 
-
-
-	public Integer getMaterialListId() {
+	public Long getMaterialListId() {
 		return materialListId;
 	}
 
 
-
-	public void setMaterialListId(Integer materialListId) {
+	public void setMaterialListId(Long materialListId) {
 		this.materialListId = materialListId;
 	}
-
 
 
 	public String getMaterialCode() {
@@ -81,11 +76,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setMaterialCode(String materialCode) {
 		this.materialCode = materialCode;
 	}
-
 
 
 	public RawMaterialEntity getMaterial() {
@@ -93,11 +86,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setMaterial(RawMaterialEntity material) {
 		this.material = material;
 	}
-
 
 
 	public Integer getQuantity() {
@@ -105,11 +96,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-
 
 
 	public Integer getUserId() {
@@ -117,11 +106,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-
 
 
 	public UserEntity getUser() {
@@ -129,11 +116,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setUser(UserEntity user) {
 		this.user = user;
 	}
-
 
 
 	public Date getDateReceive() {
@@ -141,11 +126,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setDateReceive(Date dateReceive) {
 		this.dateReceive = dateReceive;
 	}
-
 
 
 	public Integer getBranchId() {
@@ -153,11 +136,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setBranchId(Integer branchId) {
 		this.branchId = branchId;
 	}
-
 
 
 	public BranchEntity getBranch() {
@@ -165,11 +146,9 @@ public class RawMaterialListEntity {
 	}
 
 
-
 	public void setBranch(BranchEntity branch) {
 		this.branch = branch;
 	}
-
 
 
 	//for debug
