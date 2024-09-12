@@ -2,6 +2,9 @@ package com.cpi.is.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -47,28 +50,50 @@ public class DispatchingServiceImpl implements DispatchingService {
         dateFormat.setLenient(false); // Ensure strict parsing
         return dateFormat.parse(dateStr);
     }
-
-    private boolean validateDate(String dateStr) {
-        try {
-            parseDate(dateStr);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
-    private boolean validateQuantity(Integer fplQuantity, Integer dispatchQuantity) {
-        if (fplQuantity == null || dispatchQuantity == null) {
-            throw new IllegalArgumentException("Quantities cannot be null.");
-        }
-        if (fplQuantity < 0 || dispatchQuantity < 0) {
-            throw new IllegalArgumentException("Quantities must be non-negative.");
-        }
-        if (dispatchQuantity > fplQuantity) {
-            throw new IllegalArgumentException("Dispatch quantity cannot exceed available FPL quantity.");
-        }
-        return true;
-    }
+    
+    public String validateData(HttpServletRequest request) throws Exception{
+		JSONObject json = new JSONObject(request.getParameter("data"));
+		String validation = "success";
+		String errorResult = "Please fill-out the dispatching form properly";
+		
+		if (!json.has("dispatchTrackId") || !(json.get("dispatchTrackId") instanceof String)) {
+			validation = errorResult;
+		} else if (!json.has("dispatchTypeCd") || !(json.get("dispatchTypeCd") instanceof String)) {
+			validation = errorResult;
+		} else if (!json.has("fplId") || !(json.get("fplId") instanceof String)) {
+			validation = errorResult;
+		} else if (!json.has("quantity") || !(json.get("quantity") instanceof String)) {
+			validation = errorResult;
+		} else if (!json.has("destination") || !(json.get("destination") instanceof String)) {
+			validation = errorResult;
+		} else if (!json.has("dispatchDate") || !(json.get("dispatchDate") instanceof String)) {
+			validation = errorResult;
+		} else if (json.getString("dispatchTrackId").length() < 1 || json.getString("dispatchTrackId").length() > 14) {
+			validation = errorResult;
+		} else if (!json.getString("dispatchTrackId").matches("^[0-9]\\d*$")) {
+			validation = errorResult;
+		} else if (json.getString("fplId").length() < 1 || json.getString("fplId").length() > 14) {
+			validation = errorResult;
+		} else if (!json.getString("fplId").matches("^[1-9]\\d*$")) {
+			validation = errorResult;
+		} else if (json.getString("quantity").length() < 1 || json.getString("quantity").length() > 14) {
+			validation = errorResult;
+		} else if (!json.getString("quantity").matches("^[0-9]+$")) {
+			validation = errorResult;
+		} else if (json.getString("dispatchTypeCd").length() < 1 || json.getString("dispatchTypeCd").length() > 10) {
+			validation = errorResult;
+		} else if (json.getString("destination").length() < 1 || json.getString("destination").length() > 50) {
+			validation = errorResult;
+		} else {
+	        try {
+	        	LocalDate.parse(json.getString("dispatchDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	        } catch (DateTimeParseException e) {
+	        	validation = errorResult;
+	        }
+		}
+		
+		return validation;
+	}
 
     @Override
     public List<DispatchingEntity> getDispatchingByBranch(Integer branchId) throws Exception {

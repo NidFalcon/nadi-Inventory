@@ -39,7 +39,7 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 				json.getString("materialCode"),
 				json.getInt("quantity"),
 				json.getInt("userId"),
-				convertStringToSqlDate(json.getString("dateRecieve")),
+				convertStringToSqlDate(json.getString("dateReceive")),
 				json.getInt("branchId"));
 	}
 	
@@ -92,10 +92,10 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	@Override
 	public void validateJson(JSONObject jsonObject) throws InvalidJsonException {
 
-		String requiredFields[] = {"materialListId", "materialCode", "quantity", "userId", "dateRecieve", "branchId"};
+		String requiredFields[] = {"materialListId", "materialCode", "quantity", "userId", "dateReceive", "branchId"};
 	    ValidationUtil.checkFields(requiredFields, jsonObject);
 
-	    ValidationUtil.isValidDate(jsonObject.getString("dateRecieve"));
+	    ValidationUtil.isValidDate(jsonObject.getString("dateReceive"));
 	    
 	    // Validate quantity
 	    String quantityStr = jsonObject.get("quantity").toString();

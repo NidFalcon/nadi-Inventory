@@ -17,7 +17,7 @@ var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 		{ title: "Material Name", field: 'material.materialName' },
 		{ title: "Quantity", field: 'quantity' },
 		{ title: "User ID", field: 'userId' },
-		{ title: "Date", field: 'dateRecieve' },
+		{ title: "Date", field: 'dateReceive' },
 		{ title: "Batch Id", field: 'branchId' }
 	],
 });
@@ -54,7 +54,7 @@ function populateForm(row) {
 		$('#updateRawMaterialId').val(row.materialListId);
 		$('#updateRawMaterialName').val(row.material.materialCode);
 		$('#updateRawMaterialQuantity').val(row.quantity);
-		$('#updateDate').val(row.dateRecieve);
+		$('#updateDate').val(row.dateReceive);
 	}
 }
 
@@ -65,7 +65,7 @@ function populateDeleteForm(row) {
 		$('#deleteRawMaterialCode').val(row.material.materialCode);
 		$('#deleteRawMaterialQuantity').val(row.quantity);
 		$('#deleteRawMaterialUserId').val(row.userId);
-		$('#deleteRawMaterialDate').val(row.dateRecieve);
+		$('#deleteRawMaterialDate').val(row.dateReceive);
 		$('#deleteRawMaterialBranchId').val(row.branchId);
 	}
 }
@@ -79,7 +79,7 @@ function createItem(operationType) {
                 materialListId: $("#rawMaterialId").val(),
                 materialCode: $('#rawMaterialListName').val(),
                 quantity: parseInt($('#rawMaterialListQuantity').val()),
-                dateRecieve: $('#dateSelected').val()
+                dateReceive: $('#dateSelected').val()
             };
             break;
         case 'update':
@@ -87,7 +87,7 @@ function createItem(operationType) {
                 materialListId: $("#updateRawMaterialId").val(),
                 materialCode: $("#updateRawMaterialName").val(),
                 quantity: parseInt($("#updateRawMaterialQuantity").val()),
-                dateRecieve: $("#updateDate").val()
+                dateReceive: $("#updateDate").val()
             };
             break;
         case 'delete':
@@ -96,7 +96,7 @@ function createItem(operationType) {
                 materialCode: $('#deleteRawMaterialCode').val(),
                 quantity: $('#deleteRawMaterialQuantity').val(),
                 userId: $('#deleteRawMaterialUserId').val(),
-                dateRecieve: $('#deleteRawMaterialDate').val(),
+                dateReceive: $('#deleteRawMaterialDate').val(),
                 branchId: $('#deleteRawMaterialBranchId').val()
             };
             break;

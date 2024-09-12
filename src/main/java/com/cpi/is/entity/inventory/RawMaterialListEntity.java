@@ -35,7 +35,7 @@ public class RawMaterialListEntity {
 	@JoinColumn(name="USER_ID", insertable = false, updatable = false)
 	private UserEntity user;
 	@Column(name="date_receive")
-	private Date dateRecieve;
+	private Date dateReceive;
 	@Column(name="BRANCH_ID")
 	private Integer branchId;
 	@ManyToOne
@@ -46,13 +46,13 @@ public class RawMaterialListEntity {
 		super();
 	}
 	public RawMaterialListEntity(Integer materialListId, String materialCode, Integer quantity, Integer userId,
-			Date dateRecieve, Integer branchId) {
+			Date dateReceive, Integer branchId) {
 		super();
 		this.materialListId = materialListId;
 		this.materialCode = materialCode;
 		this.quantity = quantity;
 		this.userId = userId;
-		this.dateRecieve = dateRecieve;
+		this.dateReceive = dateReceive;
 		this.branchId = branchId;
 	}
 
@@ -104,12 +104,12 @@ public class RawMaterialListEntity {
 		this.user = user;
 	}
 
-	public Date getDateRecieve() {
-		return dateRecieve;
+	public Date getdateReceive() {
+		return dateReceive;
 	}
 
-	public void setDateRecieve(Date dateRecieve) {
-		this.dateRecieve = dateRecieve;
+	public void setdateReceive(Date dateReceive) {
+		this.dateReceive = dateReceive;
 	}
 
 	public Integer getBranchId() {
