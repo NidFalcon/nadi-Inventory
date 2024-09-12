@@ -68,10 +68,10 @@ public class DispatchingController extends HttpServlet {
 				page = "pages/navbar/dispatching.jsp";
 			} else if ("saveItem".equals(action)) {
 				request.setAttribute("message", dispatchingService.saveItem(request));
-				page = "pages/message.jsp";
+				page = "pages/message/message.jsp";
 			} else if ("deleteItem".equals(action)) {
 				request.setAttribute("message", dispatchingService.deleteItem(request));
-				page = "pages/message.jsp";
+				page = "pages/message/message.jsp";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

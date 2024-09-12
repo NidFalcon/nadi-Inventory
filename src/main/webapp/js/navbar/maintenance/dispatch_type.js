@@ -51,20 +51,24 @@ function populateDeleteForm(row) {
 
 function validate(item) {
     let valid = true;
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
     
 	if (item.isActive !== 'y' && item.isActive !== 'n') {
-	        alert('Please select a valid Active status');
-	        valid = false;
+	  	$('#errorMessage').html('Please select a valid Active status');
+		toastMessage.show();
+		valid = false;
 	}
     
     if (item.dispatchTypeCode === '') {
-        alert('Please fill out the Dispatch Type Code');
-        valid = false;
+        $('#errorMessage').html('Please fill out the Dispatch Type Code');
+		toastMessage.show();
+		valid = false;
     }
     
     if (item.dispatchTypeName === '') {
-        alert('Please fill out the Dispatch Type Name');
-        valid = false;
+        $('#errorMessage').html('Please fill out the Dispatch Type Name');
+		toastMessage.show();
+		valid = false;
     }
     
     return valid;
@@ -109,6 +113,7 @@ function createItem(crudOperation) {
 
 
 function addItem(crudOperation) {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
     let item = createItem(crudOperation);
 	console.log(item);
     if (validate(item)) {
@@ -118,9 +123,13 @@ function addItem(crudOperation) {
         }, function(response) {
             if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
                 $('#btnMngDispatchType').click();
             } else {
-                alert('Unable to save changes');
+                $('#errorMessage').html('Unable to save changes');
+				toastMessage.show();
             }
         });
     }
@@ -135,6 +144,7 @@ $('#btnUpdateDispatchType').click(function() {
 });
 
 $('#btnDeleteDispatchType').click(function() {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
     if ($('#txtDispatchTypeCode').val() !== '') {
         let item = createItem('delete');
         $.post('DispatchTypeController', {
@@ -143,12 +153,17 @@ $('#btnDeleteDispatchType').click(function() {
         }, function(response) {
             if (response.includes('success')) {
 				$('#btnDeleteDispatchTypeCancel').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
                 $('#btnMngDispatchType').click();
             } else {
-                alert('Unable to save changes');
+                $('#errorMessage').html('Unable to save changes');
+				toastMessage.show();
             }
         });
     } else {
-        alert('Please select a dispatch type to delete');
+        $('#errorMessage').html('Please select a dispatch type to delete');
+		toastMessage.show();
     }
 });

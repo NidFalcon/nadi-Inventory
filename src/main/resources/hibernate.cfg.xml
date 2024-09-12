@@ -12,7 +12,6 @@
     
     <mapping class="com.cpi.is.entity.UserEntity" />
     <mapping class="com.cpi.is.entity.DispatchingEntity" />
-    <mapping class="com.cpi.is.entity.ReportsEntity" />
     <mapping class="com.cpi.is.entity.SessionEntity"/>
 	<mapping class="com.cpi.is.entity.dpp.ProductionMaterialEntity" />
     <mapping class="com.cpi.is.entity.dpp.DppEntity" />
@@ -21,6 +20,11 @@
     <mapping class="com.cpi.is.entity.maintenance.DispatchTypeEntity" />
     <mapping class="com.cpi.is.entity.maintenance.BranchEntity" />
     <mapping class="com.cpi.is.entity.maintenance.SkuEntity" />
-    <mapping class="com.cpi.is.entity.maintenance.RawMaterialEntity" />  
+    <mapping class="com.cpi.is.entity.maintenance.RawMaterialEntity" /> 
+    
+    <mapping class="com.cpi.is.entity.report.CurrentFinishedInventoryEntity" />
+    <mapping class="com.cpi.is.entity.report.PlannedRawMaterialsInventoryEntity" />
+    <mapping class="com.cpi.is.entity.report.ProductionReportEntity" />
+    <mapping class="com.cpi.is.entity.report.ReceivedInventoryReportEntity" /> 
   </session-factory>
 </hibernate-configuration>

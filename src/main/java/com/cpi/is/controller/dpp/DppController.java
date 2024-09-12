@@ -48,11 +48,11 @@ public class DppController extends HttpServlet {
             } else if ("saveItem".equals(action)) {
                 String message = dppService.saveItem(request);
                 request.setAttribute("message", message);
-                page = "pages/message.jsp";
+                page = "pages/message/message.jsp";
             } else if ("deleteItem".equals(action)) {
                 String message = dppService.deleteItem(request);
                 request.setAttribute("message", message);
-                page = "pages/message.jsp";
+                page = "pages/message/message.jsp";
             }
         } catch (Exception e) {
             e.printStackTrace();

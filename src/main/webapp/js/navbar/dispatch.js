@@ -1,12 +1,10 @@
-
-//var fplQuantity = 0;
 var currentQuantity = 0;
 var totalQuantityUpdate = 0;
 var totalQuantityAdd = 0;
 var availableQuantity = 0;
 
 var dispatchTable = new Tabulator("#divDispatchingTable", {
-	layout: 'fitDataFill',
+	layout: 'fitDataTable',
 	data: dispatch,
 	pagination: 'local',
 	pagination: true,

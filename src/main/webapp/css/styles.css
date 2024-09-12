@@ -51,6 +51,20 @@ html,body {
 	color: #000;
 }
 
+.divContent .modalBody .productTable {
+	background-color: rgba(103, 70, 54,0);
+	border-spacing: 0;
+	border-collapse: seperate;
+	border-radius: .375rem;
+} 
+
+.divContent .modalBody .productTable th {
+	background-color: #674636;
+	color: #fff;
+} 
+.divContent .modalBody .productTable tr{
+	background-color: rgba(103, 70, 54,0);
+} 
 .divContent .modalFooter {
 	background-color: rgba(103, 70, 54,.5);
 }

@@ -1,5 +1,5 @@
 var dppTable = new Tabulator("#divDppTable", {
-	layout: 'fitDataFill',
+	layout: 'fitColumns',
 	data: dpp,
 	pagination: 'local',
 	pagination: true,
@@ -180,10 +180,6 @@ function filterProductionMaterial(row) {
 		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
 			layout: 'fitColumns',
 			data: productionMaterialFiltered,
-			pagination: 'local',
-			paginationSize: 3,
-			paginationCounter: "rows",
-			selectableRows: 1,
 			movableColumns: true,
 			responsiveLayout: true,
 			columns: [
@@ -234,24 +230,24 @@ function addPmRow() {
     materialCounter++;
     let html = `
         <tr id="pmRow${materialCounter}">
-            <td>
+            <td class="p-1">
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
                     ${createRawMaterialListOptions()}
                 </select>
             </td>
-			<td>
+			<td class="p-1">
                 <input type="text" class="form-control" id="txtUnitOfMeasurement${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="p-1">
                 <input type="text" class="form-control" id="txtRmQty${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="p-1">
                 <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" min="1" placeholder="Enter quantity" oninput="fetchQtyRemaining(${materialCounter})"/>
             </td>
-            <td>
+            <td class="p-1">
                 <input type="text" class="form-control" id="txtRmQtyRemaining${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="p-1">
                 <button class="btn btn-danger" type="button" onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
@@ -322,29 +318,29 @@ function populateUpdatePmForm() {
 	$.each(productionMaterialFiltered, function(index, item) {
 		html += `
 		<tr id="updatePmRow${index + 1}">
-			<td>
+			<td class="p-1">
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}" onchange="fetchRmQty(${index + 1})>
                     ${createRawMaterialListOptions()}
                 </select>
             </td>
-			<td>
+			<td class="p-1">
                 <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" readonly/>
             </td>
-            <td>
+            <td class="p-1">
                 <input type="text" class="form-control" id="txtRmQty${index + 1}" readonly/>
             </td>
-			<td>
+			<td class="p-1">
                 <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" oninput="fetchQtyRemaining(${index + 1})"
 				min="1" placeholder="Enter quantity" />
             </td>
-            <td>
+            <td class="p-1">
                 <input type="text" class="form-control" id="txtRmQtyRemaining${index + 1}" readonly/>
             </td>
-            <td>
+            <td class="p-1">
                 <button class="btn btn-danger" type="button" 
 				onclick="deletePmItem(${index + 1})">X</button>
             </td>
-			<td>
+			<td class="p-1">
                 <input type="hidden" id="txtUpdatePmId${index + 1}" value="${item.pmId}" />
             </td>
         </tr>

@@ -19,6 +19,7 @@ $('#btnRawMaterials').click(function() {
 	$.get('RawMaterialListController', {
 		action: 'showRawMaterialList'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });
@@ -28,6 +29,7 @@ $('#btnDashboard').click(function () {
 	$.post('DashboardController' , {
 		action:'showDashboard'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });
@@ -37,7 +39,8 @@ $('#btnDpp').click(function () {
 	$.post('DppController', {
 		action: 'showDpp'
 	}, function(response) {
-		$('#divContent').html(response);
+		$('#btnCloseOffNavbar').click();
+		$('#divContent').html(response);;
 	});
 });
 
@@ -46,6 +49,7 @@ $('#btnProductionMaterial').click(function () {
 	$.post('ProductionMaterialController', {
 		action: 'showProductionMaterial'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });
@@ -56,6 +60,7 @@ $('#btnMngDispatchType').click(function () {
 	$.post('DispatchTypeController', {
 		action: 'showDispatchType'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });
@@ -65,6 +70,7 @@ $('#btnMngBranch').click(function () {
 	$.post('BranchController', {
 		action: 'showBranch'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });
@@ -75,6 +81,7 @@ $('#btnMngSku').click(function () {
 	$.post('SkuController', {
 		action: 'showSku'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });
@@ -85,6 +92,7 @@ $('#btnMngMaterial').click(function () {
 	$.post('RawMaterialController', {
 		action: 'showRawMaterial'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });
@@ -95,6 +103,17 @@ $('#btnDispatching').click(function() {
 	$.get('DispatchingController', {
 		action: 'showDispatching'
 	}, function(response) {
+		$('#btnCloseOffNavbar').click();
+		$('#divContent').html(response);
+	});
+});
+
+$('#btnReports').click(function() {
+	$('#divContent').html(html);
+	$.get('ReportController', {
+		action: 'showReports'
+	}, function(response) {
+		$('#btnCloseOffNavbar').click();
 		$('#divContent').html(response);
 	});
 });

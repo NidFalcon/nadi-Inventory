@@ -74,15 +74,18 @@ function createItem(crudOperation) {
 }
 
 function validate(item) {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
     let valid = true;
     if (item.branchName === '') {
-        alert('Please fill out the Branch Name');
+        $('#errorMessage').html('Please fill out the Branch Name');
+		toastMessage.show();
         valid = false;
     }
     return valid;
 }
 
 function addItem(crudOperation) {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
     let item = createItem(crudOperation);
     if (validate(item)) {
         $.post('BranchController', {
@@ -91,9 +94,13 @@ function addItem(crudOperation) {
         }, function(response) {
             if (response.includes('success')) {
 				$('.btnCloseModal').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
                 $('#btnMngBranch').click();
             } else {
-                alert('Unable to save changes');
+                $('#errorMessage').html('Unable to save changes');
+				toastMessage.show();
             }
         });
     }
@@ -107,7 +114,7 @@ $('#btnUpdateBranchId').click(function(){
 });
 
 $('#btnDeleteBranch').click(function() {
-	console.log(JSON.stringify(createItem("delete")));
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialCode').val() !== '') {
 		$.post('BranchController', {
 			action: 'deleteItem',
@@ -115,14 +122,17 @@ $('#btnDeleteBranch').click(function() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteBranchCancel').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
 				$('#btnMngBranch').click();
 			} else {
-				$('#divAlert').removeClass('d-none');
-				$('#divAlert').html('Unable to save changes');
+				$('#errorMessage').html.html('Unable to save changes');
+				toastMessage.show();
 			}
 		});
 	} else {
-		$('#divAlert').removeClass('d-none');
-		$('#divAlert').html('Please select an item to delete');
+		$('#errorMessage').html.html('Please select an item to delete');
+		toastMessage.show();
 	}
 });
