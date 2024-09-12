@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.DispatchingServiceImpl;
 import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
 import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
@@ -54,7 +55,8 @@ public class DispatchingController extends HttpServlet {
 			action = request.getParameter("action");
 
 			HttpSession session = request.getSession();
-			Integer branchId = (Integer) session.getAttribute("branchId"); // Retrieve branchId from session
+			UserEntity user = (UserEntity) session.getAttribute("user");
+			Integer branchId = user.getBranchId(); // Retrieve branchId from session
 
 			if ("showDispatching".equals(action)) {
 				// Get filtered dispatch data based on branchId

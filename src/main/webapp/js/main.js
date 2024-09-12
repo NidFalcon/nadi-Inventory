@@ -11,4 +11,4 @@ function checkUserSession() {
 	});
 }
 
-checkUserSession();
+//checkUserSession();
