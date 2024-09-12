@@ -28,12 +28,11 @@ public class ValidationUtil {
 	}
 	
 	public static void checkNumber(String quantityStr) throws InvalidJsonException {
-	    if (quantityStr.length() <= 0 || quantityStr.length() >= 10) {
-	    	throw new InvalidJsonException("Invalid value for field 'quantity'. Must be a non-negative integer within the integer range.");
-	    }
 	    if (!quantityStr.matches("^[0-9]*$")) {
-	    	throw new InvalidJsonException("Quantity Must be a Number and not a String");
-
+	    	throw new InvalidJsonException("Field Must be a Number and not a String");
+	    }
+	    if (quantityStr.length() <= 0 || quantityStr.length() >= 10) {
+	    	throw new InvalidJsonException("Invalid value. Must be a non-negative integer within the integer range.");
 	    }
 	}
 	

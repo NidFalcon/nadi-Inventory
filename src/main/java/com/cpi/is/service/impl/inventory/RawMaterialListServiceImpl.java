@@ -27,15 +27,13 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	
 	private RawMaterialListEntity jsonToEntity(JSONObject json) throws NumberFormatException, JSONException, Exception {
 		return new RawMaterialListEntity(
-				json.getInt("materialListId"),
+				json.getLong("materialListId"),
 				json.getString("materialCode"),
 				json.getInt("quantity"),
 				json.getInt("userId"),
 				convertStringToSqlDate(json.getString("dateReceive")),
 				json.getInt("branchId"));
 	}
-	
-	
 	
 	public RawMaterialListDAOImpl getRawMaterialListDAO() {
 		return rawMaterialListDAO;
@@ -85,9 +83,10 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	public String saveRawMaterial(HttpServletRequest request, HttpSession session) throws Exception {
 		JSONObject json = new JSONObject(request.getParameter("item"));
 		UserEntity user = (UserEntity) session.getAttribute("user");
+		String operation = request.getParameter("operation");
 		json.put("userId", user.getUserId());
 		json.put("branchId", user.getBranchId());
-		validateJson(json);
+		validateJson(json, operation);
 		return rawMaterialListDAO.saveRawMaterial(
 				jsonToEntity(json));
 		//return null;		
@@ -103,7 +102,7 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 
 
 	@Override
-	public void validateJson(JSONObject jsonObject) throws InvalidJsonException {
+	public void validateJson(JSONObject jsonObject, String operation) throws InvalidJsonException {
 
 		String requiredFields[] = {"materialListId", "materialCode", "quantity", "userId", "dateReceive", "branchId"};
 	    ValidationUtil.checkFields(requiredFields, jsonObject);
@@ -112,11 +111,22 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	    
 	    // Validate quantity
 	    String quantityStr = jsonObject.get("quantity").toString();
-	    
+	    ValidationUtil.checkNumber(jsonObject.get("materialListId").toString());
+
 	    ValidationUtil.checkNumber(quantityStr);
 	    
-	    checkForeignKey(jsonObject.getString("materialCode"));
-	    	
+		if ("add".equals(operation)) {
+			Long materialListId = jsonObject.getLong("materialListId");
+			if (!(materialListId == null || materialListId == 0)) {
+				throw new InvalidJsonException("Primary Key must not have a value for Add Operations");
+			}
+		} else if ("update".equals(operation)) {
+			if (jsonObject.isNull("materialListId") || jsonObject.getString("materialListId").isEmpty()) {
+				throw new InvalidJsonException("Primary Key must not be NULL for Update Operations");
+			}
+			validatePK(jsonObject.getLong("materialListId"));
+		    checkForeignKey(jsonObject.getString("materialCode"));
+		}
 	}
 
 	public boolean checkForeignKey (String jsonObject) throws InvalidJsonException {
@@ -132,4 +142,19 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 		}
 		return true;
 	}
+	
+	public void validatePK(Long primaryKey) throws InvalidJsonException {
+		try {
+			if (rawMaterialListDAO.getRawMaterialListById(primaryKey) == null) {
+				throw new InvalidJsonException("Primary Key must be a Valid Primary Key for Update Operations");
+			}
+		} catch (Exception e) {
+			if (e instanceof InvalidJsonException) {
+				throw (InvalidJsonException) e;
+			}
+			e.printStackTrace();
+		}
+	}
+	
+	//validate on update if RawMaterial
 }

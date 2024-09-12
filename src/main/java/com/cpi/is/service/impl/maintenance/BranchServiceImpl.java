@@ -49,7 +49,7 @@ public class BranchServiceImpl implements BranchService, JsonValidate {
     }
 
 	@Override
-	public void validateJson(JSONObject jsonObject) throws JSONException {
+	public void validateJson(JSONObject jsonObject, String operation) throws JSONException {
 		// Check if the JSONObject contains all required keys
 	    if (!jsonObject.has("branchId")) {
 	        throw new JSONException("Missing required field: branchId");
