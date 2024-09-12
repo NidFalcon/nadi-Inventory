@@ -6,7 +6,7 @@ var totalQuantityAdd = 0;
 var availableQuantity = 0;
 
 var dispatchTable = new Tabulator("#divDispatchingTable", {
-	layout: 'fitDataFill',
+	layout: 'fitDataTable',
 	data: dispatch,
 	pagination: 'local',
 	pagination: true,
