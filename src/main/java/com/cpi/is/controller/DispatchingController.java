@@ -13,10 +13,11 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.cpi.is.service.impl.BranchServiceImpl;
-import com.cpi.is.service.impl.DispatchTypeServiceImpl;
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.DispatchingServiceImpl;
-import com.cpi.is.service.impl.FinishedProductListServiceImpl;
+import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
+import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
+import com.cpi.is.service.impl.maintenance.DispatchTypeServiceImpl;
 
 /**
  * Servlet implementation class DispatchingController
@@ -54,14 +55,16 @@ public class DispatchingController extends HttpServlet {
 			action = request.getParameter("action");
 
 			HttpSession session = request.getSession();
-			Integer branchId = (Integer) session.getAttribute("branchId"); // Retrieve branchId from session
+			UserEntity user = (UserEntity) session.getAttribute("user");
+			Integer branchId = user.getBranchId(); // Retrieve branchId from session
 
 			if ("showDispatching".equals(action)) {
 				// Get filtered dispatch data based on branchId
 				request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranch(branchId)));
 				request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
 				request.setAttribute("branch", new JSONArray(branchService.getBranch()));
-				request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList()));
+				request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
+                request.setAttribute("currentInventory", new JSONArray(dispatchingService.getCurrentInventory(branchId)));
 				page = "pages/navbar/dispatching.jsp";
 			} else if ("saveItem".equals(action)) {
 				request.setAttribute("message", dispatchingService.saveItem(request));

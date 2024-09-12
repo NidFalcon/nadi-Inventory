@@ -5,7 +5,11 @@ $('#btnLogin').click(function() {
 		password: $('#txtPassword').val()
 	}, function(response) {
 		if (response.includes('Invalid Username or Password')) {
-			$('#divMessage').html(response);
+			$('#divMessage').append(response);
+			var $toastLiveExample = $('#liveToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+
+			toastBootstrap.show();
 		} else {
 			$('#divMenu').html(response);
 			$('#btnDashboard').click();
@@ -13,17 +17,7 @@ $('#btnLogin').click(function() {
 	});
 });
 
-/*
-{
-		action: 'register',
-		username: $('#txtRegUsername').val(),
-		password: $('#txtRegPassword').val(),
-		branchId: $('#txtBranchId')
-	}
-*/
-
-$('#btnRegisterLink').click(function(){
-	//$('#divContent').load('pages/registration.jsp');
+$('#btnRegister').click(function(){
 	$.get("UserController", {
 		action: "showRegisterPage"
 	}, function(response) {	
@@ -31,21 +25,8 @@ $('#btnRegisterLink').click(function(){
 	})
 })
 
-function checkUserSession() {
-	$.get('UserController', {
-		action: 'checkUserSession'
-	}, function(response) {
-		if (response !== 'No existing user session') {
-			$('#divMenu').html(response);
-			$('#btnDashboard').click();
-		}
-	});
-}
-
 $('#txtPassword').on('keypress',function(e) {
     if(e.which == 13) {
         $('#btnLogin').click();
     }
 });
-
-checkUserSession();

@@ -1,12 +1,17 @@
 package com.cpi.is.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import com.cpi.is.dao.impl.ProductionMaterialDAOImpl;
-import com.cpi.is.entity.ProductionMaterialEntity;
+
+import com.cpi.is.dao.impl.dpp.ProductionMaterialDAOImpl;
 import com.cpi.is.entity.UserEntity;
-import com.cpi.is.service.ProductionMaterialService;
+import com.cpi.is.entity.dpp.ProductionMaterialEntity;
+import com.cpi.is.service.dpp.ProductionMaterialService;
 
 public class ProductionMaterialServiceImpl implements ProductionMaterialService {
 
@@ -20,13 +25,53 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         this.productionMaterialDAO = productionMaterialDAO;
     }
 
-    private ProductionMaterialEntity jsonToEntity(JSONObject json) {
-        Long pmId = json.has("pmId") && !json.isNull("pmId") ? json.getLong("pmId") : null;
-        Long dppId = json.has("dppId") ? json.getLong("dppId") : null;
-        String materialCode = json.has("materialCode") ? json.getString("materialCode") : null;
-        Integer quantityToUse = json.has("quantityToUse") ? json.getInt("quantityToUse") : null;
+    // Method to convert JSON to ProductionMaterialEntity
+    private ProductionMaterialEntity jsonToEntity(JSONObject json) throws Exception {
+        Long pmId = null;
+        Long dppId = null;
+        Long materialListId = null;
+        String materialCode = null;
+        Integer quantityToUse = null;
 
-        return new ProductionMaterialEntity(pmId, dppId, materialCode, quantityToUse);
+        // Log the incoming JSON for debugging
+        System.out.println("Incoming JSON: " + json.toString());
+
+        // Handle fields based on the operation
+        if (json.has("pmId")) {
+            pmId = json.isNull("pmId") ? null : json.optLong("pmId");
+        } else {
+            System.out.println("Missing pmId");
+            throw new Exception("JSON malformed: Missing pmId");
+        }
+
+        // If deleting, only pmId is required
+        if (pmId != null) {
+            return new ProductionMaterialEntity(pmId);
+        }
+
+        // If creating or updating, handle other fields
+        if (json.has("dppId")) {
+            dppId = json.optLong("dppId");
+        }
+
+        if (json.has("materialListId")) {
+            materialListId = json.optLong("materialListId");
+        }
+
+        if (json.has("materialCode")) {
+            materialCode = json.optString("materialCode", null);
+        }
+
+        if (json.has("quantityToUse")) {
+            quantityToUse = json.optInt("quantityToUse", 0);
+        }
+
+        // Validate required fields for create or update
+        if (dppId == null || materialListId == null || materialCode == null || quantityToUse == null) {
+            throw new Exception("JSON malformed: Missing required fields");
+        }
+
+        return new ProductionMaterialEntity(pmId, dppId, materialListId, materialCode, quantityToUse);
     }
 
     @Override
@@ -39,13 +84,23 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         JSONObject newMaterialJson = new JSONObject(request.getParameter("item"));
         UserEntity user = (UserEntity) request.getSession().getAttribute("user");
 
-        // If user data is needed for saving, you can add it here or handle it accordingly
         return productionMaterialDAO.saveItem(jsonToEntity(newMaterialJson));
     }
 
     @Override
     public String deleteItem(HttpServletRequest request) throws Exception {
-        return productionMaterialDAO.deleteItem(
-                jsonToEntity(new JSONObject(request.getParameter("item"))));
+        JSONObject itemJson = new JSONObject(request.getParameter("item"));
+        ProductionMaterialEntity entity = jsonToEntity(itemJson);
+        return productionMaterialDAO.deleteItem(entity);
+    }
+    
+    @Override
+    public String saveBulkItems(HttpServletRequest request) throws Exception {
+        JSONArray jsonArr = new JSONArray(request.getParameter("item"));
+        List<ProductionMaterialEntity> productionMaterial = new ArrayList<>();
+        for (int i = 0; i < jsonArr.length(); i++) {
+            productionMaterial.add(jsonToEntity(jsonArr.getJSONObject(i)));
+        }
+        return productionMaterialDAO.saveBulkItems(productionMaterial);
     }
 }

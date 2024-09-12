@@ -126,5 +126,3 @@ $('#btnDeleteBranch').click(function() {
 		$('#divAlert').html('Please select an item to delete');
 	}
 });
-
-

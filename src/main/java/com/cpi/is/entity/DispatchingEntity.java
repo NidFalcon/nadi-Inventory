@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import java.util.Date;
 
+import com.cpi.is.entity.inventory.FinishedProductListEntity;
+import com.cpi.is.entity.maintenance.BranchEntity;
+import com.cpi.is.entity.maintenance.DispatchTypeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

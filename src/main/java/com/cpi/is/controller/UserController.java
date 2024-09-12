@@ -10,17 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.cpi.is.entity.SessionEntity;
 import com.cpi.is.entity.UserEntity;
-import com.cpi.is.service.impl.BranchServiceImpl;
 import com.cpi.is.service.impl.UserServiceImpl;
+import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
 
 import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-/**
- * Servlet implementation class UserController
- */
 @WebServlet("/UserController")
 public class UserController extends HttpServlet {
 	
@@ -32,18 +30,10 @@ public class UserController extends HttpServlet {
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
 	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
     
-	
-	/**
-     * @see HttpServlet#HttpServlet()
-     */
     public UserController() {
         super();
     }
 
-	/**
-	 * @throws IOException 
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
@@ -52,53 +42,50 @@ public class UserController extends HttpServlet {
 				UserEntity user = userService.authenticate(request);
 				
 				if (user != null) {
-					// set user cookie
-					Cookie cookie = new Cookie("user", user.getUsername());
-					cookie.setMaxAge(24*60*60);
-					response.addCookie(cookie);
-					
-					// set user session
 					HttpSession session = request.getSession();
 					session.setAttribute("user", user);
-                    session.setAttribute("branchId", user.getBranchId()); // Store branchId in session
-					
 					request.setAttribute("username", user.getUsername());
+					userService.saveSession(request);
+					
+					Cookie userCookie = new Cookie("user", user.getUsername());
+					response.addCookie(userCookie);
+					
+					//Cookie sessionCookie = new Cookie("sessionId", request.getSession().getId());
+					//sessionCookie.setMaxAge(5 * 60);
+					//response.addCookie(sessionCookie);
+					
 					page = "pages/navbar/menu.jsp";
 				} else {
 					request.setAttribute("message", "Invalid Username or Password");
 					page = "pages/message.jsp";
 				}
-			} else if ("logout".equals(action)) {
-				// destroy user cookie
-				Cookie cookie = new Cookie("user", "");
-				cookie.setMaxAge(0);
-				response.addCookie(cookie);
-				
-				// invalidate user session
+			}  else if ("logout".equals(action)) {
 				HttpSession session = request.getSession();
 				session.invalidate();
+				userService.deleteSession(request);
+				
+				Cookie userCookie = new Cookie("user", "");
+				userCookie.setMaxAge(0);
+				response.addCookie(userCookie);
+				
+				Cookie sessionCookie = new Cookie("sessionId", "");
+				sessionCookie.setMaxAge(0);
+				response.addCookie(sessionCookie);
 				
 				page = "pages/login.jsp";
 			} else if ("checkUserSession".equals(action)) {
-				request.setAttribute("message", "No existing user session");
-				page = "pages/message.jsp";
-				
 				HttpSession session = request.getSession();
 				UserEntity user = (UserEntity) session.getAttribute("user");
+				page = "pages/navbar/menu.jsp";
 				
 				if (user != null) {
 					request.setAttribute("username", user.getUsername());
-					page = "pages/navbar/menu.jsp";
 				} else {
-					Cookie[] cookies = request.getCookies();
-					if (cookies != null) {
-						for (Cookie cookie : cookies) {
-							if (cookie.getName().equals("user")) {
-								request.setAttribute("username", cookie.getValue());
-								page = "pages/navbar/menu.jsp";
-								break;
-							}
-						}
+					SessionEntity userSession = userService.validateSession(request);
+					if (userSession != null) {
+						request.setAttribute("username", userSession.getUsername());
+					} else {
+						page = "pages/login.jsp";
 					}
 				}
 			} else if ("showRegisterPage".equals(action)) {
@@ -120,9 +107,6 @@ public class UserController extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

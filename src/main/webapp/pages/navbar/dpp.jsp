@@ -5,12 +5,14 @@
 			<h2 class="h2"><i class="bi bi-boxes me-2"></i>Daily Planned Production</h2>		
 		</div>
 		<div>
-			<button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal"
-				data-bs-target="#selectModal" id="btnShowMaterialDpp">+ add Material</button>	
+			<button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal"
+				data-bs-target="#addPmModal" id="btnShowAddPm">+ Add PM</button>	
+			<button type="button" class="btn btn-dark ms-2" data-bs-toggle="modal"
+				data-bs-target="#updatePmModal" id="btnShowUpdatePm">Update PM</button>	
 		</div>
 		<div class="ms-auto btn-toolbar mb-2 mb-md-0">
 			<button type="button" class="btn btn-primary me-1" data-bs-toggle="modal"
-				data-bs-target="#addModal">+ add</button>
+				data-bs-target="#addModal" id="btnShowAddDpp">+ Add</button>
 			<button type="button" class="btn btn-primary  me-1" data-bs-toggle="modal"
 				data-bs-target="#updateModal" id="btnShowUpdateDpp">Update</button>
 			<button type="button" class="btn btn-danger  me-1" data-bs-toggle="modal"
@@ -18,30 +20,25 @@
 		</div>
 	</div>
 	<div class="d-flex justify-content-center mt-5">
-		<div id="divDppTable"></div> <!--Raw Material Table-->
+		<div id="divDppTable"></div>
 	</div>
 </main>
 
-<!-- add modal -->
+<!-- add DPP modal -->
 <div class="modal fade" id="addModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="addDppModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add New
-					DPP:</h5>
+				<h5 class="modal-title" id="addDppModalLabel">Add New DPP:</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
-						<!-- 
-						<td><label for="txtDppId">c</label></td>
-                		<td><input type="text" id="txtDppId" readonly /></td>
-						 -->
 						<label for="txtDppId" class="col-form-label">DPP ID:</label>
-						<input type="text" class="form-control" id="txtDppId" value = '' readonly>
+						<input type="text" class="form-control" id="txtDppId" readonly>
 					</div>
 					<div class="mb-3">
 						<label for="txtProductionDate" class="col-form-label">Production Date:</label>
@@ -50,7 +47,7 @@
 					</div>
 					<div class="mb-3">
 						<label for="selectSkuCode">SKU Code</label>
-						<select type="submit" class="form-select selectSkuCode" id="selectSkuCode"></select>
+						<select class="form-select selectSkuCode" id="selectSkuCode"></select>
 					</div>
 					<div class="mb-3">
 						<label for="txtQuantity">Quantity</label>
@@ -69,30 +66,26 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnAddDpp">Add
+				<button type="button" class="btn btn-primary" id="btnAddDppSubmit">Add
 					DPP</button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- update modal -->
+<!-- update DPP modal -->
 <div class="modal fade" id="updateModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="updateDppModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Update DPP:</h5>
+				<h5 class="modal-title" id="updateDppModalLabel">Update DPP:</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
-						<!-- 
-						<td><label for="txtDppId">c</label></td>
-                		<td><input type="text" id="txtDppId" readonly /></td>
-						 -->
 						<label for="txtUpdateDppId" class="col-form-label">DPP ID:</label>
 						<input type="text" class="form-control" id="txtUpdateDppId" value = '' readonly>
 					</div>
@@ -122,19 +115,19 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btnCloseAddModal"
 					data-bs-dismiss="modal" id="btnCloseUpdateModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnUpdateDpp">Update DPP</button>
+				<button type="button" class="btn btn-primary" id="btnUpdateDppSubmit">Update DPP</button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- Delete Modal -->
+<!-- Delete DPP Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    aria-labelledby="deleteDppModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete DPP</h5>
+                <h5 class="modal-title" id="deleteDppModalLabel">Delete DPP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
@@ -151,47 +144,102 @@
     </div>
 </div>
 
-<!-- select modal -->
-<div class="modal fade" id="selectModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+<!-- add PM modal -->
+<div class="modal fade" id="addPmModal" tabindex="-1"
+	aria-labelledby="addPmModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Add Material:</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close" id="btnCloseAddSelectModal"></button>
+				<h5 class="modal-title" id="addPmModalLabel">Add Production Material/s:</h5>
+				<button type="button" class="btn-close btnCloseAddPmModal" data-bs-dismiss="modal"
+					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+				<div id="divProductionMaterialTable"></div>
 				<form>
-					<table class="table">
+					<table class="table" id="tblAddPm">
 						<tr>
-							<th scope="col">
+							<th scope="col" id="materialDppIdContainer">
 								<label for="materialDppId">DPP ID: </label>
 								<input type="text" class="form-control" id="materialDppId" readonly>
 							</th>
+							<th scope="col" id="dppSkuNameContainer">
+								<label for="dppSkuName">SKU Name: </label>
+								<input type="text" class="form-control" id="dppSkuName" readonly>
+							</th>
 						</tr>
 						<tr>
-							<th scope="col"><label for="selectMaterial">Select Material/s:</label></th>
-							<th scope="col"><label for="materialQuantity"></label>Quantity:</th>
-							<!-- <th scope="col"><label for="materialQuantity"></label>Unit of Measurement:</th> -->
+							<th scope="col">Select Material/s:</th>
+							<th scope="col">Unit of Measurement</th>
+							<th scope="col">Initial Stock:</th>
+							<th scope="col">Quantity to Use:</th>
+							<th scope="col">Remaining Stock:</th>
 						</tr>
 					</table>
-				<button id="selectAdd" class="btn btn-primary"> + </button>
+				<button type="button" id="btnAddPmRow" class="btn btn-dark w-100"> + Add Row </button>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary btnCloseAddModal"
-					data-bs-dismiss="modal" id="btnCloseAddSelectModal">Close</button>
-				<button type="button" class="btn btn-primary" id="btnAddMaterial">Add
-					Material</button>
+				<button type="button" class="btn btn-secondary btnCloseAddPmModal"
+					data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="btnAddPmSubmit">
+					Add PM
+				</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+<!-- update PM modal -->
+<div class="modal fade" id="updatePmModal" tabindex="-1"
+	aria-labelledby="updatePmModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="updatePmModalLabel">Update Production Material/s:</h5>
+				<button type="button" class="btn-close btnCloseUpdatePmModal" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<table class="table" id="tblUpdatePm">
+						<tr>
+							<th scope="col">
+								<label for="updateMaterialDppId">DPP ID: </label>
+								<input type="text" class="form-control" id="updateMaterialDppId" readonly>
+							</th>
+							<th scope="col" id="updateDppSkuNameContainer">
+								<label for="updateDppSkuName">SKU Name: </label>
+								<input type="text" class="form-control" id="updateDppSkuName" readonly>
+							</th>
+						</tr>
+						<tr>
+							<th scope="col">Select Material/s:</th>
+							<th scope="col">Unit of Measurement</th>
+							<th scope="col">Initial Stock:</th>
+							<th scope="col">Quantity to Use:</th>
+							<th scope="col">Remaining Stock:</th>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btnCloseUpdatePmModal"
+					data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="btnUpdatePmSubmit">
+					Update PM
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
     var dpp = JSON.parse('${dpp}');
     var sku = JSON.parse('${sku}');
     var rawMaterial = JSON.parse('${rawMaterial}');
+    var rawMaterialList = JSON.parse('${rawMaterialList}');
+    var productionMaterial = JSON.parse('${productionMaterial}')
 </script>
-<script src="js/navbar/dpp.js"></script>
-<script src="js/production_material.js"></script>
+<script src="js/navbar/dpp/dpp.js"></script>
+<script src="js//navbar/dpp/production_material.js"></script>
