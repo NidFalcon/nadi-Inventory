@@ -219,7 +219,7 @@ function createRawMaterialListOptions() {
         html += `<optgroup label="${materialCode}">`;
         items.forEach(item => {
             html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
-                        ${item.material.materialName} &nbsp;&nbsp; [${item.dateRecieve}]
+                        ${item.material.materialName} &nbsp;&nbsp; [${item.dateReceive}]
                     </option>`;
         });
         html += `</optgroup>`;
@@ -289,8 +289,6 @@ function fetchRmQty(counter) {
     }
 }
 
-
-
 function fetchQtyRemaining(counter) {
     // Get the initial stock (rmQty) and the quantity to use (qtyToUse)
     const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
@@ -323,7 +321,7 @@ function populateUpdatePmForm() {
 		html += `
 		<tr id="updatePmRow${index + 1}">
 			<td>
-                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}" onchange="fetchRmQty(${index + 1})>
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}" onchange="fetchRmQty(${index + 1})">
                     ${createRawMaterialListOptions()}
                 </select>
             </td>
@@ -355,11 +353,20 @@ function populateUpdatePmForm() {
 	$('#tblUpdatePm').append(html);
 
 	$.each(productionMaterialFiltered, function(index, item) {
-		$(`#selectRawMaterial${index + 1}`).val(item.materialCode);
-		$(`#txtPmQtyToUse${index + 1}`).val(item.quantityToUse);
-		fetchRmQty(index + 1);
-		fetchQtyRemaining(index + 1);
+	    $(`#selectRawMaterial${index + 1}`).val(item.materialCode);
+	    
+	    fetchRmQty(index + 1);
+	    
+	    const pmQtyToUse = parseInt(item.quantityToUse, 10);
+	    $(`#txtPmQtyToUse${index + 1}`).val(pmQtyToUse);
+	    
+	    const rmQty = parseInt($(`#txtRmQty${index + 1}`).val(), 10) || 0; 
+	    $(`#txtRmQty${index + 1}`).val(rmQty + pmQtyToUse);
+		console.log("rmQty: "+rmQty+" || pmQtyToUse: "+pmQtyToUse);
+	    
+	    fetchQtyRemaining(index + 1);
 	});
+
 }
 
 $('#btnShowUpdatePm').on('click', function() {

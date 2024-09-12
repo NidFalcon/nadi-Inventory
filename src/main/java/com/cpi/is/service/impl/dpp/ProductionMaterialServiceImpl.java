@@ -5,11 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.cpi.is.dao.impl.dpp.ProductionMaterialDAOImpl;
-import com.cpi.is.entity.UserEntity;
 import com.cpi.is.entity.dpp.ProductionMaterialEntity;
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.dpp.ProductionMaterialService;
 
 public class ProductionMaterialServiceImpl implements ProductionMaterialService {
@@ -24,7 +24,6 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         this.productionMaterialDAO = productionMaterialDAO;
     }
 
-    // Method to convert JSON to ProductionMaterialEntity
     private ProductionMaterialEntity jsonToEntity(JSONObject json) throws Exception {
         Long pmId = null;
         Long dppId = null;
@@ -35,20 +34,16 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         // Log the incoming JSON for debugging
         System.out.println("Incoming JSON: " + json.toString());
 
-        // Handle fields based on the operation
         if (json.has("pmId")) {
             pmId = json.isNull("pmId") ? null : json.optLong("pmId");
-        } else {
-            System.out.println("Missing pmId");
-            throw new Exception("JSON malformed: Missing pmId");
         }
 
-        // If deleting, only pmId is required
-        if (pmId != null) {
+        // If pmId is provided, and no other fields are required for deletion, return entity with only pmId
+        if (pmId != null && !json.has("dppId") && !json.has("materialListId") && !json.has("materialCode") && !json.has("quantityToUse")) {
             return new ProductionMaterialEntity(pmId);
         }
 
-        // If creating or updating, handle other fields
+        // Handle other fields for create or update
         if (json.has("dppId")) {
             dppId = json.optLong("dppId");
         }
@@ -90,13 +85,19 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
     public String deleteItem(HttpServletRequest request) throws Exception {
         JSONObject itemJson = new JSONObject(request.getParameter("item"));
         ProductionMaterialEntity entity = jsonToEntity(itemJson);
+
+        // Ensure that entity only has pmId set for deletion
+        if (entity.getPmId() == null) {
+            throw new Exception("JSON malformed: Missing pmId");
+        }
+
         return productionMaterialDAO.deleteItem(entity);
     }
     
     @Override
     public String saveBulkItems(HttpServletRequest request) throws Exception {
         JSONArray jsonArr = new JSONArray(request.getParameter("item"));
-        List<ProductionMaterialEntity> productionMaterial = new ArrayList<>();
+        List<ProductionMaterialEntity> productionMaterial = new ArrayList<ProductionMaterialEntity>();
         for (int i = 0; i < jsonArr.length(); i++) {
             productionMaterial.add(jsonToEntity(jsonArr.getJSONObject(i)));
         }

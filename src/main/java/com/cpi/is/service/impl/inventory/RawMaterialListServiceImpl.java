@@ -10,8 +10,9 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.cpi.is.dao.impl.inventory.RawMaterialListDAOImpl;
+import com.cpi.is.dao.impl.maintenance.RawMaterialDAOImpl;
+import com.cpi.is.dao.maintenance.RawMaterialDAO;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.entity.inventory.RawMaterialListEntity;
 import com.cpi.is.exception.InvalidJsonException;
@@ -22,18 +23,9 @@ import com.cpi.is.util.ValidationUtil;
 public class RawMaterialListServiceImpl implements RawMaterialListService, JsonValidate{
 	
 	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
-	
-	public RawMaterialListDAOImpl getRawMaterialListDAO() {
-		return rawMaterialListDAO;
-	}
-
-	public void setRawMaterialListDAO(RawMaterialListDAOImpl rawMaterialListDAO) {
-		this.rawMaterialListDAO = rawMaterialListDAO;
-	}
-
+	private RawMaterialDAOImpl rawMaterialDao = new RawMaterialDAOImpl();
 	
 	private RawMaterialListEntity jsonToEntity(JSONObject json) throws NumberFormatException, JSONException, Exception {
-		
 		return new RawMaterialListEntity(
 				json.getInt("materialListId"),
 				json.getString("materialCode"),
@@ -43,6 +35,20 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 				json.getInt("branchId"));
 	}
 	
+	
+	
+	public RawMaterialListDAOImpl getRawMaterialListDAO() {
+		return rawMaterialListDAO;
+	}
+
+
+
+	public void setRawMaterialListDAO(RawMaterialListDAOImpl rawMaterialListDAO) {
+		this.rawMaterialListDAO = rawMaterialListDAO;
+	}
+
+
+
 	private static Date convertStringToSqlDate(String dateString) {
         // Define the format of the input string
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -101,17 +107,22 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	    String quantityStr = jsonObject.get("quantity").toString();
 	    
 	    ValidationUtil.checkNumber(quantityStr);
+	    
+	    checkForeignKey(jsonObject.getString("materialCode"));
 	    	
 	}
 
-	//validation for foreign key (not working)
-//	public static boolean checkForeignKey (JSONObject jsonObject) throws InvalidJsonException {
-//		
-//		String checkForeignKey = jsonObject.getString("materialCode");
-//		if(!checkForeignKey.matches(jsonObject.getString("materialCode"))) {
-//			throw new InvalidJsonException("something went wrong!");
-//		}
-//		return true;
-//	}
-	
+	public boolean checkForeignKey (String jsonObject) throws InvalidJsonException {
+		try {
+			if (rawMaterialDao.getRawMaterialById(jsonObject) == null) {
+				throw new InvalidJsonException("Invalid Parameter");
+			}
+		} catch (Exception e) {
+			if (e instanceof InvalidJsonException) {
+				throw (InvalidJsonException) e;
+			}
+			e.printStackTrace();
+		}
+		return true;
+	}
 }

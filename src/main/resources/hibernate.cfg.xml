@@ -22,6 +22,5 @@
     <mapping class="com.cpi.is.entity.maintenance.BranchEntity" />
     <mapping class="com.cpi.is.entity.maintenance.SkuEntity" />
     <mapping class="com.cpi.is.entity.maintenance.RawMaterialEntity" />  
-
   </session-factory>
 </hibernate-configuration>

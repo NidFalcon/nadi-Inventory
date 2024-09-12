@@ -58,7 +58,7 @@
 				        <select id="selectStatus" class="form-select">
 				            <option value="Planned">Planned</option>
 				            <option value="In Progress">In Progress</option>
-				            <option value="Completed">Completed</option>
+				            <option value="Finished">Finished</option>
 				        </select>
 					</div>
 				</form>
@@ -107,7 +107,7 @@
 				        <select id="selectUpdateStatus" class="form-select">
 				            <option value="Planned">Planned</option>
 				            <option value="In Progress">In Progress</option>
-				            <option value="Completed">Completed</option>
+				            <option value="Finished">Finished</option>
 				        </select>
 					</div>
 				</form>

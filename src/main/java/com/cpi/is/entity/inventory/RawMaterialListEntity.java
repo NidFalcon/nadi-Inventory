@@ -34,7 +34,7 @@ public class RawMaterialListEntity {
 	@ManyToOne
 	@JoinColumn(name="USER_ID", insertable = false, updatable = false)
 	private UserEntity user;
-	@Column(name="date_receive")
+	@Column(name="DATE_RECEIVE")
 	private Date dateReceive;
 	@Column(name="BRANCH_ID")
 	private Integer branchId;
@@ -42,11 +42,17 @@ public class RawMaterialListEntity {
     @JoinColumn(name = "BRANCH_ID", insertable = false, updatable = false)
 	private BranchEntity branch;
 	
+	
+	
 	public RawMaterialListEntity() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	public RawMaterialListEntity(Integer materialListId, String materialCode, Integer quantity, Integer userId,
-			Date dateReceive, Integer branchId) {
+
+
+
+	public RawMaterialListEntity(Integer materialListId, String materialCode, 
+			Integer quantity, Integer userId, Date dateReceive, Integer branchId) {
 		super();
 		this.materialListId = materialListId;
 		this.materialCode = materialCode;
@@ -55,76 +61,127 @@ public class RawMaterialListEntity {
 		this.dateReceive = dateReceive;
 		this.branchId = branchId;
 	}
+
+
 
 	public Integer getMaterialListId() {
 		return materialListId;
 	}
 
+
+
 	public void setMaterialListId(Integer materialListId) {
 		this.materialListId = materialListId;
 	}
+
+
 
 	public String getMaterialCode() {
 		return materialCode;
 	}
 
+
+
 	public void setMaterialCode(String materialCode) {
 		this.materialCode = materialCode;
 	}
+
+
 
 	public RawMaterialEntity getMaterial() {
 		return material;
 	}
 
+
+
 	public void setMaterial(RawMaterialEntity material) {
 		this.material = material;
 	}
+
+
 
 	public Integer getQuantity() {
 		return quantity;
 	}
 
+
+
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
+
+
 
 	public Integer getUserId() {
 		return userId;
 	}
 
+
+
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+
+
 
 	public UserEntity getUser() {
 		return user;
 	}
 
+
+
 	public void setUser(UserEntity user) {
 		this.user = user;
 	}
 
-	public Date getdateReceive() {
+
+
+	public Date getDateReceive() {
 		return dateReceive;
 	}
 
-	public void setdateReceive(Date dateReceive) {
+
+
+	public void setDateReceive(Date dateReceive) {
 		this.dateReceive = dateReceive;
 	}
+
+
 
 	public Integer getBranchId() {
 		return branchId;
 	}
 
+
+
 	public void setBranchId(Integer branchId) {
 		this.branchId = branchId;
 	}
+
+
 
 	public BranchEntity getBranch() {
 		return branch;
 	}
 
+
+
 	public void setBranch(BranchEntity branch) {
 		this.branch = branch;
+	}
+
+
+
+	//for debug
+	@Override
+	public String toString() {
+	    return "RawMaterialListEntity{" +
+	           "materialListId=" + materialListId +
+	           ", materialCode='" + materialCode + '\'' +
+	           ", quantity=" + quantity +
+	           ", userId=" + userId +
+	           ", dateReceive=" + dateReceive +
+	           ", branchId=" + branchId +
+	           '}';
 	}
 }
