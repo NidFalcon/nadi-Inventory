@@ -69,7 +69,14 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	public List<RawMaterialListEntity>  getRawMaterialList(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
-		return rawMaterialListDAO.getRawMaterialList(user.getBranchId());
+		List<RawMaterialListEntity> rawMaterialLists = rawMaterialListDAO.getRawMaterialList(user.getBranchId());
+        for (RawMaterialListEntity entity : rawMaterialLists) {
+            UserEntity rawMaterialUser = entity.getUser();
+            if (rawMaterialUser != null) {
+            	rawMaterialUser.setPassword("");
+            }
+        }
+		return rawMaterialLists;
 	}
 
 
