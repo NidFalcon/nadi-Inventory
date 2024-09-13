@@ -47,8 +47,8 @@ public class UserController extends HttpServlet {
 					request.setAttribute("username", user.getUsername());
 					userService.saveSession(request);
 					
-					Cookie userCookie = new Cookie("user", user.getUsername());
-					response.addCookie(userCookie);
+//					Cookie userCookie = new Cookie("user", user.getUsername());
+//					response.addCookie(userCookie);
 					
 					//Cookie sessionCookie = new Cookie("sessionId", request.getSession().getId());
 					//sessionCookie.setMaxAge(5 * 60);
@@ -81,12 +81,7 @@ public class UserController extends HttpServlet {
 				if (user != null) {
 					request.setAttribute("username", user.getUsername());
 				} else {
-					SessionEntity userSession = userService.validateSession(request);
-					if (userSession != null) {
-						request.setAttribute("username", userSession.getUsername());
-					} else {
 						page = "pages/login.jsp";
-					}
 				}
 			} else if ("showRegisterPage".equals(action)) {
 				JSONArray test = new JSONArray(branchService.getBranch());
