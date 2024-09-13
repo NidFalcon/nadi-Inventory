@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 
 import com.cpi.is.dao.inventory.RawMaterialListDAO;
 import com.cpi.is.entity.inventory.RawMaterialListEntity;
+import com.cpi.is.entity.maintenance.RawMaterialEntity;
 import com.cpi.is.util.HBUtil;
 
 public class RawMaterialListDAOImpl implements RawMaterialListDAO {
@@ -18,6 +19,14 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
         			    .list();
         	return rawMaterialLists;
         }
+	}
+	
+	public RawMaterialListEntity getRawMaterialListById(Long primaryKey) throws Exception {
+		RawMaterialListEntity rawMaterialList = null;
+		try (Session session = HBUtil.getSessionFactory().openSession()){
+			rawMaterialList = session.get(RawMaterialListEntity.class, primaryKey); 
+		}
+		return rawMaterialList;
 	}
 
 	@Override
@@ -40,7 +49,7 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 			throw e;
 		}
 		return "success";
-	}	
+	}
 
 	@Override
 	public String deleteRawMaterial(RawMaterialListEntity item) throws Exception {
