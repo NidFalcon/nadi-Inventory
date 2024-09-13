@@ -6,10 +6,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.dpp.DppService;
 import com.cpi.is.service.dpp.ProductionMaterialService;
 import com.cpi.is.service.maintenance.RawMaterialService;
@@ -34,9 +37,13 @@ public class ProductionMaterialController extends HttpServlet {
         try {
             action = request.getParameter("action");
 
+            HttpSession session = request.getSession();
+			UserEntity user = (UserEntity) session.getAttribute("user");
+			Integer branchId = user.getBranchId(); 
+			
             if ("showProductionMaterial".equals(action)) {
                 request.setAttribute("productionMaterial", new JSONArray(productionMaterialService.getProductionMaterial()));
-                request.setAttribute("dpp", new JSONArray(dppService.getDpp()));
+                request.setAttribute("dpp", new JSONArray(dppService.getDpp(branchId)));
                 request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
                 page = "pages/productionMaterial.jsp";
             } else if ("saveItem".equals(action)) {
