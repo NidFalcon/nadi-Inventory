@@ -43,7 +43,6 @@ dppTable.on('rowClick', function() {
 $('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
-	console.log(row);
 	if (row !== undefined) {
 		$('#txtUpdateDppId').val(row.dppId)
 		$('#selectUpdateSkuCode').val(row.skuCode);
@@ -203,36 +202,40 @@ function filterProductionMaterial(row) {
 }
 
 function createRawMaterialListOptions() {
-    const materialMap = {};
+	const materialMap = {};
 
-    rawMaterialList.forEach(item => {
-        if (item.material.isActive === "y") {
-            if (!materialMap[item.materialCode]) {
-                materialMap[item.materialCode] = [];
-            }
-            materialMap[item.materialCode].push(item);
-        }
-    });
+	rawMaterialList.forEach(item => {
+		if (item.material.isActive === "y") {
+			if (!materialMap[item.materialCode]) {
+				materialMap[item.materialCode] = [];
+			}
+			materialMap[item.materialCode].push(item);
+		}
+	});
 
-    let html = '';
-    for (const [materialCode, items] of Object.entries(materialMap)) {
-        html += `<optgroup label="${materialCode}">`;
-        items.forEach(item => {
-            html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
+	let html = '';
+	for (const [materialCode, items] of Object.entries(materialMap)) {
+		// Sort the items by dateReceive before creating the options
+		items.sort((a, b) => new Date(a.dateReceive) - new Date(b.dateReceive));
+
+		html += `<optgroup label="${materialCode}">`;
+		items.forEach(item => {
+			html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
                         ${item.material.materialName} &nbsp;&nbsp; [${item.dateReceive}]
                     </option>`;
-        });
-        html += `</optgroup>`;
-    }
+		});
+		html += `</optgroup>`;
+	}
 
-    return html;
+	return html;
 }
+
 
 var materialCounter = 0;
 
 function addPmRow() {
-    materialCounter++;
-    let html = `
+	materialCounter++;
+	let html = `
         <tr id="pmRow${materialCounter}">
             <td>
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
@@ -257,54 +260,49 @@ function addPmRow() {
         </tr>
     `;
 
-    $('#tblAddPm').append(html);
-    fetchRmQty(materialCounter);
+	$('#tblAddPm').append(html);
+	fetchRmQty(materialCounter);
 	fetchQtyRemaining(materialCounter);
 }
 
 function fetchRmQty(counter) {
-    const selectElement = $(`#selectRawMaterial${counter}`);
-    const selectedOption = selectElement.find('option:selected'); // Get the selected option
-    const selectedMaterialListId = selectedOption.attr('materialListId'); // Get the materialListId from the custom attribute
+	const selectElement = $(`#selectRawMaterial${counter}`);
+	const selectedOption = selectElement.find('option:selected'); // Get the selected option
+	const selectedMaterialListId = selectedOption.attr('materialListId'); // Get the materialListId from the custom attribute
 
-    console.log(`Fetching RM Qty for MaterialListId: ${selectedMaterialListId}`);
+	// Find the material by materialListId
+	const matchingMaterial = rawMaterialList.find(function(material) {
+		return material.materialListId == selectedMaterialListId;
+	});
 
-    // Find the material by materialListId
-    const matchingMaterial = rawMaterialList.find(function(material) {
-        return material.materialListId == selectedMaterialListId;
-    });
+	if (matchingMaterial) {
+		// Update the Quantity field
+		$(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
 
-    if (matchingMaterial) {
-        // Update the Quantity field
-        $(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
-        console.log(`Matched Material Quantity: ${matchingMaterial.quantity}`);
-
-        // Update the Unit of Measurement field
-        $(`#txtUnitOfMeasurement${counter}`).val(matchingMaterial.material.unitOfMeasurement);
-        console.log(`Matched Material UOM: ${matchingMaterial.material.unitOfMeasurement}`);
-    } else {
-        $(`#txtRmQty${counter}`).val("");
-        $(`#txtUnitOfMeasurement${counter}`).val(""); // Clear the UOM field if no material is found
-        console.log(`No matching material found for MaterialListId: ${selectedMaterialListId}`);
-    }
+		// Update the Unit of Measurement field
+		$(`#txtUnitOfMeasurement${counter}`).val(matchingMaterial.material.unitOfMeasurement);
+	} else {
+		$(`#txtRmQty${counter}`).val("");
+		$(`#txtUnitOfMeasurement${counter}`).val(""); // Clear the UOM field if no material is found
+	}
 }
 
 function fetchQtyRemaining(counter) {
-    // Get the initial stock (rmQty) and the quantity to use (qtyToUse)
-    const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
-    let qtyToUse = parseFloat($(`#txtPmQtyToUse${counter}`).val()) || 0;
+	// Get the initial stock (rmQty) and the quantity to use (qtyToUse)
+	const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
+	let qtyToUse = parseFloat($(`#txtPmQtyToUse${counter}`).val()) || 0;
 
-    // If the quantity to use exceeds the available stock, cap it to the stock value
-    if (qtyToUse > rmQty) {
-        qtyToUse = rmQty;
-        $(`#txtPmQtyToUse${counter}`).val(rmQty);
-    }
+	// If the quantity to use exceeds the available stock, cap it to the stock value
+	if (qtyToUse > rmQty) {
+		qtyToUse = rmQty;
+		$(`#txtPmQtyToUse${counter}`).val(rmQty);
+	}
 
-    // Calculate the remaining quantity after usage
-    const remainingQty = rmQty - qtyToUse;
+	// Calculate the remaining quantity after usage
+	const remainingQty = rmQty - qtyToUse;
 
-    // Update the remaining quantity field
-    $(`#txtRmQtyRemaining${counter}`).val(remainingQty);
+	// Update the remaining quantity field
+	$(`#txtRmQtyRemaining${counter}`).val(remainingQty);
 }
 
 $('#btnAddPmRow').on('click', function() {
@@ -317,33 +315,53 @@ function deleteAddPmRow(counter) {
 
 function populateUpdatePmForm() {
 	let html = '';
+	/*console.log("productionMaterialFiltered: " + JSON.stringify(productionMaterialFiltered));*/
 	$.each(productionMaterialFiltered, function(index, item) {
+		let rmListMatch = rawMaterialList.find(function(rmList) {
+			return rmList.materialListId === item.materialListId;
+		});
+
+		if (rmListMatch) {
+			item.quantity = rmListMatch.quantity + item.quantityToUse;
+			item.dateReceive = rmListMatch.dateReceive;
+		}
+
+		let rmMatch = rawMaterial.find(function(rm) {
+			return rm.materialCode === item.materialCode;
+		});
+
+		if (rmMatch) {
+			item.unitOfMeasurement = rmMatch.unitOfMeasurement;
+			item.materialName = rmMatch.materialName;
+		}
+
 		html += `
 		<tr id="updatePmRow${index + 1}">
 			<td>
-                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}" onchange="fetchRmQty(${index + 1})">
-                    ${createRawMaterialListOptions()}
-                </select>
+				<input type="text" class="form-control" id="txtSelectedMaterial${index + 1}" 
+				value="${item.materialName} [${item.dateReceive}]" materialListId="${item.materialListId}" readonly/>
             </td>
 			<td>
-                <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" readonly/>
+                <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" 
+				value="${item.unitOfMeasurement}" readonly/>
             </td>
             <td>
-                <input type="text" class="form-control" id="txtRmQty${index + 1}" readonly/>
+                <input type="text" class="form-control" id="txtRmQty${index + 1}" 
+				value="${item.quantity}" readonly/>
             </td>
 			<td>
-                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" oninput="fetchQtyRemaining(${index + 1})"
-				min="1" placeholder="Enter quantity" />
+                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" 
+				value="${item.quantityToUse}" min="1" oninput="fetchQtyRemaining(${index + 1})" />
             </td>
             <td>
                 <input type="text" class="form-control" id="txtRmQtyRemaining${index + 1}" readonly/>
             </td>
             <td>
-                <button class="btn btn-danger" type="button" 
-				onclick="deletePmItem(${index + 1})">X</button>
+                <button class="btn btn-danger" type="button" onclick="deletePmItem(${index + 1})">X</button>
             </td>
 			<td>
-                <input type="hidden" id="txtUpdatePmId${index + 1}" value="${item.pmId}" />
+                <input type="hidden" id="hdnPmId${index + 1}" value="${item.pmId}" />
+				<input type="hidden" id="hdnMaterialCode${index + 1}" value="${item.materialCode}" />
             </td>
         </tr>
 		`;
@@ -353,20 +371,8 @@ function populateUpdatePmForm() {
 	$('#tblUpdatePm').append(html);
 
 	$.each(productionMaterialFiltered, function(index, item) {
-	    $(`#selectRawMaterial${index + 1}`).val(item.materialCode);
-	    
-	    fetchRmQty(index + 1);
-	    
-	    const pmQtyToUse = parseInt(item.quantityToUse, 10);
-	    $(`#txtPmQtyToUse${index + 1}`).val(pmQtyToUse);
-	    
-	    const rmQty = parseInt($(`#txtRmQty${index + 1}`).val(), 10) || 0; 
-	    $(`#txtRmQty${index + 1}`).val(rmQty + pmQtyToUse);
-		console.log("rmQty: "+rmQty+" || pmQtyToUse: "+pmQtyToUse);
-	    
-	    fetchQtyRemaining(index + 1);
+		fetchQtyRemaining(index + 1);
 	});
-
 }
 
 $('#btnShowUpdatePm').on('click', function() {
