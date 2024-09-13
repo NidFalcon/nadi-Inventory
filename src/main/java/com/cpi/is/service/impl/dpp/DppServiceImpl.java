@@ -35,8 +35,8 @@ public class DppServiceImpl implements DppService {
     }
 
     @Override
-    public List<DppEntity> getDpp() throws Exception {
-        return dppDAO.getDpp();
+    public List<DppEntity> getDpp(Integer branchId) throws Exception {
+        return dppDAO.getDpp(branchId);
     }
 
     @Override
