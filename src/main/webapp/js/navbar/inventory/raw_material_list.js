@@ -163,12 +163,19 @@ $('#btnDeleteRawMaterial').click(function() {
 			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnDeleteRawMaterialCancel').click();
-				$('#btnRawMaterials').click();
-			} else {
-				$('#divAlert').removeClass('d-none');
-				$('#divAlert').html('Unable to save changes');
-			}
+					$('.btnCloseAddModal').click();
+					$('#divAlert').html(response);
+					var $toastLiveExample = $('#successToast');
+					var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+					toastBootstrap.show();
+					$('#btnRawMaterials').click();
+				} else {
+					  $('#divAlert').html(response);
+					  var $toastLiveExample = $('#liveToast');
+					  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+					  toastBootstrap.show();
+
+				}
 		});
 	} else {
 		$('#divAlert').removeClass('d-none');
