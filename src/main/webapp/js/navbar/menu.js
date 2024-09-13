@@ -117,3 +117,13 @@ $('#btnReports').click(function() {
 		$('#divContent').html(response);
 	});
 });
+
+$('#btnProducts').click(function () {
+	$('#divContent').html(html);
+	$.get('FinishedProductListController', {
+		action: 'showFinishedProductList'
+	}, function(response) {
+		$('#btnCloseOffNavbar').click();
+		$('#divContent').html(response);
+	});
+});

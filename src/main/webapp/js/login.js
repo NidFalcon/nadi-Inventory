@@ -6,7 +6,7 @@ $('#btnLogin').click(function() {
 	}, function(response) {
 		if (response.includes('Invalid Username or Password')) {
 			$('#divAlert').html(response);
-			var $toastLiveExample = $('#messageToast');
+			var $toastLiveExample = $('#errorToast');
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 
 			toastBootstrap.show();

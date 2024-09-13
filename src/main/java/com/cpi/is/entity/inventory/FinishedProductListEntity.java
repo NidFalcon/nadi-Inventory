@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import java.util.Date; // Import Date
 
+import com.cpi.is.entity.UserEntity;
+import com.cpi.is.entity.maintenance.BranchEntity;
 import com.cpi.is.entity.maintenance.SkuEntity;
 
 import jakarta.persistence.Column;
@@ -25,6 +27,9 @@ public class FinishedProductListEntity implements Serializable {
     @Column(name = "FPL_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fplId;
+    
+	@Column(name="USER_ID")
+	private Integer userId;
 
     @Column(name = "SKU_CD")
     private String skuCD;
@@ -32,79 +37,114 @@ public class FinishedProductListEntity implements Serializable {
     @Column(name = "QUANTITY")
     private Integer quantity;
     
-    @Column(name = "BRANCH_ID")
-    private Long branchId;
+	@Column(name="BRANCH_ID")
+	private Integer branchId;
     
     @Column(name = "DATE_FINISHED")
     private Date dateFinished;
     
+	@ManyToOne
+	@JoinColumn(name="USER_ID", insertable = false, updatable = false)
+	private UserEntity user;
     @ManyToOne
 	@JoinColumn(name="SKU_CD", insertable=false, updatable=false)
 	private SkuEntity sku;
+    
+	@ManyToOne
+    @JoinColumn(name = "BRANCH_ID", insertable = false, updatable = false)
+	private BranchEntity branch;
 
 
 	public FinishedProductListEntity() {
         super();
     }
 
-    public FinishedProductListEntity(Long fplId, String skuCD, Integer quantity, Long branchId, Date dateFinished) {
-        super();
+    public FinishedProductListEntity(Long fplId, String skuCD, Integer userId, Integer quantity, Integer branchId, 
+    		Date dateFinished) {
+    	
         this.fplId = fplId;
         this.skuCD = skuCD;
+		this.userId = userId;
         this.quantity = quantity;
         this.branchId = branchId;
         this.dateFinished = dateFinished;
     }
 
+
+    
     public Long getFplId() {
-        return fplId;
-    }
+		return fplId;
+	}
 
-    public void setFplId(Long fplId) {
-        this.fplId = fplId;
-    }
+	public void setFplId(Long fplId) {
+		this.fplId = fplId;
+	}
 
-    public String getSkuCD() {
-        return skuCD;
-    }
+	public Integer getUserId() {
+		return userId;
+	}
 
-    public void setSkuCD(String skuCD) {
-        this.skuCD = skuCD;
-    }
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
-    public Integer getQuantity() {
-        return quantity;
-    }
+	public String getSkuCD() {
+		return skuCD;
+	}
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+	public void setSkuCD(String skuCD) {
+		this.skuCD = skuCD;
+	}
 
-    public Long getBranchId() {
-        return branchId;
-    }
+	public Integer getQuantity() {
+		return quantity;
+	}
 
-    public void setBranchId(Long branchId) {
-        this.branchId = branchId;
-    }
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
 
-    public Date getDateFinished() {
-        return dateFinished;
-    }
+	public Integer getBranchId() {
+		return branchId;
+	}
 
-    public void setDateFinished(Date dateFinished) {
-        this.dateFinished = dateFinished;
-    }
+	public void setBranchId(Integer branchId) {
+		this.branchId = branchId;
+	}
 
-    public SkuEntity getSku() {
+	public Date getDateFinished() {
+		return dateFinished;
+	}
+
+	public void setDateFinished(Date dateFinished) {
+		this.dateFinished = dateFinished;
+	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+
+	public SkuEntity getSku() {
 		return sku;
 	}
 
 	public void setSku(SkuEntity sku) {
 		this.sku = sku;
 	}
-    
-    @Override
+
+	public BranchEntity getBranch() {
+		return branch;
+	}
+
+	public void setBranch(BranchEntity branch) {
+		this.branch = branch;
+	}
+
+	@Override
     public String toString() {
         return "FinishedProductListEntity{" +
                 "fplId=" + fplId +

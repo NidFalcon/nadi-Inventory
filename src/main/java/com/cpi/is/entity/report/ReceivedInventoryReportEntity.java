@@ -17,7 +17,7 @@ public class ReceivedInventoryReportEntity implements Serializable {
 	@Column(name="MATERIAL_NAME")
 	private String materialName;
 	private Long quantity;
-	@Column(name="DATE_RECEIVED")
+	@Column(name="DATE_RECEIVE")
 	private Date dateReceived;
 
 	public ReceivedInventoryReportEntity() {

@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 @Entity
 public class CurrentFinishedInventoryEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@Column(name="FPL_ID")
 	private Long fplId;
@@ -23,7 +23,7 @@ public class CurrentFinishedInventoryEntity implements Serializable {
 	private Long branchId;
 	@Column(name="MATERIAL_NAME")
 	private String materialName;
-
+	
 	public CurrentFinishedInventoryEntity() {
 		super();
 	}
@@ -96,5 +96,5 @@ public class CurrentFinishedInventoryEntity implements Serializable {
 			 + ", branchId=" + branchId 
 			 + ", materialName=" + materialName + " }";
 	}
-
+	
 }

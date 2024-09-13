@@ -51,16 +51,16 @@ public class ReportController extends HttpServlet {
 					page = "pages/navbar/reports.jsp";
 				} else if ("getCurrentFinishedInventory".equals(action)) {
 					request.setAttribute("message", EscapeUtil.escapeQuotes(new JSONArray(reportService.getCurrentFinishedInventory(request))));
-					page = "pages/message/message.jsp";
+					page = "pages/message/reportTable.jsp";
 				} else if ("getPlannedRawMaterialsInventory".equals(action)) {
 					request.setAttribute("message", EscapeUtil.escapeQuotes(new JSONArray(reportService.getPlannedRawMaterialsInventory(request))));
-					page = "pages/message/message.jsp";
+					page = "pages/message/reportTable.jsp";
 				} else if ("getProductionReport".equals(action)) {
 					request.setAttribute("message", EscapeUtil.escapeQuotes(new JSONArray(reportService.getProductionReport(request))));
-					page = "pages/message/message.jsp";
+					page = "pages/message/reportTable.jsp";
 				} else if ("getReceivedInventoryReport".equals(action)) {
 					request.setAttribute("message", EscapeUtil.escapeQuotes(new JSONArray(reportService.getReceivedInventoryReport(request))));
-					page = "pages/message/message.jsp";
+					page = "pages/message/reportTable.jsp";
 				}
 			} else {
 				page = "pages/reload.jsp";
@@ -72,7 +72,7 @@ public class ReportController extends HttpServlet {
 			} else {
 				request.setAttribute("message", "Something went wrong");
 			}
-			page = "pages/message.jsp";
+			page = "pages/message/message.jsp";
 		} finally {
 			request.getRequestDispatcher(page).forward(request, response);
 		}
