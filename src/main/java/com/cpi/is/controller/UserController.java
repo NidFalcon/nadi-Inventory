@@ -81,7 +81,12 @@ public class UserController extends HttpServlet {
 				if (user != null) {
 					request.setAttribute("username", user.getUsername());
 				} else {
+					SessionEntity userSession = userService.validateSession(request);
+					if (userSession != null) {
+						request.setAttribute("username", userSession.getUsername());
+					} else {
 						page = "pages/login.jsp";
+					}
 				}
 			} else if ("showRegisterPage".equals(action)) {
 				JSONArray test = new JSONArray(branchService.getBranch());
