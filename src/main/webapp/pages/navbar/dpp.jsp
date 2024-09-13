@@ -37,10 +37,6 @@
 			<div class="modal-body">
 				<form>
 					<div class="mb-3">
-						<label for="txtDppId" class="col-form-label">DPP ID:</label>
-						<input type="text" class="form-control" id="txtDppId" readonly>
-					</div>
-					<div class="mb-3">
 						<label for="txtProductionDate" class="col-form-label">Production Date:</label>
 						<input id="txtProductionDate"
 							class="form-control" type="date" />

@@ -1,3 +1,48 @@
+// Validation (DPP)
+function validate(item) {
+	let valid = true;
+
+	if (item.productionDate === '') {
+		alert('Please enter a valid Production Date');
+		valid = false;
+		return valid;
+	}
+
+	if (item.skuCode === '') {
+		alert('Please select a valid SKU Code');
+		valid = false;
+		return valid;
+	}
+
+	const quantity = parseInt(item.quantity);
+	if (isNaN(quantity) || quantity <= 0) {
+		alert('Please enter a valid positive number for Quantity');
+		valid = false;
+		return valid;
+	}
+
+	if (item.status === '') {
+		alert('Please select a valid Status');
+		valid = false;
+		return valid;
+	}
+
+	if (item.branchId === '') {
+		alert('Please select a valid Branch ID');
+		valid = false;
+		return valid;
+	}
+
+	return valid;
+}
+
+
+$('input[type="number"]').on('input', function() {
+	this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+
+
 var dppTable = new Tabulator("#divDppTable", {
 	layout: 'fitDataFill',
 	data: dpp,
@@ -76,9 +121,8 @@ function createItem(crudOperation) {
 	let dppId;
 	let item;
 	if (crudOperation === "create") {
-		dppId = $('#txtDppId').val().trim();
 		item = {
-			dppId: dppId === '' ? null : parseInt(dppId, 10),
+			dppId: null,
 			productionDate: $('#txtProductionDate').val(),
 			skuCode: $('#selectSkuCode').val(),
 			quantity: $('#txtQuantity').val(),
@@ -97,18 +141,6 @@ function createItem(crudOperation) {
 	return item;
 }
 
-function validate(item) {
-	let valid = true;
-	if (item.productionDate === '' || item.branchId === '' || item.skuCode === '' || item.quantity === '' || item.status === '') {
-		alert('Please correctly fill out all required fields');
-		valid = false;
-	} else if (item.quantity < 0) {
-		alert('Quantity must be a non-negative number');
-		valid = false;
-	}
-	return valid;
-}
-
 function addItem(crudOperation) {
 	let item = createItem(crudOperation);
 	if (validate(item)) {
@@ -117,8 +149,8 @@ function addItem(crudOperation) {
 			item: JSON.stringify(item)
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnCloseAddModal').click();
-				$('#btnCloseUpdateModal').click();
+				$('.btnCloseAddModal').click();
+				$('.btnCloseUpdateModal').click();
 				$('#btnDpp').click();
 			} else {
 				alert('Unable to save changes');
