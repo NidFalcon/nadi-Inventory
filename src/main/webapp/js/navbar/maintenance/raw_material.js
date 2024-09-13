@@ -1,26 +1,26 @@
-var rawMaterials = new Tabulator("#divRawMaterialTable" , {
+var rawMaterials = new Tabulator("#divRawMaterialTable", {
 	layout: 'fitColumns',
 	data: rawMaterial,
 	pagination: 'local',
 	pagination: true,
 	paginationSize: 5,
-	paginationSizeSelector:[5, 10, 15, 20],
-	paginationCounter:"rows",
-	selectableRows:1,
-	movableColumns:true,
-	responsiveLayout:true,
+	paginationSizeSelector: [5, 10, 15, 20],
+	paginationCounter: "rows",
+	selectableRows: 1,
+	movableColumns: true,
+	responsiveLayout: true,
 	columns: [
-		{title:"Material Code", field: 'materialCode'},
-		{title:"Material Name", field: 'materialName'},
-		{title:"Unit of Measurement", field: 'unitOfMeasurement'},
-		{title:"Active", field: 'isActive'}
+		{ title: "Material Code", field: 'materialCode' },
+		{ title: "Material Name", field: 'materialName' },
+		{ title: "Unit of Measurement", field: 'unitOfMeasurement' },
+		{ title: "Active", field: 'isActive' }
 	],
 });
 
 $('#btnShowUpdateRawMaterial').hide();
 $('#btnShowDeleteRawMaterial').hide();
 
-rawMaterials.on('rowClick',function() {
+rawMaterials.on('rowClick', function() {
 	let row = rawMaterials.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
@@ -35,7 +35,7 @@ rawMaterials.on('rowClick',function() {
 })
 
 function populateForm(row) {
-	if(row !== undefined) {
+	if (row !== undefined) {
 		$('#txtUpdateRawMaterialCode').val(row.materialCode)
 		$('#txtUpdateRawMaterialName').val(row.materialName);
 		$('#txtUpdateRawMaterialUnit').val(row.unitOfMeasurement);
@@ -44,31 +44,31 @@ function populateForm(row) {
 }
 
 function populateDeleteForm(row) {
-	if(row !== undefined) {
+	if (row !== undefined) {
 		$('#deleteRawMaterialCode').val(row.materialCode)
 		$('#deleteRawMaterialName').val(row.materialName);
 		$('#deleteRawMaterialUnit').val(row.unitOfMeasurement);
-		$('#deleteRawMaterialStatus').val(row.isActive);	
+		$('#deleteRawMaterialStatus').val(row.isActive);
 	}
 }
 
 function createItem(crudOperation) {
 	let rawMaterial;
-	if (crudOperation === "create"){
+	if (crudOperation === "create") {
 		item = {
 			materialCode: $('#txtMaterialCode').val() !== '' ? $('#txtMaterialCode').val() : '',
 			materialName: $('#txtRawMaterialName').val(),
 			unitOfMeasurement: $('#txtRawMaterialUnit').val(),
 			isActive: $('#chkRawMaterialIsActive').is(':checked') ? 'y' : 'n',
 		};
-	} else if (crudOperation === "update"){
+	} else if (crudOperation === "update") {
 		item = {
 			materialCode: $('#txtUpdateRawMaterialCode').val() !== '' ? $('#txtUpdateRawMaterialCode').val() : '',
 			materialName: $('#txtUpdateRawMaterialName').val(),
 			unitOfMeasurement: $('#txtUpdateRawMaterialUnit').val(),
 			isActive: $('#chkUpdateRawMaterialIsActive').is(':checked') ? 'y' : 'n',
 		};
-	} else if (crudOperation === "delete"){
+	} else if (crudOperation === "delete") {
 		item = {
 			materialCode: $('#deleteRawMaterialCode').val() !== '' ? $('#deleteRawMaterialCode').val() : '',
 			materialName: $('#deleteRawMaterialName').val(),
@@ -80,44 +80,44 @@ function createItem(crudOperation) {
 }
 
 function validate(item) {
-    let valid = true;
-    if (item.materialName === '') {
-        alert('Please fill out the Material Name');
-        valid = false;
-    }
-    return valid;
+	let valid = true;
+	if (item.materialName === '') {
+		alert('Please fill out the Material Name');
+		valid = false;
+	}
+	return valid;
 }
 
 function addItem(crudOperation) {
-    let item = createItem(crudOperation);
+	let item = createItem(crudOperation);
 	console.log(item);
 	if (validate(item)) {
-        $.post('RawMaterialController', {
-            action: 'saveItem',
-            item: JSON.stringify(item)
-        }, function(response) {
-            if (response.includes('success')) {
-					$('.btnCloseAddModal').click();
-					$('#divAlert').html(response);
-					var $toastLiveExample = $('#successToast');
-					var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-					toastBootstrap.show();
-					$('#btnRawMaterials').click();
-				} else {
-					  $('#divAlert').html(response);
-					  var $toastLiveExample = $('#liveToast');
-					  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-					  toastBootstrap.show();
-				}
-        });
-    }
+		$.post('RawMaterialController', {
+			action: 'saveItem',
+			item: JSON.stringify(item)
+		}, function(response) {
+			if (response.includes('success')) {
+				$('.btnCloseAddModal').click();
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#successToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+				$('#btnRawMaterials').click();
+			} else {
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#liveToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+			}
+		});
+	}
 }
 
 
-$('#btnAddRawMaterial').click(function(){
+$('#btnAddRawMaterial').click(function() {
 	addItem("create");
 });
-$('#btnUpdateRawMaterial').click(function(){
+$('#btnUpdateRawMaterial').click(function() {
 	addItem("update");
 });
 
@@ -129,18 +129,18 @@ $('#btnDeleteRawMaterial').click(function() {
 			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
-					$('.btnCloseAddModal').click();
-					$('#divAlert').html(response);
-					var $toastLiveExample = $('#successToast');
-					var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-					toastBootstrap.show();
-					$('#btnRawMaterials').click();
-				} else {
-					  $('#divAlert').html(response);
-					  var $toastLiveExample = $('#liveToast');
-					  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-					  toastBootstrap.show();
-				}
+				$('.btnCloseAddModal').click();
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#successToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+				$('#btnRawMaterials').click();
+			} else {
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#liveToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+			}
 		});
 	} else {
 		$('#divAlert').removeClass('d-none');

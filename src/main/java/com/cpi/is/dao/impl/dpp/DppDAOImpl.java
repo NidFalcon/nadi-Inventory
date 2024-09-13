@@ -20,6 +20,17 @@ public class DppDAOImpl implements DppDAO {
         }
         return dppList;
     }
+    
+    @Override
+    public DppEntity getDppById(Long dppId) throws Exception {
+    	DppEntity dpp = null;
+        try (Session session = HBUtil.getSessionFactory().openSession()) {
+        	dpp = session.get(DppEntity.class, dppId); 
+        } catch (Exception e) {
+            throw e;
+        }
+        return dpp;
+    }
 
     @Override
     public String saveItem(DppEntity item) throws Exception {
