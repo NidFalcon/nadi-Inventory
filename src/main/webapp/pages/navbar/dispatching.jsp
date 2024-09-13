@@ -39,6 +39,8 @@
 								Type ID:</label> <input type="text" class="form-control"
 								id="addDispatchId" value="0" placeholder="0" readonly>
 						</div>
+						<input type="text" class="form-control"
+								id="addBranchId" value="0" placeholder="0" readonly>
 						<div class="mb-3">
 							<label for="addDispatchType" class="col-form-label">Dispatch
 								Type:</label> <select class="form-select selDispatchType"
@@ -111,6 +113,8 @@
 							<label for="updateDispatchId" class="col-form-label">Dispatch
 								Type ID:</label> <input type="text" class="form-control"
 								id="updateDispatchId" readonly>
+								<input type="text" class="form-control"
+								id="updateBranchId" value="0" placeholder="0" readonly>
 						</div>
 						<div class="mb-3">
 							<label for="updateDispatchType" class="col-form-label">Dispatch
@@ -213,7 +217,6 @@
 	var dispatch = JSON.parse('${dispatch}');
 	var dispatchType = JSON.parse('${dispatchType}');
 	var finishedProduct = JSON.parse('${finishedProduct}');
-	var branchId = '${branchId}';
 	var currentInventory = JSON.parse('${currentInventory}');
 </script>
 <script src="js/navbar/dispatch.js"></script>
