@@ -36,9 +36,16 @@ $('#btnConfirmRegister').click(function() {
         user: newUser
     }, function(response) {
         if(response.includes("success")){
-			console.log("YAY");
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#successToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
+			$('#btnCancelRegister').click();
 		} else {
-			console.log(":(");
+			$('#divAlert').html(response);
+						var $toastLiveExample = $('#liveToast');
+						var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+						toastBootstrap.show();
 		}
     });
 });
