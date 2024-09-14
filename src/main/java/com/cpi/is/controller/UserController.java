@@ -47,8 +47,8 @@ public class UserController extends HttpServlet {
 					request.setAttribute("username", user.getUsername());
 					userService.saveSession(request);
 					
-					Cookie userCookie = new Cookie("user", user.getUsername());
-					response.addCookie(userCookie);
+//					Cookie userCookie = new Cookie("user", user.getUsername());
+//					response.addCookie(userCookie);
 					
 					//Cookie sessionCookie = new Cookie("sessionId", request.getSession().getId());
 					//sessionCookie.setMaxAge(5 * 60);
