@@ -42,7 +42,6 @@
 						</ul>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="#" id="btnDpp"><i class="bi bi-card-heading me-1"></i>DPP</a></li>
-					<li class="nav-item"><a class="nav-link" href="#" id="btnProductionMaterial">Production Materials</a></li>
 				</ul>
 			</div>
 		</ul>
