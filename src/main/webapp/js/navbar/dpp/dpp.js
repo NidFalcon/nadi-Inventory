@@ -30,7 +30,6 @@ dppTable.on('rowClick', function() {
 	if (row !== undefined) {
 		populateForm(row);
 		$('#btnShowAddPm').show();
-		//$('#btnShowUpdatePm').show();
 		$('#btnShowUpdateDpp').show();
 		$('#btnShowDeleteDpp').show();
 	} else {
@@ -44,6 +43,7 @@ dppTable.on('rowClick', function() {
 $('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
+	console.log(row);
 	if (row !== undefined) {
 		$('#txtUpdateDppId').val(row.dppId)
 		$('#selectUpdateSkuCode').val(row.skuCode);
@@ -52,7 +52,9 @@ function populateForm(row) {
 		$('#selectUpdateStatus').val(row.status);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
+		$('#dppSkuName').val(row.sku.skuName);
 		$('#updateMaterialDppId').val(row.dppId);
+		$('#updateDppSkuName').val(row.sku.skuName);
 		filterProductionMaterial(row);
 	}
 }
@@ -136,7 +138,6 @@ $('#btnUpdateDppSubmit').click(function() {
 
 function deleteItem() {
 	let deleteDppId = $('#txtDeleteDppId').val().trim();
-	console.log(deleteDppId);
 	if (deleteDppId !== '') {
 		let item = {
 			dppId: deleteDppId
@@ -145,7 +146,6 @@ function deleteItem() {
 			action: 'deleteItem',
 			item: JSON.stringify(item)
 		}, function(response) {
-			console.log(response);
 			if (response.includes('success')) {
 				$('#btnCloseDeleteModal').click();
 				$('#btnDpp').click();
@@ -174,6 +174,8 @@ function filterProductionMaterial(row) {
 	if (productionMaterialFiltered.length !== 0) {
 		$('#btnShowUpdatePm').show();
 		$('#materialDppIdContainer').hide();
+		$('#dppSkuNameContainer').hide();
+		$('#updateDppSkuNameContainer').hide();
 		$('#divProductionMaterialTable').show();
 		productionMaterialTable = new Tabulator("#divProductionMaterialTable", {
 			layout: 'fitColumns',
@@ -193,46 +195,118 @@ function filterProductionMaterial(row) {
 		});
 	} else {
 		$('#materialDppIdContainer').show();
+		$('#dppSkuNameContainer').show();
+		$('#updateDppSkuNameContainer').show();
 		$('#divProductionMaterialTable').hide();
 		$('#btnShowUpdatePm').hide();
 	}
 }
 
-function createRawMaterialOptions() {
-	let html = '';
-	$.each(rawMaterial, function(index, item) {
-		if (item.isActive === "y") {
-			html += `<option id="item${item.materialCode}" value="${item.materialCode}">
-						${item.materialCode} ${item.materialName} (${item.unitOfMeasurement})
-					</option>`;
-		}
-	});
+function createRawMaterialListOptions() {
+    const materialMap = {};
 
-	return html;
+    rawMaterialList.forEach(item => {
+        if (item.material.isActive === "y") {
+            if (!materialMap[item.materialCode]) {
+                materialMap[item.materialCode] = [];
+            }
+            materialMap[item.materialCode].push(item);
+        }
+    });
+
+    let html = '';
+    for (const [materialCode, items] of Object.entries(materialMap)) {
+        html += `<optgroup label="${materialCode}">`;
+        items.forEach(item => {
+            html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
+                        ${item.material.materialName} &nbsp;&nbsp; [${item.dateReceive}]
+                    </option>`;
+        });
+        html += `</optgroup>`;
+    }
+
+    return html;
 }
 
 var materialCounter = 0;
+
 function addPmRow() {
-	materialCounter++;
-	let html = `
+    materialCounter++;
+    let html = `
         <tr id="pmRow${materialCounter}">
-			<td>
-                <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}">
-                    ${createRawMaterialOptions()}
+            <td>
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
+                    ${createRawMaterialListOptions()}
                 </select>
             </td>
-            <td>
-                <input type="number" class="form-control" id="txtMaterialQuantity${materialCounter}" 
-				min="1" placeholder="Enter quantity" />
+			<td>
+                <input type="text" class="form-control" id="txtUnitOfMeasurement${materialCounter}" readonly/>
             </td>
             <td>
-                <button class="btn btn-danger" type="button" 
-				onclick="deleteAddPmRow(${materialCounter})">X</button>
+                <input type="text" class="form-control" id="txtRmQty${materialCounter}" readonly/>
+            </td>
+            <td>
+                <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" min="1" placeholder="Enter quantity" oninput="fetchQtyRemaining(${materialCounter})"/>
+            </td>
+            <td>
+                <input type="text" class="form-control" id="txtRmQtyRemaining${materialCounter}" readonly/>
+            </td>
+            <td>
+                <button class="btn btn-danger" type="button" onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
     `;
 
-	$('#tblAddPm').append(html);
+    $('#tblAddPm').append(html);
+    fetchRmQty(materialCounter);
+	fetchQtyRemaining(materialCounter);
+}
+
+function fetchRmQty(counter) {
+    const selectElement = $(`#selectRawMaterial${counter}`);
+    const selectedOption = selectElement.find('option:selected'); // Get the selected option
+    const selectedMaterialListId = selectedOption.attr('materialListId'); // Get the materialListId from the custom attribute
+
+    console.log(`Fetching RM Qty for MaterialListId: ${selectedMaterialListId}`);
+
+    // Find the material by materialListId
+    const matchingMaterial = rawMaterialList.find(function(material) {
+        return material.materialListId == selectedMaterialListId;
+    });
+
+    if (matchingMaterial) {
+        // Update the Quantity field
+        $(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
+        console.log(`Matched Material Quantity: ${matchingMaterial.quantity}`);
+
+        // Update the Unit of Measurement field
+        $(`#txtUnitOfMeasurement${counter}`).val(matchingMaterial.material.unitOfMeasurement);
+        console.log(`Matched Material UOM: ${matchingMaterial.material.unitOfMeasurement}`);
+    } else {
+        $(`#txtRmQty${counter}`).val("");
+        $(`#txtUnitOfMeasurement${counter}`).val(""); // Clear the UOM field if no material is found
+        console.log(`No matching material found for MaterialListId: ${selectedMaterialListId}`);
+    }
+}
+
+
+
+function fetchQtyRemaining(counter) {
+    // Get the initial stock (rmQty) and the quantity to use (qtyToUse)
+    const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
+    let qtyToUse = parseFloat($(`#txtPmQtyToUse${counter}`).val()) || 0;
+
+    // If the quantity to use exceeds the available stock, cap it to the stock value
+    if (qtyToUse > rmQty) {
+        qtyToUse = rmQty;
+        $(`#txtPmQtyToUse${counter}`).val(rmQty);
+    }
+
+    // Calculate the remaining quantity after usage
+    const remainingQty = rmQty - qtyToUse;
+
+    // Update the remaining quantity field
+    $(`#txtRmQtyRemaining${counter}`).val(remainingQty);
 }
 
 $('#btnAddPmRow').on('click', function() {
@@ -249,13 +323,22 @@ function populateUpdatePmForm() {
 		html += `
 		<tr id="updatePmRow${index + 1}">
 			<td>
-                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}">
-                    ${createRawMaterialOptions()}
+                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}" onchange="fetchRmQty(${index + 1})>
+                    ${createRawMaterialListOptions()}
                 </select>
             </td>
+			<td>
+                <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" readonly/>
+            </td>
             <td>
-                <input type="number" class="form-control" id="txtMaterialQuantity${index + 1}" 
+                <input type="text" class="form-control" id="txtRmQty${index + 1}" readonly/>
+            </td>
+			<td>
+                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" oninput="fetchQtyRemaining(${index + 1})"
 				min="1" placeholder="Enter quantity" />
+            </td>
+            <td>
+                <input type="text" class="form-control" id="txtRmQtyRemaining${index + 1}" readonly/>
             </td>
             <td>
                 <button class="btn btn-danger" type="button" 
@@ -273,7 +356,9 @@ function populateUpdatePmForm() {
 
 	$.each(productionMaterialFiltered, function(index, item) {
 		$(`#selectRawMaterial${index + 1}`).val(item.materialCode);
-		$(`#txtMaterialQuantity${index + 1}`).val(item.quantityToUse);
+		$(`#txtPmQtyToUse${index + 1}`).val(item.quantityToUse);
+		fetchRmQty(index + 1);
+		fetchQtyRemaining(index + 1);
 	});
 }
 
@@ -282,15 +367,15 @@ $('#btnShowUpdatePm').on('click', function() {
 });
 
 function clearPmRows() {
-    $('.table tr[id^="pmRow"]').remove();
-    $('.table tr[id^="updatePmRow"]').remove();
-    materialCounter = 0;
+	$('.table tr[id^="pmRow"]').remove();
+	$('.table tr[id^="updatePmRow"]').remove();
+	materialCounter = 0;
 }
 
 $('.btnCloseAddPmModal, .btnCloseUpdatePmModal').on('click', clearPmRows);
 
 $(document).keydown(function(event) {
-    if (event.key === 'Escape' || event.key === 'Esc') {
-        clearPmRows();
-    }
+	if (event.key === 'Escape' || event.key === 'Esc') {
+		clearPmRows();
+	}
 });

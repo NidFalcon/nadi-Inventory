@@ -30,9 +30,8 @@ public class DispatchingDAOImpl implements DispatchingDAO {
 	            "sku.skuName " +
 	            "FROM FinishedProductListEntity fpl " +
 	            "LEFT JOIN DispatchingEntity dispatch ON fpl.fplId = dispatch.fplId " +
-	            "AND dispatch.dispatchDate <= current_date " +
 	            "JOIN fpl.sku sku " +
-	            "WHERE fpl.dateFinished <= current_date AND fpl.branchId = :branchId " +  // Fixed branchId and space issue
+	            "WHERE fpl.branchId = :branchId " +  // Fixed branchId and space issue
 	            "GROUP BY fpl.skuCD, sku.skuName " +
 	            "ORDER BY fpl.skuCD",
 	            Object[].class).setParameter("branchId", branchId).list();

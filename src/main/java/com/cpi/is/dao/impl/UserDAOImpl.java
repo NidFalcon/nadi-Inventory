@@ -1,7 +1,5 @@
 package com.cpi.is.dao.impl;
-
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import com.cpi.is.entity.SessionEntity;

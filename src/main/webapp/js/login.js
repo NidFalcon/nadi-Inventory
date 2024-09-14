@@ -5,11 +5,9 @@ $('#btnLogin').click(function() {
 		password: $('#txtPassword').val()
 	}, function(response) {
 		if (response.includes('Invalid Username or Password')) {
-			$('#divAlert').html(response);
+			$('#divMessage').append(response);
 			var $toastLiveExample = $('#liveToast');
-
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-
 			toastBootstrap.show();
 		} else {
 			$('#divMenu').html(response);

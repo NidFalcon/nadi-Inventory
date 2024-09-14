@@ -10,8 +10,9 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.cpi.is.dao.impl.inventory.RawMaterialListDAOImpl;
+import com.cpi.is.dao.impl.maintenance.RawMaterialDAOImpl;
+import com.cpi.is.dao.maintenance.RawMaterialDAO;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.entity.inventory.RawMaterialListEntity;
 import com.cpi.is.exception.InvalidJsonException;
@@ -22,27 +23,30 @@ import com.cpi.is.util.ValidationUtil;
 public class RawMaterialListServiceImpl implements RawMaterialListService, JsonValidate{
 	
 	private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
+	private RawMaterialDAOImpl rawMaterialDao = new RawMaterialDAOImpl();
+	
+	private RawMaterialListEntity jsonToEntity(JSONObject json) throws NumberFormatException, JSONException, Exception {
+		return new RawMaterialListEntity(
+				json.getLong("materialListId"),
+				json.getString("materialCode"),
+				json.getInt("quantity"),
+				json.getInt("userId"),
+				convertStringToSqlDate(json.getString("dateReceive")),
+				json.getInt("branchId"));
+	}
 	
 	public RawMaterialListDAOImpl getRawMaterialListDAO() {
 		return rawMaterialListDAO;
 	}
 
+
+
 	public void setRawMaterialListDAO(RawMaterialListDAOImpl rawMaterialListDAO) {
 		this.rawMaterialListDAO = rawMaterialListDAO;
 	}
 
-	
-	private RawMaterialListEntity jsonToEntity(JSONObject json) throws NumberFormatException, JSONException, Exception {
-		
-		return new RawMaterialListEntity(
-				json.getInt("materialListId"),
-				json.getString("materialCode"),
-				json.getInt("quantity"),
-				json.getInt("userId"),
-				convertStringToSqlDate(json.getString("dateRecieve")),
-				json.getInt("branchId"));
-	}
-	
+
+
 	private static Date convertStringToSqlDate(String dateString) {
         // Define the format of the input string
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -63,7 +67,14 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	public List<RawMaterialListEntity>  getRawMaterialList(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
-		return rawMaterialListDAO.getRawMaterialList(user.getBranchId());
+		List<RawMaterialListEntity> rawMaterialLists = rawMaterialListDAO.getRawMaterialList(user.getBranchId());
+        for (RawMaterialListEntity entity : rawMaterialLists) {
+            UserEntity rawMaterialUser = entity.getUser();
+            if (rawMaterialUser != null) {
+            	rawMaterialUser.setPassword("");
+            }
+        }
+		return rawMaterialLists;
 	}
 
 
@@ -72,9 +83,10 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 	public String saveRawMaterial(HttpServletRequest request, HttpSession session) throws Exception {
 		JSONObject json = new JSONObject(request.getParameter("item"));
 		UserEntity user = (UserEntity) session.getAttribute("user");
+		String operation = request.getParameter("operation");
 		json.put("userId", user.getUserId());
 		json.put("branchId", user.getBranchId());
-		validateJson(json);
+		validateJson(json, operation);
 		return rawMaterialListDAO.saveRawMaterial(
 				jsonToEntity(json));
 		//return null;		
@@ -90,28 +102,59 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 
 
 	@Override
-	public void validateJson(JSONObject jsonObject) throws InvalidJsonException {
+	public void validateJson(JSONObject jsonObject, String operation) throws InvalidJsonException {
 
-		String requiredFields[] = {"materialListId", "materialCode", "quantity", "userId", "dateRecieve", "branchId"};
+		String requiredFields[] = {"materialListId", "materialCode", "quantity", "userId", "dateReceive", "branchId"};
 	    ValidationUtil.checkFields(requiredFields, jsonObject);
 
-	    ValidationUtil.isValidDate(jsonObject.getString("dateRecieve"));
+	    ValidationUtil.isValidDate(jsonObject.getString("dateReceive"));
 	    
 	    // Validate quantity
 	    String quantityStr = jsonObject.get("quantity").toString();
-	    
+	    ValidationUtil.checkNumber(jsonObject.get("materialListId").toString());
+
 	    ValidationUtil.checkNumber(quantityStr);
-	    	
+	    
+		if ("add".equals(operation)) {
+			Long materialListId = jsonObject.getLong("materialListId");
+			if (!(materialListId == null || materialListId == 0)) {
+				throw new InvalidJsonException("Primary Key must not have a value for Add Operations");
+			}
+		} else if ("update".equals(operation)) {
+			if (jsonObject.isNull("materialListId") || jsonObject.getString("materialListId").isEmpty()) {
+				throw new InvalidJsonException("Primary Key must not be NULL for Update Operations");
+			}
+			validatePK(jsonObject.getLong("materialListId"));
+		    checkForeignKey(jsonObject.getString("materialCode"));
+		}
 	}
 
-	//validation for foreign key (not working)
-//	public static boolean checkForeignKey (JSONObject jsonObject) throws InvalidJsonException {
-//		
-//		String checkForeignKey = jsonObject.getString("materialCode");
-//		if(!checkForeignKey.matches(jsonObject.getString("materialCode"))) {
-//			throw new InvalidJsonException("something went wrong!");
-//		}
-//		return true;
-//	}
+	public boolean checkForeignKey (String jsonObject) throws InvalidJsonException {
+		try {
+			if (rawMaterialDao.getRawMaterialById(jsonObject) == null) {
+				throw new InvalidJsonException("Invalid Parameter");
+			}
+		} catch (Exception e) {
+			if (e instanceof InvalidJsonException) {
+				throw (InvalidJsonException) e;
+			}
+			e.printStackTrace();
+		}
+		return true;
+	}
 	
+	public void validatePK(Long primaryKey) throws InvalidJsonException {
+		try {
+			if (rawMaterialListDAO.getRawMaterialListById(primaryKey) == null) {
+				throw new InvalidJsonException("Primary Key must be a Valid Primary Key for Update Operations");
+			}
+		} catch (Exception e) {
+			if (e instanceof InvalidJsonException) {
+				throw (InvalidJsonException) e;
+			}
+			e.printStackTrace();
+		}
+	}
+	
+	//validate on update if RawMaterial
 }
