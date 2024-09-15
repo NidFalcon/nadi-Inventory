@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import org.json.JSONObject;
@@ -71,12 +72,9 @@ public class DppServiceImpl implements DppService, JsonValidate {
 	    String[] requiredFields = {"dppId", "productionDate", "quantity", "status", "branchId", "skuCode"};
 	    ValidationUtil.checkFields(requiredFields, jsonObject);
 	    ValidationUtil.isValidDate(jsonObject.getString("productionDate"));
-
-	    String quantityStr = jsonObject.get("quantity").toString();
-	    ValidationUtil.checkNumber(quantityStr);
-	    
-	    String status = jsonObject.getString("status");
-	    validateStatus(status);
+	    ValidationUtil.checkNumber(jsonObject.get("quantity").toString());
+	    validateStatus(jsonObject.getString("status"));
+	    checkForeignKey(jsonObject.getString("skuCode"));
 
 	    if ("add".equals(operation)) {
 	        if (jsonObject.has("dppId") && jsonObject.get("dppId") != JSONObject.NULL) {
@@ -86,23 +84,21 @@ public class DppServiceImpl implements DppService, JsonValidate {
 	        if (jsonObject.isNull("dppId") || jsonObject.get("dppId").toString().isEmpty()) {
 	            throw new InvalidJsonException("Invalid ID");
 	        }
-	        
-	        checkForeignKey(jsonObject.getString("skuCode"));
 	    }
 	}
 
 
 	public boolean checkForeignKey (String jsonObject) throws InvalidJsonException {
 		try {
-			if (skuDAO.getSkuById(jsonObject) == null) {
-				throw new InvalidJsonException("Invalid Parameter");
+			if (skuDAO.getSkuById(jsonObject) == null){
+				throw new InvalidJsonException("Invalid SKU Code");
 			}
-		} catch (Exception e) {
-			if (e instanceof InvalidJsonException) {
-				throw (InvalidJsonException) e;
-			}
-			e.printStackTrace();
-		}
+			
+		} catch (InvalidJsonException e) {
+	        throw e;
+	    } catch (Exception e) {
+	        throw new InvalidJsonException("An unexpected error occurred while validating SKU Code");
+	    }
 		return true;
 	}
 	
@@ -120,7 +116,7 @@ public class DppServiceImpl implements DppService, JsonValidate {
 	public void validateStatus(String status) throws InvalidJsonException {
 		try {
 			if (!VALID_STATUSES.contains(status)) {
-	            throw new InvalidJsonException("Invalid Status option");
+	            throw new InvalidJsonException("Invalid Status");
 	        }
 		} catch (Exception e) {
 			if (e instanceof InvalidJsonException) {

@@ -44,11 +44,7 @@ $('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
 	if (row !== undefined) {
-		$('#txtUpdateDppId').val(row.dppId)
-		$('#selectUpdateSkuCode').val(row.skuCode);
-		$('#txtUpdateProductionDate').val(row.productionDate);
-		$('#txtUpdateQuantity').val(row.quantity);
-		$('#selectUpdateStatus').val(row.status);
+		populateUpdateDppForm(row);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
 		$('#dppSkuName').val(row.sku.skuName);
@@ -57,6 +53,15 @@ function populateForm(row) {
 		filterProductionMaterial(row);
 	}
 }
+
+function populateUpdateDppForm(row) {
+	$('#txtUpdateDppId').val(row.dppId)
+	$('#selectUpdateSkuCode').val(row.skuCode);
+	$('#txtUpdateProductionDate').val(row.productionDate);
+	$('#txtUpdateQuantity').val(row.quantity);
+	$('#selectUpdateStatus').val(row.status);
+}
+
 
 function createSkuOptions() {
 	let html = '';
@@ -157,7 +162,7 @@ function deleteItem() {
 				toastBootstrap.show();
 			}
 		});
-	} 
+	}
 }
 
 $('#btnConfirmDeleteDpp').click(function() {
