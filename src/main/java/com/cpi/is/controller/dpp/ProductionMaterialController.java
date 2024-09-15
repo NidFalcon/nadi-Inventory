@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.entity.UserEntity;
+import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.dpp.DppService;
 import com.cpi.is.service.dpp.ProductionMaterialService;
 import com.cpi.is.service.maintenance.RawMaterialService;
@@ -49,20 +50,23 @@ public class ProductionMaterialController extends HttpServlet {
             } else if ("saveItem".equals(action)) {
                 String message = productionMaterialService.saveItem(request);
                 request.setAttribute("message", message);
-                page = "pages/message.jsp";
+                page = "pages/success.jsp";
             } else if ("deleteItem".equals(action)) {
                 String message = productionMaterialService.deleteItem(request);
                 request.setAttribute("message", message);
-                page = "pages/message.jsp";
+                page = "pages/success.jsp";
             } else if ("saveBulkItems".equals(action)) {
             	String message = productionMaterialService.saveBulkItems(request);
-                request.setAttribute("message", message);
-                page = "pages/message.jsp";
+            	request.setAttribute("message", message);
+                page = "pages/success.jsp";
             }
-        } catch (Exception e) {
+        } catch (InvalidJsonException e) {
+			request.setAttribute("message", e.getMessage());
+			page = "pages/message.jsp";
+		} catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "An error occurred: " + e.getMessage());
-            page = "pages/error.jsp";
+            request.setAttribute("message", "Something went wrong");
+            page = "pages/message.jsp";
         } finally {
             request.getRequestDispatcher(page).forward(request, response);
         }

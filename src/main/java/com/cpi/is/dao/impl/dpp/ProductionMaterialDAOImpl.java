@@ -19,6 +19,17 @@ public class ProductionMaterialDAOImpl implements ProductionMaterialDAO {
         }
         return productionMaterialList;
     }
+    
+    @Override
+    public ProductionMaterialEntity getProductionMaterialById(Long pmId) throws Exception {
+    	ProductionMaterialEntity pm = null;
+        try (Session session = HBUtil.getSessionFactory().openSession()) {
+        	pm = session.get(ProductionMaterialEntity.class, pmId); 
+        } catch (Exception e) {
+            throw e;
+        }
+        return pm;
+    }
 
     @Override
     public String saveItem(ProductionMaterialEntity item) throws Exception {
