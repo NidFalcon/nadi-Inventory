@@ -253,20 +253,21 @@ function checkQuantity() {
 
 function checkQuantityUpdate() {
 	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); // Updated dispatch quantity
-	//let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); // Updated dispatch quantity
+	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); // Updated dispatch quantity
 	if (isNaN(availableQuantity) || isNaN(dispatchQuantityUpdate)) {
 		return; // Return if either quantity is not a number
 	}
 
 	// Ensure total quantity doesn't exceed currentQuantity
 	if (availableQuantity == 0) {
-		$('#updateDispatchQuantity').val(availableQuantity + dispatchQuantityUpdate); 
+		$('#updateDispatchQuantity').val(fplQuantityUpdate); 
 	}
 	else if (dispatchQuantityUpdate > availableQuantity) {
-		$('#updateDispatchQuantity').val(availableQuantity); // Clear invalid input
+		$('#updateDispatchQuantity').val(totalQuantityUpdate); // Clear invalid input
 	} 
 	
 	console.log("availableQuantity = " + availableQuantity);
+	console.log("totalQuantityUpdate = " + totalQuantityUpdate);
 
 }
 
@@ -281,6 +282,7 @@ function populateForm(row) {
 
 	let currentDate = new Date(getCurrentDate());
 	let selectedFplId = row.fplId; // Save the initial FPL ID from the selected row
+
 	let html = '<option value="">';
 
 	// Populate the form with the dispatch details from the selected row
@@ -310,38 +312,33 @@ function populateForm(row) {
 
 	// Set the initial FPL ID based on the selected row
 	$updateFinishedProductId.val(selectedFplId);
-
-	// Function to handle changes in the FPL ID
-	function handleFplChange() {
+	function initialFpl(){
 		let selectedOption = $updateFinishedProductId.find('option:selected');
-		let skuCode = selectedOption.data('sku-code');
-		let updateDispatchQuantity = parseFloat($('#updateDispatchQuantity').val()) || 0;
-		availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
-
-		// Update the dispatch quantity
-		if ($updateFinishedProductId.val() == selectedFplId) {
-			$('#updateDispatchQuantity').val(row.quantity);
-		} else {
-			$('#updateDispatchQuantity').val(0);
-		}
-
-		if (availableQuantity != 0) {
-			totalQuantityUpdate = availableQuantity + updateDispatchQuantity; // Total quantity after update
-			$('.txtQuantityFPL').val(totalQuantityUpdate);
-		} else if (availableQuantity == 0) {
-			availableQuantity = updateDispatchQuantity;
-			$('.txtQuantityFPL').val(availableQuantity);
-		}
-
-		// Update the total available quantity and date finished
-		$('.txtDateFinished').val(selectedOption.data('date-finished'));
+			let skuCode = selectedOption.data('sku-code');
+			let updateDispatchQuantity = parseFloat($('#updateDispatchQuantity').val()) || 0;
+			availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
+			$('.txtDateFinished').val(selectedOption.data('date-finished'));
+				
+			if (availableQuantity != 0) {
+				totalQuantityUpdate = availableQuantity + updateDispatchQuantity; // Total quantity after update
+				$('.txtQuantityFPL').val(totalQuantityUpdate);
+			}
+			else if (availableQuantity == 0) {
+				$('.txtQuantityFPL').val(updateDispatchQuantity);
+			}
 	}
-
+	
+	function updateFplChange() {
+		initialFpl();
+		$('.txtQuantityFPL').val(availableQuantity);
+		$('#updateDispatchQuantity').val(0);
+	}
+	
 	// Bind the change event handler
-	$updateFinishedProductId.off('change').on('change', handleFplChange);
+	$updateFinishedProductId.off('change').on('change', updateFplChange);
 
 	// Call the function to initialize the form with the default FPL ID values
-	handleFplChange();
+	initialFpl();
 }
 
 function populateDeleteForm(row) {
