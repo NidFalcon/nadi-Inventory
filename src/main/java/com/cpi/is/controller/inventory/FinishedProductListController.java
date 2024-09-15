@@ -11,7 +11,9 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
+import com.cpi.is.util.SessionUtil;
 
 @WebServlet("/FinishedProductListController")
 public class FinishedProductListController extends HttpServlet {
@@ -29,15 +31,22 @@ public class FinishedProductListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
-			if ("showFinishedProductList".equals(action)) {
-				request.setAttribute("finishedProductList", new JSONArray(finishedProductListService.getFinishedProductList(request)));
-				page = "pages/navbar/inventory/finishedProductList.jsp";
-			} else if ("saveItem".equals(action)) {
-				request.setAttribute("message", finishedProductListService.saveProduct(request));
-				page = "pages/message.jsp";
-			} else if ("deleteItem".equals(action)) {
-				request.setAttribute("message", finishedProductListService.deleteProduct(request));
-				page = "pages/message.jsp";
+			
+			if (SessionUtil.isUserLoggedIn(request)) {
+				if ("showFinishedProductList".equals(action)) {
+					request.setAttribute("finishedProductList", new JSONArray(finishedProductListService.getFinishedProductList(request)));
+					page = "pages/navbar/inventory/finishedProductList.jsp";
+				} else if ("saveItem".equals(action)) {
+					request.setAttribute("message", finishedProductListService.saveProduct(request));
+					page = "pages/message.jsp";
+				} else if ("deleteItem".equals(action)) {
+					request.setAttribute("message", finishedProductListService.deleteProduct(request));
+					page = "pages/message.jsp";
+				}
+			} else {
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
+				System.out.println("request is " + request.getAttribute(action));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.ReportServiceImpl;
 import com.cpi.is.util.EscapeUtil;
 import com.cpi.is.util.SessionUtil;
@@ -43,9 +44,7 @@ public class ReportController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			if (SessionUtil.checkUserSession(request)) {
-				action = request.getParameter("action");
-
+			if (SessionUtil.isUserLoggedIn(request)) {
 				if ("showReports".equals(action)) {
 					request.setAttribute("defaultDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 					page = "pages/navbar/reports.jsp";
@@ -63,7 +62,9 @@ public class ReportController extends HttpServlet {
 					page = "pages/message/reportTable.jsp";
 				}
 			} else {
-				page = "pages/reload.jsp";
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
+				System.out.println("request is " + request.getAttribute(action));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.maintenance.RawMaterialService;
+import com.cpi.is.util.SessionUtil;
 
 /**
  * Servlet implementation class RawMaterialController
@@ -40,19 +41,24 @@ public class RawMaterialController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
-
-            if ("showRawMaterial".equals(action)) {
-                request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
-                page = "pages/navbar/maintenance/rawMaterial.jsp";
-            } else if ("saveItem".equals(action)) {
-                String message = rawMaterialService.saveItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message/success.jsp";
-            } else if ("deleteItem".equals(action)) {
-                String message = rawMaterialService.deleteItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message/success.jsp";
-            }
+			if (SessionUtil.isUserLoggedIn(request)) {
+	            if ("showRawMaterial".equals(action)) {
+	                request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
+	                page = "pages/navbar/maintenance/rawMaterial.jsp";
+	            } else if ("saveItem".equals(action)) {
+	                String message = rawMaterialService.saveItem(request);
+	                request.setAttribute("message", message);
+	                page = "pages/message/success.jsp";
+	            } else if ("deleteItem".equals(action)) {
+	                String message = rawMaterialService.deleteItem(request);
+	                request.setAttribute("message", message);
+	                page = "pages/message/success.jsp";
+	            }
+			} else {
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
+				System.out.println("request is " + request.getAttribute(action));
+			}
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
