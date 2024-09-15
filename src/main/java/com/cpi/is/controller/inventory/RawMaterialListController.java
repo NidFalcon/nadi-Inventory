@@ -37,25 +37,23 @@ public class RawMaterialListController extends HttpServlet {
 			if ("showRawMaterialList".equals(action)) {
 				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
 				JSONArray materials = new JSONArray(rawMaterialService.getRawMaterial());
-				JSONArray test = new JSONArray(rawMaterialListService.getRawMaterialList(request));
-				System.out.println(test);
 				request.setAttribute("material", materials);
 				page = "pages/navbar/inventory/rawMaterialList.jsp";
 			} else if ("saveRawMaterial".equals(action)) {
 				HttpSession session = request.getSession();
 				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
-				page = "pages/success.jsp";
+				page = "pages/message/success.jsp";
 			} else if ("deleteRawMaterial".equals(action)) {
 				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
-				page = "pages/message.jsp";
+				page = "pages/message/success.jsp";
 			}
 		} catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());
-			page = "pages/message.jsp";
+			page = "pages/message/message.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("message", "something went wrong! oops~");
-			page = "pages/message.jsp";
+			page = "pages/message/message.jsp";
 		} finally {
 			request.getRequestDispatcher(page).forward(request, response);
 		}

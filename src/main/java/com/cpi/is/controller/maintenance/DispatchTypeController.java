@@ -46,11 +46,11 @@ public class DispatchTypeController extends HttpServlet {
 			} else if ("saveItem".equals(action)) {
 				String message = dispatchTypeService.saveItem(request);
 				request.setAttribute("message", message);
-				page = "pages/message.jsp";
+				page = "pages/message/success.jsp";
 			} else if ("deleteItem".equals(action)) {
 				String message = dispatchTypeService.deleteItem(request);
 				request.setAttribute("message", message);
-				page = "pages/message.jsp";
+				page = "pages/message/success.jsp";
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();

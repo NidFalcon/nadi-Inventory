@@ -6,7 +6,6 @@ import org.hibernate.Transaction;
 
 import com.cpi.is.dao.inventory.RawMaterialListDAO;
 import com.cpi.is.entity.inventory.RawMaterialListEntity;
-import com.cpi.is.entity.maintenance.RawMaterialEntity;
 import com.cpi.is.util.HBUtil;
 
 public class RawMaterialListDAOImpl implements RawMaterialListDAO {

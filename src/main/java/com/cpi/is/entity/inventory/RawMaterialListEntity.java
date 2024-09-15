@@ -52,7 +52,7 @@ public class RawMaterialListEntity {
 	
 	public RawMaterialListEntity(Long materialListId, String materialCode, Integer quantity,
 			Integer userId, Date dateReceive, Integer branchId) {
-		super();
+
 		this.materialListId = materialListId;
 		this.materialCode = materialCode;
 		this.quantity = quantity;
@@ -158,7 +158,7 @@ public class RawMaterialListEntity {
 	           "materialListId=" + materialListId +
 	           ", materialCode='" + materialCode + '\'' +
 	           ", quantity=" + quantity +
-	           ", userId=" + userId +
+	           ", userId=" + userId +	
 	           ", dateReceive=" + dateReceive +
 	           ", branchId=" + branchId +
 	           '}';

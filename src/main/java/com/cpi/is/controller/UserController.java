@@ -57,7 +57,7 @@ public class UserController extends HttpServlet {
 					page = "pages/navbar/menu.jsp";
 				} else {
 					request.setAttribute("message", "Invalid Username or Password");
-					page = "pages/message.jsp";
+					page = "pages/message/message.jsp";
 				}
 			}  else if ("logout".equals(action)) {
 				HttpSession session = request.getSession();
@@ -95,7 +95,7 @@ public class UserController extends HttpServlet {
 				page="pages/registration.jsp";
 			} else if ("registerNewUser".equals(action)) {
 				request.setAttribute("message", userService.registerNewUser(request));
-				page = "pages/message.jsp";
+				page = "pages/message/message.jsp";
 			}
 			
 			
