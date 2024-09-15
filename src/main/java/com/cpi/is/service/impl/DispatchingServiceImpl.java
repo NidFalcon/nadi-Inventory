@@ -182,47 +182,75 @@ public class DispatchingServiceImpl implements DispatchingService {
 		return validation;
 	}
 	
-	public String validateQuantity(HttpServletRequest request, List<FinishedProductListEntity> finishedProductList) throws Exception{
-		JSONObject json = new JSONObject(request.getParameter("item"));
-		String validation = "Please fill-out the dispatching form correctly";
-		System.out.println("json = " + json);
-		List<DispatchingEntity> dispatchingEntities = getDispatchingByBranchId(Integer.parseInt(json.getString("branchId")));
-		
-		outerloop:
-        for (FinishedProductListEntity finishedProduct : finishedProductList) {
-	    	if(finishedProduct.getFplId() == Long.parseLong(json.getString("fplId"))) {
-	        	if(finishedProduct.getDateFinished().getTime() >
-	        			(new SimpleDateFormat("yyyy-MM-dd").parse(json.getString("dispatchDate")).getTime())) {
-	        		System.out.println("pointer3");
-	    			break outerloop;
-	        	}
-	    		if(Long.parseLong(json.getString("dispatchTrackId")) == 0){
-	    			if(finishedProduct.getQuantity() < Long.parseLong(json.getString("quantity"))) {
-	    				System.out.println("pointer2");
-	    				break outerloop;
-		    		} else {
-		    			validation = "success";
-		    			break outerloop;
-		    		}
-	    		}else {
-		    		for(DispatchingEntity dispatchingEntity : dispatchingEntities) {
-		    			if(dispatchingEntity.getDispatchTrackId() == Long.parseLong(json.getString("dispatchTrackId"))) {
-				    		if((finishedProduct.getQuantity() + dispatchingEntity.getQuantity()) 
-				    				< Long.parseLong(json.getString("quantity"))) {
-				    			System.out.println("pointer1");
-				    			break outerloop;
-				    		} else {
-				    			validation = "success";
-				    			System.out.println("Entered successfully");
-				    			break outerloop;
-				    		}
-		    			}
-		    		}	
-	    		}
-	    	}
-        }
+	public String validateQuantity(HttpServletRequest request, List<FinishedProductListEntity> finishedProductList) throws Exception {
+	    JSONObject json = new JSONObject(request.getParameter("item"));
+	    String validation = "Please fill-out the dispatching form correctly";
+	    System.out.println("json = " + json);
+	    
+	    // Fetch current inventory from DAO
+	    List<Object[]> currentInventory = getCurrentInventory(Integer.parseInt(json.getString("branchId")));
 
-		return validation;
+	    // Fetch dispatched entities for the branch
+	    List<DispatchingEntity> dispatchingEntities = getDispatchingByBranchId(Integer.parseInt(json.getString("branchId")));
+
+	    outerloop:
+	    for (FinishedProductListEntity finishedProduct : finishedProductList) {
+	        if (finishedProduct.getFplId() == Long.parseLong(json.getString("fplId"))) {
+
+	            // Check if dispatch date is valid
+	            if (finishedProduct.getDateFinished().getTime() >
+	                (new SimpleDateFormat("yyyy-MM-dd").parse(json.getString("dispatchDate")).getTime())) {
+	                System.out.println("pointer3");
+	                break outerloop;
+	            }
+
+	            // New Dispatch: dispatchTrackId is 0
+	            if (Long.parseLong(json.getString("dispatchTrackId")) == 0) {
+	                // Compare against current inventory
+	                for (Object[] inventoryItem : currentInventory) {
+	                    String skuCD = (String) inventoryItem[0]; // SKU Code
+	                    Long availableQuantity = (Long) inventoryItem[1]; // Available quantity
+
+	                    if (skuCD.equals(finishedProduct.getSkuCD())) {
+	                        // If the available quantity is less than the requested quantity, fail validation
+	                        if (availableQuantity < Long.parseLong(json.getString("quantity"))) {
+	                            System.out.println("pointer2");
+	                            break outerloop;
+	                        } else {
+	                            validation = "success";
+	                            break outerloop;
+	                        }
+	                    }
+	                }
+	            } else {
+	                // Existing dispatch: check current inventory and dispatched quantities
+	                for (DispatchingEntity dispatchingEntity : dispatchingEntities) {
+	                    if (dispatchingEntity.getDispatchTrackId() == Long.parseLong(json.getString("dispatchTrackId"))) {
+	                        for (Object[] inventoryItem : currentInventory) {
+	                            String skuCD = (String) inventoryItem[0]; // SKU Code
+	                            Long availableQuantity = (Long) inventoryItem[1]; // Available quantity
+
+	                            if (skuCD.equals(finishedProduct.getSkuCD())) {
+	                                // Add dispatched quantity to current available inventory
+	                                Long totalAvailable = availableQuantity + dispatchingEntity.getQuantity();
+	                                
+	                                // If the total available quantity is less than the requested quantity, fail validation
+	                                if (totalAvailable < Long.parseLong(json.getString("quantity"))) {
+	                                    System.out.println("pointer1");
+	                                    break outerloop;
+	                                } else {
+	                                    validation = "success";
+	                                    System.out.println("Entered successfully");
+	                                    break outerloop;
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+
+	    return validation;
 	}
-	
 }
