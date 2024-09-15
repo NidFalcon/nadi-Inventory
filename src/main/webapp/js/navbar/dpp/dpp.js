@@ -149,7 +149,8 @@ function deleteItem() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseDeleteModal').click();
-
+				
+				$('#divAlert').html(response);
 				var $toastLiveExample = $('#successToast');
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 				toastBootstrap.show();
