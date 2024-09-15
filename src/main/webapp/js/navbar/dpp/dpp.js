@@ -271,17 +271,14 @@ function addPmRow() {
 	fetchRmQty(materialCounter);
 	fetchQtyRemaining(materialCounter);
 	ensureNumericInputs();
-	
 	toggleAddPmColHeaders();
 }
 
 function toggleAddPmColHeaders() {
-    if ($('#tblAddPm').find('tr').length > 2) {
-        $('#trAddPmColHeaders').removeClass("d-none");
-    } else {
-        $('#trAddPmColHeaders').addClass("d-none");
-    }
+    var rowCount = $('#tblAddPm').find('tr').length;
+    $('#trAddPmColHeaders').toggleClass('d-none', rowCount <= 2);
 }
+
 
 
 function fetchRmQty(counter) {
@@ -395,6 +392,7 @@ $('#btnShowUpdatePm').on('click', function() {
 function clearPmRows() {
 	$('.table tr[id^="pmRow"]').remove();
 	$('.table tr[id^="updatePmRow"]').remove();
+	toggleAddPmColHeaders();
 	materialCounter = 0;
 }
 
