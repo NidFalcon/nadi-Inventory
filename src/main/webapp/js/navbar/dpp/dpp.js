@@ -271,7 +271,18 @@ function addPmRow() {
 	fetchRmQty(materialCounter);
 	fetchQtyRemaining(materialCounter);
 	ensureNumericInputs();
+	
+	toggleAddPmColHeaders();
 }
+
+function toggleAddPmColHeaders() {
+    if ($('#tblAddPm').find('tr').length > 2) {
+        $('#trAddPmColHeaders').removeClass("d-none");
+    } else {
+        $('#trAddPmColHeaders').addClass("d-none");
+    }
+}
+
 
 function fetchRmQty(counter) {
 	const selectElement = $(`#selectRawMaterial${counter}`);
@@ -310,10 +321,12 @@ $('#btnAddPmRow').on('click', function() {
 
 function deleteAddPmRow(counter) {
 	$(`#pmRow${counter}`).remove();
+	toggleAddPmColHeaders();
 }
 
 function populateUpdatePmForm() {
 	let html = '';
+
 	$.each(productionMaterialFiltered, function(index, item) {
 		let rmListMatch = rawMaterialList.find(function(rmList) {
 			return rmList.materialListId === item.materialListId;
@@ -371,7 +384,7 @@ function populateUpdatePmForm() {
 	$.each(productionMaterialFiltered, function(index, item) {
 		fetchQtyRemaining(index + 1);
 	});
-	
+
 	ensureNumericInputs();
 }
 
@@ -448,7 +461,7 @@ function validate(item) {
 
 ensureNumericInputs();
 
-function ensureNumericInputs (){
+function ensureNumericInputs() {
 	$('input[type="number"]').on('input', function() {
 		this.value = this.value.replace(/[^0-9]/g, '');
 	});

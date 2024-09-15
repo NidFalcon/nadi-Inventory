@@ -201,7 +201,7 @@
 									for="dppSkuName">SKU Name: </label> <input type="text"
 									class="form-control" id="dppSkuName" readonly></th>
 							</tr>
-							<tr>
+							<tr id="trAddPmColHeaders" class="d-none">
 								<th scope="col">Material</th>
 								<th scope="col">Unit</th>
 								<th scope="col">Stock</th>
