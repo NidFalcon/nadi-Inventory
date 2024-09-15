@@ -36,7 +36,14 @@ public class UserController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			action = request.getParameter("action");
+			
+			if (request.getAttribute("action") != null) {
+				action = (String) request.getAttribute("action");
+			} else {
+				action = request.getParameter("action");
+			}
+			
+			System.out.println("userController Called. Action is " + action);
 			
 			if ("login".equals(action)) { 
 		        
@@ -63,27 +70,10 @@ public class UserController extends HttpServlet {
 				}
 			}  else if ("logout".equals(action)) {
 				HttpSession session = request.getSession();
-
-			    if (session != null) {
-					session.invalidate();
-					userService.deleteSession(request);
-			    }
-
-			    // Remove all session-related cookies
-			    Cookie[] cookies = request.getCookies();
-			    if (cookies != null) {
-			        for (Cookie cookie : cookies) {
-			        	System.out.println("deleting " + cookie.getName());
-			            cookie.setValue("");
-			            cookie.setMaxAge(0);
-			            System.out.println("cookie.get(" + cookie.getValue() + ")");
-			            response.addCookie(cookie);
-			        }
-			    }
-				
+				logoutUser(session, request ,response);
 				page = "pages/login.jsp";
 			} else if ("checkUserSession".equals(action)) {
-				HttpSession session = request.getSession();
+				HttpSession session = request.getSession(false);
 				UserEntity user = (UserEntity) session.getAttribute("user");
 				page = "pages/navbar/menu.jsp";
 				
@@ -105,7 +95,13 @@ public class UserController extends HttpServlet {
 			} else if ("registerNewUser".equals(action)) {
 				request.setAttribute("message", userService.registerNewUser(request));
 				page = "pages/message/message.jsp";
-			}
+			}  else if ("timeout".equals(request.getAttribute("action"))) {
+				HttpSession session = request.getSession();
+				logoutUser(session, request ,response);
+		    	System.out.println("User Not Logged In. Cicking them out");
+		        page = "pages/login.jsp";
+		        request.setAttribute("message", "Please log in to continue.");
+			};
 			
 			
 		} catch (Exception e) {
@@ -118,6 +114,28 @@ public class UserController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+	}
+	
+	private HttpServletResponse logoutUser(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+	    if (session != null) {
+			session.invalidate();
+			userService.deleteSession(request);
+	    }
+
+	    // Remove all session-related cookies
+	    Cookie[] cookies = request.getCookies();
+	    if (cookies != null) {
+	        for (Cookie cookie : cookies) {
+	        	System.out.println("deleting " + cookie.getName());
+	            cookie.setValue("");
+	            cookie.setMaxAge(0);
+	            System.out.println("cookie.get(" + cookie.getValue() + ")");
+	            response.addCookie(cookie);
+	        }
+	    }
+	    
+	    return response;
 	}
 
 }

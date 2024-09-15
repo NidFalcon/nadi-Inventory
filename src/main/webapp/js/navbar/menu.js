@@ -19,13 +19,10 @@ $('#btnRawMaterials').click(function() {
 	$.get('RawMaterialListController', {
 		action: 'showRawMaterialList'
 	}, function(response) {
-		if (response.includes("Please log in to continue.")){
-			$('#divContent').load("pages/message.jsp");
-			var $toastLiveExample = $('#liveToast');
-			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-			toastBootstrap.show();
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
 			$('#divContent').html(response);
-			('#divMenu').html('');
 		} else {
 			$('#divContent').html(response);
 		}
@@ -37,8 +34,14 @@ $('#btnDashboard').click(function () {
 	$.post('DashboardController' , {
 		action:'showDashboard'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -47,8 +50,14 @@ $('#btnDpp').click(function () {
 	$.post('DppController', {
 		action: 'showDpp'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);;
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -57,8 +66,14 @@ $('#btnProductionMaterial').click(function () {
 	$.post('ProductionMaterialController', {
 		action: 'showProductionMaterial'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -68,8 +83,14 @@ $('#btnMngDispatchType').click(function () {
 	$.post('DispatchTypeController', {
 		action: 'showDispatchType'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -78,8 +99,14 @@ $('#btnMngBranch').click(function () {
 	$.post('BranchController', {
 		action: 'showBranch'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -89,8 +116,14 @@ $('#btnMngSku').click(function () {
 	$.post('SkuController', {
 		action: 'showSku'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -100,8 +133,14 @@ $('#btnMngMaterial').click(function () {
 	$.post('RawMaterialController', {
 		action: 'showRawMaterial'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -111,8 +150,14 @@ $('#btnDispatching').click(function() {
 	$.get('DispatchingController', {
 		action: 'showDispatching'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -121,8 +166,14 @@ $('#btnReports').click(function() {
 	$.get('ReportController', {
 		action: 'showReports'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });
 
@@ -131,7 +182,13 @@ $('#btnProducts').click(function () {
 	$.get('FinishedProductListController', {
 		action: 'showFinishedProductList'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("login")){
+			alert("login expired. Please Login again");
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+		} else {
+			$('#btnCloseOffNavbar').click();
+			$('#divContent').html(response);;
+		}
 	});
 });

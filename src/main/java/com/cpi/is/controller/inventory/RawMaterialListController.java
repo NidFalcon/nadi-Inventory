@@ -54,9 +54,9 @@ public class RawMaterialListController extends HttpServlet {
 					page = "pages/message.jsp";
 				}
 		    } else {
-		    	System.out.println("User Not Logged In. Cicking them out");
-		        page = "pages/login.jsp";
-		        request.setAttribute("message", "Please log in to continue.");
+		    	page = "/UserController";
+		    	request.setAttribute("action", "timeout");
+		    	System.out.println("request is " + request.getAttribute(action));
 		    }
 		} catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());
