@@ -77,7 +77,7 @@ function deletePmItem(index) {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseUpdatePmModal').click();
-				$('.btnDpp').click();
+				$('#btnDpp').click();
 			} else {
 				alert('Unable to delete production material item');
 			}
