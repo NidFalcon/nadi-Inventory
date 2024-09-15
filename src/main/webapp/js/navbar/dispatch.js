@@ -92,97 +92,87 @@ function getCurrentDate() {
 	return `${year}-${month}-${day}`; // Format as "yyyy-MM-dd"
 }
 
-function getFplID() {
-    let currentDate = new Date(getCurrentDate());
+// Helper function to generate HTML for dropdown options
+function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
     let html = '<option value="">';
 
-    let skuToQuantityMap = {};
-    $.each(currentInventory, function(index, item) {
-        skuToQuantityMap[item[0]] = item[1];
-    });
-
-    $.each(finishedProduct, function(index, item) {
+    $.each(finishedProducts, function(index, item) {
         let dateFinished = new Date(item.dateFinished);
-        if (dateFinished <= currentDate) {
+		let skuCode = item.sku.skuCode;
+		let quantity = skuToQuantityMap[skuCode] || 0;
+        if (dateFinished <= dateFilter && quantity) {
+            
             html += `<option value="${item.fplId}" 
-                            data-sku-code="${item.sku.skuCode}" 
+                            data-sku-code="${skuCode}" 
                             data-sku-name="${item.sku.skuName}" 
                             data-quantity="${item.quantity}" 
-                            data-date-finished="${new Date(item.dateFinished).toLocaleDateString()}"
-                            data-branch-id="${item.branchId}"> 
+                            data-date-finished="${dateFinished.toLocaleDateString()}"
+                            data-branch-id="${item.branchId}">
                             ${item.fplId} ${item.sku.skuName}
                      </option>`;
         }
     });
+
+    html += '</option>';
+    return html;
+}
+
+function getFplID() {
+    let currentDate = new Date(getCurrentDate());
+    let skuToQuantityMap = {};
+    
+    $.each(currentInventory, function(index, item) {
+        skuToQuantityMap[item[0]] = item[1];
+    });
+
+    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, currentDate);
 
     $('.selFinishedProd').html(html);
 
     $('.selFinishedProd').change(function() {
         let selectedOption = $(this).find('option:selected');
         let skuCode = selectedOption.data('sku-code');
-        let branchId = selectedOption.data('branch-id'); // Extract branchId from the selected option
+        let branchId = selectedOption.data('branch-id');
         totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
 
-        // Set branchId in the #addBranchId field
         $('#addBranchId').val(branchId);
-
-        // Update other fields based on the selected FPL
         $('.txtSkuName').val(selectedOption.data('sku-name'));
         $('.txtQuantityFPL').val(totalQuantityAdd);
         $('.txtDateFinished').val(selectedOption.data('date-finished'));
+
         console.log("Current totalQuantityAdd = " + totalQuantityAdd);
         console.log("Selected Branch ID = " + branchId);
     });
 
-    console.log("Current Inventory = " + currentQuantity);
+    console.log("Current Inventory = " + JSON.stringify(skuToQuantityMap));
 }
 
-
 function updateFplIDOptionsByDate() {
-	let updateDate = new Date($('#updateDate').val());
+    let updateDate = new Date($('#updateDate').val());
+    let skuToQuantityMap = {};
 
-	let html = '<option value="">';
+    $.each(currentInventory, function(index, item) {
+        skuToQuantityMap[item[0]] = item[1];
+    });
 
-	let skuToQuantityMap = {};
-	$.each(currentInventory, function(index, item) {
-		skuToQuantityMap[item[0]] = item[1];
-	});
-
-	$.each(finishedProduct, function(index, item) {
-		let dateFinished = new Date(item.dateFinished);
-		if (dateFinished <= updateDate) {
-			dateFinished = skuToQuantityMap[item.sku.skuCode] || 0;
-			html += '<option value="' + item.fplId + '" data-sku-code="' + item.sku.skuCode + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';
-		}
-	});
-
-	html += '</option>';
-	$('#updateFinishedProductId').html(html);
+    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, updateDate);
+    
+    $('#updateFinishedProductId').html(html);
 }
 
 function addFplIDOptionsByDate() {
-	let selectedDate = new Date($('#dateSelected').val());
-	//let currentDate = new Date(getCurrentDate()); // Assuming you have a function to get current date
+    let selectedDate = new Date($('#dateSelected').val());
+    let skuToQuantityMap = {};
 
-	let html = '<option value="">';
+    $.each(currentInventory, function(index, item) {
+        skuToQuantityMap[item[0]] = item[1];
+    });
 
-	let skuToQuantityMap = {};
-	$.each(currentInventory, function(index, item) {
-		skuToQuantityMap[item[0]] = item[1];
-	});
-
-	$.each(finishedProduct, function(index, item) {
-		let dateFinished = new Date(item.dateFinished);
-		if (dateFinished <= selectedDate) {
-			dateFinished = skuToQuantityMap[item.sku.skuCode] || 0;
-			html += '<option value="' + item.fplId + '" data-sku-code="' + item.sku.skuCode + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';
-		}
-	});
-
-	html += '</option>';
-	$('#selFinishedProdId').html(html);
-	
-	clearAll();
+    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, selectedDate);
+    
+    $('#selFinishedProdId').html(html);
+    
+    clearAll(); // Call clearAll function if needed
 }
 
 $(document).ready(function() {
@@ -254,18 +244,23 @@ function checkQuantity() {
 function checkQuantityUpdate() {
 	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); // Updated dispatch quantity
 	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); // Updated dispatch quantity
+	
 	if (isNaN(availableQuantity) || isNaN(dispatchQuantityUpdate)) {
 		return; // Return if either quantity is not a number
 	}
 
 	// Ensure total quantity doesn't exceed currentQuantity
-	if (availableQuantity == 0) {
-		$('#updateDispatchQuantity').val(fplQuantityUpdate); 
-	}
-	else if (dispatchQuantityUpdate > availableQuantity) {
-		$('#updateDispatchQuantity').val(totalQuantityUpdate); // Clear invalid input
+	if (dispatchQuantityUpdate > fplQuantityUpdate) {
+		$('#updateDispatchQuantity').val(fplQuantityUpdate);
 	} 
 	
+	if (availableQuantity == 0) {
+		if (dispatchQuantityUpdate > fplQuantityUpdate) {
+            $('#updateDispatchQuantity').val(fplQuantityUpdate); // Set to maximum allowed quantity
+        }
+	}
+		
+	console.log("fplQuantityUpdate = " + fplQuantityUpdate);
 	console.log("availableQuantity = " + availableQuantity);
 	console.log("totalQuantityUpdate = " + totalQuantityUpdate);
 
@@ -312,6 +307,7 @@ function populateForm(row) {
 
 	// Set the initial FPL ID based on the selected row
 	$updateFinishedProductId.val(selectedFplId);
+	
 	function initialFpl(){
 		let selectedOption = $updateFinishedProductId.find('option:selected');
 			let skuCode = selectedOption.data('sku-code');
