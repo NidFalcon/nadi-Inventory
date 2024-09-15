@@ -38,21 +38,23 @@ public class UserController extends HttpServlet {
 		try {
 			action = request.getParameter("action");
 			
-			if ("login".equals(action)) {
+			if ("login".equals(action)) { 
+		        
 				UserEntity user = userService.authenticate(request);
 				
 				if (user != null) {
 					HttpSession session = request.getSession();
+					session.invalidate();
+					session = request.getSession(true);
 					session.setAttribute("user", user);
 					request.setAttribute("username", user.getUsername());
+					session.setMaxInactiveInterval(60);
 					userService.saveSession(request);
 					
-//					Cookie userCookie = new Cookie("user", user.getUsername());
-//					response.addCookie(userCookie);
-					
-					//Cookie sessionCookie = new Cookie("sessionId", request.getSession().getId());
-					//sessionCookie.setMaxAge(5 * 60);
-					//response.addCookie(sessionCookie);
+					Cookie sessionCookie = new Cookie("SESSIONID", session.getId());
+			        sessionCookie.setHttpOnly(true); // Prevents JavaScript access
+			        sessionCookie.setSecure(true); // Ensures cookie is sent over HTTPS
+			        response.addCookie(sessionCookie);
 					
 					page = "pages/navbar/menu.jsp";
 				} else {
@@ -61,16 +63,23 @@ public class UserController extends HttpServlet {
 				}
 			}  else if ("logout".equals(action)) {
 				HttpSession session = request.getSession();
-				session.invalidate();
-				userService.deleteSession(request);
-				
-				Cookie userCookie = new Cookie("user", "");
-				userCookie.setMaxAge(0);
-				response.addCookie(userCookie);
-				
-				Cookie sessionCookie = new Cookie("sessionId", "");
-				sessionCookie.setMaxAge(0);
-				response.addCookie(sessionCookie);
+
+			    if (session != null) {
+					session.invalidate();
+					userService.deleteSession(request);
+			    }
+
+			    // Remove all session-related cookies
+			    Cookie[] cookies = request.getCookies();
+			    if (cookies != null) {
+			        for (Cookie cookie : cookies) {
+			        	System.out.println("deleting " + cookie.getName());
+			            cookie.setValue("");
+			            cookie.setMaxAge(0);
+			            System.out.println("cookie.get(" + cookie.getValue() + ")");
+			            response.addCookie(cookie);
+			        }
+			    }
 				
 				page = "pages/login.jsp";
 			} else if ("checkUserSession".equals(action)) {

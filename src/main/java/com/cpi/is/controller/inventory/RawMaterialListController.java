@@ -15,6 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.impl.inventory.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.maintenance.RawMaterialServiceImpl;
+import com.cpi.is.util.SessionUtil;
 
 @WebServlet("/RawMaterialListController")
 public class RawMaterialListController extends HttpServlet {
@@ -34,19 +35,29 @@ public class RawMaterialListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
-			if ("showRawMaterialList".equals(action)) {
-				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
-				JSONArray materials = new JSONArray(rawMaterialService.getRawMaterial());
-				request.setAttribute("material", materials);
-				page = "pages/navbar/inventory/rawMaterialList.jsp";
-			} else if ("saveRawMaterial".equals(action)) {
-				HttpSession session = request.getSession();
-				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
-				page = "pages/message/success.jsp";
-			} else if ("deleteRawMaterial".equals(action)) {
-				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
-				page = "pages/message/success.jsp";
-			}
+			
+			System.out.println("Checking If User is logged in");
+			if (SessionUtil.isUserLoggedIn(request)) {
+				if ("showRawMaterialList".equals(action)) {
+					request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
+					JSONArray materials = new JSONArray(rawMaterialService.getRawMaterial());
+					JSONArray test = new JSONArray(rawMaterialListService.getRawMaterialList(request));
+					System.out.println(test);
+					request.setAttribute("material", materials);
+					page = "pages/navbar/inventory/rawMaterialList.jsp";
+				} else if ("saveRawMaterial".equals(action)) {
+					HttpSession session = request.getSession();
+					request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
+					page = "pages/success.jsp";
+				} else if ("deleteRawMaterial".equals(action)) {
+					request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
+					page = "pages/message.jsp";
+				}
+		    } else {
+		    	System.out.println("User Not Logged In. Cicking them out");
+		        page = "pages/login.jsp";
+		        request.setAttribute("message", "Please log in to continue.");
+		    }
 		} catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());
 			page = "pages/message/message.jsp";

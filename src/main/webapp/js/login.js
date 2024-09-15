@@ -1,3 +1,7 @@
+function validateLoginFields() {
+	
+};
+
 $('#btnLogin').click(function() {
 	$.post('UserController', {
 		action: 'login',
@@ -8,7 +12,6 @@ $('#btnLogin').click(function() {
 			$('#divAlert').html(response);
 			var $toastLiveExample = $('#errorToast');
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-
 			toastBootstrap.show();
 		} else {
 			$('#divMenu').html(response);

@@ -19,8 +19,16 @@ $('#btnRawMaterials').click(function() {
 	$.get('RawMaterialListController', {
 		action: 'showRawMaterialList'
 	}, function(response) {
-		$('#btnCloseOffNavbar').click();
-		$('#divContent').html(response);
+		if (response.includes("Please log in to continue.")){
+			$('#divContent').load("pages/message.jsp");
+			var $toastLiveExample = $('#liveToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
+			$('#divContent').html(response);
+			('#divMenu').html('');
+		} else {
+			$('#divContent').html(response);
+		}
 	});
 });
 
