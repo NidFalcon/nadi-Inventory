@@ -197,7 +197,7 @@ $(document).ready(function() {
 	});
 });
 
-function checkQuantity(isUpdate = false) {
+/*function checkQuantity(isUpdate = false) {
     // Determine the correct fields based on whether it's an update or an add
     let fplId = isUpdate ? $('#updateFinishedProductId').val() : $('#selFinishedProdId').val();
     if (!fplId) return; // If no fplId is selected, skip validation
@@ -212,23 +212,66 @@ function checkQuantity(isUpdate = false) {
     // Ensure that the dispatch quantity does not exceed the total available quantity
     if (dispatchQuantity > totalQuantity) {
         if (isUpdate) {
-            $('#updateDispatchQuantity').val(totalQuantity);
+			if (totalQuantity == 0){
+				$('#updateDispatchQuantity').val(totalQuantity + dispatchQuantity);
+			} else {
+				$('#updateDispatchQuantity').val(totalQuantity);
+			}
         } else {
             $('#addDispatchQuantity').val(totalQuantity);
         }
-    }
+    } 
 
     console.log(`Total Quantity (${isUpdate ? "Update" : "Add"}) = ` + totalQuantity);
-}
+}*/
 
-// Attach the consolidated function to both the add and update inputs
+/*// Attach the consolidated function to both the add and update inputs
 $('#addDispatchQuantity').on('input', function() {
     checkQuantity(false); // For adding
 });
 
 $('#updateDispatchQuantity').on('input', function() {
     checkQuantity(true); // For updating
-});
+});*/
+
+function checkQuantity() {
+	let fplId = $('#selFinishedProdId').val();
+	if (!fplId) return; // If no fplId is selected, skip validation
+
+	let dispatchQuantity = parseFloat($('#addDispatchQuantity').val());
+
+	if (isNaN(totalQuantityAdd) || isNaN(dispatchQuantity)) {
+		return;
+	}
+
+	if (dispatchQuantity > totalQuantityAdd) {
+		$('#addDispatchQuantity').val(totalQuantityAdd);
+	}
+
+	console.log("totalQuantityAdd = " + totalQuantityAdd);
+}
+
+function checkQuantityUpdate() {
+	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); // Updated dispatch quantity
+	//let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); // Updated dispatch quantity
+	if (isNaN(availableQuantity) || isNaN(dispatchQuantityUpdate)) {
+		return; // Return if either quantity is not a number
+	}
+
+	// Ensure total quantity doesn't exceed currentQuantity
+	if (availableQuantity == 0) {
+		$('#updateDispatchQuantity').val(availableQuantity + dispatchQuantityUpdate); 
+	}
+	else if (dispatchQuantityUpdate > availableQuantity) {
+		$('#updateDispatchQuantity').val(availableQuantity); // Clear invalid input
+	} 
+	
+	console.log("availableQuantity = " + availableQuantity);
+
+}
+
+$('#updateDispatchQuantity').on('input', checkQuantityUpdate);
+$('#addDispatchQuantity').on('input', checkQuantity);
 
 function populateForm(row) {
 	if (!row) {
