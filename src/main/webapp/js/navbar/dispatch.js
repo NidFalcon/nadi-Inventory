@@ -93,39 +93,50 @@ function getCurrentDate() {
 }
 
 function getFplID() {
-	console.log("Tinatawag ako");
-	let currentDate = new Date(getCurrentDate());
-	let html = '<option value="">';
+    let currentDate = new Date(getCurrentDate());
+    let html = '<option value="">';
 
-	let skuToQuantityMap = {};
-	$.each(currentInventory, function(index, item) {
-		skuToQuantityMap[item[0]] = item[1];
-	});
+    let skuToQuantityMap = {};
+    $.each(currentInventory, function(index, item) {
+        skuToQuantityMap[item[0]] = item[1];
+    });
 
-	$.each(finishedProduct, function(index, item) {
-		let dateFinished = new Date(item.dateFinished);
-		if (dateFinished <= currentDate) {
-			html += '<option value="' + item.fplId + '" data-sku-code="' + item.sku.skuCode + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';
-		}
-	});
+    $.each(finishedProduct, function(index, item) {
+        let dateFinished = new Date(item.dateFinished);
+        if (dateFinished <= currentDate) {
+            html += `<option value="${item.fplId}" 
+                            data-sku-code="${item.sku.skuCode}" 
+                            data-sku-name="${item.sku.skuName}" 
+                            data-quantity="${item.quantity}" 
+                            data-date-finished="${new Date(item.dateFinished).toLocaleDateString()}"
+                            data-branch-id="${item.branchId}"> 
+                            ${item.fplId} ${item.sku.skuName}
+                     </option>`;
+        }
+    });
 
-	$('.selFinishedProd').html(html);
+    $('.selFinishedProd').html(html);
 
-	$('.selFinishedProd').change(function() {
-		let selectedOption = $(this).find('option:selected');
-		let skuCode = selectedOption.data('sku-code');
-		totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
+    $('.selFinishedProd').change(function() {
+        let selectedOption = $(this).find('option:selected');
+        let skuCode = selectedOption.data('sku-code');
+        let branchId = selectedOption.data('branch-id'); // Extract branchId from the selected option
+        totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
 
-		$('.txtSkuName').val(selectedOption.data('sku-name'));
-		$('.txtQuantityFPL').val(totalQuantityAdd);
-		$('.txtDateFinished').val(selectedOption.data('date-finished'));
-		console.log("Current totalQuantityAdd = " + totalQuantityAdd);
+        // Set branchId in the #addBranchId field
+        $('#addBranchId').val(branchId);
 
-	});
+        // Update other fields based on the selected FPL
+        $('.txtSkuName').val(selectedOption.data('sku-name'));
+        $('.txtQuantityFPL').val(totalQuantityAdd);
+        $('.txtDateFinished').val(selectedOption.data('date-finished'));
+        console.log("Current totalQuantityAdd = " + totalQuantityAdd);
+        console.log("Selected Branch ID = " + branchId);
+    });
 
-	console.log("Current Inventory = " + currentQuantity);
-
+    console.log("Current Inventory = " + currentQuantity);
 }
+
 
 function updateFplIDOptionsByDate() {
 	let updateDate = new Date($('#updateDate').val());
@@ -235,7 +246,8 @@ function populateForm(row) {
 	$('#updateDispatchQuantity').val(row.quantity); // Set initial value to row.quantity
 	$('#updateDispatchDestination').val(row.destination);
 	$('#updateDate').val(row.dispatchDate);
-
+	$('#updateBranchId').val(row.branch.branchId);
+	
 	// Logic for populating FPL options
 	let skuToQuantityMapUpdate = {};
 	$.each(currentInventory, function(index, item) {
@@ -313,7 +325,8 @@ function createItem(crudOperation) {
 			fplId: $('#selFinishedProdId').val().toString(),
 			quantity: $('#addDispatchQuantity').val().toString(),
 			destination: $('#addDispatchDestination').val().toString(),
-			dispatchDate: $('#dateSelected').val().toString()
+			dispatchDate: $('#dateSelected').val().toString(),
+			branchId: $('#addBranchId').val().toString()
 		};
 	} else if (crudOperation === "update") {
 		item = {
@@ -322,7 +335,8 @@ function createItem(crudOperation) {
 			fplId: $('#updateFinishedProductId').val().toString(),
 			quantity: $('#updateDispatchQuantity').val().toString(),
 			destination: $('#updateDispatchDestination').val().toString(),
-			dispatchDate: $('#updateDate').val().toString()
+			dispatchDate: $('#updateDate').val().toString(),
+			branchId: $('#updateBranchId').val().toString()
 		};
 	} else if (crudOperation === "delete") {
 		item = {
@@ -460,5 +474,6 @@ function validate(item) {
 	}
 	return valid;
 }
+
 
 createDispatchOptions();

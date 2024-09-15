@@ -31,7 +31,6 @@ public class DispatchingController extends HttpServlet {
 
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private DispatchingServiceImpl dispatchingService = (DispatchingServiceImpl) context.getBean("dispatchingService");
-	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
 	private DispatchTypeServiceImpl dispatchTypeService = (DispatchTypeServiceImpl) context
 			.getBean("dispatchTypeService");
 	private FinishedProductListServiceImpl finishedProductListService = (FinishedProductListServiceImpl) context
@@ -60,14 +59,13 @@ public class DispatchingController extends HttpServlet {
 
 			if ("showDispatching".equals(action)) {
 				// Get filtered dispatch data based on branchId
-				request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranch(branchId)));
+				request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
 				request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
-				request.setAttribute("branch", new JSONArray(branchService.getBranch()));
 				request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
                 request.setAttribute("currentInventory", new JSONArray(dispatchingService.getCurrentInventory(branchId)));
 				page = "pages/navbar/dispatching.jsp";
 			} else if ("saveItem".equals(action)) {
-				request.setAttribute("message", dispatchingService.saveItem(request));
+				request.setAttribute("message", dispatchingService.saveItem(request, finishedProductListService.getFinishedProductList(branchId)));		
 				page = "pages/message.jsp";
 			} else if ("deleteItem".equals(action)) {
 				request.setAttribute("message", dispatchingService.deleteItem(request));
