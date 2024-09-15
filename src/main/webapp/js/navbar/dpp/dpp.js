@@ -270,6 +270,7 @@ function addPmRow() {
 	$('#tblAddPm').append(html);
 	fetchRmQty(materialCounter);
 	fetchQtyRemaining(materialCounter);
+	ensureNumericInputs();
 }
 
 function fetchRmQty(counter) {
@@ -370,6 +371,8 @@ function populateUpdatePmForm() {
 	$.each(productionMaterialFiltered, function(index, item) {
 		fetchQtyRemaining(index + 1);
 	});
+	
+	ensureNumericInputs();
 }
 
 $('#btnShowUpdatePm').on('click', function() {
@@ -396,58 +399,57 @@ function validate(item) {
 	var toastError = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let valid = true;
 
-	//		function showToast(message) {
-	//			$('#errorMessage').html(message);
-	//			toastError.show();
-	//		}
-	//	
-	//		if (item.productionDate === '') {
-	//			showToast('Please enter a valid Production Date');
-	//			valid = false;
-	//			return valid;
-	//		}
-	//	
-	//		if (item.skuCode === '') {
-	//			showToast('Please select a valid SKU Code');
-	//			valid = false;
-	//			return valid;
-	//		}
-	//	
-	//		const quantity = parseInt(item.quantity);
-	//		if (isNaN(quantity) || quantity <= 0) {
-	//			showToast('Please enter a valid positive number for Quantity');
-	//			valid = false;
-	//			return valid;
-	//		}
-	//	
-	//		if (item.status === '') {
-	//			showToast('Please select a valid Status');
-	//			valid = false;
-	//			return valid;
-	//		}
-	//	
-	//		if (item.branchId === '') {
-	//			showToast('Please select a valid Branch ID');
-	//			valid = false;
-	//			return valid;
-	//		}
+	function showToast(message) {
+		$('#errorMessage').html(message);
+		toastError.show();
+	}
+
+	function isValidDate(dateString) {
+		const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+		if (!datePattern.test(dateString)) {
+			return false;
+		}
+
+		const parsedDate = new Date(dateString);
+		return parsedDate instanceof Date && !isNaN(parsedDate.getTime());
+	}
+
+	if (!item.productionDate || !isValidDate(item.productionDate)) {
+		showToast('Please enter a valid Production Date in the format yyyy-MM-dd');
+		valid = false;
+		return valid;
+	}
+
+	if (!item.skuCode || !/^SKU\d{3}$/.test(item.skuCode)) {
+		showToast('Please enter a valid SKU Code (ex: SKU001)');
+		valid = false;
+		return valid;
+	}
+
+	const maxIntValue = 2147483647;
+
+	const quantity = parseInt(item.quantity, 10);
+	if (isNaN(quantity) || quantity < 0 || quantity > maxIntValue) {
+		showToast('Please enter a valid Quantity');
+		valid = false;
+		return valid;
+	}
+
+	const validStatuses = new Set(["Planned", "In Progress", "Finished"]);
+
+	if (!item.status || !validStatuses.has(item.status)) {
+		showToast('Please select a valid Status option');
+		valid = false;
+		return valid;
+	}
 
 	return valid;
 }
 
+ensureNumericInputs();
 
-//$('input[type="number"]').on('input', function() {
-//	this.value = this.value.replace(/[^0-9]/g, '');
-//});
-
-//function validate(item) {
-//	let valid = true;
-//	if (item.dppId === '' || item.productionDate === '' || item.skuCode === '' || item.quantity === '' || item.status === '' || item.branchId === '') {
-//		alert('Please correctly fill-out all required fields');
-//		valid = false;
-//	} else if (item.quantity < 0) {
-//		alert('Quantity must be a non-negative number');
-//		valid = false;
-//	}
-//	return valid;
-//}
+function ensureNumericInputs (){
+	$('input[type="number"]').on('input', function() {
+		this.value = this.value.replace(/[^0-9]/g, '');
+	});
+}
