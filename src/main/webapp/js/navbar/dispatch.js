@@ -100,7 +100,7 @@ function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
         let dateFinished = new Date(item.dateFinished);
 		let skuCode = item.sku.skuCode;
 		let quantity = skuToQuantityMap[skuCode] || 0;
-        if (dateFinished <= dateFilter && quantity) {
+        if (dateFinished <= dateFilter) {
             
             html += `<option value="${item.fplId}" 
                             data-sku-code="${skuCode}" 
