@@ -86,3 +86,8 @@ html,body {
 	background-color: #AAB396;
 }
 
+#dashboardButtons button {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+

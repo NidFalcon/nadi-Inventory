@@ -25,21 +25,17 @@ public class DashboardController extends HttpServlet {
 		action = request.getParameter("action");
 		
 		try {
-			if (SessionUtil.checkUserSession(request)) {
+			if (SessionUtil.isUserLoggedIn(request)) {
 				action = request.getParameter("action");
-				if (SessionUtil.isUserLoggedIn(request)) {
-					if ("showDashboard".equals(action)) {
-						UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-						request.setAttribute("username", user.getUsername());
-						request.setAttribute("branchId", user.getBranchId());
-						page = "pages/navbar/dashboard.jsp";
-					}
-				} else {
-					page = "/UserController";
-					request.setAttribute("action", "timeout");
+				if ("showDashboard".equals(action)) {
+					UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+					request.setAttribute("username", user.getUsername());
+					request.setAttribute("branchName", user.getBranch().getBranchName());
+					page = "pages/navbar/dashboard.jsp";
 				}
 			} else {
-				page = "pages/reload.jsp";
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
