@@ -33,7 +33,6 @@ public class FinishedProductListServiceImpl implements FinishedProductListServic
 		return new FinishedProductListEntity (
 		        json.getLong("fplId"),
 		        json.getString("skuCD"),
-				json.getInt("userId"),
 				json.getInt("quantity"),
 		        json.getInt("branchId"),
 		        convertStringToSqlDate(json.getString("dateFinished")));
@@ -62,12 +61,6 @@ public class FinishedProductListServiceImpl implements FinishedProductListServic
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		List<FinishedProductListEntity> finishedProductList = finishedProductListDAO.getFinishedProductList(user.getBranchId());
-		for(FinishedProductListEntity entity : finishedProductList) {
-			UserEntity finishedProductUser = entity.getUser();
-			if(finishedProductUser != null) {
-				finishedProductUser.setPassword("");
-			}
-		}
 		return finishedProductList;
 	}
 
