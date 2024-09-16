@@ -47,7 +47,7 @@ public class DppController extends HttpServlet {
 			if (SessionUtil.isUserLoggedIn(request)) {
 	            HttpSession session = request.getSession(false);
 				UserEntity user = (UserEntity) session.getAttribute("user");
-				Integer branchId = user.getBranchId(); 
+				Long branchId = user.getBranchId(); 
 				
 	            if ("showDpp".equals(action)) {
 	                request.setAttribute("dpp", new JSONArray(dppService.getDpp(branchId)));

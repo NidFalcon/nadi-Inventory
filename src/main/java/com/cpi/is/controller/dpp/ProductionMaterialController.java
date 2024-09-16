@@ -42,7 +42,7 @@ public class ProductionMaterialController extends HttpServlet {
             if (SessionUtil.isUserLoggedIn(request)) {
                 HttpSession session = request.getSession();
     			UserEntity user = (UserEntity) session.getAttribute("user");
-    			Integer branchId = user.getBranchId(); 
+    			Long branchId = user.getBranchId(); 
     			
                 if ("showProductionMaterial".equals(action)) {
                     request.setAttribute("productionMaterial", new JSONArray(productionMaterialService.getProductionMaterial()));

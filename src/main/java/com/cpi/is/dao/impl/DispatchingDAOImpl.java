@@ -11,7 +11,7 @@ import com.cpi.is.util.HBUtil;
 public class DispatchingDAOImpl implements DispatchingDAO {
 
 	@Override
-	public List<DispatchingEntity> getDispatchingByBranchId(Integer branchId) throws Exception {
+	public List<DispatchingEntity> getDispatchingByBranchId(Long branchId) throws Exception {
 		List<DispatchingEntity> dispatching = null;
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			dispatching = session.createQuery(
@@ -21,7 +21,7 @@ public class DispatchingDAOImpl implements DispatchingDAO {
 		return dispatching;
 	}
 
-	public List<Object[]> getCurrentInventory(Integer branchId) throws Exception {
+	public List<Object[]> getCurrentInventory(Long branchId) throws Exception {
 	    List<Object[]> result = null;
 	    try (Session session = HBUtil.getSessionFactory().openSession()) {
 	        result = session.createQuery(

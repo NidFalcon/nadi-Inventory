@@ -34,10 +34,10 @@ public class UserServiceImpl implements UserService {
 	
 	private UserEntity jsonToEntity(JSONObject json) {
 		return new UserEntity(
-				json.getInt("userId"),
+				json.getLong("userId"),
 				json.getString("username"),
 				passwordEncoder.encode(json.getString("password")),
-				json.getInt("branchId"),
+				json.getLong("branchId"),
 				"Y"
 				);
 	}

@@ -12,7 +12,7 @@ import com.cpi.is.util.HBUtil;
 public class DppDAOImpl implements DppDAO {
 
     @Override
-    public List<DppEntity> getDpp(Integer branchId) throws Exception {
+    public List<DppEntity> getDpp(Long branchId) throws Exception {
         List<DppEntity> dppList = null;
         try (Session session = HBUtil.getSessionFactory().openSession()) {
             dppList = session.createQuery("FROM DppEntity WHERE branchId = :branchId ORDER BY dppId", 

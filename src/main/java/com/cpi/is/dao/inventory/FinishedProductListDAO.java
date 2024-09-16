@@ -6,7 +6,7 @@ import com.cpi.is.entity.inventory.FinishedProductListEntity;
 
 public interface FinishedProductListDAO {
 	
-	List<FinishedProductListEntity> getFinishedProductList(Integer targetBranchId) throws Exception;
+	List<FinishedProductListEntity> getFinishedProductList(Long targetBranchId) throws Exception;
 	String saveProduct(FinishedProductListEntity item) throws Exception;
 	String deleteProduct(FinishedProductListEntity item) throws Exception;
 }

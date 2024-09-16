@@ -25,6 +25,7 @@ public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static String action = "";
 	private static String page = "";
+	private final Integer TIMEOUT_INTERVAL = 30 * 60;
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
@@ -43,23 +44,27 @@ public class UserController extends HttpServlet {
 				action = request.getParameter("action");
 			}
 			
+			System.out.println("userController Called. Action is " + action);
+			
 			if ("login".equals(action)) { 
 		        
 				UserEntity user = userService.authenticate(request);
-				
 				if (user != null) {
+					
 					HttpSession session = request.getSession();
 					session.invalidate();
 					session = request.getSession(true);
 					session.setAttribute("user", user);
 					request.setAttribute("username", user.getUsername());
-					session.setMaxInactiveInterval(300);
+					session.setMaxInactiveInterval(TIMEOUT_INTERVAL);
+					userService.saveSession(request);
+					
 					Cookie sessionCookie = new Cookie("SESSIONID", session.getId());
 					sessionCookie.setMaxAge(0);
-			        sessionCookie.setHttpOnly(true); // Prevents JavaScript access
-			        sessionCookie.setSecure(true); // Ensures cookie is sent over HTTPS
+			        sessionCookie.setHttpOnly(true);
+			        sessionCookie.setSecure(true);
 			        response.addCookie(sessionCookie);
-					
+			        
 					page = "pages/navbar/menu.jsp";
 				} else {
 					request.setAttribute("message", "Invalid Username or Password");
@@ -86,6 +91,7 @@ public class UserController extends HttpServlet {
 				}
 			} else if ("showRegisterPage".equals(action)) {
 				JSONArray test = new JSONArray(branchService.getBranch());
+				System.out.println(test);
 				request.setAttribute("branches", test );
 				page="pages/registration.jsp";
 			} else if ("registerNewUser".equals(action)) {
@@ -94,14 +100,14 @@ public class UserController extends HttpServlet {
 			}  else if ("timeout".equals(request.getAttribute("action"))) {
 				HttpSession session = request.getSession();
 				logoutUser(session, request ,response);
+		    	System.out.println("User Not Logged In. Cicking them out");
 		        page = "pages/login.jsp";
 		        request.setAttribute("message", "Please log in to continue.");
-			};
-			
-			
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			System.out.println(page);
 			request.getRequestDispatcher(page).forward(request, response);
 		}
 	}
@@ -121,11 +127,15 @@ public class UserController extends HttpServlet {
 	    Cookie[] cookies = request.getCookies();
 	    if (cookies != null) {
 	        for (Cookie cookie : cookies) {
+	        	System.out.println("deleting " + cookie.getName());
 	            cookie.setValue("");
 	            cookie.setMaxAge(0);
+	            System.out.println("cookie.get(" + cookie.getValue() + ")");
 	            response.addCookie(cookie);
 	        }
 	    }
+	    
 	    return response;
 	}
+
 }

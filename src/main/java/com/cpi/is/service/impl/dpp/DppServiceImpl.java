@@ -42,7 +42,7 @@ public class DppServiceImpl implements DppService, JsonValidate {
     }
 
     @Override
-    public List<DppEntity> getDpp(Integer branchId) throws Exception {
+    public List<DppEntity> getDpp(Long branchId) throws Exception {
         return dppDAO.getDpp(branchId);
     }
 

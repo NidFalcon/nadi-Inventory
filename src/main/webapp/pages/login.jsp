@@ -19,13 +19,9 @@
 				<button type="button" id="btnLogin"
 					class="btn btn-primary mt-2 mb-3">Login</button>
 			</div>
-			<div class="ms-3">
-				<button type="button" id="btnRegister" class="btn btn-primary mb-3 d-none">Register</button>
-			</div>
 		</div>
 		<div class="mt-5">
-			<img
-				src="images/logo.png" alt="Icon" class="img-fluid align-self-center">
+			<img src="images/logo.png" alt="Icon" class="img-fluid align-self-center">
 		</div>
 	</div>
 </div>

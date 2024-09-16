@@ -22,11 +22,11 @@ public class UserEntity implements Serializable {
 	@Id
 	@Column(name="USER_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer userId;
+	private Long userId;
 	private String username;
 	private String password;
 	@Column (name="BRANCH_ID")
-	private Integer branchId;
+	private Long branchId;
 	@ManyToOne
 	@JoinColumn(name="BRANCH_ID", insertable=false, updatable=false)
 	private BranchEntity branch;
@@ -37,7 +37,7 @@ public class UserEntity implements Serializable {
 		super();
 	}
 
-	public UserEntity(Integer userId, String username, String password, Integer branchId, String isActive) {
+	public UserEntity(Long userId, String username, String password, Long branchId, String isActive) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -46,11 +46,11 @@ public class UserEntity implements Serializable {
 		this.isActive = isActive;
 	}
 	
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -70,11 +70,11 @@ public class UserEntity implements Serializable {
 		this.password = password;
 	}
 	
-	public Integer getBranchId() {
+	public Long getBranchId() {
 		return branchId;
 	}
 
-	public void setBranchId(Integer branchId) {
+	public void setBranchId(Long branchId) {
 		this.branchId = branchId;
 	}
 

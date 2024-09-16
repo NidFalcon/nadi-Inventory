@@ -55,7 +55,7 @@ public class FinishedProductListServiceImpl implements FinishedProductListServic
     }
 	
 	@Override
-	public List<FinishedProductListEntity> getFinishedProductList(Integer branchId) throws Exception {
+	public List<FinishedProductListEntity> getFinishedProductList(Long branchId) throws Exception {
 		List<FinishedProductListEntity> finishedProductList = finishedProductListDAO.getFinishedProductList(branchId);
 		return finishedProductList;
 	}

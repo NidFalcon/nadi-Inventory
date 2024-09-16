@@ -9,9 +9,9 @@ import com.cpi.is.entity.report.ReceivedInventoryReportEntity;
 
 public interface ReportDAO {
 
-	List<CurrentFinishedInventoryEntity> getCurrentFinishedInventory(String reportDate) throws Exception;
-	List<PlannedRawMaterialsInventoryEntity> getPlannedRawMaterialsInventory(String reportDate) throws Exception;
-	List<ProductionReportEntity> getProductionReport(String reportDate) throws Exception;
-	List<ReceivedInventoryReportEntity> getReceivedInventoryReport(String reportDate) throws Exception;
+	List<CurrentFinishedInventoryEntity> getCurrentFinishedInventory(String reportDate, Long branchId) throws Exception;
+	List<PlannedRawMaterialsInventoryEntity> getPlannedRawMaterialsInventory(String reportDate, Long branchId) throws Exception;
+	List<ProductionReportEntity> getProductionReport(String reportDate, Long branchId) throws Exception;
+	List<ReceivedInventoryReportEntity> getReceivedInventoryReport(String reportDate, Long branchId) throws Exception;
 
 }

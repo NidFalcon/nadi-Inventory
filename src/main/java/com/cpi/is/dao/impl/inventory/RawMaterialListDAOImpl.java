@@ -10,10 +10,9 @@ import com.cpi.is.util.HBUtil;
 
 public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 
-	public List<RawMaterialListEntity>  getRawMaterialList(Integer targetBranchId) throws Exception {
+	public List<RawMaterialListEntity>  getRawMaterialList(Long targetBranchId) throws Exception {
         try (Session session = HBUtil.getSessionFactory().openSession()){
-        	List<RawMaterialListEntity> rawMaterialLists = session.createQuery("FROM RawMaterialListEntity R WHERE R.branchId = :targetBranchId"
-        				, RawMaterialListEntity.class)
+        	List<RawMaterialListEntity> rawMaterialLists = session.createQuery("FROM RawMaterialListEntity R WHERE R.branchId = :targetBranchId ORDER BY R.materialListId ASC",RawMaterialListEntity.class)
         			    .setParameter("targetBranchId", targetBranchId)
         			    .list();
         	return rawMaterialLists;

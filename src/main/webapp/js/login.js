@@ -1,7 +1,3 @@
-function validateLoginFields() {
-	
-};
-
 $('#btnLogin').click(function() {
 	$.post('UserController', {
 		action: 'login',

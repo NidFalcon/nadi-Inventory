@@ -12,7 +12,7 @@ import com.cpi.is.util.HBUtil;
 public class FinishedProductListDAOImpl implements FinishedProductListDAO{
 
 	@Override
-	public List<FinishedProductListEntity> getFinishedProductList(Integer targetBranchId) throws Exception {
+	public List<FinishedProductListEntity> getFinishedProductList(Long targetBranchId) throws Exception {
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			List<FinishedProductListEntity> finishedProductList = session.createQuery("FROM FinishedProductListEntity F WHERE F.branchId = :targetBranchId ORDER BY F.fplId ASC"
 					,FinishedProductListEntity.class)

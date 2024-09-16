@@ -52,12 +52,12 @@ public class DispatchingServiceImpl implements DispatchingService {
 	}
 
 	@Override
-	public List<DispatchingEntity> getDispatchingByBranchId(Integer branchId) throws Exception {
+	public List<DispatchingEntity> getDispatchingByBranchId(Long branchId) throws Exception {
 		return dispatchingDAO.getDispatchingByBranchId(branchId);
 	}
 
 	@Override
-	public List<Object[]> getCurrentInventory(Integer branchId) throws Exception {
+	public List<Object[]> getCurrentInventory(Long branchId) throws Exception {
 		return dispatchingDAO.getCurrentInventory(branchId);
 	}
 
@@ -186,10 +186,10 @@ public class DispatchingServiceImpl implements DispatchingService {
 	    System.out.println("json = " + json);
 	    
 	    // Fetch current inventory from DAO
-	    List<Object[]> currentInventory = getCurrentInventory(Integer.parseInt(json.getString("branchId")));
+	    List<Object[]> currentInventory = getCurrentInventory(Long.parseLong(json.getString("branchId")));
 
 	    // Fetch dispatched entities for the branch
-	    List<DispatchingEntity> dispatchingEntities = getDispatchingByBranchId(Integer.parseInt(json.getString("branchId")));
+	    List<DispatchingEntity> dispatchingEntities = getDispatchingByBranchId(Long.parseLong(json.getString("branchId")));
 
 	    outerloop:
 	    for (FinishedProductListEntity finishedProduct : finishedProductList) {

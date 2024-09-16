@@ -8,7 +8,7 @@ import com.cpi.is.entity.dpp.DppEntity;
 
 public interface DppService {
 
-    List<DppEntity> getDpp(Integer branchId) throws Exception;
+    List<DppEntity> getDpp(Long branchId) throws Exception;
     String saveItem(HttpServletRequest request) throws Exception;
     String deleteItem(HttpServletRequest request) throws Exception;
 }
