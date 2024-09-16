@@ -62,11 +62,11 @@ public class DppController extends HttpServlet {
 	            } else if ("saveItem".equals(action)) {
 	                String message = dppService.saveItem(request);
 	                request.setAttribute("message", message);
-	                page = "pages/success.jsp";
+	                page = "pages/message/success.jsp";
 	            } else if ("deleteItem".equals(action)) {
 	                String message = dppService.deleteItem(request);
 	                request.setAttribute("message", message);
-	                page = "pages/success.jsp";
+	                page = "pages/message/success.jsp";
 	            }
 			} else {
 				System.out.println("report logging out");
@@ -76,11 +76,11 @@ public class DppController extends HttpServlet {
 			}
         } catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());
-			page = "pages/message.jsp";
+			page = "pages/message/message.jsp";
 		} catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("message", "Something went wrong");
-            page = "pages/message.jsp";
+            page = "pages/message/message.jsp";
         } finally {
             request.getRequestDispatcher(page).forward(request, response);
         }

@@ -35,7 +35,6 @@ public class DppServiceImpl implements DppService, JsonValidate {
         Date productionDate = json.has("productionDate") ? Date.valueOf(json.getString("productionDate")) : null;
         Integer quantity = json.has("quantity") ? json.getInt("quantity") : null;
         String status = json.has("status") ? json.getString("status") : null;
-        
         Long branchId = json.has("branchId") ? json.getLong("branchId") : null;
         String skuCode = json.has("skuCode") ? json.getString("skuCode") : null;
 
