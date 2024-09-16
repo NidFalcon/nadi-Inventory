@@ -3,10 +3,9 @@
   "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-    <!-- <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>
-    <property name="hibernate.connection.username">C##NADI</property> -->
-    <property name="hibernate.connection.url">jdbc:oracle:thin:@training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com:1521:ORCL</property>
+	<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+	<property name="hibernate.connection.url">jdbc:oracle:thin:@training-db.cosujmachgm3.ap-southeast-1.rds.amazonaws.com:1521:ORCL</property>
+<!--     <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521/XEPDB1</property> -->
     <property name="hibernate.connection.username">NADI</property>
     <property name="hibernate.connection.password">SAe879fd</property>
     <property name="hibernate.show_sql">false</property>
@@ -14,7 +13,6 @@
     
     <mapping class="com.cpi.is.entity.UserEntity" />
     <mapping class="com.cpi.is.entity.DispatchingEntity" />
-    <mapping class="com.cpi.is.entity.ReportsEntity" />
     <mapping class="com.cpi.is.entity.SessionEntity"/>
 	<mapping class="com.cpi.is.entity.dpp.ProductionMaterialEntity" />
     <mapping class="com.cpi.is.entity.dpp.DppEntity" />
@@ -23,6 +21,10 @@
     <mapping class="com.cpi.is.entity.maintenance.DispatchTypeEntity" />
     <mapping class="com.cpi.is.entity.maintenance.BranchEntity" />
     <mapping class="com.cpi.is.entity.maintenance.SkuEntity" />
-    <mapping class="com.cpi.is.entity.maintenance.RawMaterialEntity" />  
+    <mapping class="com.cpi.is.entity.maintenance.RawMaterialEntity" /> 
+    <mapping class="com.cpi.is.entity.report.CurrentFinishedInventoryEntity" />
+    <mapping class="com.cpi.is.entity.report.PlannedRawMaterialsInventoryEntity" />
+    <mapping class="com.cpi.is.entity.report.ProductionReportEntity" />
+    <mapping class="com.cpi.is.entity.report.ReceivedInventoryReportEntity" /> 
   </session-factory>
 </hibernate-configuration>

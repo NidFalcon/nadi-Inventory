@@ -1,5 +1,3 @@
-console.log(rawMaterialList);
-
 var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 	layout: "fitColumns",
 	data: rawMaterialList,
@@ -18,7 +16,7 @@ var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 		{ title: "Quantity", field: 'quantity' },
 		{ title: "User ID", field: 'userId' },
 		{ title: "Date", field: 'dateReceive' },
-		{ title: "Batch Id", field: 'branchId' }
+		{ title: "Branch Id", field: 'branchId' }
 	],
 });
 
@@ -110,34 +108,39 @@ function createItem(operationType) {
 
 function validate(item) {
 	let valid = true;
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if (item.materialCode === '' || item.quantity === '' || item.date === '') {
-		alert('Please correctly fill-out all required fields');
+		$('#divAlert').html(response);
+		$('#errorMessage').html('please correctly fill out the required field.');
+		toastMessage.show();
 		valid = false;
 	} else if (item.quantity < 0) {
-		alert('Quantity must be a non-negative number');
+		$('#divAlert').html(response);
+		$('#errorMessage').html('quantity must be a positive number');
+		toastMessage.show();
 		valid = false;
 	}
 	return valid;
 }
 
 function addItem(isAdd) {
-	console.log("clicked");
 	let item = createItem(isAdd);
-	console.log(item);
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
 			action: 'saveRawMaterial',
-			item: JSON.stringify(item)
+			item: JSON.stringify(item),
+			operation: isAdd
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
-				$('#btnRawMaterials').click();
+				$('#divAlert').html(response);
+				var toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
+				$('#btnRawMaterials').click();	
 			} else {
 				  $('#divAlert').html(response);
-				  var $toastLiveExample = $('#liveToast');
-				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				  toastBootstrap.show();
-
+				  var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
+				  toastMessage.show();
 			}
 		});
 	}
@@ -151,6 +154,7 @@ $('#btnUpdateRawMaterial').click(function() {
 });
 
 $('#btnDeleteRawMaterial').click(function() {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialId').val() !== '') {
 
 		$.post('RawMaterialListController', {
@@ -159,15 +163,20 @@ $('#btnDeleteRawMaterial').click(function() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteRawMaterialCancel').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
 				$('#btnRawMaterials').click();
 			} else {
-				$('#divAlert').removeClass('d-none');
-				$('#divAlert').html('Unable to save changes');
+				$('#divAlert').html(response);
+				$('#errorMessage').html('unable to save changes');
+				toastMessage.show();
 			}
 		});
 	} else {
-		$('#divAlert').removeClass('d-none');
-		$('#divAlert').html('Please select an item to delete');
+		$('#divAlert').html(response);
+		$('#errorMessage').html('select an item to delete');
+		toastMessage.show();
 	}
 });
 

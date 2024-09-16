@@ -9,14 +9,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
 import com.cpi.is.dao.DispatchingDAO;
 import com.cpi.is.entity.DispatchingEntity;
 import com.cpi.is.entity.inventory.FinishedProductListEntity;
-import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.DispatchingService;
 
 public class DispatchingServiceImpl implements DispatchingService {
@@ -200,7 +198,7 @@ public class DispatchingServiceImpl implements DispatchingService {
 	            // Check if dispatch date is valid
 	            if (finishedProduct.getDateFinished().getTime() >
 	                (new SimpleDateFormat("yyyy-MM-dd").parse(json.getString("dispatchDate")).getTime())) {
-	                System.out.println("pointer3");
+	            	System.out.println("pointer3");
 	                break outerloop;
 	            }
 
@@ -214,7 +212,7 @@ public class DispatchingServiceImpl implements DispatchingService {
 	                    if (skuCD.equals(finishedProduct.getSkuCD())) {
 	                        // If the available quantity is less than the requested quantity, fail validation
 	                        if (availableQuantity < Long.parseLong(json.getString("quantity"))) {
-	                            System.out.println("pointer2");
+	                        	System.out.println("pointer2");
 	                            break outerloop;
 	                        } else {
 	                            validation = "success";
@@ -236,7 +234,7 @@ public class DispatchingServiceImpl implements DispatchingService {
 	                                
 	                                // If the total available quantity is less than the requested quantity, fail validation
 	                                if (totalAvailable < Long.parseLong(json.getString("quantity"))) {
-	                                    System.out.println("pointer1");
+	                                	System.out.println("pointer1");
 	                                    break outerloop;
 	                                } else {
 	                                    validation = "success";

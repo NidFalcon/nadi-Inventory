@@ -19,6 +19,14 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
         	return rawMaterialLists;
         }
 	}
+	
+	public RawMaterialListEntity getRawMaterialListById(Long primaryKey) throws Exception {
+		RawMaterialListEntity rawMaterialList = null;
+		try (Session session = HBUtil.getSessionFactory().openSession()){
+			rawMaterialList = session.get(RawMaterialListEntity.class, primaryKey); 
+		}
+		return rawMaterialList;
+	}
 
 	@Override
 	public String saveRawMaterial(RawMaterialListEntity item) throws Exception {
@@ -31,7 +39,6 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 			} else {
 				session.merge(item);	// update an existing record
 			}
-			System.out.println("Nevermind");
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {
@@ -40,7 +47,7 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 			throw e;
 		}
 		return "success";
-	}	
+	}
 
 	@Override
 	public String deleteRawMaterial(RawMaterialListEntity item) throws Exception {

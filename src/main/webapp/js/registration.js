@@ -30,15 +30,21 @@ function createUserJSON() {
 
 $('#btnConfirmRegister').click(function() {
     let newUser = createUserJSON();
-    console.log(newUser);
     $.post("UserController", {
         action: "registerNewUser",
         user: newUser
     }, function(response) {
         if(response.includes("success")){
-			console.log("YAY");
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#successToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
+			$('#btnCancelRegister').click();
 		} else {
-			console.log(":(");
+			$('#divAlert').html(response);
+						var $toastLiveExample = $('#errorToast');
+						var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+						toastBootstrap.show();
 		}
     });
 });

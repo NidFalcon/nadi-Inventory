@@ -13,9 +13,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.maintenance.BranchService;
-/**
- * Servlet implementation class BranchController
- */
+import com.cpi.is.util.SessionUtil;
+
 @WebServlet("/BranchController")
 public class BranchController extends HttpServlet {
 
@@ -26,32 +25,30 @@ public class BranchController extends HttpServlet {
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private BranchService branchService = (BranchService) context.getBean("branchService");
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public BranchController() {
         super();
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
-
-            if ("showBranch".equals(action)) {
-                request.setAttribute("branch", new JSONArray(branchService.getBranch()));
-                page = "pages/navbar/maintenance/branch.jsp";
-            } else if ("saveItem".equals(action)) {
-                String message = branchService.saveItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message.jsp";
-            } else if ("deleteItem".equals(action)) {
-                String message = branchService.deleteItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message.jsp";
-            } 
+            if (SessionUtil.isUserLoggedIn(request)) {
+                if ("showBranch".equals(action)) {
+                    request.setAttribute("branch", new JSONArray(branchService.getBranch()));
+                    page = "pages/navbar/maintenance/branch.jsp";
+                } else if ("saveItem".equals(action)) {
+                    String message = branchService.saveItem(request);
+                    request.setAttribute("message", message);
+                    page = "pages/message/success.jsp";
+                } else if ("deleteItem".equals(action)) {
+                    String message = branchService.deleteItem(request);
+                    request.setAttribute("message", message);
+                    page = "pages/message/success.jsp";
+                } 
+			} else {
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
+			}
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -59,9 +56,6 @@ public class BranchController extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

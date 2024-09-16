@@ -13,10 +13,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.maintenance.RawMaterialService;
+import com.cpi.is.util.SessionUtil;
 
-/**
- * Servlet implementation class RawMaterialController
- */
+
 @WebServlet("/RawMaterialController")
 public class RawMaterialController extends HttpServlet {
 
@@ -27,32 +26,31 @@ public class RawMaterialController extends HttpServlet {
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private RawMaterialService rawMaterialService = (RawMaterialService) context.getBean("rawMaterialService");
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public RawMaterialController() {
         super();
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
-
-            if ("showRawMaterial".equals(action)) {
-                request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
-                page = "pages/navbar/maintenance/rawMaterial.jsp";
-            } else if ("saveItem".equals(action)) {
-                String message = rawMaterialService.saveItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message.jsp";
-            } else if ("deleteItem".equals(action)) {
-                String message = rawMaterialService.deleteItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message.jsp";
-            }
+            
+			if (SessionUtil.isUserLoggedIn(request)) {
+	            if ("showRawMaterial".equals(action)) {
+	                request.setAttribute("rawMaterial", new JSONArray(rawMaterialService.getRawMaterial()));
+	                page = "pages/navbar/maintenance/rawMaterial.jsp";
+	            } else if ("saveItem".equals(action)) {
+	                String message = rawMaterialService.saveItem(request);
+	                request.setAttribute("message", message);
+	                page = "pages/message/success.jsp";
+	            } else if ("deleteItem".equals(action)) {
+	                String message = rawMaterialService.deleteItem(request);
+	                request.setAttribute("message", message);
+	                page = "pages/message/success.jsp";
+	            }
+			} else {
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
+			}
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -60,9 +58,6 @@ public class RawMaterialController extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

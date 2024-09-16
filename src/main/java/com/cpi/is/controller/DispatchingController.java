@@ -16,12 +16,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.DispatchingServiceImpl;
 import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
-import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
 import com.cpi.is.service.impl.maintenance.DispatchTypeServiceImpl;
+import com.cpi.is.util.SessionUtil;
 
-/**
- * Servlet implementation class DispatchingController
- */
 @WebServlet("/DispatchingController")
 public class DispatchingController extends HttpServlet {
 
@@ -36,41 +33,38 @@ public class DispatchingController extends HttpServlet {
 	private FinishedProductListServiceImpl finishedProductListService = (FinishedProductListServiceImpl) context
 			.getBean("finishedProductListService");
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public DispatchingController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
+			
+			if (SessionUtil.isUserLoggedIn(request)) {
+				HttpSession session = request.getSession();
+				UserEntity user = (UserEntity) session.getAttribute("user");
+				
+				Integer branchId = user.getBranchId();
 
-			HttpSession session = request.getSession();
-			UserEntity user = (UserEntity) session.getAttribute("user");
-			Integer branchId = user.getBranchId(); // Retrieve branchId from session
-
-			if ("showDispatching".equals(action)) {
-				// Get filtered dispatch data based on branchId
-				request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
-				request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
-				request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
-                request.setAttribute("currentInventory", new JSONArray(dispatchingService.getCurrentInventory(branchId)));
-				page = "pages/navbar/dispatching.jsp";
-			} else if ("saveItem".equals(action)) {
-				request.setAttribute("message", dispatchingService.saveItem(request, finishedProductListService.getFinishedProductList(branchId)));		
-				page = "pages/message.jsp";
-			} else if ("deleteItem".equals(action)) {
-				request.setAttribute("message", dispatchingService.deleteItem(request));
-				page = "pages/message.jsp";
-			}
+				if ("showDispatching".equals(action)) {
+					request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
+					request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
+					request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
+	                request.setAttribute("currentInventory", new JSONArray(dispatchingService.getCurrentInventory(branchId)));
+					page = "pages/navbar/dispatching.jsp";
+				} else if ("saveItem".equals(action)) {
+					request.setAttribute("message", dispatchingService.saveItem(request, finishedProductListService.getFinishedProductList(branchId)));		
+					page = "pages/message/success.jsp";
+				} else if ("deleteItem".equals(action)) {
+					request.setAttribute("message", dispatchingService.deleteItem(request));
+					page = "pages/message/success.jsp";
+				}
+		    } else {
+		    	page = "/UserController";
+		    	request.setAttribute("action", "timeout");
+		    }
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -78,10 +72,6 @@ public class DispatchingController extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);

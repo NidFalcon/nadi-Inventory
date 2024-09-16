@@ -13,10 +13,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.service.maintenance.SkuService;
+import com.cpi.is.util.SessionUtil;
 
-/**
- * Servlet implementation class SkuController
- */
 @WebServlet("/SkuController")
 public class SkuController extends HttpServlet {
 
@@ -27,32 +25,30 @@ public class SkuController extends HttpServlet {
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private SkuService skuService = (SkuService) context.getBean("skuService");
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public SkuController() {
         super();
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
-
-            if ("showSku".equals(action)) {
-                request.setAttribute("sku", new JSONArray(skuService.getSku()));
-                page = "pages/navbar/maintenance/sku.jsp";
-            } else if ("saveItem".equals(action)) {
-                String message = skuService.saveItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message.jsp";
-            } else if ("deleteItem".equals(action)) {
-                String message = skuService.deleteItem(request);
-                request.setAttribute("message", message);
-                page = "pages/message.jsp";
-            }
+			if (SessionUtil.isUserLoggedIn(request)) {
+	            if ("showSku".equals(action)) {
+	                request.setAttribute("sku", new JSONArray(skuService.getSku()));
+	                page = "pages/navbar/maintenance/sku.jsp";
+	            } else if ("saveItem".equals(action)) {
+	                String message = skuService.saveItem(request);
+	                request.setAttribute("message", message);
+	                page = "pages/message/success.jsp";
+	            } else if ("deleteItem".equals(action)) {
+	                String message = skuService.deleteItem(request);
+	                request.setAttribute("message", message);
+	                page = "pages/message/success.jsp";
+	            }
+			} else {
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
+			}
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -60,9 +56,6 @@ public class SkuController extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator.min.css" rel="stylesheet">
   <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
+  <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
 <!-- -->
 	<meta charset="ISO-8859-1">
 	<title>Inventory System</title>
@@ -27,9 +28,12 @@
 <body>
 	<div id="divMenu"></div>
 	<div id="divAlert"></div>
-<!-- 	<div id="divMessage"></div> -->
 	<div id="divContent" class="container-fluid my-3 divContent">
-		<jsp:include page="pages/login.jsp"></jsp:include>
+		<div class="d-flex justify-content-center mt-5">
+  			<div class="spinner-border text-success" role="status">
+   		 		<span class="visually-hidden">Loading...</span>
+  			</div>
+		</div>
   	</div>
 </body>
 </html>
