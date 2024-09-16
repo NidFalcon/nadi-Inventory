@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.is.entity.UserEntity;
+import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.impl.DispatchingServiceImpl;
 import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
 import com.cpi.is.service.impl.maintenance.DispatchTypeServiceImpl;
@@ -41,31 +42,40 @@ public class DispatchingController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
-			
+
 			if (SessionUtil.isUserLoggedIn(request)) {
 				HttpSession session = request.getSession();
 				UserEntity user = (UserEntity) session.getAttribute("user");
 				Long branchId = user.getBranchId(); // Retrieve branchId from session
 
 				if ("showDispatching".equals(action)) {
-					request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
+					request.setAttribute("dispatch",
+							new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
 					request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
-					request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
-	                request.setAttribute("currentInventory", new JSONArray(dispatchingService.getCurrentInventory(branchId)));
+					request.setAttribute("finishedProduct",
+							new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
+					request.setAttribute("currentInventory",
+							new JSONArray(dispatchingService.getCurrentInventory(branchId)));
 					page = "pages/navbar/dispatching.jsp";
 				} else if ("saveItem".equals(action)) {
-					request.setAttribute("message", dispatchingService.saveItem(request, finishedProductListService.getFinishedProductList(branchId)));		
+					request.setAttribute("message", dispatchingService.saveItem(request,
+							finishedProductListService.getFinishedProductList(branchId)));
 					page = "pages/message/success.jsp";
 				} else if ("deleteItem".equals(action)) {
 					request.setAttribute("message", dispatchingService.deleteItem(request));
 					page = "pages/message/success.jsp";
 				}
-		    } else {
-		    	page = "/UserController";
-		    	request.setAttribute("action", "timeout");
-		    }
+			} else {
+				page = "/UserController";
+				request.setAttribute("action", "timeout");
+			}
+		} catch (InvalidJsonException e) {
+			request.setAttribute("message", e.getMessage());
+			page = "pages/message/message.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("message", "Something went wrong");
+			page = "pages/message/message.jsp";
 		} finally {
 			request.getRequestDispatcher(page).forward(request, response);
 		}

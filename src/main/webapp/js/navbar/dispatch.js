@@ -36,7 +36,7 @@ function handleDateChange() {
 
 $('button[data-bs-target="#addModal"]').click(function() {
 	$('#dateSelected').val(getCurrentDate());
-	clearAll(); 
+	clearAll();
 	getFplID();
 });
 
@@ -86,15 +86,15 @@ function getCurrentDate() {
 
 // Helper function to generate HTML for dropdown options
 function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
-    let html = '<option value="">';
+	let html = '<option value="">';
 
-    $.each(finishedProducts, function(index, item) {
-        let dateFinished = new Date(item.dateFinished);
+	$.each(finishedProducts, function(index, item) {
+		let dateFinished = new Date(item.dateFinished);
 		let skuCode = item.sku.skuCode;
 		let quantity = skuToQuantityMap[skuCode] || 0;
-        if (dateFinished <= dateFilter && quantity > 0) {
-            
-            html += `<option value="${item.fplId}" 
+		if (dateFinished <= dateFilter && quantity > 0) {
+
+			html += `<option value="${item.fplId}" 
                             data-sku-code="${skuCode}" 
                             data-sku-name="${item.sku.skuName}" 
                             data-quantity="${item.quantity}" 
@@ -102,65 +102,65 @@ function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
                             data-branch-id="${item.branchId}">
                             ${item.fplId} ${item.sku.skuName}
                      </option>`;
-        }
-    });
+		}
+	});
 
-    html += '</option>';
-    return html;
+	html += '</option>';
+	return html;
 }
 
 function getFplID() {
-    let currentDate = new Date(getCurrentDate());
-    let skuToQuantityMap = {};
-    
-    $.each(currentInventory, function(index, item) {
-        skuToQuantityMap[item[0]] = item[1];
-    });
+	let currentDate = new Date(getCurrentDate());
+	let skuToQuantityMap = {};
 
-    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, currentDate);
+	$.each(currentInventory, function(index, item) {
+		skuToQuantityMap[item[0]] = item[1];
+	});
 
-    $('.selFinishedProd').html(html);
+	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, currentDate);
 
-    $('.selFinishedProd').change(function() {
-        let selectedOption = $(this).find('option:selected');
-        let skuCode = selectedOption.data('sku-code');
-        let branchId = selectedOption.data('branch-id');
-        totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
+	$('.selFinishedProd').html(html);
 
-        $('#addBranchId').val(branchId);
-        $('.txtSkuName').val(selectedOption.data('sku-name'));
-        $('.txtQuantityFPL').val(totalQuantityAdd);
-        $('.txtDateFinished').val(selectedOption.data('date-finished'));
+	$('.selFinishedProd').change(function() {
+		let selectedOption = $(this).find('option:selected');
+		let skuCode = selectedOption.data('sku-code');
+		let branchId = selectedOption.data('branch-id');
+		totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
 
-    });
+		$('#addBranchId').val(branchId);
+		$('.txtSkuName').val(selectedOption.data('sku-name'));
+		$('.txtQuantityFPL').val(totalQuantityAdd);
+		$('.txtDateFinished').val(selectedOption.data('date-finished'));
+
+	});
 }
 
 function updateFplIDOptionsByDate() {
-    let updateDate = new Date($('#updateDate').val());
-    let skuToQuantityMap = {};
+	let updateDate = new Date($('#updateDate').val());
+	let skuToQuantityMap = {};
 
-    $.each(currentInventory, function(index, item) {
-        skuToQuantityMap[item[0]] = item[1];
-    });
+	$.each(currentInventory, function(index, item) {
+		skuToQuantityMap[item[0]] = item[1];
+	});
 
-    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, updateDate);
-    
-    $('#updateFinishedProductId').html(html);
+	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, updateDate);
+
+	$('#updateFinishedProductId').html(html);
 }
 
 function addFplIDOptionsByDate() {
-    let selectedDate = new Date($('#dateSelected').val());
-    let skuToQuantityMap = {};
+	let selectedDate = new Date($('#dateSelected').val());
+	let skuToQuantityMap = {};
 
-    $.each(currentInventory, function(index, item) {
-        skuToQuantityMap[item[0]] = item[1];
-    });
+	$.each(currentInventory, function(index, item) {
+		skuToQuantityMap[item[0]] = item[1];
+	});
 
-    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, selectedDate);
-    
-    $('#selFinishedProdId').html(html);
-    
-    clearAll(); 
+	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, selectedDate);
+
+	$('#selFinishedProdId').html(html);
+
+	clearAll();
 }
 
 $(document).ready(function() {
@@ -177,7 +177,7 @@ $(document).ready(function() {
 
 function checkQuantity() {
 	let fplId = $('#selFinishedProdId').val();
-	if (!fplId) return; 
+	if (!fplId) return;
 
 	let dispatchQuantity = parseFloat($('#addDispatchQuantity').val());
 
@@ -192,22 +192,22 @@ function checkQuantity() {
 }
 
 function checkQuantityUpdate() {
-	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); 
-	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); 
-	
+	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val());
+	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val());
+
 	if (isNaN(availableQuantity) || isNaN(dispatchQuantityUpdate)) {
-		return; 
+		return;
 	}
 
 	// Ensure total quantity doesn't exceed currentQuantity
 	if (dispatchQuantityUpdate > fplQuantityUpdate) {
 		$('#updateDispatchQuantity').val(fplQuantityUpdate);
-	} 
-	
+	}
+
 	if (availableQuantity == 0) {
 		if (dispatchQuantityUpdate > fplQuantityUpdate) {
-            $('#updateDispatchQuantity').val(fplQuantityUpdate); 
-        }
+			$('#updateDispatchQuantity').val(fplQuantityUpdate);
+		}
 	}
 
 }
@@ -222,18 +222,18 @@ function populateForm(row) {
 	}
 
 	let currentDate = new Date(getCurrentDate());
-	let selectedFplId = row.fplId; 
+	let selectedFplId = row.fplId;
 
 	let html = '<option value="">';
 
 	// Populate the form with the dispatch details from the selected row
 	$('#updateDispatchId').val(row.dispatchTrackId);
 	$('#updateDispatchType').val(row.dispatchType.dispatchTypeCode);
-	$('#updateDispatchQuantity').val(row.quantity); 
+	$('#updateDispatchQuantity').val(row.quantity);
 	$('#updateDispatchDestination').val(row.destination);
 	$('#updateDate').val(row.dispatchDate);
 	$('#updateBranchId').val(row.branch.branchId);
-	
+
 	// Logic for populating FPL options
 	let skuToQuantityMapUpdate = {};
 	$.each(currentInventory, function(index, item) {
@@ -253,29 +253,29 @@ function populateForm(row) {
 
 	// Set the initial FPL ID based on the selected row
 	$updateFinishedProductId.val(selectedFplId);
-	
-	function initialFpl(){
+
+	function initialFpl() {
 		let selectedOption = $updateFinishedProductId.find('option:selected');
-			let skuCode = selectedOption.data('sku-code');
-			let updateDispatchQuantity = parseFloat($('#updateDispatchQuantity').val()) || 0;
-			availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
-			$('.txtDateFinished').val(selectedOption.data('date-finished'));
-				
-			if (availableQuantity != 0) {
-				totalQuantityUpdate = availableQuantity + updateDispatchQuantity; // Total quantity after update
-				$('.txtQuantityFPL').val(totalQuantityUpdate);
-			}
-			else if (availableQuantity == 0) {
-				$('.txtQuantityFPL').val(updateDispatchQuantity);
-			}
+		let skuCode = selectedOption.data('sku-code');
+		let updateDispatchQuantity = parseFloat($('#updateDispatchQuantity').val()) || 0;
+		availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
+		$('.txtDateFinished').val(selectedOption.data('date-finished'));
+
+		if (availableQuantity != 0) {
+			totalQuantityUpdate = availableQuantity + updateDispatchQuantity; // Total quantity after update
+			$('.txtQuantityFPL').val(totalQuantityUpdate);
+		}
+		else if (availableQuantity == 0) {
+			$('.txtQuantityFPL').val(updateDispatchQuantity);
+		}
 	}
-	
+
 	function updateFplChange() {
 		initialFpl();
 		$('.txtQuantityFPL').val(availableQuantity);
 		$('#updateDispatchQuantity').val(0);
 	}
-	
+
 	$updateFinishedProductId.off('change').on('change', updateFplChange);
 
 	initialFpl();
@@ -362,9 +362,18 @@ function addItem(isAdd) {
 	}, function(response) {
 		if (response.includes('success')) {
 			$('.btnCloseAddModal').click();
+
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#successToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
+
 			$('#btnDispatching').click();
 		} else {
-			alert('Unable to save changes');
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#errorToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
 		}
 	});
 }
@@ -389,64 +398,67 @@ $('#btnDeleteDispatch').click(function() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteDispatchCancel').click();
+				
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#successToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+				
 				$('#btnDispatching').click();
 			} else {
-				$('#divAlert').removeClass('d-none');
-				$('#divAlert').html('Unable to save changes');
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#errorToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
 			}
 		});
-	} else {
-		$('#divAlert').removeClass('d-none');
-		$('#divAlert').html('Please select an item to delete');
 	}
 });
 
-function validate(item) {
-	let valid = true;
-	if (item.dispatchTrackId === '' || item.dispatchTypeCd === '' || item.fplId === '' ||
-		item.quantity === '' || item.branchId === '' || item.destination === '' || item.dispatchDate === '') {
-		//$('.errorMessage').text("Please correctly fill-out all required fields");
-		alert("Please correctly fill-out all required fields");
-		valid = false;
-	} else if (!(/^[0-9]\d*$/.test(item.dispatchTrackId))) {
-		//$('.errorMessage').text("Dispatch Track ID should only contain positive numbers");
-		alert("Dispatch Track ID should only contain positive numbers");
-		valid = false;
-	} else if (!(/^[1-9]\d*$/.test(item.fplId))) {
-    alert("FPL ID should only contain positive numbers");
-    valid = false;
-	} else if (!(/^[0-9]\d*$/.test(item.quantity))) {
-		//$('.errorMessage').text("Quantity should only contain positive numbers and zero");
-		alert("Quantity should only contain positive numbers and zero");
-		valid = false;
-	} else if (!(!isNaN(Date.parse(item.dispatchDate)) && (new Date(item.dispatchDate).toISOString().startsWith(item.dispatchDate)))) {
-		//$('.errorMessage').text("Please enter valid date");
-		alert("Please enter valid date");
-		valid = false;
-	} else if (item.dispatchTrackId > 99999999999999) {
-		//$('.errorMessage').text("Dispatch Track ID value is too large");
-		alert("Dispatch Track ID value is too large");
-		valid = false;
-	} else if (item.dispatchTypeCd.length > 10) {
-		//$('.errorMessage').text("Dispatch Type Code characters should be less than 11");
-		alert("Dispatch Type Code characters should be less than 11");
-		valid = false;
-	} else if (item.fplId > 99999999999999) {
-		//$('.errorMessage').text("FPL ID value is too large");
-		alert("FPL ID value is too large");
-		valid = false;
-	}
-	else if (item.quantity > 99999999999999) {
-		//$('.errorMessage').text("Quantity value is too large");
-		alert("Quantity value is too large");
-		valid = false;
-	} else if (item.destination.length > 50) {
-		//$('.errorMessage').text("Destination characters should be less than 51");
-		alert("Destination characters should be less than 51");
-		valid = false;
-	}
-	return valid;
-}
 
+
+function validate(item) {
+    let valid = true;
+	var toastError = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
+	
+	function showToast(message) {
+			$('#errorMessage').html(message);
+			toastError.show();
+		}
+	
+    if (item.dispatchTrackId === '' || item.dispatchTypeCd === '' || item.fplId === '' ||
+        item.quantity === '' || item.branchId === '' || item.destination === '' || item.dispatchDate === '') {
+        showToast("Please correctly fill-out all required fields");
+        valid = false;
+    } else if (!(/^[0-9]\d*$/.test(item.dispatchTrackId))) {
+        showToast("Dispatch Track ID should only contain positive numbers");
+        valid = false;
+    } else if (!(/^[1-9]\d*$/.test(item.fplId))) {
+        showToast("FPL ID should only contain positive numbers");
+        valid = false;
+    } else if (!(/^[0-9]\d*$/.test(item.quantity))) {
+        showToast("Quantity should only contain positive numbers");
+        valid = false;
+    } else if (!(!isNaN(Date.parse(item.dispatchDate)) && (new Date(item.dispatchDate).toISOString().startsWith(item.dispatchDate)))) {
+        showToast("Please enter valid date");
+        valid = false;
+    } else if (item.dispatchTrackId > 99999999999999) {
+        showToast("Dispatch Track ID value is too large");
+        valid = false;
+    } else if (item.dispatchTypeCd.length > 10) {
+        showToast("Dispatch Type Code characters should be less than 11");
+        valid = false;
+    } else if (item.fplId > 99999999999999) {
+        showToast("FPL ID value is too large");
+        valid = false;
+    } else if (item.quantity > 99999999999999) {
+        showToast("Quantity value is too large");
+        valid = false;
+    } else if (item.destination.length > 50) {
+        showToast("Destination characters should be less than 51");
+        valid = false;
+    }
+    return valid;
+}
 
 createDispatchOptions();
