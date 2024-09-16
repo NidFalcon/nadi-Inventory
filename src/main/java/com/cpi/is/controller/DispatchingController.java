@@ -18,6 +18,7 @@ import com.cpi.is.service.impl.DispatchingServiceImpl;
 import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
 import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
 import com.cpi.is.service.impl.maintenance.DispatchTypeServiceImpl;
+import com.cpi.is.util.SessionUtil;
 
 /**
  * Servlet implementation class DispatchingController
@@ -53,26 +54,32 @@ public class DispatchingController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
-
-			HttpSession session = request.getSession();
-			UserEntity user = (UserEntity) session.getAttribute("user");
 			
-			Integer branchId = user.getBranchId(); // Retrieve branchId from session
+			if (SessionUtil.isUserLoggedIn(request)) {
+				HttpSession session = request.getSession();
+				UserEntity user = (UserEntity) session.getAttribute("user");
+				
+				Integer branchId = user.getBranchId(); // Retrieve branchId from session
 
-			if ("showDispatching".equals(action)) {
-				// Get filtered dispatch data based on branchId
-				request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
-				request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
-				request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
-                request.setAttribute("currentInventory", new JSONArray(dispatchingService.getCurrentInventory(branchId)));
-				page = "pages/navbar/dispatching.jsp";
-			} else if ("saveItem".equals(action)) {
-				request.setAttribute("message", dispatchingService.saveItem(request, finishedProductListService.getFinishedProductList(branchId)));		
-				page = "pages/message.jsp";
-			} else if ("deleteItem".equals(action)) {
-				request.setAttribute("message", dispatchingService.deleteItem(request));
-				page = "pages/message/message.jsp";
-			}
+				if ("showDispatching".equals(action)) {
+					// Get filtered dispatch data based on branchId
+					request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
+					request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
+					request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
+	                request.setAttribute("currentInventory", new JSONArray(dispatchingService.getCurrentInventory(branchId)));
+					page = "pages/navbar/dispatching.jsp";
+				} else if ("saveItem".equals(action)) {
+					request.setAttribute("message", dispatchingService.saveItem(request, finishedProductListService.getFinishedProductList(branchId)));		
+					page = "pages/message.jsp";
+				} else if ("deleteItem".equals(action)) {
+					request.setAttribute("message", dispatchingService.deleteItem(request));
+					page = "pages/message/message.jsp";
+				}
+		    } else {
+		    	page = "/UserController";
+		    	request.setAttribute("action", "timeout");
+		    	System.out.println("request is " + request.getAttribute(action));
+		    }
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

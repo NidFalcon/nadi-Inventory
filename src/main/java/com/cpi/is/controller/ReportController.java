@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
@@ -44,12 +45,16 @@ public class ReportController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			action = request.getParameter("action");
+			System.out.println(SessionUtil.isUserLoggedIn(request));
 			if (SessionUtil.isUserLoggedIn(request)) {
 				if ("showReports".equals(action)) {
 					request.setAttribute("defaultDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 					page = "pages/navbar/reports.jsp";
 				} else if ("getCurrentFinishedInventory".equals(action)) {
-					request.setAttribute("message", EscapeUtil.escapeQuotes(new JSONArray(reportService.getCurrentFinishedInventory(request))));
+					JSONArray test =  EscapeUtil.escapeQuotes(new JSONArray(reportService.getCurrentFinishedInventory(request)));
+					System.out.println(test);
+					request.setAttribute("message", test);
 					page = "pages/message/reportTable.jsp";
 				} else if ("getPlannedRawMaterialsInventory".equals(action)) {
 					request.setAttribute("message", EscapeUtil.escapeQuotes(new JSONArray(reportService.getPlannedRawMaterialsInventory(request))));
@@ -62,6 +67,7 @@ public class ReportController extends HttpServlet {
 					page = "pages/message/reportTable.jsp";
 				}
 			} else {
+				System.out.println("report logging out");
 				page = "/UserController";
 				request.setAttribute("action", "timeout");
 				System.out.println("request is " + request.getAttribute(action));
