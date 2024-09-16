@@ -16,7 +16,7 @@ $('#btnAddPmSubmit').click(function() {
 			$('#btnDpp').click();
 		} else {
 			$('#divAlert').html(response);
-			var $toastLiveExample = $('#liveToast');
+			var $toastLiveExample = $('#errorToast');
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 			toastBootstrap.show();
 		}
@@ -60,7 +60,7 @@ $('#btnUpdatePmSubmit').click(function() {
 			$('#btnDpp').click();
 		} else {
 			$('#divAlert').html(response);
-			var $toastLiveExample = $('#liveToast');
+			var $toastLiveExample = $('#errorToast');
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 			toastBootstrap.show();
 		}
@@ -106,7 +106,7 @@ function deletePmItem(index) {
 				$('#btnDpp').click();
 			} else {
 				$('#divAlert').html(response);
-				var $toastLiveExample = $('#liveToast');
+				var $toastLiveExample = $('#errorToast');
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 				toastBootstrap.show();
 			}

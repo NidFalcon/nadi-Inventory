@@ -43,7 +43,7 @@ $('#btnConfirmRegister').click(function() {
 			$('#btnCancelRegister').click();
 		} else {
 			$('#divAlert').html(response);
-						var $toastLiveExample = $('#liveToast');
+						var $toastLiveExample = $('#errorToast');
 						var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 						toastBootstrap.show();
 		}
