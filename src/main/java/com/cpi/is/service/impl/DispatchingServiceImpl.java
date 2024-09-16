@@ -61,24 +61,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 		return dispatchingDAO.getCurrentInventory(branchId);
 	}
 
-	//@Override
-	/*
-	 * public String saveItem(HttpServletRequest request,
-	 * List<FinishedProductListEntity> finishedProductList) throws Exception {
-	 * HttpSession session = request.getSession(); UserEntity user = (UserEntity)
-	 * session.getAttribute("user"); JSONObject json = new
-	 * JSONObject(request.getParameter("item")); json.put("branchId",
-	 * user.getBranchId());
-	 * 
-	 * DispatchingEntity entity = jsonToEntity(json);
-	 * 
-	 * // Validate the dispatch entity if (entity.getDispatchDate() == null ||
-	 * entity.getQuantity() < 0) { throw new
-	 * IllegalArgumentException("Invalid data: date or quantity cannot be null/negative."
-	 * ); }
-	 * 
-	 * return dispatchingDAO.saveItem(entity); }
-	 */
 	@Override
 	public String saveItem(HttpServletRequest request,List<FinishedProductListEntity> finishedProductList) throws Exception {
 

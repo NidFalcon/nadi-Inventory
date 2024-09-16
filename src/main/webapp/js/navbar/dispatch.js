@@ -20,7 +20,6 @@ var dispatchTable = new Tabulator("#divDispatchingTable", {
 		{ title: "Finished Product ID", field: 'fplId' },
 		{ title: "SKU Name", field: 'fpl.sku.skuName' },
 		{ title: "Quantity", field: 'quantity' },
-		{ title: "Branch ID", field: 'branch.branchId' },
 		{ title: "Branch Name", field: 'branch.branchName' },
 		{ title: "Destination", field: 'destination' },
 		{ title: "Dispatch Date", field: 'dispatchDate' }
@@ -31,33 +30,26 @@ $('#btnShowUpdateDispatching').hide();
 $('#btnDelete').hide();
 $('.btnConfirmDate').hide();
 
-// Function to show the confirm button when date changes
 function handleDateChange() {
 	$('.btnConfirmDate').show();
 }
 
 $('button[data-bs-target="#addModal"]').click(function() {
-	// Reset the Dispatch Date to the current date
 	$('#dateSelected').val(getCurrentDate());
-	clearAll(); // Clear all fields before showing the modal
+	clearAll(); 
 	getFplID();
 });
 
 function clearAll() {
-	// Clear Finished Product selection
 	$('#selFinishedProdId').val('');
 
-	// Clear Quantity and Date Finished fields (read-only fields)
 	$('#txtQuantityFPL').val('');
 	$('#txtDateFinished').val('');
 
-	// Clear Dispatch Quantity
 	$('#addDispatchQuantity').val(0);
 
-	// Clear Destination
 	$('#addDispatchDestination').val('');
 
-	// Optionally hide any confirmation buttons
 	$('.btnConfirmDate').hide();
 }
 
@@ -100,7 +92,7 @@ function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
         let dateFinished = new Date(item.dateFinished);
 		let skuCode = item.sku.skuCode;
 		let quantity = skuToQuantityMap[skuCode] || 0;
-        if (dateFinished <= dateFilter) {
+        if (dateFinished <= dateFilter && quantity > 0) {
             
             html += `<option value="${item.fplId}" 
                             data-sku-code="${skuCode}" 
@@ -168,7 +160,7 @@ function addFplIDOptionsByDate() {
     
     $('#selFinishedProdId').html(html);
     
-    clearAll(); // Call clearAll function if needed
+    clearAll(); 
 }
 
 $(document).ready(function() {
@@ -185,7 +177,7 @@ $(document).ready(function() {
 
 function checkQuantity() {
 	let fplId = $('#selFinishedProdId').val();
-	if (!fplId) return; // If no fplId is selected, skip validation
+	if (!fplId) return; 
 
 	let dispatchQuantity = parseFloat($('#addDispatchQuantity').val());
 
@@ -200,11 +192,11 @@ function checkQuantity() {
 }
 
 function checkQuantityUpdate() {
-	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); // Updated dispatch quantity
-	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); // Updated dispatch quantity
+	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); 
+	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); 
 	
 	if (isNaN(availableQuantity) || isNaN(dispatchQuantityUpdate)) {
-		return; // Return if either quantity is not a number
+		return; 
 	}
 
 	// Ensure total quantity doesn't exceed currentQuantity
@@ -214,7 +206,7 @@ function checkQuantityUpdate() {
 	
 	if (availableQuantity == 0) {
 		if (dispatchQuantityUpdate > fplQuantityUpdate) {
-            $('#updateDispatchQuantity').val(fplQuantityUpdate); // Set to maximum allowed quantity
+            $('#updateDispatchQuantity').val(fplQuantityUpdate); 
         }
 	}
 
@@ -230,14 +222,14 @@ function populateForm(row) {
 	}
 
 	let currentDate = new Date(getCurrentDate());
-	let selectedFplId = row.fplId; // Save the initial FPL ID from the selected row
+	let selectedFplId = row.fplId; 
 
 	let html = '<option value="">';
 
 	// Populate the form with the dispatch details from the selected row
 	$('#updateDispatchId').val(row.dispatchTrackId);
 	$('#updateDispatchType').val(row.dispatchType.dispatchTypeCode);
-	$('#updateDispatchQuantity').val(row.quantity); // Set initial value to row.quantity
+	$('#updateDispatchQuantity').val(row.quantity); 
 	$('#updateDispatchDestination').val(row.destination);
 	$('#updateDate').val(row.dispatchDate);
 	$('#updateBranchId').val(row.branch.branchId);
@@ -284,10 +276,8 @@ function populateForm(row) {
 		$('#updateDispatchQuantity').val(0);
 	}
 	
-	// Bind the change event handler
 	$updateFinishedProductId.off('change').on('change', updateFplChange);
 
-	// Call the function to initialize the form with the default FPL ID values
 	initialFpl();
 }
 
@@ -413,7 +403,6 @@ $('#btnDeleteDispatch').click(function() {
 
 function validate(item) {
 	let valid = true;
-	//let fplQuantity = parseFloat($(`option[value="${item.fplId}"]`).data('quantity'));
 	if (item.dispatchTrackId === '' || item.dispatchTypeCd === '' || item.fplId === '' ||
 		item.quantity === '' || item.branchId === '' || item.destination === '' || item.dispatchDate === '') {
 		//$('.errorMessage').text("Please correctly fill-out all required fields");
