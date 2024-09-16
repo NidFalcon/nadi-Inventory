@@ -33,7 +33,6 @@ public class UserDAOImpl{
 			} else {
 				session.merge(user);	// update an existing record
 			}
-			System.out.println("Nevermind");
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {

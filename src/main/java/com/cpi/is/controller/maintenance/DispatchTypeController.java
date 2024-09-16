@@ -27,16 +27,10 @@ public class DispatchTypeController extends HttpServlet {
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private DispatchTypeService dispatchTypeService = (DispatchTypeService) context.getBean("dispatchTypeService");
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public DispatchTypeController() {
         super();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
@@ -56,7 +50,6 @@ public class DispatchTypeController extends HttpServlet {
 			} else {
 				page = "/UserController";
 				request.setAttribute("action", "timeout");
-				System.out.println("request is " + request.getAttribute(action));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,9 +58,6 @@ public class DispatchTypeController extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

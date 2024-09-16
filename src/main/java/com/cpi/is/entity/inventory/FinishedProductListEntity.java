@@ -2,9 +2,8 @@ package com.cpi.is.entity.inventory;
 
 import java.io.Serializable;
 
-import java.util.Date; // Import Date
+import java.util.Date;
 
-import com.cpi.is.entity.UserEntity;
 import com.cpi.is.entity.maintenance.BranchEntity;
 import com.cpi.is.entity.maintenance.SkuEntity;
 

@@ -52,20 +52,19 @@ public class ProductionMaterialController extends HttpServlet {
                 } else if ("saveItem".equals(action)) {
                     String message = productionMaterialService.saveItem(request);
                     request.setAttribute("message", message);
-                    page = "pages/success.jsp";
+                    page = "pages/message/success.jsp";
                 } else if ("deleteItem".equals(action)) {
                     String message = productionMaterialService.deleteItem(request);
                     request.setAttribute("message", message);
-                    page = "pages/success.jsp";
+                    page = "pages/message/success.jsp";
                 } else if ("saveBulkItems".equals(action)) {
                 	String message = productionMaterialService.saveBulkItems(request);
                 	request.setAttribute("message", message);
-                    page = "pages/success.jsp";
+                    page = "pages/message/success.jsp";
                 }
 		    } else {
 		    	page = "/UserController";
 		    	request.setAttribute("action", "timeout");
-		    	System.out.println("request is " + request.getAttribute(action));
 		    }
         } catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());

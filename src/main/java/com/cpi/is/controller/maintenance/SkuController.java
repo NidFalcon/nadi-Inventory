@@ -15,9 +15,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.service.maintenance.SkuService;
 import com.cpi.is.util.SessionUtil;
 
-/**
- * Servlet implementation class SkuController
- */
 @WebServlet("/SkuController")
 public class SkuController extends HttpServlet {
 
@@ -28,16 +25,10 @@ public class SkuController extends HttpServlet {
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private SkuService skuService = (SkuService) context.getBean("skuService");
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public SkuController() {
         super();
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
@@ -57,7 +48,6 @@ public class SkuController extends HttpServlet {
 			} else {
 				page = "/UserController";
 				request.setAttribute("action", "timeout");
-				System.out.println("request is " + request.getAttribute(action));
 			}
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,9 +56,6 @@ public class SkuController extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

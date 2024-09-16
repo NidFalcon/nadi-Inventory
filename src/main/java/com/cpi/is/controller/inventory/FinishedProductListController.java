@@ -41,15 +41,14 @@ public class FinishedProductListController extends HttpServlet {
 					page = "pages/navbar/inventory/finishedProductList.jsp";
 				} else if ("saveItem".equals(action)) {
 					request.setAttribute("message", finishedProductListService.saveProduct(request));
-					page = "pages/message.jsp";
+					page = "pages/message/success.jsp";
 				} else if ("deleteItem".equals(action)) {
 					request.setAttribute("message", finishedProductListService.deleteProduct(request));
-					page = "pages/message.jsp";
+					page = "pages/message/success.jsp";
 				}
 			} else {
 				page = "/UserController";
 				request.setAttribute("action", "timeout");
-				System.out.println("request is " + request.getAttribute(action));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +59,6 @@ public class FinishedProductListController extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

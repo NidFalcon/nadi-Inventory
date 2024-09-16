@@ -6,13 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.cpi.is.dao.impl.inventory.FinishedProductListDAOImpl;
-import com.cpi.is.entity.UserEntity;
 import com.cpi.is.entity.inventory.FinishedProductListEntity;
 import com.cpi.is.service.inventory.FinishedProductListService;
 

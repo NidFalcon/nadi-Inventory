@@ -37,7 +37,6 @@ public class SessionUtil {
 	        HttpSession session = request.getSession(false); // 'false' to avoid creating a new session if one does not exist
 	        
 	        if (session != null && session.getAttribute("user") != null) {
-		        System.out.println(session.getAttribute("user"));
 	            return true;
 	        }
 	        

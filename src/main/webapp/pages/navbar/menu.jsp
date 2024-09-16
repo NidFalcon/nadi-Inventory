@@ -42,8 +42,6 @@
 					<li class="nav-item dropdown me-2"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						<i class="bi bi-person-circle me-1"></i>Hello ${username}</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Settings</a></li>
-							<li><a class="dropdown-item" href="#">Help</a></li>
 							<li><a class="dropdown-item" href="#" id="btnLogout">LogOut</a></li>
 						</ul>
 					</li>

@@ -16,13 +16,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.DispatchingServiceImpl;
 import com.cpi.is.service.impl.inventory.FinishedProductListServiceImpl;
-import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
 import com.cpi.is.service.impl.maintenance.DispatchTypeServiceImpl;
 import com.cpi.is.util.SessionUtil;
 
-/**
- * Servlet implementation class DispatchingController
- */
 @WebServlet("/DispatchingController")
 public class DispatchingController extends HttpServlet {
 
@@ -32,24 +28,15 @@ public class DispatchingController extends HttpServlet {
 
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private DispatchingServiceImpl dispatchingService = (DispatchingServiceImpl) context.getBean("dispatchingService");
-	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
 	private DispatchTypeServiceImpl dispatchTypeService = (DispatchTypeServiceImpl) context
 			.getBean("dispatchTypeService");
 	private FinishedProductListServiceImpl finishedProductListService = (FinishedProductListServiceImpl) context
 			.getBean("finishedProductListService");
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public DispatchingController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
@@ -59,10 +46,9 @@ public class DispatchingController extends HttpServlet {
 				HttpSession session = request.getSession();
 				UserEntity user = (UserEntity) session.getAttribute("user");
 				
-				Integer branchId = user.getBranchId(); // Retrieve branchId from session
+				Integer branchId = user.getBranchId();
 
 				if ("showDispatching".equals(action)) {
-					// Get filtered dispatch data based on branchId
 					request.setAttribute("dispatch", new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));
 					request.setAttribute("dispatchType", new JSONArray(dispatchTypeService.getDispatchType()));
 					request.setAttribute("finishedProduct", new JSONArray(finishedProductListService.getFinishedProductList(branchId)));
@@ -70,15 +56,14 @@ public class DispatchingController extends HttpServlet {
 					page = "pages/navbar/dispatching.jsp";
 				} else if ("saveItem".equals(action)) {
 					request.setAttribute("message", dispatchingService.saveItem(request, finishedProductListService.getFinishedProductList(branchId)));		
-					page = "pages/message.jsp";
+					page = "pages/message/success.jsp";
 				} else if ("deleteItem".equals(action)) {
 					request.setAttribute("message", dispatchingService.deleteItem(request));
-					page = "pages/message/message.jsp";
+					page = "pages/message/success.jsp";
 				}
 		    } else {
 		    	page = "/UserController";
 		    	request.setAttribute("action", "timeout");
-		    	System.out.println("request is " + request.getAttribute(action));
 		    }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,10 +72,6 @@ public class DispatchingController extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);

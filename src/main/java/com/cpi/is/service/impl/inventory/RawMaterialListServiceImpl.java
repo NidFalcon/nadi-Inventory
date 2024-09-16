@@ -93,7 +93,6 @@ public class RawMaterialListServiceImpl implements RawMaterialListService, JsonV
 
 	@Override
 	public String deleteRawMaterial(HttpServletRequest request) throws Exception {
-		System.out.println(request.getParameter("item"));
 		return rawMaterialListDAO.deleteRawMaterial(
 				jsonToEntity(new JSONObject(request.getParameter("item"))));
 	}
