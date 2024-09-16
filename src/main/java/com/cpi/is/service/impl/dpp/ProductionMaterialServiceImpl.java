@@ -34,11 +34,7 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         Long materialListId = json.has("materialListId") && !json.isNull("materialListId") ? json.getLong("materialListId") : null;
         String materialCode = json.has("materialCode") ? json.getString("materialCode") : null;
         Integer quantityToUse = json.has("quantityToUse") && !json.isNull("quantityToUse") ? json.getInt("quantityToUse") : null;
-
-        if (pmId == null && (dppId == null || materialListId == null || materialCode == null || quantityToUse == null)) {
-            throw new Exception("Missing required fields");
-        }
-
+        
         return new ProductionMaterialEntity(pmId, dppId, materialListId, materialCode, quantityToUse);
     }
 
@@ -122,11 +118,6 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         try {
             Long materialListId = jsonObject.has("materialListId") && !jsonObject.isNull("materialListId") ? jsonObject.getLong("materialListId") : null;
             Integer quantityToUse = jsonObject.has("quantityToUse") && !jsonObject.isNull("quantityToUse") ? jsonObject.getInt("quantityToUse") : null;
-
-            if (materialListId == null || quantityToUse == null) {
-                throw new InvalidJsonException("Missing required fields");
-            }
-
             Integer currentStock = rawMaterialListDAO.getRawMaterialListById(materialListId).getQuantity();
 
             if ("add".equals(operation)) {

@@ -68,11 +68,11 @@ public class ProductionMaterialController extends HttpServlet {
 		    }
         } catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());
-			page = "pages/message.jsp";
+			page = "pages/message/message.jsp";
 		} catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("message", "Something went wrong");
-            page = "pages/message.jsp";
+            page = "pages/message/message.jsp";
         } finally {
             request.getRequestDispatcher(page).forward(request, response);
         }
