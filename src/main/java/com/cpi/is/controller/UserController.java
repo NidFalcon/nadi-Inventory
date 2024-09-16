@@ -55,7 +55,7 @@ public class UserController extends HttpServlet {
 					session = request.getSession(true);
 					session.setAttribute("user", user);
 					request.setAttribute("username", user.getUsername());
-					session.setMaxInactiveInterval(60);
+					session.setMaxInactiveInterval(30 * 60);
 					
 					//for debugging purposes only
 					userService.saveSession(request);

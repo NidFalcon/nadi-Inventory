@@ -87,7 +87,7 @@
 						</div>
 						<div class="mb-3">
 							<label for="checkActive" class="form-check-label">Active:</label>
-							<input class="form-check-input" type="checkbox" id="updatecheckActive">
+							<input class="form-check-input" type="checkbox" id="updateCheckActive">
 						</div>
 					</form>
 				</div>
