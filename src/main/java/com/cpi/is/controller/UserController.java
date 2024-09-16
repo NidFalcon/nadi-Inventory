@@ -61,6 +61,7 @@ public class UserController extends HttpServlet {
 					userService.saveSession(request);
 					
 					Cookie sessionCookie = new Cookie("SESSIONID", session.getId());
+					sessionCookie.setMaxAge(0);
 			        sessionCookie.setHttpOnly(true); // Prevents JavaScript access
 			        sessionCookie.setSecure(true); // Ensures cookie is sent over HTTPS
 			        response.addCookie(sessionCookie);

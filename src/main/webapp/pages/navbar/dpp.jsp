@@ -1,3 +1,16 @@
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  	<div id="errorToast" class="toast text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    	<div class="toast-header text-bg-danger">
+      		<i class="bi bi-exclamation-triangle-fill me-2"></i>
+      		<strong class="me-auto">Error</strong>
+      		<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    	</div>
+    	<div class="toast-body">
+      		<div id="errorMessage"></div>
+    	</div>
+  	</div>
+</div>
+	
 	<div class="m-4 mainWrapper">
 		<main role="main">
 		<div class="d-flex justify-content-between align-items-center contentNavbar">
@@ -28,7 +41,7 @@
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="addDppModalLabel">Add New DPP:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
+					<button type="button" class="btn-close btnCloseAddModal" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
@@ -51,14 +64,14 @@
 					        <select id="selectStatus" class="form-select">
 					            <option value="Planned">Planned</option>
 					            <option value="In Progress">In Progress</option>
-					            <option value="Completed">Completed</option>
+					            <option value="Finished">Finished</option>
 					        </select>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
 					<button type="button" class="btn btn-secondary btnCloseAddModal"
-						data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
+						data-bs-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" id="btnAddDppSubmit">Add
 						DPP</button>
 				</div>
@@ -73,7 +86,7 @@
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="updateDppModalLabel">Update DPP:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
+					<button type="button" class="btn-close btnCloseUpdateModal" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
@@ -100,14 +113,14 @@
 					        <select id="selectUpdateStatus" class="form-select">
 					            <option value="Planned">Planned</option>
 					            <option value="In Progress">In Progress</option>
-					            <option value="Completed">Completed</option>
+					            <option value="Finished">Finished</option>
 					        </select>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseAddModal"
-						data-bs-dismiss="modal" id="btnCloseUpdateModal">Close</button>
+					<button type="button" class="btn btn-secondary btnCloseUpdateModal"
+						data-bs-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" id="btnUpdateDppSubmit">Update DPP</button>
 				</div>
 			</div>
@@ -121,7 +134,7 @@
 	        <div class="modal-content">
 	            <div class="modal-header border-0 modalHeader">
 	                <h5 class="modal-title" id="deleteDppModalLabel">Delete DPP</h5>
-	                <button type="button" class="btn-close" data-bs-dismiss="modal"
+	                <button type="button" class="btn-close btnCloseDeleteModal" data-bs-dismiss="modal"
 	                    aria-label="Close"></button>
 	            </div>
 	            <div class="modal-body border-0 modalBody">
@@ -129,8 +142,8 @@
 	                <input type="hidden" id="txtDeleteDppId">
 	            </div>
 	            <div class="modal-footer border-0 modalFooter">
-	                <button type="button" class="btn btn-secondary btnCloseAddModal" 
-	                data-bs-dismiss="modal" id="btnCloseDeleteModal">Close</button>
+	                <button type="button" class="btn btn-secondary btnCloseDeleteModal" 
+	                data-bs-dismiss="modal">Close</button>
 	                <button type="button" class="btn btn-danger" id="btnConfirmDeleteDpp">Delete</button>
 	            </div>
 	        </div>
@@ -163,11 +176,11 @@
 								</th>
 							</tr>
 							<tr id="trAddPmColHeaders" class="d-none">
-								<th scope="col">Select Material/s:</th>
-								<th scope="col">Unit of Measurement</th>
-								<th scope="col">Initial Stock:</th>
-								<th scope="col">Quantity to Use:</th>
-								<th scope="col">Remaining Stock:</th>
+								<th scope="col">Material</th>
+								<th scope="col">Unit</th>
+								<th scope="col">Stock</th>
+								<th scope="col">QTY to Use</th>
+								<th scope="col">Remaining</th>
 							</tr>
 						</table>
 						</div>
@@ -210,11 +223,11 @@
 						<div class="table-responsive-xl">
 							<table class="table table-striped mt-2 productTable" id="tblUpdatePm">
 								<tr>
-									<th scope="col">Select Material/s:</th>
-									<th scope="col">Unit of Measurement</th>
-									<th scope="col">Initial Stock:</th>
-									<th scope="col">Quantity to Use:</th>
-									<th scope="col">Remaining Stock:</th>
+									<th scope="col">Material</th>
+									<th scope="col">Unit</th>
+									<th scope="col">Stock</th>
+									<th scope="col">QTY to Use</th>
+									<th scope="col">Remaining</th>
 								</tr>
 							</table>
 						</div>
