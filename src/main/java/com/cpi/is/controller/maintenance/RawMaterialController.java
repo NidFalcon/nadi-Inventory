@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -53,6 +54,10 @@ public class RawMaterialController extends HttpServlet {
                 request.setAttribute("message", message);
                 page = "pages/message.jsp";
             }
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+            page = "pages/message.jsp";
+            request.setAttribute("message", "please don't do that");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

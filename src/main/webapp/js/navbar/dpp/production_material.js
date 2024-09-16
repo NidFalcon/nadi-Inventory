@@ -1,34 +1,44 @@
 $('#btnAddPmSubmit').click(function() {
-    var productionMaterial = createProductionMaterialObjects();
-    $.post("ProductionMaterialController", {
-        action: "saveBulkItems",
-        item: productionMaterial
-    }, function(response) {
-        if (response.includes('success')) {
-            $('.btnCloseAddPmModal').click();
-            $('#btnDpp').click();
-        } else {
-            alert('Unable to add production materials');
-        }
-    });
+	var productionMaterial = createProductionMaterialObjects();
+	$.post("ProductionMaterialController", {
+		action: "saveBulkItems",
+		item: productionMaterial,
+		operation: "add"
+	}, function(response) {
+		if (response.includes('success')) {
+			$('.btnCloseAddPmModal').click();
+
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#successToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
+
+			$('#btnDpp').click();
+		} else {
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#liveToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
+		}
+	});
 });
 
 function createProductionMaterialObjects() {
-    var pmObjArr = [];
-    for (let i = 1; i <= materialCounter; i++) {
-        if ($(`#selectRawMaterial${i}`).length) {
-            pmObj = {
-                pmId: null,
-                dppId: $('#materialDppId').val(),
-                materialListId: $(`#selectRawMaterial${i} option:selected`).attr('materialListId'), // Fetch from selected option
-                materialCode: $(`#selectRawMaterial${i}`).val(),
-                quantityToUse: $(`#txtPmQtyToUse${i}`).val()
-            }
-            pmObjArr.push(pmObj);
-        }
-    };
+	var pmObjArr = [];
+	for (let i = 1; i <= materialCounter; i++) {
+		if ($(`#selectRawMaterial${i}`).length) {
+			pmObj = {
+				pmId: null,
+				dppId: $('#materialDppId').val(),
+				materialListId: $(`#selectRawMaterial${i} option:selected`).attr('materialListId'),
+				materialCode: $(`#selectRawMaterial${i}`).val(),
+				quantityToUse: $(`#txtPmQtyToUse${i}`).val()
+			}
+			pmObjArr.push(pmObj);
+		}
+	};
 
-    return JSON.stringify(pmObjArr);
+	return JSON.stringify(pmObjArr);
 }
 
 
@@ -36,37 +46,47 @@ $('#btnUpdatePmSubmit').click(function() {
 	var updateProductionMaterial = updateProductionMaterialObjects();
 	$.post("ProductionMaterialController", {
 		action: "saveBulkItems",
-		item: updateProductionMaterial
+		item: updateProductionMaterial,
+		operation: "update"
 	}, function(response) {
 		if (response.includes('success')) {
 			$('.btnCloseUpdatePmModal').click();
+
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#successToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
+
 			$('#btnDpp').click();
 		} else {
-			alert('Unable to add production materials');
+			$('#divAlert').html(response);
+			var $toastLiveExample = $('#liveToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+			toastBootstrap.show();
 		}
 	});
 });
 
 function updateProductionMaterialObjects() {
 	var updPmObjArr = [];
+	console.log("Before: " + JSON.stringify(updPmObjArr));
 	for (let i = 1; i <= productionMaterialFiltered.length; i++) {
-		if ($(`#selectRawMaterial${i}`).length) {
-			var updPmObj = {
-				pmId: $(`#txtUpdatePmId${i}`).val(),
-				dppId: $('#updateMaterialDppId').val(),
-				materialListId: $(`#selectRawMaterial${i} option:selected`).attr('materialListId'), // Fetch from selected option
-				materialCode: $(`#selectRawMaterial${i}`).val(),
-				quantityToUse: $(`#txtPmQtyToUse${i}`).val()
-			}
-			updPmObjArr.push(updPmObj);
+		var updPmObj = {
+			pmId: $(`#hdnPmId${i}`).val(),
+			dppId: $('#updateMaterialDppId').val(),
+			materialListId: $(`#txtSelectedMaterial${i}`).attr('materialListId'),
+			materialCode: $(`#hdnMaterialCode${i}`).val(),
+			quantityToUse: $(`#txtPmQtyToUse${i}`).val()
 		}
+		updPmObjArr.push(updPmObj);
 	};
 
+	console.log("After: " + JSON.stringify(updPmObjArr));
 	return JSON.stringify(updPmObjArr);
 }
 
 function deletePmItem(index) {
-	let deletePmId = $(`#txtUpdatePmId${index}`).val().trim();
+	let deletePmId = $(`#hdnPmId${index}`).val().trim();
 	if (deletePmId !== '') {
 		var item = {
 			pmId: deletePmId
@@ -77,9 +97,18 @@ function deletePmItem(index) {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseUpdatePmModal').click();
-				$('.btnShowUpdatePm').click();
+
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#successToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+
+				$('#btnDpp').click();
 			} else {
-				alert('Unable to delete production material item');
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#liveToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
 			}
 		});
 	}

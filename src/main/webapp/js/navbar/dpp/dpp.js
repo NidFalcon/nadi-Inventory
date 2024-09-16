@@ -43,13 +43,8 @@ dppTable.on('rowClick', function() {
 $('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
-	console.log(row);
 	if (row !== undefined) {
-		$('#txtUpdateDppId').val(row.dppId)
-		$('#selectUpdateSkuCode').val(row.skuCode);
-		$('#txtUpdateProductionDate').val(row.productionDate);
-		$('#txtUpdateQuantity').val(row.quantity);
-		$('#selectUpdateStatus').val(row.status);
+		populateUpdateDppForm(row);
 		$('#txtDeleteDppId').val(row.dppId);
 		$('#materialDppId').val(row.dppId);
 		$('#dppSkuName').val(row.sku.skuName);
@@ -58,6 +53,15 @@ function populateForm(row) {
 		filterProductionMaterial(row);
 	}
 }
+
+function populateUpdateDppForm(row) {
+	$('#txtUpdateDppId').val(row.dppId)
+	$('#selectUpdateSkuCode').val(row.skuCode);
+	$('#txtUpdateProductionDate').val(row.productionDate);
+	$('#txtUpdateQuantity').val(row.quantity);
+	$('#selectUpdateStatus').val(row.status);
+}
+
 
 function createSkuOptions() {
 	let html = '';
@@ -77,9 +81,8 @@ function createItem(crudOperation) {
 	let dppId;
 	let item;
 	if (crudOperation === "create") {
-		dppId = $('#txtDppId').val().trim();
 		item = {
-			dppId: dppId === '' ? null : parseInt(dppId, 10),
+			dppId: null,
 			productionDate: $('#txtProductionDate').val(),
 			skuCode: $('#selectSkuCode').val(),
 			quantity: $('#txtQuantity').val(),
@@ -98,31 +101,29 @@ function createItem(crudOperation) {
 	return item;
 }
 
-function validate(item) {
-	let valid = true;
-	if (item.productionDate === '' || item.branchId === '' || item.skuCode === '' || item.quantity === '' || item.status === '') {
-		alert('Please correctly fill out all required fields');
-		valid = false;
-	} else if (item.quantity < 0) {
-		alert('Quantity must be a non-negative number');
-		valid = false;
-	}
-	return valid;
-}
-
 function addItem(crudOperation) {
 	let item = createItem(crudOperation);
 	if (validate(item)) {
 		$.post('DppController', {
 			action: 'saveItem',
-			item: JSON.stringify(item)
+			item: JSON.stringify(item),
+			operation: crudOperation
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnCloseAddModal').click();
-				$('#btnCloseUpdateModal').click();
+				$('.btnCloseAddModal').click();
+				$('.btnCloseUpdateModal').click();
+
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#successToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+
 				$('#btnDpp').click();
 			} else {
-				alert('Unable to save changes');
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#liveToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
 			}
 		});
 	}
@@ -147,14 +148,21 @@ function deleteItem() {
 			item: JSON.stringify(item)
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnCloseDeleteModal').click();
+				$('.btnCloseDeleteModal').click();
+				
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#successToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
+
 				$('#btnDpp').click();
 			} else {
-				alert('Unable to delete item');
+				$('#divAlert').html(response);
+				var $toastLiveExample = $('#liveToast');
+				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
+				toastBootstrap.show();
 			}
 		});
-	} else {
-		alert('Please select an item to delete');
 	}
 }
 
@@ -203,36 +211,39 @@ function filterProductionMaterial(row) {
 }
 
 function createRawMaterialListOptions() {
-    const materialMap = {};
+	const materialMap = {};
 
-    rawMaterialList.forEach(item => {
-        if (item.material.isActive === "y") {
-            if (!materialMap[item.materialCode]) {
-                materialMap[item.materialCode] = [];
-            }
-            materialMap[item.materialCode].push(item);
-        }
-    });
+	rawMaterialList.forEach(item => {
+		if (item.material.isActive === "y") {
+			if (!materialMap[item.materialCode]) {
+				materialMap[item.materialCode] = [];
+			}
+			materialMap[item.materialCode].push(item);
+		}
+	});
 
-    let html = '';
-    for (const [materialCode, items] of Object.entries(materialMap)) {
-        html += `<optgroup label="${materialCode}">`;
-        items.forEach(item => {
-            html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
+	let html = '';
+	for (const [materialCode, items] of Object.entries(materialMap)) {
+		items.sort((a, b) => new Date(a.dateReceive) - new Date(b.dateReceive));
+
+		html += `<optgroup label="${materialCode}">`;
+		items.forEach(item => {
+			html += `<option materialListId="${item.materialListId}" value="${item.material.materialCode}">
                         ${item.material.materialName} &nbsp;&nbsp; [${item.dateReceive}]
                     </option>`;
-        });
-        html += `</optgroup>`;
-    }
+		});
+		html += `</optgroup>`;
+	}
 
-    return html;
+	return html;
 }
+
 
 var materialCounter = 0;
 
 function addPmRow() {
-    materialCounter++;
-    let html = `
+	materialCounter++;
+	let html = `
         <tr id="pmRow${materialCounter}">
             <td>
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
@@ -246,7 +257,7 @@ function addPmRow() {
                 <input type="text" class="form-control" id="txtRmQty${materialCounter}" readonly/>
             </td>
             <td>
-                <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" min="1" placeholder="Enter quantity" oninput="fetchQtyRemaining(${materialCounter})"/>
+                <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" min="0" placeholder="Enter quantity" oninput="fetchQtyRemaining(${materialCounter})"/>
             </td>
             <td>
                 <input type="text" class="form-control" id="txtRmQtyRemaining${materialCounter}" readonly/>
@@ -257,56 +268,49 @@ function addPmRow() {
         </tr>
     `;
 
-    $('#tblAddPm').append(html);
-    fetchRmQty(materialCounter);
+	$('#tblAddPm').append(html);
+	fetchRmQty(materialCounter);
 	fetchQtyRemaining(materialCounter);
+	ensureNumericInputs();
+	toggleAddPmColHeaders();
 }
+
+function toggleAddPmColHeaders() {
+    var rowCount = $('#tblAddPm').find('tr').length;
+    $('#trAddPmColHeaders').toggleClass('d-none', rowCount <= 2);
+}
+
+
 
 function fetchRmQty(counter) {
-    const selectElement = $(`#selectRawMaterial${counter}`);
-    const selectedOption = selectElement.find('option:selected'); // Get the selected option
-    const selectedMaterialListId = selectedOption.attr('materialListId'); // Get the materialListId from the custom attribute
+	const selectElement = $(`#selectRawMaterial${counter}`);
+	const selectedOption = selectElement.find('option:selected');
+	const selectedMaterialListId = selectedOption.attr('materialListId');
 
-    console.log(`Fetching RM Qty for MaterialListId: ${selectedMaterialListId}`);
+	const matchingMaterial = rawMaterialList.find(function(material) {
+		return material.materialListId == selectedMaterialListId;
+	});
 
-    // Find the material by materialListId
-    const matchingMaterial = rawMaterialList.find(function(material) {
-        return material.materialListId == selectedMaterialListId;
-    });
-
-    if (matchingMaterial) {
-        // Update the Quantity field
-        $(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
-        console.log(`Matched Material Quantity: ${matchingMaterial.quantity}`);
-
-        // Update the Unit of Measurement field
-        $(`#txtUnitOfMeasurement${counter}`).val(matchingMaterial.material.unitOfMeasurement);
-        console.log(`Matched Material UOM: ${matchingMaterial.material.unitOfMeasurement}`);
-    } else {
-        $(`#txtRmQty${counter}`).val("");
-        $(`#txtUnitOfMeasurement${counter}`).val(""); // Clear the UOM field if no material is found
-        console.log(`No matching material found for MaterialListId: ${selectedMaterialListId}`);
-    }
+	if (matchingMaterial) {
+		$(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
+		$(`#txtUnitOfMeasurement${counter}`).val(matchingMaterial.material.unitOfMeasurement);
+	} else {
+		$(`#txtRmQty${counter}`).val("");
+		$(`#txtUnitOfMeasurement${counter}`).val("");
+	}
 }
 
-
-
 function fetchQtyRemaining(counter) {
-    // Get the initial stock (rmQty) and the quantity to use (qtyToUse)
-    const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
-    let qtyToUse = parseFloat($(`#txtPmQtyToUse${counter}`).val()) || 0;
+	const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
+	let qtyToUse = parseFloat($(`#txtPmQtyToUse${counter}`).val()) || 0;
 
-    // If the quantity to use exceeds the available stock, cap it to the stock value
-    if (qtyToUse > rmQty) {
-        qtyToUse = rmQty;
-        $(`#txtPmQtyToUse${counter}`).val(rmQty);
-    }
+	if (qtyToUse > rmQty) {
+		qtyToUse = rmQty;
+		$(`#txtPmQtyToUse${counter}`).val(rmQty);
+	}
 
-    // Calculate the remaining quantity after usage
-    const remainingQty = rmQty - qtyToUse;
-
-    // Update the remaining quantity field
-    $(`#txtRmQtyRemaining${counter}`).val(remainingQty);
+	const remainingQty = rmQty - qtyToUse;
+	$(`#txtRmQtyRemaining${counter}`).val(remainingQty);
 }
 
 $('#btnAddPmRow').on('click', function() {
@@ -315,37 +319,58 @@ $('#btnAddPmRow').on('click', function() {
 
 function deleteAddPmRow(counter) {
 	$(`#pmRow${counter}`).remove();
+	toggleAddPmColHeaders();
 }
 
 function populateUpdatePmForm() {
 	let html = '';
+
 	$.each(productionMaterialFiltered, function(index, item) {
+		let rmListMatch = rawMaterialList.find(function(rmList) {
+			return rmList.materialListId === item.materialListId;
+		});
+
+		if (rmListMatch) {
+			item.quantity = rmListMatch.quantity + item.quantityToUse;
+			item.dateReceive = rmListMatch.dateReceive;
+		}
+
+		let rmMatch = rawMaterial.find(function(rm) {
+			return rm.materialCode === item.materialCode;
+		});
+
+		if (rmMatch) {
+			item.unitOfMeasurement = rmMatch.unitOfMeasurement;
+			item.materialName = rmMatch.materialName;
+		}
+
 		html += `
 		<tr id="updatePmRow${index + 1}">
 			<td>
-                <select class="form-select selectRawMaterial" id="selectRawMaterial${index + 1}" onchange="fetchRmQty(${index + 1})>
-                    ${createRawMaterialListOptions()}
-                </select>
+				<input type="text" class="form-control" id="txtSelectedMaterial${index + 1}" 
+				value="${item.materialName} [${item.dateReceive}]" materialListId="${item.materialListId}" readonly/>
             </td>
 			<td>
-                <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" readonly/>
+                <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" 
+				value="${item.unitOfMeasurement}" readonly/>
             </td>
             <td>
-                <input type="text" class="form-control" id="txtRmQty${index + 1}" readonly/>
+                <input type="text" class="form-control" id="txtRmQty${index + 1}" 
+				value="${item.quantity}" readonly/>
             </td>
 			<td>
-                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" oninput="fetchQtyRemaining(${index + 1})"
-				min="1" placeholder="Enter quantity" />
+                <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" 
+				value="${item.quantityToUse}" min="0" oninput="fetchQtyRemaining(${index + 1})" />
             </td>
             <td>
                 <input type="text" class="form-control" id="txtRmQtyRemaining${index + 1}" readonly/>
             </td>
             <td>
-                <button class="btn btn-danger" type="button" 
-				onclick="deletePmItem(${index + 1})">X</button>
+                <button class="btn btn-danger" type="button" onclick="deletePmItem(${index + 1})">X</button>
             </td>
 			<td>
-                <input type="hidden" id="txtUpdatePmId${index + 1}" value="${item.pmId}" />
+                <input type="hidden" id="hdnPmId${index + 1}" value="${item.pmId}" />
+				<input type="hidden" id="hdnMaterialCode${index + 1}" value="${item.materialCode}" />
             </td>
         </tr>
 		`;
@@ -355,11 +380,10 @@ function populateUpdatePmForm() {
 	$('#tblUpdatePm').append(html);
 
 	$.each(productionMaterialFiltered, function(index, item) {
-		$(`#selectRawMaterial${index + 1}`).val(item.materialCode);
-		$(`#txtPmQtyToUse${index + 1}`).val(item.quantityToUse);
-		fetchRmQty(index + 1);
 		fetchQtyRemaining(index + 1);
 	});
+
+	ensureNumericInputs();
 }
 
 $('#btnShowUpdatePm').on('click', function() {
@@ -369,6 +393,7 @@ $('#btnShowUpdatePm').on('click', function() {
 function clearPmRows() {
 	$('.table tr[id^="pmRow"]').remove();
 	$('.table tr[id^="updatePmRow"]').remove();
+	toggleAddPmColHeaders();
 	materialCounter = 0;
 }
 
@@ -379,3 +404,64 @@ $(document).keydown(function(event) {
 		clearPmRows();
 	}
 });
+
+
+// VALIDATE: DPP
+function validate(item) {
+	var toastError = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
+	let valid = true;
+
+	function showToast(message) {
+		$('#errorMessage').html(message);
+		toastError.show();
+	}
+
+	function isValidDate(dateString) {
+		const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+		if (!datePattern.test(dateString)) {
+			return false;
+		}
+
+		const parsedDate = new Date(dateString);
+		return parsedDate instanceof Date && !isNaN(parsedDate.getTime());
+	}
+
+	if (!item.productionDate || !isValidDate(item.productionDate)) {
+		showToast('Please enter a valid Production Date in the format yyyy-MM-dd');
+		valid = false;
+		return valid;
+	}
+
+	if (!item.skuCode || !/^SKU\d{3}$/.test(item.skuCode)) {
+		showToast('Please enter a valid SKU Code (ex: SKU001)');
+		valid = false;
+		return valid;
+	}
+
+	const maxIntValue = 2147483647;
+
+	const quantity = parseInt(item.quantity, 10);
+	if (isNaN(quantity) || quantity < 0 || quantity > maxIntValue) {
+		showToast('Please enter a valid Quantity');
+		valid = false;
+		return valid;
+	}
+
+	const validStatuses = new Set(["Planned", "In Progress", "Finished"]);
+
+	if (!item.status || !validStatuses.has(item.status)) {
+		showToast('Please select a valid Status option');
+		valid = false;
+		return valid;
+	}
+
+	return valid;
+}
+
+ensureNumericInputs();
+
+function ensureNumericInputs() {
+	$('input[type="number"]').on('input', function() {
+		this.value = this.value.replace(/[^0-9]/g, '');
+	});
+}

@@ -6,15 +6,19 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import com.cpi.is.dao.impl.dpp.ProductionMaterialDAOImpl;
-import com.cpi.is.entity.UserEntity;
+import com.cpi.is.dao.impl.inventory.RawMaterialListDAOImpl;
+import com.cpi.is.dao.impl.maintenance.RawMaterialDAOImpl;
 import com.cpi.is.entity.dpp.ProductionMaterialEntity;
+import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.dpp.ProductionMaterialService;
+import com.cpi.is.util.ValidationUtil;
 
 public class ProductionMaterialServiceImpl implements ProductionMaterialService {
 
     private ProductionMaterialDAOImpl productionMaterialDAO;
+    private RawMaterialDAOImpl rawMaterialDAO = new RawMaterialDAOImpl();
+    private RawMaterialListDAOImpl rawMaterialListDAO = new RawMaterialListDAOImpl();
 
     public ProductionMaterialDAOImpl getProductionMaterialDAO() {
         return productionMaterialDAO;
@@ -24,50 +28,15 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         this.productionMaterialDAO = productionMaterialDAO;
     }
 
-    // Method to convert JSON to ProductionMaterialEntity
     private ProductionMaterialEntity jsonToEntity(JSONObject json) throws Exception {
-        Long pmId = null;
-        Long dppId = null;
-        Long materialListId = null;
-        String materialCode = null;
-        Integer quantityToUse = null;
+        Long pmId = json.has("pmId") && !json.isNull("pmId") ? json.getLong("pmId") : null;
+        Long dppId = json.has("dppId") && !json.isNull("dppId") ? json.getLong("dppId") : null;
+        Long materialListId = json.has("materialListId") && !json.isNull("materialListId") ? json.getLong("materialListId") : null;
+        String materialCode = json.has("materialCode") ? json.getString("materialCode") : null;
+        Integer quantityToUse = json.has("quantityToUse") && !json.isNull("quantityToUse") ? json.getInt("quantityToUse") : null;
 
-        // Log the incoming JSON for debugging
-        System.out.println("Incoming JSON: " + json.toString());
-
-        // Handle fields based on the operation
-        if (json.has("pmId")) {
-            pmId = json.isNull("pmId") ? null : json.optLong("pmId");
-        } else {
-            System.out.println("Missing pmId");
-            throw new Exception("JSON malformed: Missing pmId");
-        }
-
-        // If deleting, only pmId is required
-        if (pmId != null) {
-            return new ProductionMaterialEntity(pmId);
-        }
-
-        // If creating or updating, handle other fields
-        if (json.has("dppId")) {
-            dppId = json.optLong("dppId");
-        }
-
-        if (json.has("materialListId")) {
-            materialListId = json.optLong("materialListId");
-        }
-
-        if (json.has("materialCode")) {
-            materialCode = json.optString("materialCode", null);
-        }
-
-        if (json.has("quantityToUse")) {
-            quantityToUse = json.optInt("quantityToUse", 0);
-        }
-
-        // Validate required fields for create or update
-        if (dppId == null || materialListId == null || materialCode == null || quantityToUse == null) {
-            throw new Exception("JSON malformed: Missing required fields");
+        if (pmId == null && (dppId == null || materialListId == null || materialCode == null || quantityToUse == null)) {
+            throw new Exception("Missing required fields");
         }
 
         return new ProductionMaterialEntity(pmId, dppId, materialListId, materialCode, quantityToUse);
@@ -81,8 +50,6 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
     @Override
     public String saveItem(HttpServletRequest request) throws Exception {
         JSONObject newMaterialJson = new JSONObject(request.getParameter("item"));
-        UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-
         return productionMaterialDAO.saveItem(jsonToEntity(newMaterialJson));
     }
 
@@ -90,16 +57,110 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
     public String deleteItem(HttpServletRequest request) throws Exception {
         JSONObject itemJson = new JSONObject(request.getParameter("item"));
         ProductionMaterialEntity entity = jsonToEntity(itemJson);
+
+        if (entity.getPmId() == null) {
+            throw new Exception("Invalid ID");
+        }
+
         return productionMaterialDAO.deleteItem(entity);
     }
-    
+
     @Override
     public String saveBulkItems(HttpServletRequest request) throws Exception {
         JSONArray jsonArr = new JSONArray(request.getParameter("item"));
-        List<ProductionMaterialEntity> productionMaterial = new ArrayList<>();
+        String operation = request.getParameter("operation");
+        List<ProductionMaterialEntity> productionMaterialList = new ArrayList<>();
+
         for (int i = 0; i < jsonArr.length(); i++) {
-            productionMaterial.add(jsonToEntity(jsonArr.getJSONObject(i)));
+            JSONObject json = jsonArr.getJSONObject(i);
+            validateBulkItemsJson(json, operation);
+            validateStockQuantity(json, operation);
+            productionMaterialList.add(jsonToEntity(json));
         }
-        return productionMaterialDAO.saveBulkItems(productionMaterial);
+
+        return productionMaterialDAO.saveBulkItems(productionMaterialList);
+    }
+
+    private void validateBulkItemsJson(JSONObject jsonObject, String operation) throws InvalidJsonException {
+        String[] requiredFields = {"dppId", "materialListId", "materialCode", "quantityToUse"};
+        ValidationUtil.checkFields(requiredFields, jsonObject);
+
+        if (jsonObject.has("quantityToUse") && !jsonObject.isNull("quantityToUse")) {
+            ValidationUtil.checkNumber(jsonObject.get("quantityToUse").toString());
+        }
+
+        validateMaterialCode(jsonObject.getString("materialCode"));
+
+        if ("add".equals(operation)) {
+            if (jsonObject.has("pmId") && jsonObject.get("pmId") != JSONObject.NULL && !jsonObject.get("pmId").toString().isEmpty()) {
+                throw new InvalidJsonException("Invalid ID");
+            }
+        } else if ("update".equals(operation)) {
+            if (!jsonObject.has("pmId") || jsonObject.isNull("pmId") || jsonObject.get("pmId").toString().isEmpty()) {
+                throw new InvalidJsonException("Invalid ID");
+            } else {
+                try {
+                    Long.parseLong(jsonObject.get("pmId").toString()); 
+                } catch (NumberFormatException e) {
+                    throw new InvalidJsonException("Invalid ID");
+                }
+            }
+
+            if (!jsonObject.has("dppId") || jsonObject.isNull("dppId") || jsonObject.get("dppId").toString().isEmpty()) {
+                throw new InvalidJsonException("Invalid ID");
+            } else {
+                try {
+                    Long.parseLong(jsonObject.get("dppId").toString()); 
+                } catch (NumberFormatException e) {
+                    throw new InvalidJsonException("Invalid ID");
+                }
+            }
+        }
+    }
+
+    private void validateStockQuantity(JSONObject jsonObject, String operation) throws InvalidJsonException {
+        try {
+            Long materialListId = jsonObject.has("materialListId") && !jsonObject.isNull("materialListId") ? jsonObject.getLong("materialListId") : null;
+            Integer quantityToUse = jsonObject.has("quantityToUse") && !jsonObject.isNull("quantityToUse") ? jsonObject.getInt("quantityToUse") : null;
+
+            if (materialListId == null || quantityToUse == null) {
+                throw new InvalidJsonException("Missing required fields");
+            }
+
+            Integer currentStock = rawMaterialListDAO.getRawMaterialListById(materialListId).getQuantity();
+
+            if ("add".equals(operation)) {
+                if (quantityToUse > currentStock) {
+                    throw new InvalidJsonException("Quantity to use exceeds available stock");
+                }
+            } else if ("update".equals(operation)) {
+                Long pmId = jsonObject.has("pmId") && !jsonObject.isNull("pmId") ? jsonObject.getLong("pmId") : null;
+                Integer oldQuantityToUse = (pmId != null) ? productionMaterialDAO.getProductionMaterialById(pmId).getQuantityToUse() : 0;
+
+                Integer totalQuantity = oldQuantityToUse + currentStock;
+
+                if (quantityToUse > totalQuantity) {
+                    throw new InvalidJsonException("Quantity to use exceeds available stock");
+                } 
+            }
+        } catch (InvalidJsonException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InvalidJsonException("An unexpected error occurred while validating stock quantities");
+        }
+    }
+
+
+    public boolean validateMaterialCode(String materialCode) throws InvalidJsonException {
+        try {
+            if (rawMaterialDAO.getRawMaterialById(materialCode) == null) {
+                throw new InvalidJsonException("Invalid Material Code");
+            }
+        } catch (InvalidJsonException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InvalidJsonException("An unexpected error occurred while validating Material Code");
+        }
+        return true;
     }
 }
