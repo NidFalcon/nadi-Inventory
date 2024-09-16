@@ -61,17 +61,6 @@ public class ReportDAOImpl implements ReportDAO {
 		entity.setMaterialName(resultSet.getString("material_name"));
 		return entity;
 	}
-
-	private CurrentFinishedInventoryEntity mapResultSetToEntity(ResultSet resultSet) throws SQLException {
-		CurrentFinishedInventoryEntity entity = new CurrentFinishedInventoryEntity();
-		entity.setFplId(resultSet.getLong("fpl_id"));
-		entity.setDateFinished(resultSet.getDate("date_finished"));
-		entity.setQuantity(resultSet.getLong("quantity"));
-		entity.setSkuCd(resultSet.getString("sku_cd"));
-		entity.setBranchId(resultSet.getLong("branch_id"));
-		entity.setMaterialName(resultSet.getString("material_name"));
-		return entity;
-	}
 	
 	@Override
 	public List<PlannedRawMaterialsInventoryEntity> getPlannedRawMaterialsInventory(String reportDate) throws Exception {

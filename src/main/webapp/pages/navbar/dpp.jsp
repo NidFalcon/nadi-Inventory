@@ -1,4 +1,4 @@
-<div class="m-4 mainWrapper">
+	<div class="m-4 mainWrapper">
 		<main role="main">
 		<div class="d-flex justify-content-between align-items-center contentNavbar">
 			<div>
@@ -33,10 +33,6 @@
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
-						<div class="mb-3">
-							<label for="txtDppId" class="col-form-label">DPP ID:</label>
-							<input type="text" class="form-control" id="txtDppId" readonly>
-						</div>
 						<div class="mb-3">
 							<label for="txtProductionDate" class="col-form-label">Production Date:</label>
 							<input id="txtProductionDate"
@@ -166,7 +162,7 @@
 									<input type="text" class="form-control" id="dppSkuName" readonly>
 								</th>
 							</tr>
-							<tr>
+							<tr id="trAddPmColHeaders" class="d-none">
 								<th scope="col">Select Material/s:</th>
 								<th scope="col">Unit of Measurement</th>
 								<th scope="col">Initial Stock:</th>

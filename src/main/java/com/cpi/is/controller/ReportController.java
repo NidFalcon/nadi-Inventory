@@ -15,14 +15,10 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.ReportServiceImpl;
 import com.cpi.is.util.EscapeUtil;
 import com.cpi.is.util.SessionUtil;
 
-/**
- * Servlet implementation class ReportController
- */
 @WebServlet("/ReportController")
 public class ReportController extends HttpServlet {
 
@@ -33,16 +29,10 @@ public class ReportController extends HttpServlet {
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private ReportServiceImpl reportService = (ReportServiceImpl) context.getBean("reportService");
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public ReportController() {
         super();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");

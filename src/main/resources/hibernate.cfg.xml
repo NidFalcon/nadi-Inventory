@@ -10,6 +10,7 @@
     <property name="hibernate.connection.password">SAe879fd</property>
     <property name="hibernate.show_sql">false</property>
     <property name="hibernate.hbm2ddl.auto">none</property>
+    
     <mapping class="com.cpi.is.entity.UserEntity" />
     <mapping class="com.cpi.is.entity.DispatchingEntity" />
     <mapping class="com.cpi.is.entity.SessionEntity"/>
@@ -21,7 +22,6 @@
     <mapping class="com.cpi.is.entity.maintenance.BranchEntity" />
     <mapping class="com.cpi.is.entity.maintenance.SkuEntity" />
     <mapping class="com.cpi.is.entity.maintenance.RawMaterialEntity" /> 
-    
     <mapping class="com.cpi.is.entity.report.CurrentFinishedInventoryEntity" />
     <mapping class="com.cpi.is.entity.report.PlannedRawMaterialsInventoryEntity" />
     <mapping class="com.cpi.is.entity.report.ProductionReportEntity" />
