@@ -1,0 +1,12 @@
+CREATE TABLE qkc_user (
+	user_id INTEGER GENERATED ALWAYS AS IDENTITY (
+    	START WITH 1
+    	INCREMENT BY 1
+    	CACHE 20
+	) PRIMARY KEY,
+	username VARCHAR(255) NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	branch_id INTEGER NOT NULL,
+	is_active CHAR(1) DEFAULT 'y' NOT NULL,
+	FOREIGN KEY (branch_id) REFERENCES qkc_branch(branch_id)
+);
