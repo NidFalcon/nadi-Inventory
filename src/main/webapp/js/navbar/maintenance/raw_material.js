@@ -81,35 +81,40 @@ function createItem(crudOperation) {
 
 function validate(item) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
-    let valid = true;
-    if (item.materialName === '') {
-        $('#errorMessage').html('Please fill out the Material Name');
+	let valid = true;
+	if (item.materialName === '') {
+		$('#errorMessage').html('Please fill out the Material Name');
 		toastMessage.show();
-        valid = false;
-    }
-    return valid;
+		valid = false;
+	}
+	return valid;
 }
 
 function addItem(crudOperation) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
-    let item = createItem(crudOperation);
+	let item = createItem(crudOperation);
 	if (validate(item)) {
-        $.post('RawMaterialController', {
-            action: 'saveItem',
-            item: JSON.stringify(item)
-        }, function(response) {
-            if (response.includes('success')) {
+		$.post('RawMaterialController', {
+			action: 'saveItem',
+			item: JSON.stringify(item)
+		}, function(response) {
+			if (response.includes('success')) {
 				$('.btnCloseModal').click();
-				$('#divAlert').html(response);	
+				$('#divAlert').html(response);
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
-                $('#btnMngMaterial').click();
-            } else {
-               	$('#errorMessage').html('Unable to save changes');
+				$('#btnMngMaterial').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
+			} else {
+				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
-            }
-        });
-    }
+			}
+		});
+	}
 }
 
 
@@ -129,10 +134,15 @@ $('#btnDeleteRawMaterial').click(function() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteRawMaterialCancel').click();
-				$('#divAlert').html(response);	
+				$('#divAlert').html(response);
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnRawMaterials').click();
+			} else if (response.includes("login")) {
+				$('#btnDeleteRawMaterialCancel').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();

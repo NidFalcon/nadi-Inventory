@@ -119,6 +119,12 @@ function addItem(crudOperation) {
 				toastBootstrap.show();
 
 				$('#btnDpp').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseAddModal').click();
+				$('.btnCloseUpdateModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#errorToast');
@@ -149,13 +155,18 @@ function deleteItem() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseDeleteModal').click();
-				
+
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#successToast');
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 				toastBootstrap.show();
 
 				$('#btnDpp').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseDeleteModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#errorToast');
@@ -274,8 +285,8 @@ function addPmRow() {
 }
 
 function toggleAddPmColHeaders() {
-    var rowCount = $('#tblAddPm').find('tr').length;
-    $('#trAddPmColHeaders').toggleClass('d-none', rowCount <= 2);
+	var rowCount = $('#tblAddPm').find('tr').length;
+	$('#trAddPmColHeaders').toggleClass('d-none', rowCount <= 2);
 }
 
 
@@ -428,7 +439,7 @@ function validate(item) {
 		return valid;
 	}
 
-	if (!item.skuCode || !/^SKU\d{3}$/.test(item.skuCode)) {
+	if (!item.skuCode) {
 		showToast('Please enter a valid SKU Code (ex: SKU001)');
 		valid = false;
 		return valid;

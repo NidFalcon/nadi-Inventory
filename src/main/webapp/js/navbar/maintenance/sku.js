@@ -1,4 +1,4 @@
-var skuTable = new Tabulator("#divSkuTable" , {
+var skuTable = new Tabulator("#divSkuTable", {
 	layout: 'fitColumns',
 	data: sku,
 	pagination: 'local',
@@ -46,11 +46,11 @@ function populateForm(row) {
 }
 
 function populateDeleteForm(row) {
-	if(row !== undefined) {
+	if (row !== undefined) {
 		$('#deleteSkuCode').val(row.skuCode)
 		$('#deleteSkuName').val(row.skuName);
 		$('#deleteSkuMeasurement').val(row.unitOfMeasurement);
-		$('#deleteSkuisActive').val(row.isActive);	
+		$('#deleteSkuisActive').val(row.isActive);
 	}
 }
 
@@ -79,7 +79,7 @@ function createItem(crudOperation) {
 			unitOfMeasurement: $('#deleteSkuMeasurement').val()
 		};
 	}
-	
+
 	return item;
 }
 
@@ -105,10 +105,15 @@ function addItem(crudOperation) {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
-				$('#divAlert').html(response);	
+				$('#divAlert').html(response);
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnMngSku').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseAddModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
@@ -133,10 +138,15 @@ $('#btnDeleteSku').click(function() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteSkuCancel').click();
-				$('#divAlert').html(response);	
+				$('#divAlert').html(response);
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnMngSku').click();
+			} else if (response.includes("login")) {
+				$('#btnDeleteSkuCancel').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();

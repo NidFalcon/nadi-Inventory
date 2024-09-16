@@ -14,6 +14,11 @@ $('#btnAddPmSubmit').click(function() {
 			toastBootstrap.show();
 
 			$('#btnDpp').click();
+		} else if (response.includes("login")) {
+			$('.btnCloseAddPmModal').click();
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+			alert("login expired. Please Login again");
 		} else {
 			$('#divAlert').html(response);
 			var $toastLiveExample = $('#errorToast');
@@ -58,6 +63,11 @@ $('#btnUpdatePmSubmit').click(function() {
 			toastBootstrap.show();
 
 			$('#btnDpp').click();
+		} else if (response.includes("login")) {
+			$('.btnCloseUpdatePmModal').click();
+			$('#divMenu').html('');
+			$('#divContent').html(response);
+			alert("login expired. Please Login again");
 		} else {
 			$('#divAlert').html(response);
 			var $toastLiveExample = $('#errorToast');
@@ -102,6 +112,11 @@ function deletePmItem(index) {
 				toastBootstrap.show();
 
 				$('#btnDpp').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseUpdatePmModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#errorToast');
