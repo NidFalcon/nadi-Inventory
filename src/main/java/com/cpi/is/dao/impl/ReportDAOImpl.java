@@ -27,8 +27,8 @@ public class ReportDAOImpl implements ReportDAO {
 			session.doWork(new Work() {
 				public void execute(Connection connection) throws SQLException {
 					String queryString = "SELECT a.fpl_id, a.date_finished, a.quantity, a.sku_cd, a.branch_id, d.material_name\r\n"
-							+ "  FROM qkc_finished_product_list a,\r\n" + "       qkc_daily_planned_production b,\r\n"
-							+ "       qkc_production_materials c,\r\n" + "       qkc_raw_material d\r\n"
+							+ "  FROM qkc_finished_product_list a,\r\n" + "qkc_daily_planned_production b,\r\n"
+							+ "       qkc_production_materials c,\r\n" + "qkc_raw_material d\r\n"
 							+ " WHERE a.fpl_id NOT IN (SELECT fpl_id \r\n"
 							+ "                          FROM qkc_dispatch_tracking)\r\n"
 							+ "   AND TRUNC(a.date_finished) <= TO_DATE('" + reportDate + "', 'YYYY-MM-DD')\r\n"

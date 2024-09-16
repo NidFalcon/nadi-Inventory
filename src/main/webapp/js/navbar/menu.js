@@ -79,7 +79,6 @@ $('#btnProductionMaterial').click(function () {
 
 $('#btnMngDispatchType').click(function () {
 	$('#divContent').html(html);
-	console.log("TEST");
 	$.post('DispatchTypeController', {
 		action: 'showDispatchType'
 	}, function(response) {
@@ -112,7 +111,6 @@ $('#btnMngBranch').click(function () {
 
 $('#btnMngSku').click(function () {
 	$('#divContent').html(html);
-	console.log("btnMngSKU");
 	$.post('SkuController', {
 		action: 'showSku'
 	}, function(response) {
@@ -129,7 +127,6 @@ $('#btnMngSku').click(function () {
 
 $('#btnMngMaterial').click(function () {
 	$('#divContent').html(html);
-	console.log("test");
 	$.post('RawMaterialController', {
 		action: 'showRawMaterial'
 	}, function(response) {

@@ -10,11 +10,7 @@
     	</div>
   	</div>
 </div>
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> branch 'dev' of https://github.com/NidFalcon/nadi-Inventory.git
 	<div class="m-4 mainWrapper">
 		<main role="main">
 		<div class="d-flex justify-content-between align-items-center contentNavbar">

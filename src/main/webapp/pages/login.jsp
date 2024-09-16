@@ -1,5 +1,5 @@
 <div class="container-fluid">
-	<div class="d-flex justify-content-center">
+	<div class="d-flex flex-wrap justify-content-center">
 		<div class="col-sm-3 mt-5 loginContainer">
 			<div class="m-3">
 				<blockquote class="blockqoute">

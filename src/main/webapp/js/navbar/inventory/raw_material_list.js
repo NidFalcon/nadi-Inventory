@@ -124,9 +124,7 @@ function validate(item) {
 }
 
 function addItem(isAdd) {
-	console.log("clicked");
 	let item = createItem(isAdd);
-	console.log(item);
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
 			action: 'saveRawMaterial',

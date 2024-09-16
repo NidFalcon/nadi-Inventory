@@ -98,7 +98,6 @@ function validate(item) {
 function addItem(crudOperation) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let item = createItem(crudOperation);
-	console.log(item);
 	if (validate(item)) {
 		$.post('SkuController', {
 			action: 'saveItem',
