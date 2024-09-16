@@ -243,24 +243,24 @@ function addPmRow() {
 	materialCounter++;
 	let html = `
         <tr id="pmRow${materialCounter}">
-            <td>
+            <td class="col-6">
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
                     ${createRawMaterialListOptions()}
                 </select>
             </td>
-			<td>
+			<td class="col-2">
                 <input type="text" class="form-control" id="txtUnitOfMeasurement${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQty${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" min="0" placeholder="Enter quantity" oninput="fetchQtyRemaining(${materialCounter})"/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQtyRemaining${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="col-1">
                 <button class="btn btn-danger" type="button" onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
@@ -344,26 +344,26 @@ function populateUpdatePmForm() {
 
 		html += `
 		<tr id="updatePmRow${index + 1}">
-			<td>
+			<td class="col-6">
 				<input type="text" class="form-control" id="txtSelectedMaterial${index + 1}" 
 				value="${item.materialName} [${item.dateReceive}]" materialListId="${item.materialListId}" readonly/>
             </td>
-			<td>
+			<td class="col-2">
                 <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" 
 				value="${item.unitOfMeasurement}" readonly/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQty${index + 1}" 
 				value="${item.quantity}" readonly/>
             </td>
-			<td>
+			<td class="col-2">
                 <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" 
 				value="${item.quantityToUse}" min="0" oninput="fetchQtyRemaining(${index + 1})" />
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQtyRemaining${index + 1}" readonly/>
             </td>
-            <td>
+            <td class="col-1">
                 <button class="btn btn-danger" type="button" onclick="deletePmItem(${index + 1})">X</button>
             </td>
 			<td>
