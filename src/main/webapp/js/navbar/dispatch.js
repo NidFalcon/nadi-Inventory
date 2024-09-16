@@ -1,5 +1,3 @@
-
-//var fplQuantity = 0;
 var currentQuantity = 0;
 var totalQuantityUpdate = 0;
 var totalQuantityAdd = 0;
@@ -39,7 +37,10 @@ function handleDateChange() {
 }
 
 $('button[data-bs-target="#addModal"]').click(function() {
+	// Reset the Dispatch Date to the current date
+	$('#dateSelected').val(getCurrentDate());
 	clearAll(); // Clear all fields before showing the modal
+	getFplID();
 });
 
 function clearAll() {
@@ -55,9 +56,6 @@ function clearAll() {
 
 	// Clear Destination
 	$('#addDispatchDestination').val('');
-
-	// Reset the Dispatch Date to the current date
-	$('#dateSelected').val(getCurrentDate());
 
 	// Optionally hide any confirmation buttons
 	$('.btnConfirmDate').hide();
@@ -94,109 +92,137 @@ function getCurrentDate() {
 	return `${year}-${month}-${day}`; // Format as "yyyy-MM-dd"
 }
 
-function getFplID() {
-	console.log("Tinatawag ako");
-	let currentDate = new Date(getCurrentDate());
-	let html = '<option value="">';
-
-	let skuToQuantityMap = {};
-	$.each(currentInventory, function(index, item) {
-		skuToQuantityMap[item[0]] = item[1];
-	});
-
-	$.each(finishedProduct, function(index, item) {
-		let dateFinished = new Date(item.dateFinished);
-		if (dateFinished <= currentDate) {
-			html += '<option value="' + item.fplId + '" data-sku-code="' + item.sku.skuCode + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';
-		}
-	});
-
-	$('.selFinishedProd').html(html);
-
-	$('.selFinishedProd').change(function() {
-		console.log("Tinatawag ako to change currentQuantity");
-		let selectedOption = $(this).find('option:selected');
-		let skuCode = selectedOption.data('sku-code');
-		totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
-
-		$('.txtSkuName').val(selectedOption.data('sku-name'));
-		$('.txtQuantityFPL').val(totalQuantityAdd);
-		$('.txtDateFinished').val(selectedOption.data('date-finished'));
-		console.log("Current totalQuantityAdd = " + totalQuantityAdd);
-
-	});
-
-	console.log("Current Inventory = " + currentQuantity);
-
-}
-
-getFplID();
-
-function updateFplIDOptionsByDate() {
-    let updateDate = new Date($('#updateDate').val());
-    //let currentDate = new Date(getCurrentDate()); // Assuming you have a function to get current date
+// Helper function to generate HTML for dropdown options
+function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
     let html = '<option value="">';
 
+    $.each(finishedProducts, function(index, item) {
+        let dateFinished = new Date(item.dateFinished);
+		let skuCode = item.sku.skuCode;
+		let quantity = skuToQuantityMap[skuCode] || 0;
+        if (dateFinished <= dateFilter && quantity) {
+            
+            html += `<option value="${item.fplId}" 
+                            data-sku-code="${skuCode}" 
+                            data-sku-name="${item.sku.skuName}" 
+                            data-quantity="${item.quantity}" 
+                            data-date-finished="${dateFinished.toLocaleDateString()}"
+                            data-branch-id="${item.branchId}">
+                            ${item.fplId} ${item.sku.skuName}
+                     </option>`;
+        }
+    });
+
+    html += '</option>';
+    return html;
+}
+
+function getFplID() {
+    let currentDate = new Date(getCurrentDate());
     let skuToQuantityMap = {};
+    
     $.each(currentInventory, function(index, item) {
         skuToQuantityMap[item[0]] = item[1];
     });
 
-    $.each(finishedProduct, function(index, item) {
-        let dateFinished = new Date(item.dateFinished);
-        if(dateFinished <= updateDate) { 
-            dateFinished = skuToQuantityMap[item.sku.skuCode] || 0;
-			html += '<option value="' + item.fplId + '" data-sku-code="' + item.sku.skuCode + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';
-			}
-    });
-    
-    html += '</option>';
-    $('#updateFinishedProductId').html(html);
+    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, currentDate);
 
-    console.log('Updated Options HTML for Update: ', html);
-    /*checkQuantity();
-    checkQuantityUpdate();*/
+    $('.selFinishedProd').html(html);
+
+    $('.selFinishedProd').change(function() {
+        let selectedOption = $(this).find('option:selected');
+        let skuCode = selectedOption.data('sku-code');
+        let branchId = selectedOption.data('branch-id');
+        totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
+
+        $('#addBranchId').val(branchId);
+        $('.txtSkuName').val(selectedOption.data('sku-name'));
+        $('.txtQuantityFPL').val(totalQuantityAdd);
+        $('.txtDateFinished').val(selectedOption.data('date-finished'));
+
+        console.log("Current totalQuantityAdd = " + totalQuantityAdd);
+        console.log("Selected Branch ID = " + branchId);
+    });
+
+    console.log("Current Inventory = " + JSON.stringify(skuToQuantityMap));
+}
+
+function updateFplIDOptionsByDate() {
+    let updateDate = new Date($('#updateDate').val());
+    let skuToQuantityMap = {};
+
+    $.each(currentInventory, function(index, item) {
+        skuToQuantityMap[item[0]] = item[1];
+    });
+
+    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, updateDate);
+    
+    $('#updateFinishedProductId').html(html);
 }
 
 function addFplIDOptionsByDate() {
     let selectedDate = new Date($('#dateSelected').val());
-    //let currentDate = new Date(getCurrentDate()); // Assuming you have a function to get current date
-
-    let html = '<option value="">';
-
     let skuToQuantityMap = {};
+
     $.each(currentInventory, function(index, item) {
         skuToQuantityMap[item[0]] = item[1];
     });
 
-    $.each(finishedProduct, function(index, item) {
-        let dateFinished = new Date(item.dateFinished);
-        if (dateFinished <= selectedDate) {
-            dateFinished = skuToQuantityMap[item.sku.skuCode] || 0;
-			html += '<option value="' + item.fplId + '" data-sku-code="' + item.sku.skuCode + '" data-sku-name="' + item.sku.skuName + '" data-quantity="' + item.quantity + '" data-date-finished="' + new Date(item.dateFinished).toLocaleDateString() + '">' + item.fplId + " " + item.sku.skuName + '</option>';  
-        }
-    });
+    let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, selectedDate);
     
-    html += '</option>';
     $('#selFinishedProdId').html(html);
-    console.log('Updated Options HTML for Add:', html);
-    /*checkQuantity();
-    checkQuantityUpdate();*/
+    
+    clearAll(); // Call clearAll function if needed
 }
 
 $(document).ready(function() {
 	$('#dateSelected').val(getCurrentDate());
-	$('#updateDate').change(function(){
+	$('#updateDate').change(function() {
 		updateFplIDOptionsByDate();
-    	handleDateChange();
+		handleDateChange();
 	});
 	$('#dateSelected').change(function() {
-    	addFplIDOptionsByDate();
-    	handleDateChange();
+		addFplIDOptionsByDate();
+		handleDateChange();
 	});
 });
 
-/*$('#dateSelected').change(handleDateChange);*/
+/*function checkQuantity(isUpdate = false) {
+    // Determine the correct fields based on whether it's an update or an add
+    let fplId = isUpdate ? $('#updateFinishedProductId').val() : $('#selFinishedProdId').val();
+    if (!fplId) return; // If no fplId is selected, skip validation
+
+    let dispatchQuantity = parseFloat(isUpdate ? $('#updateDispatchQuantity').val() : $('#addDispatchQuantity').val());
+    let totalQuantity = isUpdate ? totalQuantityUpdate : totalQuantityAdd;
+
+    if (isNaN(totalQuantity) || isNaN(dispatchQuantity)) {
+        return; // Skip if quantities are not numbers
+    }
+
+    // Ensure that the dispatch quantity does not exceed the total available quantity
+    if (dispatchQuantity > totalQuantity) {
+        if (isUpdate) {
+			if (totalQuantity == 0){
+				$('#updateDispatchQuantity').val(totalQuantity + dispatchQuantity);
+			} else {
+				$('#updateDispatchQuantity').val(totalQuantity);
+			}
+        } else {
+            $('#addDispatchQuantity').val(totalQuantity);
+        }
+    } 
+
+    console.log(`Total Quantity (${isUpdate ? "Update" : "Add"}) = ` + totalQuantity);
+}*/
+
+/*// Attach the consolidated function to both the add and update inputs
+$('#addDispatchQuantity').on('input', function() {
+    checkQuantity(false); // For adding
+});
+
+$('#updateDispatchQuantity').on('input', function() {
+    checkQuantity(true); // For updating
+});*/
 
 function checkQuantity() {
 	let fplId = $('#selFinishedProdId').val();
@@ -217,15 +243,27 @@ function checkQuantity() {
 
 function checkQuantityUpdate() {
 	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val()); // Updated dispatch quantity
-	let fplQuantityUpdate = parseFloat($('#updateFinishedProductId').val()); // Updated dispatch quantity
-	if (isNaN(fplQuantityUpdate) || isNaN(dispatchQuantityUpdate)) {
+	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val()); // Updated dispatch quantity
+	
+	if (isNaN(availableQuantity) || isNaN(dispatchQuantityUpdate)) {
 		return; // Return if either quantity is not a number
 	}
 
 	// Ensure total quantity doesn't exceed currentQuantity
 	if (dispatchQuantityUpdate > fplQuantityUpdate) {
-		$('#updateDispatchQuantity').val(fplQuantityUpdate); // Clear invalid input
+		$('#updateDispatchQuantity').val(fplQuantityUpdate);
+	} 
+	
+	if (availableQuantity == 0) {
+		if (dispatchQuantityUpdate > fplQuantityUpdate) {
+            $('#updateDispatchQuantity').val(fplQuantityUpdate); // Set to maximum allowed quantity
+        }
 	}
+		
+	console.log("fplQuantityUpdate = " + fplQuantityUpdate);
+	console.log("availableQuantity = " + availableQuantity);
+	console.log("totalQuantityUpdate = " + totalQuantityUpdate);
+
 }
 
 $('#updateDispatchQuantity').on('input', checkQuantityUpdate);
@@ -239,6 +277,7 @@ function populateForm(row) {
 
 	let currentDate = new Date(getCurrentDate());
 	let selectedFplId = row.fplId; // Save the initial FPL ID from the selected row
+
 	let html = '<option value="">';
 
 	// Populate the form with the dispatch details from the selected row
@@ -247,13 +286,14 @@ function populateForm(row) {
 	$('#updateDispatchQuantity').val(row.quantity); // Set initial value to row.quantity
 	$('#updateDispatchDestination').val(row.destination);
 	$('#updateDate').val(row.dispatchDate);
-
+	$('#updateBranchId').val(row.branch.branchId);
+	
 	// Logic for populating FPL options
 	let skuToQuantityMapUpdate = {};
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMapUpdate[item[0]] = item[1];
 	});
-	
+
 	let $updateFinishedProductId = $('#updateFinishedProductId');
 
 	$.each(finishedProduct, function(index, item) {
@@ -267,47 +307,35 @@ function populateForm(row) {
 
 	// Set the initial FPL ID based on the selected row
 	$updateFinishedProductId.val(selectedFplId);
-
-	// Function to handle changes in the FPL ID
-	function handleFplChange() {
+	
+	function initialFpl(){
 		let selectedOption = $updateFinishedProductId.find('option:selected');
-		let skuCode = selectedOption.data('sku-code');
-		let updateDispatchQuantity = parseFloat($('#updateDispatchQuantity').val()) || 0;
-		availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
-
-		// Update the dispatch quantity
-		if ($updateFinishedProductId.val() == selectedFplId) {
-			$('#updateDispatchQuantity').val(row.quantity);
-		} else {
-			$('#updateDispatchQuantity').val(0);
-		}
-		
-		if (availableQuantity != 0){
-			totalQuantityUpdate = availableQuantity + updateDispatchQuantity; // Total quantity after update
-			$('.txtQuantityFPL').val(totalQuantityUpdate);
-		} else if (availableQuantity == 0) {
-			availableQuantity = updateDispatchQuantity;
-			$('.txtQuantityFPL').val(availableQuantity);
-		}
-		// Update totalQuantityUpdate based on available quantity plus initial dispatch quantity
-		//totalQuantityUpdate = availableQuantity + (parseFloat($('#updateDispatchQuantity').val()) || 0) - updateDispatchQuantity;
-
-		// Log values for debugging
-		console.log('Selected FPL ID:', $updateFinishedProductId.val());
-		console.log('Available Quantity for SKU Code:', availableQuantity);
-		console.log('Total Quantity Update:', totalQuantityUpdate);
-
-		// Update the total available quantity and date finished
-		$('.txtDateFinished').val(selectedOption.data('date-finished'));
+			let skuCode = selectedOption.data('sku-code');
+			let updateDispatchQuantity = parseFloat($('#updateDispatchQuantity').val()) || 0;
+			availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
+			$('.txtDateFinished').val(selectedOption.data('date-finished'));
+				
+			if (availableQuantity != 0) {
+				totalQuantityUpdate = availableQuantity + updateDispatchQuantity; // Total quantity after update
+				$('.txtQuantityFPL').val(totalQuantityUpdate);
+			}
+			else if (availableQuantity == 0) {
+				$('.txtQuantityFPL').val(updateDispatchQuantity);
+			}
 	}
-
+	
+	function updateFplChange() {
+		initialFpl();
+		$('.txtQuantityFPL').val(availableQuantity);
+		$('#updateDispatchQuantity').val(0);
+	}
+	
 	// Bind the change event handler
-	$updateFinishedProductId.off('change').on('change', handleFplChange);
+	$updateFinishedProductId.off('change').on('change', updateFplChange);
 
 	// Call the function to initialize the form with the default FPL ID values
-	handleFplChange();
+	initialFpl();
 }
-
 
 function populateDeleteForm(row) {
 	if (row !== undefined) {
@@ -333,7 +361,8 @@ function createItem(crudOperation) {
 			fplId: $('#selFinishedProdId').val().toString(),
 			quantity: $('#addDispatchQuantity').val().toString(),
 			destination: $('#addDispatchDestination').val().toString(),
-			dispatchDate: $('#dateSelected').val().toString()
+			dispatchDate: $('#dateSelected').val().toString(),
+			branchId: $('#addBranchId').val().toString()
 		};
 	} else if (crudOperation === "update") {
 		item = {
@@ -342,7 +371,8 @@ function createItem(crudOperation) {
 			fplId: $('#updateFinishedProductId').val().toString(),
 			quantity: $('#updateDispatchQuantity').val().toString(),
 			destination: $('#updateDispatchDestination').val().toString(),
-			dispatchDate: $('#updateDate').val().toString()
+			dispatchDate: $('#updateDate').val().toString(),
+			branchId: $('#updateBranchId').val().toString()
 		};
 	} else if (crudOperation === "delete") {
 		item = {
@@ -443,14 +473,14 @@ function validate(item) {
 		//$('.errorMessage').text("Dispatch Track ID should only contain positive numbers");
 		alert("Dispatch Track ID should only contain positive numbers");
 		valid = false;
-	} else if (!(/^[1-9][0-9]$/.test(item.fplId))) {
-		//$('.errorMessage').text("FPL ID should only contain positive numbers");
-		alert("FPL ID should only contain positive numbers");
-		valid = false;
-	} else if (!(/^[0-9]\d$/.test(item.quantity))) {
+	} else if (!(/^[1-9]\d*$/.test(item.fplId))) {
+    console.log("item.fplId = " + item.fplId);
+    alert("FPL ID should only contain positive numbers");
+    valid = false;
+	} else if (!(/^[0-9]\d*$/.test(item.quantity))) {
 		//$('.errorMessage').text("Quantity should only contain positive numbers and zero");
 		console.log("Item quantity" + item.quantity)
-		alert("Quantity should only contain positive numbers and zero" + item.quantity);
+		alert("Quantity should only contain positive numbers and zero");
 		valid = false;
 	} else if (!(!isNaN(Date.parse(item.dispatchDate)) && (new Date(item.dispatchDate).toISOString().startsWith(item.dispatchDate)))) {
 		//$('.errorMessage').text("Please enter valid date");
@@ -468,19 +498,18 @@ function validate(item) {
 		//$('.errorMessage').text("FPL ID value is too large");
 		alert("FPL ID value is too large");
 		valid = false;
-	} else if (isNaN(totalQuantityAdd) || item.quantity > parseFloat($('#updateFinishedProductId').val())) {
-		alert('Dispatch quantity cannot be greater than available quantity.');
-		valid = false;
 	}
 	else if (item.quantity > 99999999999999) {
 		//$('.errorMessage').text("Quantity value is too large");
 		alert("Quantity value is too large");
 		valid = false;
-	}  else if (item.destination.length > 50) {
+	} else if (item.destination.length > 50) {
 		//$('.errorMessage').text("Destination characters should be less than 51");
 		alert("Destination characters should be less than 51");
 		valid = false;
 	}
 	return valid;
 }
+
+
 createDispatchOptions();
