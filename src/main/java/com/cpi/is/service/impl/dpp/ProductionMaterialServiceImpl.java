@@ -1,7 +1,10 @@
 package com.cpi.is.service.impl.dpp;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
@@ -66,9 +69,16 @@ public class ProductionMaterialServiceImpl implements ProductionMaterialService 
         JSONArray jsonArr = new JSONArray(request.getParameter("item"));
         String operation = request.getParameter("operation");
         List<ProductionMaterialEntity> productionMaterialList = new ArrayList<>();
-
+        Set<Long> materialListIdSet = new HashSet<>();
+        
         for (int i = 0; i < jsonArr.length(); i++) {
             JSONObject json = jsonArr.getJSONObject(i);
+            Long materialListId = json.has("materialListId") && !json.isNull("materialListId") ? json.getLong("materialListId") : null;
+            
+            if (materialListId != null && !materialListIdSet.add(materialListId)) {
+                throw new InvalidJsonException("Duplicate material found");
+            }
+            
             validateBulkItemsJson(json, operation);
             validateStockQuantity(json, operation);
             productionMaterialList.add(jsonToEntity(json));

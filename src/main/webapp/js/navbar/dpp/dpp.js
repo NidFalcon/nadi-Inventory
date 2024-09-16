@@ -119,6 +119,12 @@ function addItem(crudOperation) {
 				toastBootstrap.show();
 
 				$('#btnDpp').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseAddModal').click();
+				$('.btnCloseUpdateModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#errorToast');
@@ -149,13 +155,18 @@ function deleteItem() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseDeleteModal').click();
-				
+
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#successToast');
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 				toastBootstrap.show();
 
 				$('#btnDpp').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseDeleteModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
 			} else {
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#errorToast');
@@ -243,24 +254,24 @@ function addPmRow() {
 	materialCounter++;
 	let html = `
         <tr id="pmRow${materialCounter}">
-            <td>
+            <td class="col-6">
                 <select class="form-select selectRawMaterial" id="selectRawMaterial${materialCounter}" onchange="fetchRmQty(${materialCounter})">
                     ${createRawMaterialListOptions()}
                 </select>
             </td>
-			<td>
+			<td class="col-2">
                 <input type="text" class="form-control" id="txtUnitOfMeasurement${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQty${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="number" class="form-control" id="txtPmQtyToUse${materialCounter}" min="0" placeholder="Enter quantity" oninput="fetchQtyRemaining(${materialCounter})"/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQtyRemaining${materialCounter}" readonly/>
             </td>
-            <td>
+            <td class="col-1">
                 <button class="btn btn-danger" type="button" onclick="deleteAddPmRow(${materialCounter})">X</button>
             </td>
         </tr>
@@ -274,8 +285,8 @@ function addPmRow() {
 }
 
 function toggleAddPmColHeaders() {
-    var rowCount = $('#tblAddPm').find('tr').length;
-    $('#trAddPmColHeaders').toggleClass('d-none', rowCount <= 2);
+	var rowCount = $('#tblAddPm').find('tr').length;
+	$('#trAddPmColHeaders').toggleClass('d-none', rowCount <= 2);
 }
 
 
@@ -344,26 +355,26 @@ function populateUpdatePmForm() {
 
 		html += `
 		<tr id="updatePmRow${index + 1}">
-			<td>
+			<td class="col-6">
 				<input type="text" class="form-control" id="txtSelectedMaterial${index + 1}" 
 				value="${item.materialName} [${item.dateReceive}]" materialListId="${item.materialListId}" readonly/>
             </td>
-			<td>
+			<td class="col-2">
                 <input type="text" class="form-control" id="txtUnitOfMeasurement${index + 1}" 
 				value="${item.unitOfMeasurement}" readonly/>
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQty${index + 1}" 
 				value="${item.quantity}" readonly/>
             </td>
-			<td>
+			<td class="col-2">
                 <input type="number" class="form-control" id="txtPmQtyToUse${index + 1}" 
 				value="${item.quantityToUse}" min="0" oninput="fetchQtyRemaining(${index + 1})" />
             </td>
-            <td>
+            <td class="col-2">
                 <input type="text" class="form-control" id="txtRmQtyRemaining${index + 1}" readonly/>
             </td>
-            <td>
+            <td class="col-1">
                 <button class="btn btn-danger" type="button" onclick="deletePmItem(${index + 1})">X</button>
             </td>
 			<td>
@@ -428,7 +439,7 @@ function validate(item) {
 		return valid;
 	}
 
-	if (!item.skuCode || !/^SKU\d{3}$/.test(item.skuCode)) {
+	if (!item.skuCode) {
 		showToast('Please enter a valid SKU Code (ex: SKU001)');
 		valid = false;
 		return valid;

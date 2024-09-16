@@ -1,25 +1,25 @@
-var dispatchTypeTable = new Tabulator("#divDispatchTypeTable" , {
+var dispatchTypeTable = new Tabulator("#divDispatchTypeTable", {
 	layout: "fitColumns",
 	data: dispatchType,
 	pagination: 'local',
 	pagination: true,
 	paginationSize: 5,
-	paginationSizeSelector:[5, 10, 15, 20],
-	paginationCounter:"rows",
-	selectableRows:1,
-	movableColumns:true,
-	responsiveLayout:true,
+	paginationSizeSelector: [5, 10, 15, 20],
+	paginationCounter: "rows",
+	selectableRows: 1,
+	movableColumns: true,
+	responsiveLayout: true,
 	columns: [
-		{title:"Dispatch Type Code", field: 'dispatchTypeCode'},
-		{title:"Dispatch Type Name", field: 'dispatchTypeName'},
-		{title:"Active", field: 'isActive'}
+		{ title: "Dispatch Type Code", field: 'dispatchTypeCode' },
+		{ title: "Dispatch Type Name", field: 'dispatchTypeName' },
+		{ title: "Active", field: 'isActive' }
 	],
 });
 
 $('#btnShowTypeUpdate').hide();
 $('#btnShowTypeDelete').hide();
 
-dispatchTypeTable.on('rowClick',function() {
+dispatchTypeTable.on('rowClick', function() {
 	let row = dispatchTypeTable.getSelectedData()[0];
 	if (row !== undefined) {
 		populateForm(row);
@@ -34,7 +34,7 @@ dispatchTypeTable.on('rowClick',function() {
 
 //populateForm
 function populateForm(row) {
-	if(row !== undefined) {
+	if (row !== undefined) {
 		$('#updateDispatchTypeCode').val(row.dispatchTypeCode);
 		$('#updateDispatchTypeName').val(row.dispatchTypeName);
 		row.isActive === 'y' ? $('#updatecheckActive').prop('checked', true) : $('#updatecheckActive').prop('checked', false);
@@ -42,96 +42,101 @@ function populateForm(row) {
 }
 
 function populateDeleteForm(row) {
-	if(row !== undefined) {
-		$('#deleteDispatchCode').val(row.dispatchTypeCode);	
+	if (row !== undefined) {
+		$('#deleteDispatchCode').val(row.dispatchTypeCode);
 		$('#deleteDispatchName').val(row.dispatchTypeName);
-		$('#deleteCheckActive').val(row.isActive);	
+		$('#deleteCheckActive').val(row.isActive);
 	}
 }
 
 function validate(item) {
-    let valid = true;
+	let valid = true;
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
-    
+
 	if (item.isActive !== 'y' && item.isActive !== 'n') {
-	  	$('#errorMessage').html('Please select a valid Active status');
+		$('#errorMessage').html('Please select a valid Active status');
 		toastMessage.show();
 		valid = false;
 	}
-    
-    if (item.dispatchTypeCode === '') {
-        $('#errorMessage').html('Please fill out the Dispatch Type Code');
+
+	if (item.dispatchTypeCode === '') {
+		$('#errorMessage').html('Please fill out the Dispatch Type Code');
 		toastMessage.show();
 		valid = false;
-    }
-    
-    if (item.dispatchTypeName === '') {
-        $('#errorMessage').html('Please fill out the Dispatch Type Name');
+	}
+
+	if (item.dispatchTypeName === '') {
+		$('#errorMessage').html('Please fill out the Dispatch Type Name');
 		toastMessage.show();
 		valid = false;
-    }
-    
-    return valid;
+	}
+
+	return valid;
 }
 
 
 function createItem(crudOperation) {
-    let item = {};
-    
-    switch (crudOperation) {
-        case 'create':
-            item = {
-                isActive: $('#addCheckActive').is(':checked') ? 'y' : 'n',
-                dispatchTypeCode: $('#addDispatchCode').val() !== '' ? $('#addDispatchCode').val() : '',
-                dispatchTypeName: $('#addDispatchTypeName').val()
-            };
-            break;
+	let item = {};
 
-        case 'update':
-            item = {
-                isActive: $('#updateCheckActive').is(':checked') ? 'y' : 'n',
-                dispatchTypeCode: $('#updateDispatchTypeCode').val() !== '' ? $('#updateDispatchTypeCode').val() : '',
-                dispatchTypeName: $('#updateDispatchTypeName').val()
-            };
-            break;
+	switch (crudOperation) {
+		case 'create':
+			item = {
+				isActive: $('#addCheckActive').is(':checked') ? 'y' : 'n',
+				dispatchTypeCode: $('#addDispatchCode').val() !== '' ? $('#addDispatchCode').val() : '',
+				dispatchTypeName: $('#addDispatchTypeName').val()
+			};
+			break;
 
-        case 'delete':
-            item = {
+		case 'update':
+			item = {
+				isActive: $('#updateCheckActive').is(':checked') ? 'y' : 'n',
+				dispatchTypeCode: $('#updateDispatchTypeCode').val() !== '' ? $('#updateDispatchTypeCode').val() : '',
+				dispatchTypeName: $('#updateDispatchTypeName').val()
+			};
+			break;
+
+		case 'delete':
+			item = {
 				isActive: $('#deleteCheckActive').is(':checked') ? 'y' : 'n',
-                dispatchTypeCode: $('#deleteDispatchCode').val() !== '' ? $('#deleteDispatchCode').val() : '',
-                dispatchTypeName: $('#deleteDispatchName').val()
-            };
-            break;
+				dispatchTypeCode: $('#deleteDispatchCode').val() !== '' ? $('#deleteDispatchCode').val() : '',
+				dispatchTypeName: $('#deleteDispatchName').val()
+			};
+			break;
 
-        default:
-            console.error('Invalid CRUD operation');
-            break;
-    }
-    
-    return item;
+		default:
+			console.error('Invalid CRUD operation');
+			break;
+	}
+
+	return item;
 }
 
 
 function addItem(crudOperation) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
-    let item = createItem(crudOperation);
-    if (validate(item)) {
-        $.post('DispatchTypeController', {
-            action: 'saveItem',
-            item: JSON.stringify(item)
-        }, function(response) {
-            if (response.includes('success')) {
+	let item = createItem(crudOperation);
+	if (validate(item)) {
+		$.post('DispatchTypeController', {
+			action: 'saveItem',
+			item: JSON.stringify(item)
+		}, function(response) {
+			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
-				$('#divAlert').html(response);	
+				$('#divAlert').html(response);
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
-                $('#btnMngDispatchType').click();
-            } else {
-                $('#errorMessage').html('Unable to save changes');
+				$('#btnMngDispatchType').click();
+			} else if (response.includes("login")) {
+				$('.btnCloseAddModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
+			} else {
+				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
-            }
-        });
-    }
+			}
+		});
+	}
 }
 
 $('#btnAddDispatchType').click(function() {
@@ -144,25 +149,30 @@ $('#btnUpdateDispatchType').click(function() {
 
 $('#btnDeleteDispatchType').click(function() {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
-    if ($('#txtDispatchTypeCode').val() !== '') {
-        let item = createItem('delete');
-        $.post('DispatchTypeController', {
-            action: 'deleteItem',
-            item: JSON.stringify(item)
-        }, function(response) {
-            if (response.includes('success')) {
+	if ($('#txtDispatchTypeCode').val() !== '') {
+		let item = createItem('delete');
+		$.post('DispatchTypeController', {
+			action: 'deleteItem',
+			item: JSON.stringify(item)
+		}, function(response) {
+			if (response.includes('success')) {
 				$('#btnDeleteDispatchTypeCancel').click();
-				$('#divAlert').html(response);	
+				$('#divAlert').html(response);
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
-                $('#btnMngDispatchType').click();
-            } else {
-                $('#errorMessage').html('Unable to save changes');
+				$('#btnMngDispatchType').click();
+			} else if (response.includes("login")) {
+				$('#btnDeleteDispatchTypeCancel').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
+			} else {
+				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
-            }
-        });
-    } else {
-        $('#errorMessage').html('Please select a dispatch type to delete');
+			}
+		});
+	} else {
+		$('#errorMessage').html('Please select a dispatch type to delete');
 		toastMessage.show();
-    }
+	}
 });

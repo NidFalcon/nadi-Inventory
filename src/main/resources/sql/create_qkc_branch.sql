@@ -1,0 +1,9 @@
+CREATE TABLE qkc_branch (
+	branch_id INTEGER GENERATED ALWAYS AS IDENTITY (
+    	START WITH 1
+    	INCREMENT BY 1
+    	CACHE 20
+	) PRIMARY KEY,
+	branch_name VARCHAR2(255) NOT NULL,
+	is_active CHAR(1) DEFAULT 'y' NOT NULL
+);
