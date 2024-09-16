@@ -170,7 +170,6 @@ $('#btnConfirmDeleteDpp').click(function() {
 	deleteItem()
 });
 
-// Production Materials
 var productionMaterialTable;
 var productionMaterialFiltered;
 
@@ -237,7 +236,6 @@ function createRawMaterialListOptions() {
 
 	return html;
 }
-
 
 var materialCounter = 0;
 
@@ -405,8 +403,6 @@ $(document).keydown(function(event) {
 	}
 });
 
-
-// VALIDATE: DPP
 function validate(item) {
 	var toastError = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let valid = true;

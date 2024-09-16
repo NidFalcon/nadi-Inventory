@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 $('#btnCancelRegister').click(function() {
 	$('#divContent').load('pages/login.jsp');
 });

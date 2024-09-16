@@ -137,7 +137,4 @@ public class ReportDAOImpl implements ReportDAO {
 		}
 		return rows;
 	}
-
-
-
 }

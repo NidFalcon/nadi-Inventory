@@ -126,8 +126,6 @@ public class UserController extends HttpServlet {
 	            response.addCookie(cookie);
 	        }
 	    }
-	    
 	    return response;
 	}
-
 }

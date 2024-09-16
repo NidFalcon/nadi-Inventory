@@ -169,49 +169,51 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<!-- delete modal-->
-<div class="modal fade" id="deleteModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Delete row:</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="mb-3">
-						<input type="text" class="form-control d-none"
-							id="deleteDispatchId"> <input type="text"
-							class="form-control d-none" id="deleteDispatchName"> <input
-							type="text" class="form-control d-none"
-							id="deleteFinishedProductId"> <input type="text"
-							class="form-control d-none" id="deleteSkuName"> <input
-							type="text" class="form-control d-none"
-							id="deleteDispatchQuantity"> <input type="text"
-							class="form-control d-none" id="deleteBranchId"> <input
-							type="text" class="form-control d-none" id="deleteBranchName">
-						<input type="text" class="form-control d-none"
-							id="deleteDestination"> <input type="text"
-							class="form-control d-none" id="deleteDispatchDate">
-					</div>
-					<div class="mb-3">
-						<span>Are you sure you want to delete this row?</span>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-
-				<button type="button" class="btn btn-danger" id="btnDeleteDispatch">Yes</button>
-				<button type="button" class="btn btn-primary"
-					data-bs-dismiss="modal" id="btnDeleteDispatchCancel">No</button>
+	
+		<!-- delete modal-->
+	<div class="modal fade" id="deleteModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Delete row:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<input type="text" class="form-control d-none"
+								id="deleteDispatchId"> <input type="text"
+								class="form-control d-none" id="deleteDispatchName"> <input
+								type="text" class="form-control d-none"
+								id="deleteFinishedProductId"> <input type="text"
+								class="form-control d-none" id="deleteSkuName"> <input
+								type="text" class="form-control d-none"
+								id="deleteDispatchQuantity"> <input type="text"
+								class="form-control d-none" id="deleteBranchId"> <input
+								type="text" class="form-control d-none" id="deleteBranchName">
+							<input type="text" class="form-control d-none"
+								id="deleteDestination"> <input type="text"
+								class="form-control d-none" id="deleteDispatchDate">
+						</div>
+						<div class="mb-3">
+							<span>Are you sure you want to delete this row?</span>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+	
+					<button type="button" class="btn btn-danger" id="btnDeleteDispatch">Yes</button>
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" id="btnDeleteDispatchCancel">No</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+
 
 <script type="text/javascript">
 	var dispatch = JSON.parse('${dispatch}');

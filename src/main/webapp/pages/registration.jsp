@@ -15,10 +15,10 @@
 				<label for="txtRegUsername">Username</label>
 			</div>
 			<div class="form-floating me-3 mt-2 ms-3">
-				<input type="password" name="password" class="form-control mb-3 mt-3" id="txtRegPassword" name="txtRegPassword" placeholder="Password" />
+				<input type="password" name="password" class="form-control mb-3 mt-3" id="txtRegPassword" name="password" placeholder="Password" />
 				<label for="password">Password</label>
 			</div>
-			<div class="ms-3 me-3	" >
+			<div class="ms-3 me-3">
 				<select  id="txtBranchId" class="form-select mb-3 mt-3" name="txtBranchId"></select>
 			</div>
 			<div class="mt-2 ms-3">

@@ -2,8 +2,7 @@
 	<div class="d-flex justify-content-center m-1 p-3">
 		<form>
 			<div class="row mt-2">
-				<label for="selReportType" class="col-sm-4 col-form-label">Report
-					Type</label>
+				<label for="selReportType" class="col-sm-4 col-form-label">Report Type</label>
 				<div class="col-sm-8">
 					<select class="form-control" id="selReportType">
 						<option value="getCurrentFinishedInventory">Current Finished Inventory</option>
