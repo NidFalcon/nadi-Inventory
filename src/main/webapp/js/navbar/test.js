@@ -1,9 +1,6 @@
 
 function generateReport(response) {
 
-	console.log(response);
-	console.log("report Data");
-	console.log(reportData);
 	switch ($('#selReportType').val()) {
 		case 'getCurrentFinishedInventory':
 			reportName = "CurrentFinishedInventory";

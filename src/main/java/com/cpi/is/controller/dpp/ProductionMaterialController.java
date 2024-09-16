@@ -65,7 +65,6 @@ public class ProductionMaterialController extends HttpServlet {
 		    } else {
 		    	page = "/UserController";
 		    	request.setAttribute("action", "timeout");
-		    	System.out.println("request is " + request.getAttribute(action));
 		    }
         } catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());

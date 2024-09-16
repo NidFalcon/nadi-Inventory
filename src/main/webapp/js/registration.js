@@ -30,7 +30,6 @@ function createUserJSON() {
 
 $('#btnConfirmRegister').click(function() {
     let newUser = createUserJSON();
-    console.log(newUser);
     $.post("UserController", {
         action: "registerNewUser",
         user: newUser

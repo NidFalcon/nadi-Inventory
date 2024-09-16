@@ -51,11 +51,11 @@ function generateReport(response) {
 	}
 
 	objReportTable = new Tabulator('#divReportTable', {
-	    height: '212px',
-	    layout: 'fitDataTable',
+	    height: '300px',
+	    layout: "fitColumns",
 	    data: reportData,
 	    pagination: 'local',
-	    paginationSize: 5,
+	    paginationSize: 8,
 	    columns: reportCols
 	});
 

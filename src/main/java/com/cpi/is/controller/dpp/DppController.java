@@ -1,8 +1,6 @@
 package com.cpi.is.controller.dpp;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +20,6 @@ import com.cpi.is.service.dpp.ProductionMaterialService;
 import com.cpi.is.service.inventory.RawMaterialListService;
 import com.cpi.is.service.maintenance.RawMaterialService;
 import com.cpi.is.service.maintenance.SkuService;
-import com.cpi.is.util.EscapeUtil;
 import com.cpi.is.util.SessionUtil;
 
 @WebServlet("/DppController")
@@ -69,10 +66,8 @@ public class DppController extends HttpServlet {
 	                page = "pages/message/success.jsp";
 	            }
 			} else {
-				System.out.println("report logging out");
 				page = "/UserController";
 				request.setAttribute("action", "timeout");
-				System.out.println("request is " + request.getAttribute(action));
 			}
         } catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());

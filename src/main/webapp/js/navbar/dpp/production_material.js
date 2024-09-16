@@ -69,7 +69,6 @@ $('#btnUpdatePmSubmit').click(function() {
 
 function updateProductionMaterialObjects() {
 	var updPmObjArr = [];
-	console.log("Before: " + JSON.stringify(updPmObjArr));
 	for (let i = 1; i <= productionMaterialFiltered.length; i++) {
 		var updPmObj = {
 			pmId: $(`#hdnPmId${i}`).val(),
@@ -81,7 +80,6 @@ function updateProductionMaterialObjects() {
 		updPmObjArr.push(updPmObj);
 	};
 
-	console.log("After: " + JSON.stringify(updPmObjArr));
 	return JSON.stringify(updPmObjArr);
 }
 

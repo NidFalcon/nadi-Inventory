@@ -18,8 +18,6 @@ $('#btnTest').click(function(){
 		action: "test",
 		item: JSON.stringify(testJson)
 	}, function(response){
-		console.log("test ending");
-		console.log(response);
 		$('#divContent').html(response);
 	});
 })

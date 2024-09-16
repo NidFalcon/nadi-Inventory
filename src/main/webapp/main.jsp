@@ -29,7 +29,11 @@
 	<div id="divMenu"></div>
 	<div id="divAlert"></div>
 	<div id="divContent" class="container-fluid my-3 divContent">
-		<jsp:include page="pages/login.jsp"></jsp:include>
+		<div class="d-flex justify-content-center mt-5">
+  			<div class="spinner-border text-success" role="status">
+   		 		<span class="visually-hidden">Loading...</span>
+  			</div>
+		</div>
   	</div>
 </body>
 </html>

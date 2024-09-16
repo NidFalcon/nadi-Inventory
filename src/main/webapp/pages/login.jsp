@@ -1,5 +1,5 @@
 <div class="container-fluid">
-	<div class="d-flex justify-content-center">
+	<div class="d-flex flex-wrap justify-content-center">
 		<div class="col-sm-3 mt-5 loginContainer">
 			<div class="m-3">
 				<blockquote class="blockqoute">
@@ -15,23 +15,17 @@
 				<input type="password" class="form-control mb-3 mt=3" id="txtPassword"
 					placeholder="Password"> <label for="password">Password</label>
 			</div>
-			<div class="ms-3 remember" >
-				<input type="checkbox" id="cbRemember" name="remember"
-					value="remember" class="form-check-input"> <label
-					for="remember">Remember Me</label>
-			</div>
 			<div class="mt-2    ms-3">
 				<button type="button" id="btnLogin"
 					class="btn btn-primary mt-2 mb-3">Login</button>
 			</div>
 			<div class="ms-3">
-				<button type="button" id="btnRegister" class="btn btn-primary mb-3">Register</button>
+				<button type="button" id="btnRegister" class="btn btn-primary mb-3 d-none">Register</button>
 			</div>
 		</div>
 		<div class="mt-5">
 			<img
-				src="images/logo.png"
-				alt="Icon" class="img-fluid align-self-center">
+				src="images/logo.png" alt="Icon" class="img-fluid align-self-center">
 		</div>
 	</div>
 </div>

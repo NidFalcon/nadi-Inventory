@@ -108,11 +108,14 @@ function createItem(operationType) {
 
 function validate(item) {
 	let valid = true;
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if (item.materialCode === '' || item.quantity === '' || item.date === '') {
+		$('#divAlert').html(response);
 		$('#errorMessage').html('please correctly fill out the required field.');
 		toastMessage.show();
 		valid = false;
 	} else if (item.quantity < 0) {
+		$('#divAlert').html(response);
 		$('#errorMessage').html('quantity must be a positive number');
 		toastMessage.show();
 		valid = false;
@@ -121,9 +124,7 @@ function validate(item) {
 }
 
 function addItem(isAdd) {
-	console.log("clicked");
 	let item = createItem(isAdd);
-	console.log(item);
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
 			action: 'saveRawMaterial',
@@ -153,6 +154,7 @@ $('#btnUpdateRawMaterial').click(function() {
 });
 
 $('#btnDeleteRawMaterial').click(function() {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialId').val() !== '') {
 
 		$.post('RawMaterialListController', {
@@ -166,11 +168,13 @@ $('#btnDeleteRawMaterial').click(function() {
 				toastMessage.show();
 				$('#btnRawMaterials').click();
 			} else {
+				$('#divAlert').html(response);
 				$('#errorMessage').html('unable to save changes');
 				toastMessage.show();
 			}
 		});
 	} else {
+		$('#divAlert').html(response);
 		$('#errorMessage').html('select an item to delete');
 		toastMessage.show();
 	}

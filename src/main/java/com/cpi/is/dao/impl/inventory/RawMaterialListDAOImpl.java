@@ -39,7 +39,6 @@ public class RawMaterialListDAOImpl implements RawMaterialListDAO {
 			} else {
 				session.merge(item);	// update an existing record
 			}
-			System.out.println("Nevermind");
 			transaction.commit();
 		} catch (Exception e) {
 			if (transaction != null) {

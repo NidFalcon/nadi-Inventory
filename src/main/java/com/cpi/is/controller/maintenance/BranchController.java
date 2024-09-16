@@ -12,12 +12,9 @@ import org.json.JSONArray;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.maintenance.BranchService;
 import com.cpi.is.util.SessionUtil;
-/**
- * Servlet implementation class BranchController
- */
+
 @WebServlet("/BranchController")
 public class BranchController extends HttpServlet {
 
@@ -28,16 +25,10 @@ public class BranchController extends HttpServlet {
     private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
     private BranchService branchService = (BranchService) context.getBean("branchService");
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public BranchController() {
         super();
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             action = request.getParameter("action");
@@ -57,7 +48,6 @@ public class BranchController extends HttpServlet {
 			} else {
 				page = "/UserController";
 				request.setAttribute("action", "timeout");
-				System.out.println("request is " + request.getAttribute(action));
 			}
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,9 +56,6 @@ public class BranchController extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }

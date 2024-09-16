@@ -140,11 +140,7 @@ function getFplID() {
         $('.txtQuantityFPL').val(totalQuantityAdd);
         $('.txtDateFinished').val(selectedOption.data('date-finished'));
 
-        console.log("Current totalQuantityAdd = " + totalQuantityAdd);
-        console.log("Selected Branch ID = " + branchId);
     });
-
-    console.log("Current Inventory = " + JSON.stringify(skuToQuantityMap));
 }
 
 function updateFplIDOptionsByDate() {
@@ -187,43 +183,6 @@ $(document).ready(function() {
 	});
 });
 
-/*function checkQuantity(isUpdate = false) {
-    // Determine the correct fields based on whether it's an update or an add
-    let fplId = isUpdate ? $('#updateFinishedProductId').val() : $('#selFinishedProdId').val();
-    if (!fplId) return; // If no fplId is selected, skip validation
-
-    let dispatchQuantity = parseFloat(isUpdate ? $('#updateDispatchQuantity').val() : $('#addDispatchQuantity').val());
-    let totalQuantity = isUpdate ? totalQuantityUpdate : totalQuantityAdd;
-
-    if (isNaN(totalQuantity) || isNaN(dispatchQuantity)) {
-        return; // Skip if quantities are not numbers
-    }
-
-    // Ensure that the dispatch quantity does not exceed the total available quantity
-    if (dispatchQuantity > totalQuantity) {
-        if (isUpdate) {
-			if (totalQuantity == 0){
-				$('#updateDispatchQuantity').val(totalQuantity + dispatchQuantity);
-			} else {
-				$('#updateDispatchQuantity').val(totalQuantity);
-			}
-        } else {
-            $('#addDispatchQuantity').val(totalQuantity);
-        }
-    } 
-
-    console.log(`Total Quantity (${isUpdate ? "Update" : "Add"}) = ` + totalQuantity);
-}*/
-
-/*// Attach the consolidated function to both the add and update inputs
-$('#addDispatchQuantity').on('input', function() {
-    checkQuantity(false); // For adding
-});
-
-$('#updateDispatchQuantity').on('input', function() {
-    checkQuantity(true); // For updating
-});*/
-
 function checkQuantity() {
 	let fplId = $('#selFinishedProdId').val();
 	if (!fplId) return; // If no fplId is selected, skip validation
@@ -238,7 +197,6 @@ function checkQuantity() {
 		$('#addDispatchQuantity').val(totalQuantityAdd);
 	}
 
-	console.log("totalQuantityAdd = " + totalQuantityAdd);
 }
 
 function checkQuantityUpdate() {
@@ -259,10 +217,6 @@ function checkQuantityUpdate() {
             $('#updateDispatchQuantity').val(fplQuantityUpdate); // Set to maximum allowed quantity
         }
 	}
-		
-	console.log("fplQuantityUpdate = " + fplQuantityUpdate);
-	console.log("availableQuantity = " + availableQuantity);
-	console.log("totalQuantityUpdate = " + totalQuantityUpdate);
 
 }
 
@@ -406,7 +360,6 @@ function createDeleteItem() {
 
 function addItem(isAdd) {
 	let item = createItem(isAdd);
-	console.log(item);
 
 	// Perform validation checks
 	if (!validate(item)) {
@@ -427,7 +380,6 @@ function addItem(isAdd) {
 }
 
 $('.btnConfirmDate').click(function() {
-	console.log("Confirming date")
 	$('.btnConfirmDate').hide(); // Hide the confirm button after updating
 });
 
@@ -462,8 +414,6 @@ $('#btnDeleteDispatch').click(function() {
 function validate(item) {
 	let valid = true;
 	//let fplQuantity = parseFloat($(`option[value="${item.fplId}"]`).data('quantity'));
-	console.log("availableQuantity = " + availableQuantity);
-	console.log(item.dispatchTrackId)
 	if (item.dispatchTrackId === '' || item.dispatchTypeCd === '' || item.fplId === '' ||
 		item.quantity === '' || item.branchId === '' || item.destination === '' || item.dispatchDate === '') {
 		//$('.errorMessage').text("Please correctly fill-out all required fields");
@@ -474,12 +424,10 @@ function validate(item) {
 		alert("Dispatch Track ID should only contain positive numbers");
 		valid = false;
 	} else if (!(/^[1-9]\d*$/.test(item.fplId))) {
-    console.log("item.fplId = " + item.fplId);
     alert("FPL ID should only contain positive numbers");
     valid = false;
 	} else if (!(/^[0-9]\d*$/.test(item.quantity))) {
 		//$('.errorMessage').text("Quantity should only contain positive numbers and zero");
-		console.log("Item quantity" + item.quantity)
 		alert("Quantity should only contain positive numbers and zero");
 		valid = false;
 	} else if (!(!isNaN(Date.parse(item.dispatchDate)) && (new Date(item.dispatchDate).toISOString().startsWith(item.dispatchDate)))) {

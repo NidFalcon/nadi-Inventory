@@ -10,7 +10,7 @@
     	</div>
   	</div>
 </div>
-	
+
 	<div class="m-4 mainWrapper">
 		<main role="main">
 		<div class="d-flex justify-content-between align-items-center contentNavbar">
