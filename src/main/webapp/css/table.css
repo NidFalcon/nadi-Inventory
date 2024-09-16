@@ -17,22 +17,24 @@
     border-color: #374151 !important;
  }
 
-/* Rows */
-.tabulator-row{
-	border-color: #374151 !important; 
-	border-right: 0px solid !important;
+.tabulator-row .tabulator-selected	{
+	background-color: #374151 !important; 
 }
-    
-.tabulator-row:nth-child(odd) {
+/* Rows */
+.tabulator-row-odd {
    	background-color: #fff !important; 
 }
 
-.tabulator-row:nth-child(even) {
+.tabulator-row-even {
     background-color: #d9d9d9 !important; 
 }
 
 .tabulator-row:hover {
     background-color: #969593 !important;
+}
+
+.tabulator-selected	{
+	background-color: #969593 !important; 
 }
 
     /* Cells */
@@ -52,7 +54,7 @@
     
 .tabulator-pages button.active{
 	border-color: #FFFFFF !important;
-	background-color: #374151 !important;
+	background-color: #969593 !important;
 	color: #FFFFFF !important;
 }
 	    
@@ -61,17 +63,7 @@
 }
 	
 .tabulator select{
-	background-color: #374151; 
-	border-color: #4B5563; 
+	background-color: #374151 !important; 
+	border-color: #4B5563 !important; 
 	color: #FFFFFF; 
-}
-	
-.tabulator select:placeholder {
-    color: #9CA3AF; 
-}
-
-.tabulator select:focus {
-	outline:2px solid transparent;
-	outline-offset: 2px;
-	border-color: #AAB396;
 }

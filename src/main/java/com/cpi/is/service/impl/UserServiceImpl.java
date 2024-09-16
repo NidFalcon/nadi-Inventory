@@ -48,6 +48,8 @@ public class UserServiceImpl implements UserService {
 		UserEntity user = userDAO.authenticate(request.getParameter("username"));
 		if(!(user != null && passwordEncoder.matches(request.getParameter("password"), user.getPassword()))) {
 			user = null;
+		} else {
+			user.setPassword("");
 		};
 		return user;
 	}

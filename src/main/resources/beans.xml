@@ -11,6 +11,11 @@
   	<property name="passwordEncoder" ref="passwordEncoder" />
   </bean>
   
+   <bean id="reportDAO" class="com.cpi.is.dao.impl.ReportDAOImpl"></bean>
+  <bean id="reportService" class="com.cpi.is.service.impl.ReportServiceImpl" depends-on="reportDAO">
+  	<property name="reportDAO" ref="reportDAO" />
+  </bean>
+  
   <bean id="dispatchingDAO" class="com.cpi.is.dao.impl.DispatchingDAOImpl"></bean>
   <bean id="dispatchingService" class="com.cpi.is.service.impl.DispatchingServiceImpl" depends-on="dispatchingDAO">
   	<property name="dispatchingDAO" ref="dispatchingDAO" />

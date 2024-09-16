@@ -1,5 +1,3 @@
-console.log(rawMaterialList);
-
 var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 	layout: "fitColumns",
 	data: rawMaterialList,
@@ -18,7 +16,7 @@ var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 		{ title: "Quantity", field: 'quantity' },
 		{ title: "User ID", field: 'userId' },
 		{ title: "Date", field: 'dateReceive' },
-		{ title: "Batch Id", field: 'branchId' }
+		{ title: "Branch Id", field: 'branchId' }
 	],
 });
 
@@ -111,10 +109,12 @@ function createItem(operationType) {
 function validate(item) {
 	let valid = true;
 	if (item.materialCode === '' || item.quantity === '' || item.date === '') {
-		alert('Please correctly fill-out all required fields');
+		$('#errorMessage').html('please correctly fill out the required field.');
+		toastMessage.show();
 		valid = false;
 	} else if (item.quantity < 0) {
-		alert('Quantity must be a non-negative number');
+		$('#errorMessage').html('quantity must be a positive number');
+		toastMessage.show();
 		valid = false;
 	}
 	return valid;
@@ -133,16 +133,13 @@ function addItem(isAdd) {
 			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
 				$('#divAlert').html(response);
-				var $toastLiveExample = $('#successToast');
-				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				toastBootstrap.show();
-				$('#btnRawMaterials').click();
+				var toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
+				$('#btnRawMaterials').click();	
 			} else {
 				  $('#divAlert').html(response);
-				  var $toastLiveExample = $('#liveToast');
-				  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				  toastBootstrap.show();
-
+				  var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
+				  toastMessage.show();
 			}
 		});
 	}
@@ -163,23 +160,19 @@ $('#btnDeleteRawMaterial').click(function() {
 			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
-					$('.btnCloseAddModal').click();
-					$('#divAlert').html(response);
-					var $toastLiveExample = $('#successToast');
-					var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-					toastBootstrap.show();
-					$('#btnRawMaterials').click();
-				} else {
-					  $('#divAlert').html(response);
-					  var $toastLiveExample = $('#liveToast');
-					  var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-					  toastBootstrap.show();
-
-				}
+				$('#btnDeleteRawMaterialCancel').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
+				$('#btnRawMaterials').click();
+			} else {
+				$('#errorMessage').html('unable to save changes');
+				toastMessage.show();
+			}
 		});
 	} else {
-		$('#divAlert').removeClass('d-none');
-		$('#divAlert').html('Please select an item to delete');
+		$('#errorMessage').html('select an item to delete');
+		toastMessage.show();
 	}
 });
 

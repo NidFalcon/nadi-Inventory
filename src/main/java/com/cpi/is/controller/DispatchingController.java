@@ -31,6 +31,7 @@ public class DispatchingController extends HttpServlet {
 
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private DispatchingServiceImpl dispatchingService = (DispatchingServiceImpl) context.getBean("dispatchingService");
+	private BranchServiceImpl branchService = (BranchServiceImpl) context.getBean("branchService");
 	private DispatchTypeServiceImpl dispatchTypeService = (DispatchTypeServiceImpl) context
 			.getBean("dispatchTypeService");
 	private FinishedProductListServiceImpl finishedProductListService = (FinishedProductListServiceImpl) context
@@ -55,6 +56,7 @@ public class DispatchingController extends HttpServlet {
 
 			HttpSession session = request.getSession();
 			UserEntity user = (UserEntity) session.getAttribute("user");
+			
 			Integer branchId = user.getBranchId(); // Retrieve branchId from session
 
 			if ("showDispatching".equals(action)) {
@@ -69,7 +71,7 @@ public class DispatchingController extends HttpServlet {
 				page = "pages/message.jsp";
 			} else if ("deleteItem".equals(action)) {
 				request.setAttribute("message", dispatchingService.deleteItem(request));
-				page = "pages/message.jsp";
+				page = "pages/message/message.jsp";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

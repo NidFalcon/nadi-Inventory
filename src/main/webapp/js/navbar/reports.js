@@ -1,33 +1,63 @@
-$(document).ready(function() {
-    // Event listener for report type selection
-    $('#reportType').change(function() {
-        var selectedReport = $(this).val();
-        updateFormForReportType(selectedReport);
-    });
-
-    function updateFormForReportType(reportType) {
-        // Reset and show the date input field, required for all reports
-        $('#reportDate').show().attr('required', true);
-        
-        // Custom logic for different report types if needed
-        switch(reportType) {
-            case 'currentFinishedInventory':
-                // Additional logic for Current Finished Inventory
-                break;
-            case 'plannedRawMaterials':
-                // Additional logic for Planned Raw Materials Inventory
-                break;
-            case 'productionReport':
-                // Additional logic for Production Report
-                break;
-            case 'receivedInventoryReport':
-                // Additional logic for Received Inventory Report
-                break;
-            default:
-                break;
-        }
-    }
-
-    // Trigger change event on page load to set initial form state
-    $('#reportType').trigger('change');
+$('#btnGenerateReport').click(function() {
+	$.post('ReportController', {
+		action: $('#selReportType').val(),
+		reportDate: $('#txtReportDate').val()
+	}, function(response) {
+		generateReport(response);
+	});
 });
+
+$('#btnPrint').click(function() {
+	objReportTable.download("xlsx", reportName + ".xlsx");
+});
+
+function generateReport(response) {
+	reportData = JSON.parse(response);
+
+	switch ($('#selReportType').val()) {
+		case 'getCurrentFinishedInventory':
+			reportName = "CurrentFinishedInventory";
+			reportCols = [
+				{title: 'FPL ID', field: 'fplId'}, 
+				{title: 'Date Finished', field: 'dateFinished'}, 
+				{title: 'Quantity', field: 'quantity'},
+				{title: 'SKU Code', field: 'skuCd'},
+				{title: 'Branch ID', field: 'branchId'},
+				{title: 'Material', field: 'materialName'}
+		    ];
+		    break;
+		 case 'getPlannedRawMaterialsInventory':
+			reportName = "PlannedRawMaterialsInventory";
+			reportCols = [
+				{title: 'Material', field: 'materialName'},
+				{title: 'Quantity', field: 'quantity'}
+		    ];
+		    break;
+		 case 'getProductionReport':
+			reportName = "ProductionReport";
+			reportCols = [
+				{title: 'Material', field: 'materialName'},
+				{title: 'Quantity', field: 'quantity'}
+		    ];
+		    break;
+		 case 'getReceivedInventoryReport':
+			reportName = "ReceivedInventoryReport";
+			reportCols = [
+				{title: 'Material', field: 'materialName'},
+				{title: 'Quantity', field: 'quantity'},
+				{title: 'Date Received', field: 'dateReceived'}
+		    ];
+		    break;
+	}
+
+	objReportTable = new Tabulator('#divReportTable', {
+	    height: '212px',
+	    layout: 'fitDataTable',
+	    data: reportData,
+	    pagination: 'local',
+	    paginationSize: 5,
+	    columns: reportCols
+	});
+
+	$('#btnPrint').prop('disabled', false);
+}

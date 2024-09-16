@@ -85,15 +85,18 @@ function createItem(crudOperation) {
 
 
 function validate(item) {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let valid = true;
 	if (item.skuName === '') {
-		alert('Please fill out the SKU Name');
+		$('#errorMessage').html('Please fill out the SKU Name');
+		toastMessage.show();
 		valid = false;
 	}
 	return valid;
 }
 
 function addItem(crudOperation) {
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let item = createItem(crudOperation);
 	console.log(item);
 	if (validate(item)) {
@@ -103,9 +106,13 @@ function addItem(crudOperation) {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
 				$('#btnMngSku').click();
 			} else {
-				alert('Unable to save changes');
+				$('#errorMessage').html('Unable to save changes');
+				toastMessage.show();
 			}
 		});
 	}
@@ -119,7 +126,7 @@ $('#btnUpdateSku').click(function() {
 });
 
 $('#btnDeleteSku').click(function() {
-	console.log("DELETE");
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteSkuCode').val() !== '') {
 		$.post('SkuController', {
 			action: 'deleteItem',
@@ -127,15 +134,18 @@ $('#btnDeleteSku').click(function() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('#btnDeleteSkuCancel').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
 				$('#btnMngSku').click();
 			} else {
-				$('#divAlert').removeClass('d-none');
-				$('#divAlert').html('Unable to save changes');
+				$('#errorMessage').html('Unable to save changes');
+				toastMessage.show();
 			}
 		});
 	} else {
-		$('#divAlert').removeClass('d-none');
-		$('#divAlert').html('Please select an item to delete');
+		$('#errorMessage').html('Please select an item to delete');
+		toastMessage.show();
 	}
 });
 

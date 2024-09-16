@@ -1,4 +1,4 @@
-package com.cpi.is.entity;
+package com.cpi.is.entity.report;
 
 import java.io.Serializable;
 

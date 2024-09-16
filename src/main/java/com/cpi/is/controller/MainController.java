@@ -37,7 +37,7 @@ public class MainController extends HttpServlet {
 		if ("initializeApp".equals(action)) {
 			try (Session session = HBUtil.getSessionFactory().openSession()) {
 				request.setAttribute("message", "app initialized");
-				page = "pages/message.jsp";
+				page = "pages/message/message.jsp";
 			}
 		}
 		

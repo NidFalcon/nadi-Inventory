@@ -80,37 +80,37 @@ function createItem(crudOperation) {
 }
 
 function validate(item) {
-	let valid = true;
-	if (item.materialName === '') {
-		alert('Please fill out the Material Name');
-		valid = false;
-	}
-	return valid;
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
+    let valid = true;
+    if (item.materialName === '') {
+        $('#errorMessage').html('Please fill out the Material Name');
+		toastMessage.show();
+        valid = false;
+    }
+    return valid;
 }
 
 function addItem(crudOperation) {
-	let item = createItem(crudOperation);
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
+    let item = createItem(crudOperation);
 	console.log(item);
 	if (validate(item)) {
-		$.post('RawMaterialController', {
-			action: 'saveItem',
-			item: JSON.stringify(item)
-		}, function(response) {
-			if (response.includes('success')) {
-				$('.btnCloseAddModal').click();
-				$('#divAlert').html(response);
-				var $toastLiveExample = $('#successToast');
-				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				toastBootstrap.show();
-				$('#btnRawMaterials').click();
-			} else {
-				$('#divAlert').html(response);
-				var $toastLiveExample = $('#liveToast');
-				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				toastBootstrap.show();
-			}
-		});
-	}
+        $.post('RawMaterialController', {
+            action: 'saveItem',
+            item: JSON.stringify(item)
+        }, function(response) {
+            if (response.includes('success')) {
+				$('.btnCloseModal').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
+                $('#btnMngMaterial').click();
+            } else {
+               	$('#errorMessage').html('Unable to save changes');
+				toastMessage.show();
+            }
+        });
+    }
 }
 
 
@@ -122,28 +122,25 @@ $('#btnUpdateRawMaterial').click(function() {
 });
 
 $('#btnDeleteRawMaterial').click(function() {
-	console.log("DELETE");
+	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialCode').val() !== '') {
 		$.post('RawMaterialController', {
 			action: 'deleteItem',
 			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
-				$('.btnCloseAddModal').click();
-				$('#divAlert').html(response);
-				var $toastLiveExample = $('#successToast');
-				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				toastBootstrap.show();
+				$('#btnDeleteRawMaterialCancel').click();
+				$('#divAlert').html(response);	
+				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
+				toastMessage.show();
 				$('#btnRawMaterials').click();
 			} else {
-				$('#divAlert').html(response);
-				var $toastLiveExample = $('#liveToast');
-				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				toastBootstrap.show();
+				$('#errorMessage').html('Unable to save changes');
+				toastMessage.show();
 			}
 		});
 	} else {
-		$('#divAlert').removeClass('d-none');
-		$('#divAlert').html('Please select an item to delete');
+		$('#errorMessage').html('Please select an item to delete');
+		toastMessage.show();
 	}
 });

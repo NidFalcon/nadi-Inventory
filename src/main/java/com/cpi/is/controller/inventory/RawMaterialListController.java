@@ -15,6 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.cpi.is.exception.InvalidJsonException;
 import com.cpi.is.service.impl.inventory.RawMaterialListServiceImpl;
 import com.cpi.is.service.impl.maintenance.RawMaterialServiceImpl;
+import com.cpi.is.util.SessionUtil;
 
 @WebServlet("/RawMaterialListController")
 public class RawMaterialListController extends HttpServlet {
@@ -34,28 +35,36 @@ public class RawMaterialListController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			action = request.getParameter("action");
-			if ("showRawMaterialList".equals(action)) {
-				request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
-				JSONArray materials = new JSONArray(rawMaterialService.getRawMaterial());
-				JSONArray test = new JSONArray(rawMaterialListService.getRawMaterialList(request));
-				System.out.println(test);
-				request.setAttribute("material", materials);
-				page = "pages/navbar/inventory/rawMaterialList.jsp";
-			} else if ("saveRawMaterial".equals(action)) {
-				HttpSession session = request.getSession();
-				request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
-				page = "pages/success.jsp";
-			} else if ("deleteRawMaterial".equals(action)) {
-				request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
-				page = "pages/message.jsp";
-			}
+			
+			System.out.println("Checking If User is logged in");
+			if (SessionUtil.isUserLoggedIn(request)) {
+				if ("showRawMaterialList".equals(action)) {
+					request.setAttribute("rawMaterialList", new JSONArray(rawMaterialListService.getRawMaterialList(request)));
+					JSONArray materials = new JSONArray(rawMaterialService.getRawMaterial());
+					JSONArray test = new JSONArray(rawMaterialListService.getRawMaterialList(request));
+					System.out.println(test);
+					request.setAttribute("material", materials);
+					page = "pages/navbar/inventory/rawMaterialList.jsp";
+				} else if ("saveRawMaterial".equals(action)) {
+					HttpSession session = request.getSession();
+					request.setAttribute("message", rawMaterialListService.saveRawMaterial(request, session));
+					page = "pages/success.jsp";
+				} else if ("deleteRawMaterial".equals(action)) {
+					request.setAttribute("message", rawMaterialListService.deleteRawMaterial(request));
+					page = "pages/message.jsp";
+				}
+		    } else {
+		    	page = "/UserController";
+		    	request.setAttribute("action", "timeout");
+		    	System.out.println("request is " + request.getAttribute(action));
+		    }
 		} catch (InvalidJsonException e) {
 			request.setAttribute("message", e.getMessage());
-			page = "pages/message.jsp";
+			page = "pages/message/message.jsp";
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("message", "something went wrong! oops~");
-			page = "pages/message.jsp";
+			page = "pages/message/message.jsp";
 		} finally {
 			request.getRequestDispatcher(page).forward(request, response);
 		}
