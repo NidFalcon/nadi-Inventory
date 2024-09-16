@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.cpi.is.entity.SessionEntity;
 import com.cpi.is.entity.UserEntity;
 import com.cpi.is.service.impl.UserServiceImpl;
 import com.cpi.is.service.impl.maintenance.BranchServiceImpl;
@@ -25,7 +24,7 @@ public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static String action = "";
 	private static String page = "";
-	private final Integer TIMEOUT_INTERVAL = 30 * 60;
+	private final Integer TIMEOUT_INTERVAL = 60 * 15;
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
@@ -44,8 +43,6 @@ public class UserController extends HttpServlet {
 				action = request.getParameter("action");
 			}
 			
-			System.out.println("userController Called. Action is " + action);
-			
 			if ("login".equals(action)) { 
 		        
 				UserEntity user = userService.authenticate(request);
@@ -57,10 +54,12 @@ public class UserController extends HttpServlet {
 					session.setAttribute("user", user);
 					request.setAttribute("username", user.getUsername());
 					session.setMaxInactiveInterval(TIMEOUT_INTERVAL);
-					userService.saveSession(request);
 					
-					Cookie sessionCookie = new Cookie("SESSIONID", session.getId());
-					sessionCookie.setMaxAge(0);
+					//experimenting without the use of session table
+//					userService.saveSession(request);
+					
+					Cookie sessionCookie = new Cookie("JSESSIONID", session.getId());
+					sessionCookie.setMaxAge(TIMEOUT_INTERVAL);
 			        sessionCookie.setHttpOnly(true);
 			        sessionCookie.setSecure(true);
 			        response.addCookie(sessionCookie);
@@ -82,16 +81,10 @@ public class UserController extends HttpServlet {
 				if (user != null) {
 					request.setAttribute("username", user.getUsername());
 				} else {
-					SessionEntity userSession = userService.validateSession(request);
-					if (userSession != null) {
-						request.setAttribute("username", userSession.getUsername());
-					} else {
-						page = "pages/login.jsp";
-					}
+					page = "pages/login.jsp";
 				}
 			} else if ("showRegisterPage".equals(action)) {
 				JSONArray test = new JSONArray(branchService.getBranch());
-				System.out.println(test);
 				request.setAttribute("branches", test );
 				page="pages/registration.jsp";
 			} else if ("registerNewUser".equals(action)) {
@@ -100,14 +93,12 @@ public class UserController extends HttpServlet {
 			}  else if ("timeout".equals(request.getAttribute("action"))) {
 				HttpSession session = request.getSession();
 				logoutUser(session, request ,response);
-		    	System.out.println("User Not Logged In. Cicking them out");
 		        page = "pages/login.jsp";
 		        request.setAttribute("message", "Please log in to continue.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println(page);
 			request.getRequestDispatcher(page).forward(request, response);
 		}
 	}
@@ -117,25 +108,17 @@ public class UserController extends HttpServlet {
 	}
 	
 	private HttpServletResponse logoutUser(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
 	    if (session != null) {
 			session.invalidate();
-			userService.deleteSession(request);
 	    }
-
-	    // Remove all session-related cookies
 	    Cookie[] cookies = request.getCookies();
 	    if (cookies != null) {
 	        for (Cookie cookie : cookies) {
-	        	System.out.println("deleting " + cookie.getName());
 	            cookie.setValue("");
 	            cookie.setMaxAge(0);
-	            System.out.println("cookie.get(" + cookie.getValue() + ")");
 	            response.addCookie(cookie);
 	        }
 	    }
-	    
 	    return response;
 	}
-
 }

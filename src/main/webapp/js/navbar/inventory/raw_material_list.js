@@ -14,9 +14,9 @@ var rawMaterialTable = new Tabulator("#divRawMaterialTable", {
 		{ title: "Material Code", field: 'material.materialCode' },
 		{ title: "Material Name", field: 'material.materialName' },
 		{ title: "Quantity", field: 'quantity' },
-		{ title: "User ID", field: 'userId' },
+		{ title: "Recieved By", field: 'user.username' },
 		{ title: "Date", field: 'dateReceive' },
-		{ title: "Branch Id", field: 'branchId' }
+		{ title: "Branch", field: 'branch.branchName' }
 	],
 });
 
@@ -110,28 +110,36 @@ function validate(item) {
 	let valid = true;
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if (item.materialCode === '' || item.quantity === '' || item.date === '') {
-		$('#divAlert').html(response);
 		$('#errorMessage').html('please correctly fill out the required field.');
 		toastMessage.show();
 		valid = false;
-	} else if (item.quantity < 0) {
-		$('#divAlert').html(response);
-		$('#errorMessage').html('quantity must be a positive number');
+	} else if (!/[0-9]+/i.test(item.quantity)){
+		$('#errorMessage').html('please correctly fill out the required field.');
 		toastMessage.show();
 		valid = false;
 	}
+	else if (item.quantity < 0) {
+		$('#errorMessage').html('quantity must be a positive number');
+		toastMessage.show();
+		valid = false;
+	} 
 	return valid;
 }
 
-function addItem(isAdd) {
-	let item = createItem(isAdd);
+function addItem(operationType) {
+	let item = createItem(operationType);
 	if (validate(item)) {
 		$.post('RawMaterialListController', {
 			action: 'saveRawMaterial',
 			item: JSON.stringify(item),
-			operation: isAdd
+			operation: operationType
 		}, function(response) {
-			if (response.includes('success')) {
+			if (response.includes("login")){
+				$('.btnCloseAddModal').click();
+				$('#divMenu').html('');
+				$('#divContent').html(response);
+				alert("login expired. Please Login again");
+			} else if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
 				$('#divAlert').html(response);
 				var toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);

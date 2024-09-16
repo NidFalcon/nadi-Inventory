@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -46,12 +45,6 @@ public class ReportDAOImpl implements ReportDAO {
 						while (resultSet.next()) {
 							CurrentFinishedInventoryEntity entity = mapResultSetToEntity(resultSet);
 							rows.add(entity);
-						}
-						
-						for (Iterator iterator = rows.iterator(); iterator.hasNext();) {
-							CurrentFinishedInventoryEntity currentFinishedInventoryEntity = (CurrentFinishedInventoryEntity) iterator
-									.next();
-							System.out.println(currentFinishedInventoryEntity.toString());
 						}
 					}
 				}

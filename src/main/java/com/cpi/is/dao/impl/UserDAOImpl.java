@@ -29,9 +29,9 @@ public class UserDAOImpl{
 			transaction = session.beginTransaction();
 			if (0 == user.getUserId()) {
 				user.setUserId(null);; 
-				session.persist(user);	// add a new record
+				session.persist(user);
 			} else {
-				session.merge(user);	// update an existing record
+				session.merge(user);
 			}
 			transaction.commit();
 		} catch (Exception e) {
