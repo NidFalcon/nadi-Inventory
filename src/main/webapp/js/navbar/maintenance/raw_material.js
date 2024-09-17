@@ -30,7 +30,7 @@ rawMaterials.on('rowClick', function() {
 	} else {
 		resetForm();
 		$('#btnShowUpdateRawMaterial').hide();
-		$('#btnShowUpdateRawMaterial').hide();
+		$('#btnShowDeleteRawMaterial').hide();
 	}
 })
 
@@ -53,7 +53,7 @@ function populateDeleteForm(row) {
 }
 
 function createItem(crudOperation) {
-	let rawMaterial;
+	let item;
 	if (crudOperation === "create") {
 		item = {
 			materialCode: $('#txtMaterialCode').val() !== '' ? $('#txtMaterialCode').val() : '',
@@ -79,15 +79,58 @@ function createItem(crudOperation) {
 	return item;
 }
 
+function initializeMaterialCodeMap() {
+	let materialCodeMap = {};
+	$.each(rawMaterial, function(index, item) {
+		materialCodeMap[item.materialCode] = true;
+	});
+	return materialCodeMap;
+}
+
+function initializeMaterialNameMap() {
+	let materialNameMap = {};
+	$.each(rawMaterial, function(index, item) {
+		materialNameMap[item.materialName.toLowerCase()] = true;
+	});
+	return materialNameMap;
+}
+
+function isMaterialCodeExists(materialCode) {
+	return materialCodeMap.hasOwnProperty(materialCode);
+}
+
+function isMaterialNameExists(materialName) {
+	return materialNameMap.hasOwnProperty(materialName.toLowerCase());
+}
+
 function validate(item) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let valid = true;
+
 	if (item.materialName === '') {
 		$('#errorMessage').html('Please fill out the Material Name');
 		toastMessage.show();
 		valid = false;
 	}
+
+	if (isMaterialCodeExists(item.materialCode)) {
+		$('#errorMessage').html('Material Code already exists');
+		toastMessage.show();
+		valid = false;
+	}
+
+	if (isMaterialNameExists(item.materialName)) {
+		$('#errorMessage').html('Material Name already exists');
+		toastMessage.show();
+		valid = false;
+	}
+
 	return valid;
+}
+
+function recalculateMaterials() {
+	materialCodeMap = initializeMaterialCodeMap();
+	materialNameMap = initializeMaterialNameMap();
 }
 
 function addItem(crudOperation) {
@@ -104,11 +147,6 @@ function addItem(crudOperation) {
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnMngMaterial').click();
-			} else if (response.includes("login")) {
-				$('.btnCloseModal').click();
-				$('#divMenu').html('');
-				$('#divContent').html(response);
-				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
@@ -117,15 +155,22 @@ function addItem(crudOperation) {
 	}
 }
 
-
 $('#btnAddRawMaterial').click(function() {
+	$(this).prop('disabled', true);
+	recalculateMaterials();
 	addItem("create");
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
+
 $('#btnUpdateRawMaterial').click(function() {
+	$(this).prop('disabled', true);
+	recalculateMaterials();
 	addItem("update");
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteRawMaterial').click(function() {
+	$(this).prop('disabled', true);
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialCode').val() !== '') {
 		$.post('RawMaterialController', {
@@ -138,11 +183,6 @@ $('#btnDeleteRawMaterial').click(function() {
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnRawMaterials').click();
-			} else if (response.includes("login")) {
-				$('#btnDeleteRawMaterialCancel').click();
-				$('#divMenu').html('');
-				$('#divContent').html(response);
-				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
@@ -152,4 +192,5 @@ $('#btnDeleteRawMaterial').click(function() {
 		$('#errorMessage').html('Please select an item to delete');
 		toastMessage.show();
 	}
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });

@@ -30,9 +30,8 @@ dispatchTypeTable.on('rowClick', function() {
 		$('#btnShowTypeUpdate').hide();
 		$('#btnShowTypeDelete').hide();
 	}
-})
+});
 
-//populateForm
 function populateForm(row) {
 	if (row !== undefined) {
 		$('#updateDispatchTypeCode').val(row.dispatchTypeCode);
@@ -49,9 +48,33 @@ function populateDeleteForm(row) {
 	}
 }
 
+function initializeDispatchTypeCodeMap() {
+	let dispatchTypeCodeMap = {};
+	$.each(dispatchType, function(index, item) {
+		dispatchTypeCodeMap[item.dispatchTypeCode] = true;
+	});
+	return dispatchTypeCodeMap;
+}
+
+function initializeDispatchTypeNameMap() {
+	let dispatchTypeNameMap = {};
+	$.each(dispatchType, function(index, item) {
+		dispatchTypeNameMap[item.dispatchTypeName.toLowerCase()] = true;
+	});
+	return dispatchTypeNameMap;
+}
+
+function isDispatchTypeCodeExists(dispatchTypeCode) {
+	return dispatchTypeCodeMap.hasOwnProperty(dispatchTypeCode);
+}
+
+function isDispatchTypeNameExists(dispatchTypeName) {
+	return dispatchTypeNameMap.hasOwnProperty(dispatchTypeName.toLowerCase());
+}
+
 function validate(item) {
-	let valid = true;
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
+	let valid = true;
 
 	if (item.isActive !== 'y' && item.isActive !== 'n') {
 		$('#errorMessage').html('Please select a valid Active status');
@@ -71,9 +94,19 @@ function validate(item) {
 		valid = false;
 	}
 
+	if (isDispatchTypeCodeExists(item.dispatchTypeCode)) {
+		$('#errorMessage').html('Dispatch Type Code already exists');
+		toastMessage.show();
+		valid = false;
+	}
+
+	if (isDispatchTypeNameExists(item.dispatchTypeName)) {
+		$('#errorMessage').html('Dispatch Type Name already exists');
+		toastMessage.show();
+		valid = false;
+	}
 	return valid;
 }
-
 
 function createItem(crudOperation) {
 	let item = {};
@@ -111,6 +144,10 @@ function createItem(crudOperation) {
 	return item;
 }
 
+function recalculateDispatchType() {
+	dispatchTypeCodeMap = initializeDispatchTypeCodeMap();
+	dispatchTypeNameMap = initializeDispatchTypeNameMap();
+}
 
 function addItem(crudOperation) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
@@ -126,11 +163,6 @@ function addItem(crudOperation) {
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnMngDispatchType').click();
-			} else if (response.includes("login")) {
-				$('.btnCloseAddModal').click();
-				$('#divMenu').html('');
-				$('#divContent').html(response);
-				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
@@ -140,16 +172,23 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddDispatchType').click(function() {
+	$(this).prop('disabled', true);
+	recalculateDispatchType();
 	addItem("create");
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateDispatchType').click(function() {
+	$(this).prop('disabled', true);
+	recalculateDispatchType(); 
 	addItem("update");
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteDispatchType').click(function() {
+	$(this).prop('disabled', true);
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
-	if ($('#txtDispatchTypeCode').val() !== '') {
+	if ($('#deleteDispatchCode').val() !== '') {
 		let item = createItem('delete');
 		$.post('DispatchTypeController', {
 			action: 'deleteItem',
@@ -161,11 +200,6 @@ $('#btnDeleteDispatchType').click(function() {
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnMngDispatchType').click();
-			} else if (response.includes("login")) {
-				$('#btnDeleteDispatchTypeCancel').click();
-				$('#divMenu').html('');
-				$('#divContent').html(response);
-				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
@@ -175,4 +209,5 @@ $('#btnDeleteDispatchType').click(function() {
 		$('#errorMessage').html('Please select a dispatch type to delete');
 		toastMessage.show();
 	}
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
