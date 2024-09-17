@@ -20,6 +20,35 @@ html,body {
 	color: #fff;
 }
 
+.alert {
+	background-color: rgba(103, 70, 54,.5);
+	border-radius: .375rem;
+	color: #fff;
+}
+.icon {
+	font-size:100px;
+}
+
+#dashboardTabel {
+	background-color: rgba(103, 70, 54,.0);
+	color: #fff;
+}
+
+#dashboardTable tr{
+	background-color: rgba(103, 70, 54,.0);
+	color: #fff;
+}
+
+#dashboardTable th{
+	background-color: rgba(103, 70, 54,.0);
+	color: #fff;
+}
+
+#dashboardButtons button {
+	background-color: #AAB396 !important;
+	color: #fff !important;
+}
+
 .divContent .mainWrapper {
 	background-color: rgba(103, 70, 54,.5);
 	border-radius: .375rem;
