@@ -155,21 +155,16 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddBranch').click(function(){
-	$(this).prop('disabled', true);
     recalculateBranches();
     addItem("create");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateBranchId').click(function(){
-	$(this).prop('disabled', true);
     recalculateBranches();
     addItem("update");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteBranch').click(function() {
-	$(this).prop('disabled', true);
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialCode').val() !== '') {
 		$.post('BranchController', {
@@ -191,5 +186,4 @@ $('#btnDeleteBranch').click(function() {
 		$('#errorMessage').html.html('Please select an item to delete');
 		toastMessage.show();
 	}
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });

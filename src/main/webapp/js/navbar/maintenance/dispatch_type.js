@@ -172,21 +172,16 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddDispatchType').click(function() {
-	$(this).prop('disabled', true);
 	recalculateDispatchType();
 	addItem("create");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateDispatchType').click(function() {
-	$(this).prop('disabled', true);
-	recalculateDispatchType(); 
+	recalculateDispatchType();
 	addItem("update");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteDispatchType').click(function() {
-	$(this).prop('disabled', true);
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteDispatchCode').val() !== '') {
 		let item = createItem('delete');
@@ -209,5 +204,4 @@ $('#btnDeleteDispatchType').click(function() {
 		$('#errorMessage').html('Please select a dispatch type to delete');
 		toastMessage.show();
 	}
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
