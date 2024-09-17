@@ -133,15 +133,11 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddDppSubmit').click(function() {
-	$(this).prop('disabled', true);
 	addItem("create");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateDppSubmit').click(function() {
-	$(this).prop('disabled', true);
 	addItem("update");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 function deleteItem() {
@@ -178,9 +174,7 @@ function deleteItem() {
 }
 
 $('#btnConfirmDeleteDpp').click(function() {
-	$(this).prop('disabled', true);
 	deleteItem();
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 var productionMaterialTable;
 var productionMaterialFiltered;
