@@ -110,7 +110,6 @@ function validate(item) {
 
 function createItem(crudOperation) {
 	let item = {};
-
 	switch (crudOperation) {
 		case 'create':
 			item = {
@@ -119,7 +118,6 @@ function createItem(crudOperation) {
 				dispatchTypeName: $('#addDispatchTypeName').val()
 			};
 			break;
-
 		case 'update':
 			item = {
 				isActive: $('#updateCheckActive').is(':checked') ? 'y' : 'n',
@@ -127,7 +125,6 @@ function createItem(crudOperation) {
 				dispatchTypeName: $('#updateDispatchTypeName').val()
 			};
 			break;
-
 		case 'delete':
 			item = {
 				isActive: $('#deleteCheckActive').is(':checked') ? 'y' : 'n',
@@ -135,12 +132,10 @@ function createItem(crudOperation) {
 				dispatchTypeName: $('#deleteDispatchName').val()
 			};
 			break;
-
 		default:
 			console.error('Invalid CRUD operation');
 			break;
 	}
-
 	return item;
 }
 

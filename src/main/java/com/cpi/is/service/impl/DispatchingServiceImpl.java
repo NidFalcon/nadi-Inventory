@@ -36,8 +36,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 		Integer quantity = Integer.parseInt(json.getString("quantity"));
 		Integer branchId = json.has("branchId") ? json.getInt("branchId") : null;
 		String destination = json.optString("destination");
-
-		// Assuming dispatchDate is in a specific string format, e.g., "yyyy-MM-dd"
 		String dispatchDateStr = json.getString("dispatchDate");
 		Date dispatchDate = parseDate(dispatchDateStr);
 
@@ -47,7 +45,7 @@ public class DispatchingServiceImpl implements DispatchingService {
 
 	private Date parseDate(String dateStr) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		dateFormat.setLenient(false); // Ensure strict parsing
+		dateFormat.setLenient(false);
 		return dateFormat.parse(dateStr);
 	}
 
@@ -64,7 +62,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 	@Override
 	public String saveItem(HttpServletRequest request,List<FinishedProductListEntity> finishedProductList) throws Exception {
 
-		// TODO Auto-generated method stub
 		String validation = validateData(request);
 		String results = "";
 		
@@ -94,12 +91,9 @@ public class DispatchingServiceImpl implements DispatchingService {
 	@Override
 	public String deleteItem(HttpServletRequest request) throws Exception {
 		DispatchingEntity entity = jsonToEntity(new JSONObject(request.getParameter("item")));
-
-		// Validate the dispatch entity before deletion
 		if (entity.getDispatchTrackId() == null) {
 			throw new IllegalArgumentException("Dispatch Track ID cannot be null for deletion.");
 		}
-
 		return dispatchingDAO.deleteItem(entity);
 	}
 
@@ -109,52 +103,37 @@ public class DispatchingServiceImpl implements DispatchingService {
 		String errorResult = "Please fill-out the dispatching form properly";
 
 		if (!json.has("dispatchTrackId") || !(json.get("dispatchTrackId") instanceof String)) {
-			System.out.println("pointer4");
 			validation = errorResult;
 		} else if (!json.has("dispatchTypeCd") || !(json.get("dispatchTypeCd") instanceof String)) {
-			System.out.println("pointer5");
 			validation = errorResult;
 		} else if (!json.has("fplId") || !(json.get("fplId") instanceof String)) {
-			System.out.println("pointer6");
 			validation = errorResult;
 		} else if (!json.has("quantity") || !(json.get("quantity") instanceof String)) {
-			System.out.println("pointer7");
 			validation = errorResult;
 		} else if (!json.has("destination") || !(json.get("destination") instanceof String)) {
-			System.out.println("pointer8");
 			validation = errorResult;
 		} else if (!json.has("dispatchDate") || !(json.get("dispatchDate") instanceof String)) {
-			System.out.println("pointer9");
 			validation = errorResult;
 		} else if (json.getString("dispatchTrackId").length() < 1 || json.getString("dispatchTrackId").length() > 14) {
-			System.out.println("pointer10");
 			validation = errorResult;
 		} else if (!json.getString("dispatchTrackId").matches("^[0-9]\\d*$")) {
-			System.out.println("pointer11");
 			validation = errorResult;
 		} else if (json.getString("fplId").length() < 1 || json.getString("fplId").length() > 14) {
-			System.out.println("pointer12");
 			validation = errorResult;
 		} else if (!json.getString("fplId").matches("^[1-9]\\d*$")) {
-			System.out.println("pointer13");
 			validation = errorResult;
 		} else if (json.getString("quantity").length() < 1 || json.getString("quantity").length() > 14) {
-			System.out.println("pointer15");
 			validation = errorResult;
 		} else if (!json.getString("quantity").matches("^[0-9]+$")) {
-			System.out.println("pointer16");
 			validation = errorResult;
 		} else if (json.getString("dispatchTypeCd").length() < 1 || json.getString("dispatchTypeCd").length() > 10) {
-			System.out.println("pointer17");
 			validation = errorResult;
 		} else if (json.getString("destination").length() < 1 || json.getString("destination").length() > 50) {
-			System.out.println("pointer18");
 			validation = errorResult;
 		} else {
 			try {
 				LocalDate.parse(json.getString("dispatchDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			} catch (DateTimeParseException e) {
-				System.out.println("pointer19");
 				validation = errorResult;
 			}
 		}
@@ -166,33 +145,23 @@ public class DispatchingServiceImpl implements DispatchingService {
 	    JSONObject json = new JSONObject(request.getParameter("item"));
 	    String validation = "Please fill-out the dispatching form correctly";
 	    System.out.println("json = " + json);
-	    
-	    // Fetch current inventory from DAO
 	    List<Object[]> currentInventory = getCurrentInventory(Long.parseLong(json.getString("branchId")));
-
-	    // Fetch dispatched entities for the branch
 	    List<DispatchingEntity> dispatchingEntities = getDispatchingByBranchId(Long.parseLong(json.getString("branchId")));
 
 	    outerloop:
 	    for (FinishedProductListEntity finishedProduct : finishedProductList) {
 	        if (finishedProduct.getFplId() == Long.parseLong(json.getString("fplId"))) {
-
-	            // Check if dispatch date is valid
 	            if (finishedProduct.getDateFinished().getTime() >
 	                (new SimpleDateFormat("yyyy-MM-dd").parse(json.getString("dispatchDate")).getTime())) {
 	            	System.out.println("pointer3");
 	                break outerloop;
 	            }
 
-	            // New Dispatch: dispatchTrackId is 0
 	            if (Long.parseLong(json.getString("dispatchTrackId")) == 0) {
-	                // Compare against current inventory
 	                for (Object[] inventoryItem : currentInventory) {
-	                    String skuCD = (String) inventoryItem[0]; // SKU Code
-	                    Long availableQuantity = (Long) inventoryItem[1]; // Available quantity
-
+	                    String skuCD = (String) inventoryItem[0]; 
+	                    Long availableQuantity = (Long) inventoryItem[1]; 
 	                    if (skuCD.equals(finishedProduct.getSkuCD())) {
-	                        // If the available quantity is less than the requested quantity, fail validation
 	                        if (availableQuantity < Long.parseLong(json.getString("quantity"))) {
 	                        	System.out.println("pointer2");
 	                            break outerloop;
@@ -203,18 +172,14 @@ public class DispatchingServiceImpl implements DispatchingService {
 	                    }
 	                }
 	            } else {
-	                // Existing dispatch: check current inventory and dispatched quantities
 	                for (DispatchingEntity dispatchingEntity : dispatchingEntities) {
 	                    if (dispatchingEntity.getDispatchTrackId() == Long.parseLong(json.getString("dispatchTrackId"))) {
 	                        for (Object[] inventoryItem : currentInventory) {
-	                            String skuCD = (String) inventoryItem[0]; // SKU Code
-	                            Long availableQuantity = (Long) inventoryItem[1]; // Available quantity
+	                            String skuCD = (String) inventoryItem[0];
+	                            Long availableQuantity = (Long) inventoryItem[1]; 
 
 	                            if (skuCD.equals(finishedProduct.getSkuCD())) {
-	                                // Add dispatched quantity to current available inventory
 	                                Long totalAvailable = availableQuantity + dispatchingEntity.getQuantity();
-	                                
-	                                // If the total available quantity is less than the requested quantity, fail validation
 	                                if (totalAvailable < Long.parseLong(json.getString("quantity"))) {
 	                                	System.out.println("pointer1");
 	                                    break outerloop;
@@ -230,7 +195,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 	            }
 	        }
 	    }
-
 	    return validation;
 	}
 }

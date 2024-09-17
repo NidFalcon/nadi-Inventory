@@ -39,7 +39,6 @@ dppTable.on('rowClick', function() {
 		$('#btnShowDeleteDpp').hide();
 	}
 })
-
 $('#txtProductionDate').val(new Date().toISOString().split('T')[0]);
 
 function populateForm(row) {
@@ -112,12 +111,10 @@ function addItem(crudOperation) {
 			if (response.includes('success')) {
 				$('.btnCloseAddModal').click();
 				$('.btnCloseUpdateModal').click();
-
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#successToast');
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 				toastBootstrap.show();
-
 				$('#btnDpp').click();
 			} else if (response.includes("login")) {
 				$('.btnCloseAddModal').click();
@@ -159,7 +156,6 @@ function deleteItem() {
 		}, function(response) {
 			if (response.includes('success')) {
 				$('.btnCloseDeleteModal').click();
-
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#successToast');
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
@@ -186,7 +182,6 @@ $('#btnConfirmDeleteDpp').click(function() {
 	deleteItem();
 	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
-
 var productionMaterialTable;
 var productionMaterialFiltered;
 
@@ -194,7 +189,6 @@ function filterProductionMaterial(row) {
 	productionMaterialFiltered = productionMaterial.filter(function(material) {
 		return material.dppId === row.dppId;
 	});
-
 	if (productionMaterialFiltered.length !== 0) {
 		$('#btnShowUpdatePm').show();
 		$('#materialDppIdContainer').hide();
@@ -228,7 +222,6 @@ function filterProductionMaterial(row) {
 
 function createRawMaterialListOptions() {
 	const materialMap = {};
-
 	rawMaterialList.forEach(item => {
 		if (item.material.isActive === "y") {
 			if (!materialMap[item.materialCode]) {
@@ -237,7 +230,6 @@ function createRawMaterialListOptions() {
 			materialMap[item.materialCode].push(item);
 		}
 	});
-
 	let html = '';
 	for (const [materialCode, items] of Object.entries(materialMap)) {
 		items.sort((a, b) => new Date(a.dateReceive) - new Date(b.dateReceive));
@@ -250,10 +242,8 @@ function createRawMaterialListOptions() {
 		});
 		html += `</optgroup>`;
 	}
-
 	return html;
 }
-
 var materialCounter = 0;
 
 function addPmRow() {
@@ -301,11 +291,9 @@ function fetchRmQty(counter) {
 	const selectElement = $(`#selectRawMaterial${counter}`);
 	const selectedOption = selectElement.find('option:selected');
 	const selectedMaterialListId = selectedOption.attr('materialListId');
-
 	const matchingMaterial = rawMaterialList.find(function(material) {
 		return material.materialListId == selectedMaterialListId;
 	});
-
 	if (matchingMaterial) {
 		$(`#txtRmQty${counter}`).val(matchingMaterial.quantity);
 		$(`#txtUnitOfMeasurement${counter}`).val(matchingMaterial.material.unitOfMeasurement);
@@ -318,7 +306,6 @@ function fetchRmQty(counter) {
 function fetchQtyRemaining(counter) {
 	const rmQty = parseFloat($(`#txtRmQty${counter}`).val()) || 0;
 	let qtyToUse = parseFloat($(`#txtPmQtyToUse${counter}`).val()) || 0;
-
 	if (qtyToUse > rmQty) {
 		qtyToUse = rmQty;
 		$(`#txtPmQtyToUse${counter}`).val(rmQty);
@@ -344,16 +331,13 @@ function populateUpdatePmForm() {
 		let rmListMatch = rawMaterialList.find(function(rmList) {
 			return rmList.materialListId === item.materialListId;
 		});
-
 		if (rmListMatch) {
 			item.quantity = rmListMatch.quantity + item.quantityToUse;
 			item.dateReceive = rmListMatch.dateReceive;
 		}
-
 		let rmMatch = rawMaterial.find(function(rm) {
 			return rm.materialCode === item.materialCode;
 		});
-
 		if (rmMatch) {
 			item.unitOfMeasurement = rmMatch.unitOfMeasurement;
 			item.materialName = rmMatch.materialName;
@@ -423,51 +407,41 @@ $(document).keydown(function(event) {
 function validate(item) {
 	var toastError = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let valid = true;
-
 	function showToast(message) {
 		$('#errorMessage').html(message);
 		toastError.show();
 	}
-
 	function isValidDate(dateString) {
 		const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 		if (!datePattern.test(dateString)) {
 			return false;
 		}
-
-		const parsedDate = new Date(dateString);
+	const parsedDate = new Date(dateString);
 		return parsedDate instanceof Date && !isNaN(parsedDate.getTime());
 	}
-
 	if (!item.productionDate || !isValidDate(item.productionDate)) {
 		showToast('Please enter a valid Production Date in the format yyyy-MM-dd');
 		valid = false;
 		return valid;
 	}
-
 	if (!item.skuCode) {
 		showToast('Please enter a valid SKU Code (ex: SKU001)');
 		valid = false;
 		return valid;
 	}
-
 	const maxIntValue = 2147483647;
-
 	const quantity = parseInt(item.quantity, 10);
 	if (isNaN(quantity) || quantity < 0 || quantity > maxIntValue) {
 		showToast('Please enter a valid Quantity');
 		valid = false;
 		return valid;
 	}
-
 	const validStatuses = new Set(["Planned", "In Progress", "Finished"]);
-
 	if (!item.status || !validStatuses.has(item.status)) {
 		showToast('Please select a valid Status option');
 		valid = false;
 		return valid;
 	}
-
 	return valid;
 }
 

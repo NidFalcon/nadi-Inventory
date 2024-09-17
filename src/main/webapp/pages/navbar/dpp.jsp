@@ -15,9 +15,7 @@
 		<main role="main">
 		<div class="d-flex justify-content-between align-items-center contentNavbar">
 			<div>
-				<h1 class="h2">
-					<i class="bi bi-boxes me-2 ms-3"></i>Daily Planned Production
-				</h1>		
+				<h1 class="h1"><i class="bi bi-boxes me-2 ms-3"></i>Daily Planned Production</h1>		
 			</div>
 			<div>
 				<button type="button" class="btn btn-dark ms-2 me-2" data-bs-toggle="modal" data-bs-target="#addPmModal" id="btnShowAddPm">+ Add PM</button>	
@@ -35,8 +33,7 @@
 	</main>
 	
 	<!-- add DPP modal -->
-	<div class="modal fade" id="addModal" tabindex="-1"
-		aria-labelledby="addDppModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addDppModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
@@ -48,8 +45,7 @@
 					<form>
 						<div class="mb-3">
 							<label for="txtProductionDate" class="col-form-label">Production Date:</label>
-							<input id="txtProductionDate"
-								class="form-control" type="date" />
+							<input id="txtProductionDate" class="form-control" type="date" />
 						</div>
 						<div class="mb-3">
 							<label for="selectSkuCode">SKU Code</label>
@@ -70,18 +66,15 @@
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseAddModal"
-						data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="btnAddDppSubmit">Add
-						DPP</button>
+					<button type="button" class="btn btn-secondary btnCloseAddModal" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnAddDppSubmit">Add DPP</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<!-- update DPP modal -->
-	<div class="modal fade" id="updateModal" tabindex="-1"
-		aria-labelledby="updateDppModalLabel" aria-hidden="true">
+	<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateDppModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
@@ -119,8 +112,7 @@
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseUpdateModal"
-						data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary btnCloseUpdateModal" data-bs-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary" id="btnUpdateDppSubmit">Update DPP</button>
 				</div>
 			</div>
@@ -128,14 +120,12 @@
 	</div>
 	
 	<!-- Delete DPP Modal -->
-	<div class="modal fade" id="deleteModal" tabindex="-1"
-	    aria-labelledby="deleteDppModalLabel" aria-hidden="true">
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteDppModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header border-0 modalHeader">
 	                <h5 class="modal-title" id="deleteDppModalLabel">Delete DPP</h5>
-	                <button type="button" class="btn-close btnCloseDeleteModal" data-bs-dismiss="modal"
-	                    aria-label="Close"></button>
+	                <button type="button" class="btn-close btnCloseDeleteModal" data-bs-dismiss="modal" aria-label="Close"></button>
 	            </div>
 	            <div class="modal-body border-0 modalBody">
 	                <p>Are you sure you want to delete this DPP?</p>
@@ -151,14 +141,12 @@
 	</div>
 	
 	<!-- add PM modal -->
-	<div class="modal fade" id="addPmModal" tabindex="-1"
-		aria-labelledby="addPmModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addPmModal" tabindex="-1" aria-labelledby="addPmModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="addPmModalLabel">Add Production Material/s:</h5>
-					<button type="button" class="btn-close btnCloseAddPmModal" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<button type="button" class="btn-close btnCloseAddPmModal" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<div id="divProductionMaterialTable"></div>
@@ -188,25 +176,20 @@
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseAddPmModal"
-						data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="btnAddPmSubmit">
-						Add PM
-					</button>
+					<button type="button" class="btn btn-secondary btnCloseAddPmModal" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnAddPmSubmit"> Add PM </button>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<!-- update PM modal -->
-	<div class="modal fade" id="updatePmModal" tabindex="-1"
-		aria-labelledby="updatePmModalLabel" aria-hidden="true">
+	<div class="modal fade" id="updatePmModal" tabindex="-1" aria-labelledby="updatePmModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="updatePmModalLabel">Update Production Material/s:</h5>
-					<button type="button" class="btn-close btnCloseUpdatePmModal" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<button type="button" class="btn-close btnCloseUpdatePmModal" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
@@ -234,11 +217,8 @@
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseUpdatePmModal"
-						data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="btnUpdatePmSubmit">
-						Update PM
-					</button>
+					<button type="button" class="btn btn-secondary btnCloseUpdatePmModal" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnUpdatePmSubmit">Update PM</button>
 				</div>
 			</div>
 		</div>
