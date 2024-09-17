@@ -31,7 +31,6 @@
 		</div>
 		<div class="container mt-4 pb-3">
 			<div class="mb-4" id="divDispatchingTable"></div>
-			<!--Dispatch Table-->
 		</div>
 	</main>
 
@@ -47,13 +46,13 @@
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
-						<div class="mb-3 d-none">
+						<div class="mb-3 d-none"">
 							<label for="addDispatchId" class="col-form-label">Dispatch
 								Type ID:</label> <input type="text" class="form-control"
 								id="addDispatchId" value="0" placeholder="0" readonly>
-						</div>
 						<input type="text" class="form-control"
 								id="addBranchId" value="0" placeholder="0" readonly>
+														</div>
 						<div class="mb-3">
 							<label for="addDispatchType" class="col-form-label">Dispatch
 								Type:</label> <select class="form-select selDispatchType"
@@ -122,14 +121,6 @@
 				<div class="modal-body border-0 modalBody">
 					<form>
 						<div class="mb-3">
-							<input type="text" class="form-control d-none" id="updateSkuCode">
-							<label for="updateDispatchId" class="col-form-label">Dispatch
-								Type ID:</label> <input type="text" class="form-control"
-								id="updateDispatchId" readonly>
-								<input type="text" class="form-control"
-								id="updateBranchId" value="0" placeholder="0" readonly>
-						</div>
-						<div class="mb-3">
 							<label for="updateDispatchType" class="col-form-label">Dispatch
 								Type:</label> <select class="form-select selDispatchType"
 								id="updateDispatchType">
@@ -188,12 +179,12 @@
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="exampleModalLabel">Delete row:</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body border-0 modalBody">
 					<form>
 						<div class="mb-3">
 							<input type="text" class="form-control d-none"
@@ -215,7 +206,7 @@
 						</div>
 					</form>
 				</div>
-				<div class="modal-footer">
+				<div class="modal-footer border-0 modalFooter">
 	
 					<button type="button" class="btn btn-danger" id="btnDeleteDispatch">Yes</button>
 					<button type="button" class="btn btn-primary"

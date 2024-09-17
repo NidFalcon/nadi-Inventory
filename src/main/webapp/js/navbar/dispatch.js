@@ -79,12 +79,11 @@ function createDispatchOptions() {
 function getCurrentDate() {
 	let date = new Date();
 	let day = String(date.getDate()).padStart(2, '0');
-	let month = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+	let month = String(date.getMonth() + 1).padStart(2, '0'); 
 	let year = date.getFullYear();
-	return `${year}-${month}-${day}`; // Format as "yyyy-MM-dd"
+	return `${year}-${month}-${day}`;
 }
 
-// Helper function to generate HTML for dropdown options
 function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
 	let html = '<option value="">';
 
@@ -199,7 +198,6 @@ function checkQuantityUpdate() {
 		return;
 	}
 
-	// Ensure total quantity doesn't exceed currentQuantity
 	if (dispatchQuantityUpdate > fplQuantityUpdate) {
 		$('#updateDispatchQuantity').val(fplQuantityUpdate);
 	}
@@ -262,7 +260,7 @@ function populateForm(row) {
 		$('.txtDateFinished').val(selectedOption.data('date-finished'));
 
 		if (availableQuantity != 0) {
-			totalQuantityUpdate = availableQuantity + updateDispatchQuantity; // Total quantity after update
+			totalQuantityUpdate = availableQuantity + updateDispatchQuantity; 
 			$('.txtQuantityFPL').val(totalQuantityUpdate);
 		}
 		else if (availableQuantity == 0) {
@@ -351,9 +349,8 @@ function createDeleteItem() {
 function addItem(isAdd) {
 	let item = createItem(isAdd);
 
-	// Perform validation checks
 	if (!validate(item)) {
-		return; // Stop execution if validation fails
+		return; 
 	}
 
 	$.post('DispatchingController', {
@@ -379,19 +376,30 @@ function addItem(isAdd) {
 }
 
 $('.btnConfirmDate').click(function() {
-	$('.btnConfirmDate').hide(); // Hide the confirm button after updating
+	$('.btnConfirmDate').hide(); 
 });
 
 $('#btnAddDispatch').click(function() {
+	$(this).prop('disabled', true);
+	
 	addItem("create");
+
+	setTimeout(() => $(this).prop('disabled', false), 1000); 
 });
 
 $('#btnUpdateDispatch').click(function() {
+	$(this).prop('disabled', true);
+
 	addItem("update");
+
+	setTimeout(() => $(this).prop('disabled', false), 1000); 
 });
+
 
 $('#btnDeleteDispatch').click(function() {
 	if ($('#deleteDispatchId').val() !== '') {
+		$(this).prop('disabled', true);
+
 		$.post('DispatchingController', {
 			action: 'deleteItem',
 			item: JSON.stringify(createItem("delete"))
@@ -411,11 +419,11 @@ $('#btnDeleteDispatch').click(function() {
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 				toastBootstrap.show();
 			}
+
+			$('#btnDeleteDispatch').prop('disabled', false);
 		});
 	}
 });
-
-
 
 function validate(item) {
     let valid = true;

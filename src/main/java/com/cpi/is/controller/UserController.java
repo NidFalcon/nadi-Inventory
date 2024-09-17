@@ -24,7 +24,7 @@ public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static String action = "";
 	private static String page = "";
-	private final Integer TIMEOUT_INTERVAL = 60 * 15;
+	private final Integer TIMEOUT_INTERVAL = 60 * 70;
 	
 	private ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 	private UserServiceImpl userService = (UserServiceImpl) context.getBean("userService");
@@ -54,9 +54,6 @@ public class UserController extends HttpServlet {
 					session.setAttribute("user", user);
 					request.setAttribute("username", user.getUsername());
 					session.setMaxInactiveInterval(TIMEOUT_INTERVAL);
-					
-					//experimenting without the use of session table
-//					userService.saveSession(request);
 					
 					Cookie sessionCookie = new Cookie("JSESSIONID", session.getId());
 					sessionCookie.setMaxAge(TIMEOUT_INTERVAL);

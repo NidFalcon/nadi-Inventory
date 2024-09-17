@@ -108,7 +108,6 @@ public class ReportDAOImpl implements ReportDAO {
 							   + "   AND b.dpp_id = a.dpp_id\r\n"
 							   + "   AND c.material_cd = b.material_cd\r\n"
 							   + "           AND a.branch_id = " + branchId
-//							   + " GROUP BY c.material_cd, c.material_name\r\n"
 							   + " ORDER BY c.material_cd";
 			Query<ProductionReportEntity> query = session.createNativeQuery(queryString, ProductionReportEntity.class);
 			rows = query.getResultList();

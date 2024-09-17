@@ -155,13 +155,18 @@ function addItem(operationType) {
 }
 
 $('#btnAddRawMaterial').click(function() {
+	$(this).prop('disabled', true);
 	addItem("add");
+	setTimeout(() => $(this).prop('disabled', false), 1000); 
 });
 $('#btnUpdateRawMaterial').click(function() {
+	$(this).prop('disabled', true);
 	addItem("update");
+	setTimeout(() => $(this).prop('disabled', false), 1000); 
 });
 
 $('#btnDeleteRawMaterial').click(function() {
+	$(this).prop('disabled', true);
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialId').val() !== '') {
 
@@ -186,6 +191,7 @@ $('#btnDeleteRawMaterial').click(function() {
 		$('#errorMessage').html('select an item to delete');
 		toastMessage.show();
 	}
+	setTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 createOptions();
