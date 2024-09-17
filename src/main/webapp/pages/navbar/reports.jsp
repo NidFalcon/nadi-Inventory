@@ -15,7 +15,7 @@
 			<div class="row mt-2">
 				<label for="txtReportDate" class="col-sm-4 col-form-label">Report Date</label>
 				<div class="col-sm-8">
-					<input type="date" class="form-control" id="txtReportDate" value="${defaultDate}" />
+					<input type="date" class="form-control" id="txtReportDate" value="${defaultDate}"/>
 				</div>
 			</div>
 			<div class="row mt-2">

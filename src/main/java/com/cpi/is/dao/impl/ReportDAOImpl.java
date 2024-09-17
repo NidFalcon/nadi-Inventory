@@ -102,7 +102,7 @@ public class ReportDAOImpl implements ReportDAO {
 		try (Session session = HBUtil.getSessionFactory().openSession()) {
 			String queryString = "SELECT c.material_cd, c.material_name, b.quantity_to_use quantity\r\n"
 							   + "  FROM qkc_daily_planned_production a,\r\n"
-							   + "       qkc_raw_material_list b,\r\n"
+							   + "       qkc_production_materials b,\r\n"
 							   + "       qkc_raw_material c\r\n"
 							   + " WHERE TRUNC(a.production_date) <= TO_DATE('" + reportDate + "', 'YYYY-MM-DD')\r\n"
 							   + "   AND b.dpp_id = a.dpp_id\r\n"

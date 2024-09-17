@@ -107,7 +107,6 @@ function getFplID() {
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMap[item[0]] = item[1];
 	});
-
 	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, currentDate);
 	$('.selFinishedProd').html(html);
 	$('.selFinishedProd').change(function() {
@@ -119,7 +118,6 @@ function getFplID() {
 		$('.txtSkuName').val(selectedOption.data('sku-name'));
 		$('.txtQuantityFPL').val(totalQuantityAdd);
 		$('.txtDateFinished').val(selectedOption.data('date-finished'));
-
 	});
 }
 
@@ -129,7 +127,6 @@ function updateFplIDOptionsByDate() {
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMap[item[0]] = item[1];
 	});
-
 	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, updateDate);
 	$('#updateFinishedProductId').html(html);
 }
@@ -140,7 +137,6 @@ function addFplIDOptionsByDate() {
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMap[item[0]] = item[1];
 	});
-	
 	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, selectedDate);
 	$('#selFinishedProdId').html(html);
 	clearAll();
@@ -168,7 +164,6 @@ function checkQuantity() {
 	if (dispatchQuantity > totalQuantityAdd) {
 		$('#addDispatchQuantity').val(totalQuantityAdd);
 	}
-
 }
 
 function checkQuantityUpdate() {
@@ -216,7 +211,6 @@ function populateForm(row) {
 			html += `<option value="${item.fplId}" data-sku-code="${item.sku.skuCode}" data-sku-name="${item.sku.skuName}" data-quantity="${item.quantity}" data-date-finished="${new Date(item.dateFinished).toLocaleDateString()}">${item.fplId} ${item.sku.skuName}</option>`;
 		}
 	});
-
 	$updateFinishedProductId.html(html);
 	$updateFinishedProductId.val(selectedFplId);
 
@@ -240,7 +234,6 @@ function populateForm(row) {
 		$('.txtQuantityFPL').val(availableQuantity);
 		$('#updateDispatchQuantity').val(0);
 	}
-
 	$updateFinishedProductId.off('change').on('change', updateFplChange);
 	initialFpl();
 }
@@ -308,7 +301,6 @@ function createDeleteItem() {
 		destination: $('#deleteDestination').val().toString(),
 		dispatchDate: $('#deleteDispatchDate').val().toString()
 	};
-
 	return json;
 }
 
@@ -316,9 +308,7 @@ function addItem(isAdd) {
 	let item = createItem(isAdd);
 	if (!validate(item)) {
 		return; 
-
 	}
-
 	$.post('DispatchingController', {
 		action: 'saveItem',
 		item: JSON.stringify(item)
@@ -372,7 +362,6 @@ $('#btnDeleteDispatch').click(function() {
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 				toastBootstrap.show();
 			}
-
 			$('#btnDeleteDispatch').prop('disabled', false);
 		});
 	}

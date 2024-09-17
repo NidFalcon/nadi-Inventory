@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg sticky-top divMenu">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="#" id="btnDashboard"><img src="images/icon.png" class="me-1 menuIcon">Patisserie Plain</a>
+		<a class="navbar-brand" href="#"><img src="images/icon.png" class="me-1 menuIcon">Patisserie Plain</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>

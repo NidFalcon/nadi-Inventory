@@ -113,16 +113,16 @@ function validate(item) {
 		toastMessage.show();
 		valid = false;
 	}
-	if (isSkuCodeExists(item.skuCode)) {
-		$('#errorMessage').html('SKU Code already exists');
-		toastMessage.show();
-		valid = false;
-	}
-	if (isSkuNameExists(item.skuName)) {
-		$('#errorMessage').html('SKU Name already exists');
-		toastMessage.show();
-		valid = false;
-	}
+//	if (isSkuCodeExists(item.skuCode)) {
+//		$('#errorMessage').html('SKU Code already exists');
+//		toastMessage.show();
+//		valid = false;
+//	}
+//	if (isSkuNameExists(item.skuName)) {
+//		$('#errorMessage').html('SKU Name already exists');
+//		toastMessage.show();
+//		valid = false;
+//	}
 	return valid;
 }
 

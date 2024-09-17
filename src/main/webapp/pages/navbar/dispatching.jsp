@@ -101,7 +101,7 @@
 							<input type="text" class="form-control d-none" id="updateSkuCode">
 							<label for="updateDispatchId" class="col-form-label">Dispatch Type ID:</label> 
 							<input type="text" class="form-control" id="updateDispatchId" name="updateDispatchId" readonly>
-							<input type="text" class="form-control" id="updateBranchId" value="0" placeholder="0" readonly>
+							<input type="text" class="form-control mt-2" id="updateBranchId" value="0" placeholder="0" readonly>
 						</div>
 						<div class="mb-3">
 							<label for="updateDispatchType" class="col-form-label">Dispatch Type:</label> 

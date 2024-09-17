@@ -106,16 +106,16 @@ function validate(item) {
         toastMessage.show();
         valid = false;
     }
-    if (isBranchIdExists(item.branchId)) {
-        $('#errorMessage').html('Branch ID already exists');
-        toastMessage.show();
-        valid = false;
-    }
-    if (isBranchNameExists(item.branchName)) {
-        $('#errorMessage').html('Branch Name already exists');
-        toastMessage.show();
-        valid = false;
-    }
+//    if (isBranchIdExists(item.branchId)) {
+//        $('#errorMessage').html('Branch ID already exists');
+//        toastMessage.show();
+//        valid = false;
+//    }
+//    if (isBranchNameExists(item.branchName)) {
+//        $('#errorMessage').html('Branch Name already exists');
+//        toastMessage.show();
+//        valid = false;
+//    }
     return valid;
 }
 

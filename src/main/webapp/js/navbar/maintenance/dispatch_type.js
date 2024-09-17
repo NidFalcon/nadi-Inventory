@@ -94,17 +94,17 @@ function validate(item) {
 		valid = false;
 	}
 
-	if (isDispatchTypeCodeExists(item.dispatchTypeCode)) {
-		$('#errorMessage').html('Dispatch Type Code already exists');
-		toastMessage.show();
-		valid = false;
-	}
-
-	if (isDispatchTypeNameExists(item.dispatchTypeName)) {
-		$('#errorMessage').html('Dispatch Type Name already exists');
-		toastMessage.show();
-		valid = false;
-	}
+//	if (isDispatchTypeCodeExists(item.dispatchTypeCode)) {
+//		$('#errorMessage').html('Dispatch Type Code already exists');
+//		toastMessage.show();
+//		valid = false;
+//	}
+//
+//	if (isDispatchTypeNameExists(item.dispatchTypeName)) {
+//		$('#errorMessage').html('Dispatch Type Name already exists');
+//		toastMessage.show();
+//		valid = false;
+//	}
 	return valid;
 }
 

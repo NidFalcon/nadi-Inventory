@@ -113,17 +113,17 @@ function validate(item) {
 		valid = false;
 	}
 
-	if (isMaterialCodeExists(item.materialCode)) {
-		$('#errorMessage').html('Material Code already exists');
-		toastMessage.show();
-		valid = false;
-	}
+//	if (isMaterialCodeExists(item.materialCode)) {
+//		$('#errorMessage').html('Material Code already exists');
+//		toastMessage.show();
+//		valid = false;
+//	}
 
-	if (isMaterialNameExists(item.materialName)) {
-		$('#errorMessage').html('Material Name already exists');
-		toastMessage.show();
-		valid = false;
-	}
+//	if (isMaterialNameExists(item.materialName)) {
+//		$('#errorMessage').html('Material Name already exists');
+//		toastMessage.show();
+//		valid = false;
+//	}
 
 	return valid;
 }
