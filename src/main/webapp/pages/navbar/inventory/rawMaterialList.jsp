@@ -14,9 +14,7 @@
 <div class="m-4 mainWrapper">
 	<main role="main">
 		<div  class="d-flex justify-content-between align-items-center contentNavbar">
-			<h1 class="h2">
-				<i class="bi bi-boxes me-2 ms-3"></i>Raw Material List
-			</h1>
+			<h1 class="h1"><i class="bi bi-boxes me-2 ms-3"></i>Raw Material List</h1>
 			<div class="btn-toolbar mb-2 mb-md-0 me-3 ms-2">
 				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">+ add</button>
 				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnUpdateMaterial">Update</button>
@@ -24,20 +22,17 @@
 			</div>
 		</div>
 		<div class="container mt-4 pb-3">
-			<div class="mb-4" id="divRawMaterialTable"></div> <!--Raw Material Table-->
+			<div class="mb-4" id="divRawMaterialTable"></div>
 		</div>
 	</main>
 
 	<!--Add Modal-->
-	<div class="modal fade" id="addModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
-					<h5 class="modal-title" id="exampleModalLabel">Add raw
-						materials:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<h5 class="modal-title" id="exampleModalLabel">Add raw materials:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
@@ -57,31 +52,26 @@
 								id="rawMaterialListQuantity">
 						</div>
 						<div class="mb-3">
-							<label for="material-date">Date</label> <input id="dateSelected"
-								class="form-control" type="date" />
+							<label for="material-date">Date</label> 
+							<input id="dateSelected" class="form-control" type="date" />
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseAddModal"
-						data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
-					<button type="button" class="btn btn-primary" id="btnAddRawMaterial">Add
-						Material</button>
+					<button type="button" class="btn btn-secondary btnCloseAddModal" data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnAddRawMaterial">Add Material</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<!-- update modal -->
-	<div class="modal fade" id="updateModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
-					<h5 class="modal-title" id="exampleModalLabel">Update raw
-						materials:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<h5 class="modal-title" id="exampleModalLabel">Update raw materials:</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
@@ -97,34 +87,29 @@
 						</div>
 						<div class="mb-3">
 							<label for="updateRawMaterialQuantity" class="col-form-label">Quantity:</label>
-							<input type="text" class="form-control"
-								id="updateRawMaterialQuantity">
+							<input type="text" class="form-control" id="updateRawMaterialQuantity">
 						</div>
 						<div class="mb-3">
-							<label for="updateDate">Date</label> <input id="updateDate"
-								class="form-control" type="date" />
+							<label for="updateDate">Date</label> 
+							<input id="updateDate" class="form-control" type="date" />
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseAddModal"
-						data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary"
-						id="btnUpdateRawMaterial">update material</button>
+					<button type="button" class="btn btn-secondary btnCloseAddModal" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnUpdateRawMaterial">update material</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- delete modal-->
-	<div class="modal fade" id="deleteModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="exampleModalLabel">Delete row:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>

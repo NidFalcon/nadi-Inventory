@@ -47,7 +47,6 @@ public class DispatchingController extends HttpServlet {
 				HttpSession session = request.getSession();
 				UserEntity user = (UserEntity) session.getAttribute("user");
 				Long branchId = user.getBranchId();
-
 				if ("showDispatching".equals(action)) {
 					request.setAttribute("dispatch",
 							new JSONArray(dispatchingService.getDispatchingByBranchId(branchId)));

@@ -9,7 +9,6 @@ function createOptions() {
             html += '<option id="item' + item.branchId + '" value="' + item.branchId + '">' + item.branchId + ' ' + item.branchName + '</option>';
         }
     });
-
     $("#txtBranchId").html(html);
 };
 
@@ -20,7 +19,6 @@ function createUserJSON() {
         password: $("#txtRegPassword").val(),
         branchId: $("#txtBranchId").val()
     };
-
     return JSON.stringify(userObject);
 }
 
@@ -44,6 +42,5 @@ $('#btnConfirmRegister').click(function() {
 		}
     });
 });
-
 
 createOptions();

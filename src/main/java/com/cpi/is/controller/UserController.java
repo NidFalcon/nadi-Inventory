@@ -53,8 +53,8 @@ public class UserController extends HttpServlet {
 					session = request.getSession(true);
 					session.setAttribute("user", user);
 					request.setAttribute("username", user.getUsername());
-					session.setMaxInactiveInterval(TIMEOUT_INTERVAL);
-					
+
+					session.setMaxInactiveInterval(TIMEOUT_INTERVAL);	
 					Cookie sessionCookie = new Cookie("JSESSIONID", session.getId());
 					sessionCookie.setMaxAge(TIMEOUT_INTERVAL);
 			        sessionCookie.setHttpOnly(true);

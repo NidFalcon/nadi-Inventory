@@ -36,8 +36,8 @@ public class DispatchingServiceImpl implements DispatchingService {
 		Long fplId = Long.parseLong(json.getString("fplId"));
 		Integer quantity = Integer.parseInt(json.getString("quantity"));
 		Integer branchId = json.has("branchId") ? json.getInt("branchId") : null;
-		String destination = JsonUtil.sanitize(json.optString("destination"));
 
+		String destination = json.optString("destination");
 		String dispatchDateStr = json.getString("dispatchDate");
 		Date dispatchDate = parseDate(dispatchDateStr);
 
@@ -91,11 +91,9 @@ public class DispatchingServiceImpl implements DispatchingService {
 	@Override
 	public String deleteItem(HttpServletRequest request) throws Exception {
 		DispatchingEntity entity = jsonToEntity(new JSONObject(request.getParameter("item")));
-
 		if (entity.getDispatchTrackId() == null) {
 			throw new IllegalArgumentException("Dispatch Track ID cannot be null for deletion.");
 		}
-
 		return dispatchingDAO.deleteItem(entity);
 	}
 	
@@ -146,7 +144,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 	public String validateQuantity(HttpServletRequest request, List<FinishedProductListEntity> finishedProductList) throws Exception {
 	    JSONObject json = new JSONObject(request.getParameter("item"));
 	    String validation = "Please fill-out the dispatching form correctly";
-	    
 	    List<Object[]> currentInventory = getCurrentInventory(Long.parseLong(json.getString("branchId")));
 
 	    List<DispatchingEntity> dispatchingEntities = getDispatchingByBranchId(Long.parseLong(json.getString("branchId")));
@@ -154,7 +151,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 	    outerloop:
 	    for (FinishedProductListEntity finishedProduct : finishedProductList) {
 	        if (finishedProduct.getFplId() == Long.parseLong(json.getString("fplId"))) {
-
 	            if (finishedProduct.getDateFinished().getTime() >
 	                (new SimpleDateFormat("yyyy-MM-dd").parse(json.getString("dispatchDate")).getTime())) {
 	                break outerloop;
@@ -164,7 +160,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 	                for (Object[] inventoryItem : currentInventory) {
 	                    String skuCD = (String) inventoryItem[0]; 
 	                    Long availableQuantity = (Long) inventoryItem[1];
-
 	                    if (skuCD.equals(finishedProduct.getSkuCD())) {
 	                        if (availableQuantity < Long.parseLong(json.getString("quantity"))) {
 	                            break outerloop;
@@ -179,11 +174,10 @@ public class DispatchingServiceImpl implements DispatchingService {
 	                    if (dispatchingEntity.getDispatchTrackId() == Long.parseLong(json.getString("dispatchTrackId"))) {
 	                        for (Object[] inventoryItem : currentInventory) {
 	                            String skuCD = (String) inventoryItem[0];
-	                            Long availableQuantity = (Long) inventoryItem[1];
+	                            Long availableQuantity = (Long) inventoryItem[1]; 
 
 	                            if (skuCD.equals(finishedProduct.getSkuCD())) {
 	                                Long totalAvailable = availableQuantity + dispatchingEntity.getQuantity();
-	                                
 	                                if (totalAvailable < Long.parseLong(json.getString("quantity"))) {
 	                                    break outerloop;
 	                                } else {
@@ -197,7 +191,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 	            }
 	        }
 	    }
-
 	    return validation;
 	}
 }

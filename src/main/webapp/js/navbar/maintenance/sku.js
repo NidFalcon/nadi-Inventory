@@ -56,7 +56,6 @@ function populateDeleteForm(row) {
 
 function createItem(crudOperation) {
 	let item;
-
 	if (crudOperation === "add") {
 		item = {
 			isActive: $('#chkIsActive').is(':checked') ? 'y' : 'n',
@@ -79,7 +78,6 @@ function createItem(crudOperation) {
 			unitOfMeasurement: $('#deleteSkuMeasurement').val()
 		};
 	}
-
 	return item;
 }
 
@@ -110,19 +108,16 @@ function isSkuNameExists(skuName) {
 function validate(item) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let valid = true;
-
 	if (item.skuName === '') {
 		$('#errorMessage').html('Please fill out the SKU Name');
 		toastMessage.show();
 		valid = false;
 	}
-
 	if (isSkuCodeExists(item.skuCode)) {
 		$('#errorMessage').html('SKU Code already exists');
 		toastMessage.show();
 		valid = false;
 	}
-
 	if (isSkuNameExists(item.skuName)) {
 		$('#errorMessage').html('SKU Name already exists');
 		toastMessage.show();
@@ -159,21 +154,16 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddSku').click(function() {
-	
 	recalculateSku();
 	addItem("add");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateSku').click(function() {
-	
 	recalculateSku();
 	addItem("update");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteSku').click(function() {
-	
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteSkuCode').val() !== '') {
 		$.post('SkuController', {
@@ -195,5 +185,4 @@ $('#btnDeleteSku').click(function() {
 		$('#errorMessage').html('Please select an item to delete');
 		toastMessage.show();
 	}
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });

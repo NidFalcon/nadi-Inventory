@@ -42,14 +42,10 @@ $('button[data-bs-target="#addModal"]').click(function() {
 
 function clearAll() {
 	$('#selFinishedProdId').val('');
-
 	$('#txtQuantityFPL').val('');
 	$('#txtDateFinished').val('');
-
 	$('#addDispatchQuantity').val(0);
-
 	$('#addDispatchDestination').val('');
-
 	$('.btnConfirmDate').hide();
 }
 
@@ -86,13 +82,11 @@ function getCurrentDate() {
 
 function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
 	let html = '<option value="">';
-
 	$.each(finishedProducts, function(index, item) {
 		let dateFinished = new Date(item.dateFinished);
 		let skuCode = item.sku.skuCode;
 		let quantity = skuToQuantityMap[skuCode] || 0;
 		if (dateFinished <= dateFilter && quantity > 0) {
-
 			html += `<option value="${item.fplId}" 
                             data-sku-code="${skuCode}" 
                             data-sku-name="${item.sku.skuName}" 
@@ -103,7 +97,6 @@ function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
                      </option>`;
 		}
 	});
-
 	html += '</option>';
 	return html;
 }
@@ -111,21 +104,17 @@ function generateOptionsHtml(finishedProducts, skuToQuantityMap, dateFilter) {
 function getFplID() {
 	let currentDate = new Date(getCurrentDate());
 	let skuToQuantityMap = {};
-
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMap[item[0]] = item[1];
 	});
 
 	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, currentDate);
-
 	$('.selFinishedProd').html(html);
-
 	$('.selFinishedProd').change(function() {
 		let selectedOption = $(this).find('option:selected');
 		let skuCode = selectedOption.data('sku-code');
 		let branchId = selectedOption.data('branch-id');
 		totalQuantityAdd = skuToQuantityMap[skuCode] || 0;
-
 		$('#addBranchId').val(branchId);
 		$('.txtSkuName').val(selectedOption.data('sku-name'));
 		$('.txtQuantityFPL').val(totalQuantityAdd);
@@ -137,28 +126,23 @@ function getFplID() {
 function updateFplIDOptionsByDate() {
 	let updateDate = new Date($('#updateDate').val());
 	let skuToQuantityMap = {};
-
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMap[item[0]] = item[1];
 	});
 
 	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, updateDate);
-
 	$('#updateFinishedProductId').html(html);
 }
 
 function addFplIDOptionsByDate() {
 	let selectedDate = new Date($('#dateSelected').val());
 	let skuToQuantityMap = {};
-
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMap[item[0]] = item[1];
 	});
-
+	
 	let html = generateOptionsHtml(finishedProduct, skuToQuantityMap, selectedDate);
-
 	$('#selFinishedProdId').html(html);
-
 	clearAll();
 }
 
@@ -167,7 +151,7 @@ $(document).ready(function() {
 	$('#updateDate').change(function() {
 		updateFplIDOptionsByDate();
 		handleDateChange();
-	});
+	});	
 	$('#dateSelected').change(function() {
 		addFplIDOptionsByDate();
 		handleDateChange();
@@ -177,13 +161,10 @@ $(document).ready(function() {
 function checkQuantity() {
 	let fplId = $('#selFinishedProdId').val();
 	if (!fplId) return;
-
 	let dispatchQuantity = parseFloat($('#addDispatchQuantity').val());
-
 	if (isNaN(totalQuantityAdd) || isNaN(dispatchQuantity)) {
 		return;
 	}
-
 	if (dispatchQuantity > totalQuantityAdd) {
 		$('#addDispatchQuantity').val(totalQuantityAdd);
 	}
@@ -193,21 +174,17 @@ function checkQuantity() {
 function checkQuantityUpdate() {
 	let dispatchQuantityUpdate = parseFloat($('#updateDispatchQuantity').val());
 	let fplQuantityUpdate = parseFloat($('.txtQuantityFPL').val());
-
 	if (isNaN(availableQuantity) || isNaN(dispatchQuantityUpdate)) {
 		return;
 	}
-
 	if (dispatchQuantityUpdate > fplQuantityUpdate) {
 		$('#updateDispatchQuantity').val(fplQuantityUpdate);
 	}
-
 	if (availableQuantity == 0) {
 		if (dispatchQuantityUpdate > fplQuantityUpdate) {
 			$('#updateDispatchQuantity').val(fplQuantityUpdate);
 		}
 	}
-
 }
 
 $('#updateDispatchQuantity').on('input', checkQuantityUpdate);
@@ -218,10 +195,8 @@ function populateForm(row) {
 		console.error('Invalid row data');
 		return;
 	}
-
 	let currentDate = new Date(getCurrentDate());
 	let selectedFplId = row.fplId;
-
 	let html = '<option value="">';
 	$('#updateDispatchId').val(row.dispatchTrackId);
 	$('#updateDispatchType').val(row.dispatchType.dispatchTypeCode);
@@ -229,14 +204,12 @@ function populateForm(row) {
 	$('#updateDispatchDestination').val(row.destination);
 	$('#updateDate').val(row.dispatchDate);
 	$('#updateBranchId').val(row.branch.branchId);
-	
 	let skuToQuantityMapUpdate = {};
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMapUpdate[item[0]] = item[1];
 	});
 
 	let $updateFinishedProductId = $('#updateFinishedProductId');
-
 	$.each(finishedProduct, function(index, item) {
 		let dateFinished = new Date(item.dateFinished);
 		if (dateFinished <= currentDate) {
@@ -253,7 +226,6 @@ function populateForm(row) {
 		let updateDispatchQuantity = parseFloat($('#updateDispatchQuantity').val()) || 0;
 		availableQuantity = skuToQuantityMapUpdate[skuCode] || 0;
 		$('.txtDateFinished').val(selectedOption.data('date-finished'));
-
 		if (availableQuantity != 0) {
 			totalQuantityUpdate = availableQuantity + updateDispatchQuantity; 
 			$('.txtQuantityFPL').val(totalQuantityUpdate);
@@ -270,7 +242,6 @@ function populateForm(row) {
 	}
 
 	$updateFinishedProductId.off('change').on('change', updateFplChange);
-
 	initialFpl();
 }
 
@@ -343,9 +314,9 @@ function createDeleteItem() {
 
 function addItem(isAdd) {
 	let item = createItem(isAdd);
-
 	if (!validate(item)) {
 		return; 
+
 	}
 
 	$.post('DispatchingController', {
@@ -354,12 +325,10 @@ function addItem(isAdd) {
 	}, function(response) {
 		if (response.includes('success')) {
 			$('.btnCloseAddModal').click();
-
 			$('#divAlert').html(response);
 			var $toastLiveExample = $('#successToast');
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
 			toastBootstrap.show();
-
 			$('#btnDispatching').click();
 		} else {
 			$('#divAlert').html(response);
@@ -391,13 +360,11 @@ $('#btnDeleteDispatch').click(function() {
 			item: JSON.stringify(createItem("delete"))
 		}, function(response) {
 			if (response.includes('success')) {
-				$('#btnDeleteDispatchCancel').click();
-				
+				$('#btnDeleteDispatchCancel').click();		
 				$('#divAlert').html(response);
 				var $toastLiveExample = $('#successToast');
 				var toastBootstrap = bootstrap.Toast.getOrCreateInstance($toastLiveExample[0]);
-				toastBootstrap.show();
-				
+				toastBootstrap.show();				
 				$('#btnDispatching').click();
 			} else {
 				$('#divAlert').html(response);
@@ -413,8 +380,7 @@ $('#btnDeleteDispatch').click(function() {
 
 function validate(item) {
     let valid = true;
-	var toastError = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
-	
+	var toastError = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);	
 	function showToast(message) {
 			$('#errorMessage').html(message);
 			toastError.show();

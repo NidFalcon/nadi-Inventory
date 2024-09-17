@@ -101,25 +101,21 @@ function isBranchIdExists(branchId) {
 function validate(item) {
     var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
     let valid = true;
-
     if (item.branchName === '') {
         $('#errorMessage').html('Please fill out the Branch Name');
         toastMessage.show();
         valid = false;
     }
-
     if (isBranchIdExists(item.branchId)) {
         $('#errorMessage').html('Branch ID already exists');
         toastMessage.show();
         valid = false;
     }
-
     if (isBranchNameExists(item.branchName)) {
         $('#errorMessage').html('Branch Name already exists');
         toastMessage.show();
         valid = false;
     }
-
     return valid;
 }
 
@@ -155,21 +151,16 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddBranch').click(function(){
-	
     recalculateBranches();
     addItem("create");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateBranchId').click(function(){
-	
     recalculateBranches();
     addItem("update");
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteBranch').click(function() {
-	
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialCode').val() !== '') {
 		$.post('BranchController', {
@@ -191,5 +182,4 @@ $('#btnDeleteBranch').click(function() {
 		$('#errorMessage').html.html('Please select an item to delete');
 		toastMessage.show();
 	}
-	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });

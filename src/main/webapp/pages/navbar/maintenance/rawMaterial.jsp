@@ -16,9 +16,7 @@
 	<main role="main">
 		<div class="alert alert-warning d-none mt-1" role="alert" id="divAlert"></div>
 		<div class="d-flex justify-content-between align-items-center contentNavbar">
-					<h1 class="h2">
-						<i class="bi bi-boxes me-2 ms-3"></i>Raw Material
-					</h1>
+			<h1 class="h1"><i class="bi bi-boxes me-2 ms-3"></i>Raw Material</h1>
 			<div class="btn-toolbar mb-2 mb-md-0 me-3 ms-2">
 				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addModal">+ add</button>
 				<button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#updateModal" id="btnShowUpdateRawMaterial">Update</button>
@@ -26,7 +24,7 @@
 			</div>
 		</div>
 		<div class="container mt-4 pb-3">
-			<div id="divRawMaterialTable"></div> <!--Raw Material Table-->
+			<div id="divRawMaterialTable"></div>
 		</div>
 	</main>
 	
@@ -37,8 +35,7 @@
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="exampleModalLabel">Add Raw Material:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
@@ -61,10 +58,8 @@
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseModal"
-						data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
-					<button type="button" class="btn btn-primary" id="btnAddRawMaterial">Add
-						Raw Material</button>
+					<button type="button" class="btn btn-secondary btnCloseModal" data-bs-dismiss="modal" id="btnCloseAddModal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnAddRawMaterial">Add Raw Material</button>
 				</div>
 			</div>
 		</div>
@@ -77,8 +72,7 @@
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="exampleModalLabel">Update Raw Material:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
@@ -101,10 +95,8 @@
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-					<button type="button" class="btn btn-secondary btnCloseModal"
-						data-bs-dismiss="modal" id="btnCloseUpdateModal">Close</button>
-					<button type="button" class="btn btn-primary" id="btnUpdateRawMaterial">Update
-						Raw Material</button>
+					<button type="button" class="btn btn-secondary btnCloseModal" data-bs-dismiss="modal" id="btnCloseUpdateModal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnUpdateRawMaterial">Update Raw Material</button>
 				</div>
 			</div>
 		</div>
@@ -117,8 +109,7 @@
 			<div class="modal-content">
 				<div class="modal-header border-0 modalHeader">
 					<h5 class="modal-title" id="exampleModalLabel">Delete Raw Material:</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body border-0 modalBody">
 					<form>
@@ -134,7 +125,6 @@
 					</form>
 				</div>
 				<div class="modal-footer border-0 modalFooter">
-	
 					<button type="button" class="btn btn-danger" id="btnDeleteRawMaterial">Yes</button>
 					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnDeleteRawMaterialCancel">No</button>				
 				</div>
