@@ -40,14 +40,14 @@ function populateForm(row) {
 	if (row !== undefined) {
 		$('#updateSkuCode').val(row.skuCode);
 		$('#updateSkuName').val(row.skuName);
-		$('#updateSkuUnitOfMesaurement').val(row.unitOfMeasurement);
+		$('#updateSkuUnitOfMeasurement').val(row.unitOfMeasurement);
 		row.isActive === 'y' ? $('#updateIsActive').prop('checked', true) : $('#updateIsActive').prop('checked', false);
 	}
 }
 
 function populateDeleteForm(row) {
 	if (row !== undefined) {
-		$('#deleteSkuCode').val(row.skuCode)
+		$('#deleteSkuCode').val(row.skuCode);
 		$('#deleteSkuName').val(row.skuName);
 		$('#deleteSkuMeasurement').val(row.unitOfMeasurement);
 		$('#deleteSkuisActive').val(row.isActive);
@@ -69,7 +69,7 @@ function createItem(crudOperation) {
 			isActive: $('#updateIsActive').is(':checked') ? 'y' : 'n',
 			skuCode: $('#updateSkuCode').val() !== '' ? $('#updateSkuCode').val() : '',
 			skuName: $('#updateSkuName').val(),
-			unitOfMeasurement: $('#updateSkuUnitOfMesaurement').val()
+			unitOfMeasurement: $('#updateSkuUnitOfMeasurement').val()
 		};
 	} else if (crudOperation === "delete") {
 		item = {
@@ -83,16 +83,57 @@ function createItem(crudOperation) {
 	return item;
 }
 
+function initializeSkuCodeMap() {
+	let skuCodeMap = {};
+	$.each(sku, function(index, item) {
+		skuCodeMap[item.skuCode] = true;
+	});
+	return skuCodeMap;
+}
+
+function initializeSkuNameMap() {
+	let skuNameMap = {};
+	$.each(sku, function(index, item) {
+		skuNameMap[item.skuName.toLowerCase()] = true;
+	});
+	return skuNameMap;
+}
+
+function isSkuCodeExists(skuCode) {
+	return skuCodeMap.hasOwnProperty(skuCode);
+}
+
+function isSkuNameExists(skuName) {
+	return skuNameMap.hasOwnProperty(skuName.toLowerCase());
+}
 
 function validate(item) {
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	let valid = true;
+
 	if (item.skuName === '') {
 		$('#errorMessage').html('Please fill out the SKU Name');
 		toastMessage.show();
 		valid = false;
 	}
+
+	if (isSkuCodeExists(item.skuCode)) {
+		$('#errorMessage').html('SKU Code already exists');
+		toastMessage.show();
+		valid = false;
+	}
+
+	if (isSkuNameExists(item.skuName)) {
+		$('#errorMessage').html('SKU Name already exists');
+		toastMessage.show();
+		valid = false;
+	}
 	return valid;
+}
+
+function recalculateSku() {
+	skuCodeMap = initializeSkuCodeMap();
+	skuNameMap = initializeSkuNameMap();
 }
 
 function addItem(crudOperation) {
@@ -109,11 +150,6 @@ function addItem(crudOperation) {
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnMngSku').click();
-			} else if (response.includes("login")) {
-				$('.btnCloseAddModal').click();
-				$('#divMenu').html('');
-				$('#divContent').html(response);
-				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
@@ -123,13 +159,21 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddSku').click(function() {
+	$(this).prop('disabled', true);
+	recalculateSku();
 	addItem("add");
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
+
 $('#btnUpdateSku').click(function() {
+	$(this).prop('disabled', true);
+	recalculateSku();
 	addItem("update");
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteSku').click(function() {
+	$(this).prop('disabled', true);
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteSkuCode').val() !== '') {
 		$.post('SkuController', {
@@ -142,11 +186,6 @@ $('#btnDeleteSku').click(function() {
 				toastMessage = bootstrap.Toast.getOrCreateInstance($('#successToast')[0]);
 				toastMessage.show();
 				$('#btnMngSku').click();
-			} else if (response.includes("login")) {
-				$('#btnDeleteSkuCancel').click();
-				$('#divMenu').html('');
-				$('#divContent').html(response);
-				alert("login expired. Please Login again");
 			} else {
 				$('#errorMessage').html('Unable to save changes');
 				toastMessage.show();
@@ -156,5 +195,5 @@ $('#btnDeleteSku').click(function() {
 		$('#errorMessage').html('Please select an item to delete');
 		toastMessage.show();
 	}
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
-
