@@ -46,7 +46,6 @@ function createOptions() {
 	$("select").html(html);
 }
 
-//fill up the form for updates
 function populateForm(row) {
 	if (row !== undefined) {
 		$('#updateRawMaterialId').val(row.materialListId);
@@ -56,7 +55,6 @@ function populateForm(row) {
 	}
 }
 
-//fill up the form to delete
 function populateDeleteForm(row) {
 	if(row !== undefined) {
 		$('#deleteRawMaterialId').val(row.materialListId);
@@ -155,18 +153,18 @@ function addItem(operationType) {
 }
 
 $('#btnAddRawMaterial').click(function() {
-	$(this).prop('disabled', true);
+	
 	addItem("add");
-	setTimeout(() => $(this).prop('disabled', false), 1000); 
+	
 });
 $('#btnUpdateRawMaterial').click(function() {
-	$(this).prop('disabled', true);
+	
 	addItem("update");
-	setTimeout(() => $(this).prop('disabled', false), 1000); 
+	
 });
 
 $('#btnDeleteRawMaterial').click(function() {
-	$(this).prop('disabled', true);
+	
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialId').val() !== '') {
 

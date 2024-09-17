@@ -223,16 +223,13 @@ function populateForm(row) {
 	let selectedFplId = row.fplId;
 
 	let html = '<option value="">';
-
-	// Populate the form with the dispatch details from the selected row
 	$('#updateDispatchId').val(row.dispatchTrackId);
 	$('#updateDispatchType').val(row.dispatchType.dispatchTypeCode);
 	$('#updateDispatchQuantity').val(row.quantity);
 	$('#updateDispatchDestination').val(row.destination);
 	$('#updateDate').val(row.dispatchDate);
 	$('#updateBranchId').val(row.branch.branchId);
-
-	// Logic for populating FPL options
+	
 	let skuToQuantityMapUpdate = {};
 	$.each(currentInventory, function(index, item) {
 		skuToQuantityMapUpdate[item[0]] = item[1];
@@ -248,8 +245,6 @@ function populateForm(row) {
 	});
 
 	$updateFinishedProductId.html(html);
-
-	// Set the initial FPL ID based on the selected row
 	$updateFinishedProductId.val(selectedFplId);
 
 	function initialFpl() {
@@ -380,26 +375,17 @@ $('.btnConfirmDate').click(function() {
 });
 
 $('#btnAddDispatch').click(function() {
-	$(this).prop('disabled', true);
 	
 	addItem("create");
-
-	setTimeout(() => $(this).prop('disabled', false), 1000); 
 });
 
 $('#btnUpdateDispatch').click(function() {
-	$(this).prop('disabled', true);
-
 	addItem("update");
-
-	setTimeout(() => $(this).prop('disabled', false), 1000); 
 });
 
 
 $('#btnDeleteDispatch').click(function() {
 	if ($('#deleteDispatchId').val() !== '') {
-		$(this).prop('disabled', true);
-
 		$.post('DispatchingController', {
 			action: 'deleteItem',
 			item: JSON.stringify(createItem("delete"))

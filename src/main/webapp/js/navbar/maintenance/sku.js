@@ -159,21 +159,21 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddSku').click(function() {
-	$(this).prop('disabled', true);
+	
 	recalculateSku();
 	addItem("add");
 	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateSku').click(function() {
-	$(this).prop('disabled', true);
+	
 	recalculateSku();
 	addItem("update");
 	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteSku').click(function() {
-	$(this).prop('disabled', true);
+	
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteSkuCode').val() !== '') {
 		$.post('SkuController', {

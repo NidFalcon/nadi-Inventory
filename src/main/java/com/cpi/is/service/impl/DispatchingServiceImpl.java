@@ -16,6 +16,7 @@ import com.cpi.is.dao.DispatchingDAO;
 import com.cpi.is.entity.DispatchingEntity;
 import com.cpi.is.entity.inventory.FinishedProductListEntity;
 import com.cpi.is.service.DispatchingService;
+import com.cpi.is.util.JsonUtil;
 
 public class DispatchingServiceImpl implements DispatchingService {
 
@@ -35,7 +36,7 @@ public class DispatchingServiceImpl implements DispatchingService {
 		Long fplId = Long.parseLong(json.getString("fplId"));
 		Integer quantity = Integer.parseInt(json.getString("quantity"));
 		Integer branchId = json.has("branchId") ? json.getInt("branchId") : null;
-		String destination = json.optString("destination");
+		String destination = JsonUtil.sanitize(json.optString("destination"));
 
 		String dispatchDateStr = json.getString("dispatchDate");
 		Date dispatchDate = parseDate(dispatchDateStr);
@@ -62,11 +63,8 @@ public class DispatchingServiceImpl implements DispatchingService {
 
 	@Override
 	public String saveItem(HttpServletRequest request,List<FinishedProductListEntity> finishedProductList) throws Exception {
-
-		// TODO Auto-generated method stub
 		String validation = validateData(request);
 		String results = "";
-		
 		if(validation.equals("success")) {
 			String quantityValidation = validateQuantity(request, finishedProductList);
 			if(quantityValidation.equals("success")) {
@@ -94,7 +92,6 @@ public class DispatchingServiceImpl implements DispatchingService {
 	public String deleteItem(HttpServletRequest request) throws Exception {
 		DispatchingEntity entity = jsonToEntity(new JSONObject(request.getParameter("item")));
 
-		// Validate the dispatch entity before deletion
 		if (entity.getDispatchTrackId() == null) {
 			throw new IllegalArgumentException("Dispatch Track ID cannot be null for deletion.");
 		}
@@ -150,17 +147,14 @@ public class DispatchingServiceImpl implements DispatchingService {
 	    JSONObject json = new JSONObject(request.getParameter("item"));
 	    String validation = "Please fill-out the dispatching form correctly";
 	    
-	    // Fetch current inventory from DAO
 	    List<Object[]> currentInventory = getCurrentInventory(Long.parseLong(json.getString("branchId")));
 
-	    // Fetch dispatched entities for the branch
 	    List<DispatchingEntity> dispatchingEntities = getDispatchingByBranchId(Long.parseLong(json.getString("branchId")));
 
 	    outerloop:
 	    for (FinishedProductListEntity finishedProduct : finishedProductList) {
 	        if (finishedProduct.getFplId() == Long.parseLong(json.getString("fplId"))) {
 
-	            // Check if dispatch date is valid
 	            if (finishedProduct.getDateFinished().getTime() >
 	                (new SimpleDateFormat("yyyy-MM-dd").parse(json.getString("dispatchDate")).getTime())) {
 	                break outerloop;
@@ -181,12 +175,11 @@ public class DispatchingServiceImpl implements DispatchingService {
 	                    }
 	                }
 	            } else {
-	                // Existing dispatch: check current inventory and dispatched quantities
 	                for (DispatchingEntity dispatchingEntity : dispatchingEntities) {
 	                    if (dispatchingEntity.getDispatchTrackId() == Long.parseLong(json.getString("dispatchTrackId"))) {
 	                        for (Object[] inventoryItem : currentInventory) {
-	                            String skuCD = (String) inventoryItem[0]; // SKU Code
-	                            Long availableQuantity = (Long) inventoryItem[1]; // Available quantity
+	                            String skuCD = (String) inventoryItem[0];
+	                            Long availableQuantity = (Long) inventoryItem[1];
 
 	                            if (skuCD.equals(finishedProduct.getSkuCD())) {
 	                                Long totalAvailable = availableQuantity + dispatchingEntity.getQuantity();

@@ -82,14 +82,14 @@ function initializeBranchIdMap() {
 }
 
 function isBranchNameExists(branchName) {
-    return branchNameMap.hasOwnProperty(branchName.toLowerCase()); // Normalize to lowercase for case-insensitive comparison
+    return branchNameMap.hasOwnProperty(branchName.toLowerCase());
 }
 
 
 function initializeBranchNameMap() {
     let branchNameMap = {};
     $.each(branch, function(index, item) {
-        branchNameMap[item.branchName.toLowerCase()] = true; // Normalize to lowercase for case-insensitive comparison
+        branchNameMap[item.branchName.toLowerCase()] = true;
     });
     return branchNameMap;
 }
@@ -155,21 +155,21 @@ function addItem(crudOperation) {
 }
 
 $('#btnAddBranch').click(function(){
-	$(this).prop('disabled', true);
+	
     recalculateBranches();
     addItem("create");
 	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnUpdateBranchId').click(function(){
-	$(this).prop('disabled', true);
+	
     recalculateBranches();
     addItem("update");
 	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 $('#btnDeleteBranch').click(function() {
-	$(this).prop('disabled', true);
+	
 	var toastMessage = bootstrap.Toast.getOrCreateInstance($('#errorToast')[0]);
 	if ($('#deleteRawMaterialCode').val() !== '') {
 		$.post('BranchController', {

@@ -1,5 +1,5 @@
 $('#btnAddPmSubmit').click(function() {
-	$(this).prop('disabled', true);
+	
 	var productionMaterial = createProductionMaterialObjects();
 	$.post("ProductionMaterialController", {
 		action: "saveBulkItems",
@@ -50,7 +50,7 @@ function createProductionMaterialObjects() {
 
 
 $('#btnUpdatePmSubmit').click(function() {
-	$(this).prop('disabled', true);
+	
 	var updateProductionMaterial = updateProductionMaterialObjects();
 	$.post("ProductionMaterialController", {
 		action: "saveBulkItems",
