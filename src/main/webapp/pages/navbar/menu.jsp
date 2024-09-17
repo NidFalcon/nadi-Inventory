@@ -11,9 +11,8 @@
 			</div>
 			<div class="offcanvas-body">
 				<ul class="navbar-nav me-auto mb-lg-0 flex-wrap">
-					<li class="nav-item"><a class="nav-link active" href="#" id="btnDashboard">
-						<i class="bi bi-border-all me-1"></i>Dashboard</a>
-					</li>
+					<li class="nav-item"><a class="nav-link" href="#" id="btnDashboard">
+					<i class="bi bi-border-all me-1"></i>Dashboard</a></li>
 					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						<i class="bi bi-dropbox me-1"></i>Inventory</a>
 						<ul class="dropdown-menu">

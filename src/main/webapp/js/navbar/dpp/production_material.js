@@ -1,4 +1,5 @@
 $('#btnAddPmSubmit').click(function() {
+	$(this).prop('disabled', true);
 	var productionMaterial = createProductionMaterialObjects();
 	$.post("ProductionMaterialController", {
 		action: "saveBulkItems",
@@ -26,6 +27,7 @@ $('#btnAddPmSubmit').click(function() {
 			toastBootstrap.show();
 		}
 	});
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 function createProductionMaterialObjects() {
@@ -48,6 +50,7 @@ function createProductionMaterialObjects() {
 
 
 $('#btnUpdatePmSubmit').click(function() {
+	$(this).prop('disabled', true);
 	var updateProductionMaterial = updateProductionMaterialObjects();
 	$.post("ProductionMaterialController", {
 		action: "saveBulkItems",
@@ -75,6 +78,7 @@ $('#btnUpdatePmSubmit').click(function() {
 			toastBootstrap.show();
 		}
 	});
+	SetTimeout(() => $(this).prop('disabled', false), 1000);
 });
 
 function updateProductionMaterialObjects() {
